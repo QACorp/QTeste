@@ -7,8 +7,9 @@ use App\Domain\Auth\Business\AuthBusiness;
 use App\Domain\Auth\Contracts\AuthBusinessInterface;
 use App\Domain\Auth\Contracts\AuthRepositoryInterface;
 use App\Domain\Auth\Repository\AuthRepository;
+use Illuminate\Contracts\Support\DeferrableProvider;
 
-class AuthServiceProvider extends ServiceProviderAbstract
+class AuthServiceProvider extends ServiceProviderAbstract implements DeferrableProvider
 {
     public array $bindings = [
         AuthRepositoryInterface::class => AuthRepository::class,
