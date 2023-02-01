@@ -6,9 +6,13 @@ use App\Application\Abstracts\DTOAbstract;
 
 class UserDTO extends DTOAbstract
 {
-    public string|null $name;
+    public function __construct(
+        public ?int $id = null,
+        public ?string $name,
+        public ?string $email,
+        public ?string $password,
+    )
+    {
+    }
 
-    public string|null $email;
-
-    public string|null $password;
 }

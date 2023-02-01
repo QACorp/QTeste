@@ -25,7 +25,7 @@ class AuthController extends Controller
     #[Post('register')]
     public function create(AuthRegisterRequest $request)
     {
-        $userDto = new UserDTO($request->all());
+        $userDto = UserDTO::from($request->all());
 
         return response()->json($this->authBusiness->register($userDto));
     }
@@ -33,7 +33,7 @@ class AuthController extends Controller
     #[Post('login')]
     public function login(AuthLoginRequest $request)
     {
-        $userDto = new UserDTO($request->all());
+        $userDto = UserDTO::from($request->all());
 
         return response()->json($this->authBusiness->login($userDto));
     }

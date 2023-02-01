@@ -18,12 +18,13 @@ class AuthBusiness implements AuthBusinessInterface
 
     public function login(UserDTO $user): AuthDTO
     {
-        $token = AuthHelper::attempt($user->toArray());
+
+        $token = AuthHelper::attempt($user->only('email','password')->toArray());
 
         if (! $token) {
             throw new UnauthorizedException();
         }
-        $user = new UserDTO(AuthHelper::user()->toArray());
+        $user = UserDTO::from(AuthHelper::user()->toArray());
 
         return new AuthDTO(
             status: 'success',
@@ -55,7 +56,7 @@ class AuthBusiness implements AuthBusinessInterface
 
     public function refresh(): AuthDTO
     {
-        $user = new UserDTO(AuthHelper::user()->toArray());
+        $user = UserDTO::from(AuthHelper::user()->toArray());
         $token = AuthHelper::refresh(true, true);
 
         return new AuthDTO(

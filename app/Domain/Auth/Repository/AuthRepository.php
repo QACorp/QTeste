@@ -15,6 +15,6 @@ class AuthRepository implements AuthRepositoryInterface
         $user->password = Hash::make($user->password);
         $user->save();
 
-        return new UserDTO($user->toArray());
+        return UserDTO::from($user->toArray());
     }
 }
