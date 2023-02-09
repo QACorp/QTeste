@@ -33,7 +33,8 @@ class StoreProjectRequest extends FormRequest
             'url_git_clone' => 'required',
             'clone_type'    => ['required',new Enum(CloneTypeEnum::class)],
             'user_id'   => 'required|integer|exists:users,id',
-            'branchs'   => 'required|array'
+            'branchs'   => 'required|array',
+            'name'  =>  'required'
         ];
     }
     public function messages()
@@ -41,6 +42,9 @@ class StoreProjectRequest extends FormRequest
         return [
                 'url_git_clone' => [
                     'required' => 'O campo url_git_clone não pode ser nulo',
+                ],
+                'name' => [
+                    'required' => 'O campo name não pode ser nulo',
                 ],
                 'branchs' => [
                     'required' => 'O campo branchs não pode ser nulo',

@@ -18,4 +18,14 @@ class ProjectRepository
         //dd(ProjectDTO::collection(Project::all()));
         return ProjectDTO::collection(Project::all());
     }
+
+
+    public function saveProject(ProjectDTO $projectDTO): ProjectDTO
+    {
+        $project = new Project($projectDTO->toArray());
+
+        $project->save();
+
+        return ProjectDTO::from($project);
+    }
 }

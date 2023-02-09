@@ -24,6 +24,9 @@ class Project extends ModelAbstract
         'clone_type',
         'custom_script'
     ];
+    protected $casts = [
+        'branchs' => 'json'
+    ];
 
     public function user()
     {

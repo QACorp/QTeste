@@ -28,6 +28,7 @@ class AuthBusiness implements AuthBusinessInterface
 
         return new AuthDTO(
             status: 'success',
+            message: 'Autenticado com sucesso',
             user: $user,
             authorization: [
                 'token' => $token,

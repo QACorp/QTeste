@@ -7,6 +7,7 @@ use App\Application\Abstracts\DTOAbstract;
 class ProjectDTO extends DTOAbstract
 {
     public string|null $uuid;
+    public string|null $name;
     public array|null $branchs;
     public string|null $strategy;
     public string|null $url_repository;

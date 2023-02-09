@@ -31,6 +31,7 @@ class ProjectController extends Controller
     #[Post('/')]
     public function store(StoreProjectRequest $request){
         $projectDTO = ProjectDTO::from($request->all());
+        $projectDTO = $this->projectBusiness->saveProject($projectDTO);
         return $projectDTO;
     }
 }
