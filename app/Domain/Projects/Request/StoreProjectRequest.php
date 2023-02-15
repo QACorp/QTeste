@@ -6,7 +6,6 @@ use App\Domain\Projects\Enum\CloneTypeEnum;
 use App\Domain\Projects\Enum\StrategyEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class StoreProjectRequest extends FormRequest
 {
