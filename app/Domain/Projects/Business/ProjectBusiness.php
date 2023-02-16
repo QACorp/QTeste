@@ -27,4 +27,9 @@ class ProjectBusiness
     {
         return $this->projectRepository->saveProject($projectDTO);
     }
+
+    public function updateProject(ProjectDTO $projectDTO): ProjectDTO
+    {
+        return $this->projectRepository->updateProject($projectDTO);
+    }
 }

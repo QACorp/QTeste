@@ -62,14 +62,16 @@ class AuthBusiness implements AuthBusinessInterface
         $user = UserDTO::from(AuthHelper::user()->toArray());
         $token = AuthHelper::refresh(true, true);
 
-        return new AuthDTO(
-            status: 'success',
-            message: 'User created successfully',
-            user: $user,
-            authorization: [
-                'token' => $token,
-                'type' => 'bearer',
-                'expires_in' => AuthHelper::factory()->getTTL() * 60,
+        return  AuthDTO::from(
+            [
+                'status'=> 'success',
+                'message'=> 'User created successfully',
+                'user'=> $user,
+                'authorization'=> [
+                    'token' => $token,
+                    'type' => 'bearer',
+                    'expires_in' => AuthHelper::factory()->getTTL() * 60,
+                ]
             ]
         );
     }

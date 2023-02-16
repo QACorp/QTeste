@@ -13,6 +13,7 @@ use Spatie\RouteAttributes\Attributes\Get;
 use Spatie\RouteAttributes\Attributes\Middleware;
 use Spatie\RouteAttributes\Attributes\Post;
 use Spatie\RouteAttributes\Attributes\Prefix;
+use Spatie\RouteAttributes\Attributes\Put;
 
 #[Prefix('project')]
 #[Middleware(['api','auth:api'])]
@@ -33,5 +34,12 @@ class ProjectController extends Controller
         $projectDTO = ProjectDTO::from($request->all());
         $projectDTO = $this->projectBusiness->saveProject($projectDTO);
         return $projectDTO;
+    }
+
+    #[Put('/{projectId}')]
+    public function update(StoreProjectRequest $request, string $projectId){
+        $projectDTO = ProjectDTO::from($request->all());
+        $projectDTO->uuid = $projectId;
+        return $this->projectBusiness->updateProject($projectDTO);
     }
 }

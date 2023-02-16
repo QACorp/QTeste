@@ -9,4 +9,5 @@ interface ProjectBusinessInterface
 {
     public function listAllProjects():DataCollection;
     public function saveProject(ProjectDTO $projectDTO):ProjectDTO;
+    public function updateProject(ProjectDTO $projectDTO):ProjectDTO;
 }

@@ -15,6 +15,16 @@ class Project extends ModelAbstract
     use HasFactory,MigrationTrait, SoftDeletes;
     protected $primaryKey = 'uuid';
     protected $keyType = 'string';
+    protected $visible = [
+        'name',
+        'branchs',
+        'strategy',
+        'url_repository',
+        'url_git_clone',
+        'clone_type',
+        'custom_script',
+        'uuid'
+    ];
     protected $fillable = [
         'name',
         'branchs',

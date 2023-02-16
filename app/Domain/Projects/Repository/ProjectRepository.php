@@ -23,8 +23,15 @@ class ProjectRepository
     public function saveProject(ProjectDTO $projectDTO): ProjectDTO
     {
         $project = new Project($projectDTO->toArray());
-
         $project->save();
+        return ProjectDTO::from($project);
+    }
+
+    public function updateProject(ProjectDTO $projectDTO): ProjectDTO
+    {
+        $project = Project::find($projectDTO->uuid);
+        $project->fill($projectDTO->toArray());
+        $project->update();
 
         return ProjectDTO::from($project);
     }
