@@ -2,6 +2,7 @@
 
 namespace App\Domain\Projects\Controller;
 
+use App\Application\Abstracts\UuidBase;
 use App\Application\Http\Controllers\Controller;
 use App\Domain\Projects\Contracts\ProjectBusinessInterface;
 use App\Domain\Projects\DTO\ProjectDTO;
@@ -9,6 +10,8 @@ use App\Domain\Projects\Enum\CloneTypeEnum;
 use App\Domain\Projects\Enum\StrategyEnum;
 use App\Domain\Projects\Models\Project;
 use App\Domain\Projects\Request\StoreProjectRequest;
+use Ramsey\Uuid\Uuid;
+use Spatie\RouteAttributes\Attributes\Delete;
 use Spatie\RouteAttributes\Attributes\Get;
 use Spatie\RouteAttributes\Attributes\Middleware;
 use Spatie\RouteAttributes\Attributes\Post;
@@ -41,5 +44,11 @@ class ProjectController extends Controller
         $projectDTO = ProjectDTO::from($request->all());
         $projectDTO->uuid = $projectId;
         return $this->projectBusiness->updateProject($projectDTO);
+    }
+
+    #[Delete('/{projectId}')]
+    public function delete(string $projectId){
+        return $this->projectBusiness->deleteProject($projectId);
+        //return $this->projectBusiness->deleteProject($projectDTO);
     }
 }

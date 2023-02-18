@@ -3,10 +3,16 @@
 namespace App\Domain\Projects\Business;
 
 use App\Application\Abstracts\BusinessAbstract;
+use App\Application\Abstracts\UuidBase;
 use App\Domain\Projects\Contracts\ProjectBusinessInterface;
 use App\Domain\Projects\Contracts\ProjectRepositoryInterface;
 use App\Domain\Projects\DTO\ProjectDTO;
+use Ramsey\Uuid\Exception\InvalidUuidStringException;
+use Ramsey\Uuid\Exception\UuidExceptionInterface;
+use Ramsey\Uuid\Uuid;
 use Spatie\LaravelData\DataCollection;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class ProjectBusiness
     extends BusinessAbstract
@@ -30,6 +36,29 @@ class ProjectBusiness
 
     public function updateProject(ProjectDTO $projectDTO): ProjectDTO
     {
-        return $this->projectRepository->updateProject($projectDTO);
+        if(!Uuid::isValid($projectDTO->uuid)){
+            throw new UnprocessableEntityHttpException('Uuid inválido.');
+        }
+        try {
+            return $this->projectRepository->updateProject($projectDTO);
+        }catch (NotFoundHttpException $e) {
+            throw $e;
+        }
+    }
+
+    public function deleteProject(string $uuid): bool
+    {
+
+        if(!UuidBase::isValid($uuid)){
+            throw new UnprocessableEntityHttpException('Uuid inválido.');
+        }
+        
+        try {
+            return $this->projectRepository->deleteProject($uuid);
+        }catch (NotFoundHttpException $e) {
+            throw $e;
+        }
+
+
     }
 }
