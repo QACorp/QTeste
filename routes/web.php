@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,12 +16,26 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\System\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Auth::routes();
+// Authentication Routes...
+Route::get('login', 'App\System\Http\Controllers\Auth\LoginController@showLoginForm');
+Route::post('login', 'App\System\Http\Controllers\Auth\LoginController@login');
+Route::get('logout', 'App\System\Http\Controllers\Auth\LoginController@logout');
+
+// Registration Routes...
+Route::get('register', 'App\System\Http\Controllers\Auth\RegisterController@showRegistrationForm');
+Route::post('register', 'App\System\Http\Controllers\Auth\RegisterController@register');
+
+// Password Reset Routes...
+Route::get('password/reset/{token?}', 'App\System\Http\Controllers\Auth\ResetPasswordController@showResetForm');
+Route::post('password/email', 'App\System\Http\Controllers\Auth\ResetPasswordController@sendResetLinkEmail');
+Route::post('password/reset', 'App\System\Http\Controllers\Auth\ResetPasswordController@reset');
+
 
 Route::get('/home', function() {
     return view('home');
 })->name('home')->middleware('auth');
+
+
