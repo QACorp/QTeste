@@ -194,6 +194,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\System\Providers\EventServiceProvider::class,
         App\System\Providers\RouteServiceProvider::class,
+        Yajra\Acl\AclServiceProvider::class,
+        App\Modules\Projetos\Providers\ProjetosServiceProvider::class,
+
 
     ],
 
