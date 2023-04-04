@@ -2,6 +2,7 @@
 
 namespace App\Modules\Projetos\Providers;
 
+use App\Modules\Projetos\Config\MenuConfig;
 use App\System\Impl\ServiceProviderAbstract;
 use Illuminate\Support\Facades\Event;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
@@ -21,21 +22,9 @@ class ProjetosServiceProvider extends ServiceProviderAbstract
 
     public function boot(): void
     {
-        $this->addMenus();
+        MenuConfig::configureMenuModule();
         parent::boot();
     }
-    public function addMenus(){
-        Event::listen(BuildingMenu::class, function (BuildingMenu $event) {
-            // Add some items to the menu...
-            $event->menu->add('Projetos');
-            $event->menu->add([
-                'key' => 'project_index',
-                'route' => 'projetos.index',
-                'icon'  => 'fas  fa-users',
-                'text' => 'Projetos',
-                'url' => 'projetos',
-            ]);
-        });
-    }
+
 
 }
