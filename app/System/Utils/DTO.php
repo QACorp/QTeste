@@ -2,7 +2,9 @@
 
 namespace App\System\Utils;
 
-class DTO
+use Spatie\LaravelData\Data;
+
+class DTO extends Data
 {
 
 }

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nome',255);
             $table->longText('descricao')->nullable();
-
+            $table->softDeletes();
             $table->timestamps();
         });
         Schema::create('projetos.projetos', function (Blueprint $table) {
@@ -27,7 +27,7 @@ return new class extends Migration
 
             $table->bigInteger('aplicacao_id');
             $table->foreign('aplicacao_id')->on('projetos.aplicacoes')->references('id');
-
+            $table->softDeletes();
             $table->timestamps();
         });
 
@@ -38,7 +38,7 @@ return new class extends Migration
             $table->longText('url');
             $table->bigInteger('projeto_id');
             $table->foreign('projeto_id')->on('projetos.projetos')->references('id');
-
+            $table->softDeletes();
             $table->timestamps();
         });
 
@@ -48,8 +48,8 @@ return new class extends Migration
             $table->bigInteger('projeto_id');
             $table->bigInteger('user_id');
             $table->foreign('projeto_id')->on('projetos.projetos')->references('id');
-            $table->foreign('user_id')->on('user')->references('id');
-
+            $table->foreign('user_id')->on('users')->references('id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

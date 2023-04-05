@@ -19,7 +19,12 @@ class MenuConfig extends MenuConfigAbstract
                 'route' => 'projetos.index',
                 'icon'  => 'fas  fa-users',
                 'text' => 'Projetos',
-                'url' => 'projetos',
+            ]);
+            $event->menu->add([
+                'key' => 'aplicacao_index',
+                'route' => 'aplicacoes.index',
+                'icon'  => 'fas fa-cogs',
+                'text' => 'Aplicações',
             ]);
         });
     }

@@ -8,6 +8,6 @@ class ProjetosController extends Controller
 {
     public function index()
     {
-        return view('projetos::home');
+        return view('projetos::projetos.home');
     }
 }
