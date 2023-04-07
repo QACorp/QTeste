@@ -14,4 +14,11 @@ class AplicacaoRepository implements AplicacaoRepositoryContract
     {
         return AplicacaoDTO::collection(Aplicacao::all());
     }
+
+    public function salvar(AplicacaoDTO $aplicacaoDTO): AplicacaoDTO
+    {
+        $aplicacao = new Aplicacao($aplicacaoDTO->only('nome','descricao')->toArray());
+        $aplicacao->save();
+        return AplicacaoDTO::from($aplicacao);
+    }
 }

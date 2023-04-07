@@ -25,7 +25,19 @@ class MenuConfig extends MenuConfigAbstract
                 'route' => 'aplicacoes.index',
                 'icon'  => 'fas fa-cogs',
                 'text' => 'Aplicações',
-                'active' => ['projetos/aplicacoes/*']
+                'active' => ['projetos/aplicacoes/*'],
+                'submenu' => [
+                    [
+                        'text' => 'Listar',
+                        'route'  => 'aplicacoes.index',
+                        'icon'  => 'fas fa-list',
+                    ],
+                    [
+                        'text' => 'Inserir',
+                        'route'  => 'aplicacoes.inserir',
+                        'icon'  => 'fas fa-plus',
+                    ]
+                ]
             ]);
         });
     }

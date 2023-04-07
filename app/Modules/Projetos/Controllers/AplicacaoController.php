@@ -3,11 +3,11 @@
 namespace App\Modules\Projetos\Controllers;
 
 use App\Modules\Projetos\Contracts\AplicacaoBusinessContract;
-use App\Modules\Projetos\Models\Aplicacao;
+use App\Modules\Projetos\DTOs\AplicacaoDTO;
+use App\Modules\Projetos\Requests\AplicacoesPostRequest;
 use App\System\Http\Controllers\Controller;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Http\Request;
+
 
 class AplicacaoController extends Controller
 {
@@ -35,7 +35,14 @@ class AplicacaoController extends Controller
 
     public function inserir()
     {
-
         return view('projetos::aplicacoes.inserir');
+    }
+
+    public function salvar(AplicacoesPostRequest $request)
+    {
+
+        $aplicacao = $this->aplicacaoBusiness->salvar(AplicacaoDTO::from($request->all()));
+        return redirect(route('aplicacoes.index'))
+            ->with([Controller::MESSAGE_KEY_SUCESS => ['Aplicação inserida com suncesso']]);
     }
 }

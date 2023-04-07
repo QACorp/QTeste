@@ -9,5 +9,7 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
-
+    const MESSAGE_KEY_SUCESS = 'success';
+    const MESSAGE_KEY_ERROR = 'error';
+    const MESSAGE_KEY_WARNING = 'warning';
 }

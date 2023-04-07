@@ -20,4 +20,9 @@ class AplicacaoBusiness implements AplicacaoBusinessContract
     {
         return  $this->aplicacaoRepository->buscarTodos();
     }
+
+    public function salvar(AplicacaoDTO $aplicacaoDTO): AplicacaoDTO
+    {
+        return $this->aplicacaoRepository->salvar($aplicacaoDTO);
+    }
 }

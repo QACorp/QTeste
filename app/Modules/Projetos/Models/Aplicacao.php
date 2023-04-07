@@ -10,4 +10,9 @@ class Aplicacao extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'projetos.aplicacoes';
+
+    protected $fillable = [
+      'nome',
+      'descricao'
+    ];
 }

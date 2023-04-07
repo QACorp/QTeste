@@ -21,6 +21,29 @@
     {{-- Main Content --}}
     <div class="content">
         <div class="{{ config('adminlte.classes_content') ?: $def_container_class }}">
+            
+            @if(session()->has(\App\System\Http\Controllers\Controller::MESSAGE_KEY_SUCESS))
+                @foreach(session()->get(\App\System\Http\Controllers\Controller::MESSAGE_KEY_SUCESS) as $message)
+                    <x-adminlte-alert theme="success" title="Sucesso"    dismissable>
+                        {{ $message }}
+                    </x-adminlte-alert>
+                @endforeach
+            @endif
+            @if(session()->has(\App\System\Http\Controllers\Controller::MESSAGE_KEY_ERROR))
+                @foreach(session()->get(\App\System\Http\Controllers\Controller::MESSAGE_KEY_ERROR) as $message)
+                    <x-adminlte-alert theme="danger" title="Erro" dismissable>
+                        {{ $message }}
+                    </x-adminlte-alert>
+                @endforeach
+            @endif
+            @if(session()->has(\App\System\Http\Controllers\Controller::MESSAGE_KEY_WARNING))
+                @foreach(session()->get(\App\System\Http\Controllers\Controller::MESSAGE_KEY_WARNING) as $message)
+                    <x-adminlte-alert theme="warning" title="Atenção" dismissable>
+                        {{ $message }}
+                    </x-adminlte-alert>
+                @endforeach
+            @endif
+
             @yield('content')
         </div>
     </div>
