@@ -6,5 +6,8 @@ use App\Modules\Projetos\Controllers\ProjetosController;
 
 Route::get('/',[ProjetosController::class,'index'])->name('projetos.index');
 
-Route::get('/aplicacoes',[AplicacaoController::class,'index'])->name('aplicacoes.index');
-Route::get('/aplicacoes/inserir',[AplicacaoController::class,'index'])->name('aplicacoes.inserir');
+Route::group(['prefix' => 'aplicacoes'],function(){
+    Route::get('/',[AplicacaoController::class,'index'])->name('aplicacoes.index');
+    Route::get('/inserir',[AplicacaoController::class,'inserir'])->name('aplicacoes.inserir');
+});
+

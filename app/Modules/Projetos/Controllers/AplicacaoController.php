@@ -32,4 +32,10 @@ class AplicacaoController extends Controller
         ];
         return view('projetos::aplicacoes.home',compact('heads', 'config'));
     }
+
+    public function inserir()
+    {
+
+        return view('projetos::aplicacoes.inserir');
+    }
 }
