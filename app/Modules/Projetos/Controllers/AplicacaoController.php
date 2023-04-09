@@ -21,16 +21,19 @@ class AplicacaoController extends Controller
     public function index()
     {
         $aplicacoes = $this->aplicacaoBusiness->buscarTodos();
-        $data = [];
-        foreach ($aplicacoes as $item) {
-            $data[] = [$item->id, $item->nome, $item->descricao];
-        }
-        $heads = ['Id', 'Nome', 'Descrição'];
+
+        $heads = [
+            ['label' => 'Id', 'width' => 10],
+            'Nome',
+            'Descrição',
+            ['label' => 'Ações', 'width' => 10],
+        ];
 
         $config = [
-            'data' => $data
+            'columns' => [null, null, null, ['orderable' => false]],
         ];
-        return view('projetos::aplicacoes.home',compact('heads', 'config'));
+        return view('projetos::aplicacoes.home',
+            compact('heads', 'config', 'aplicacoes'));
     }
 
     public function inserir()

@@ -9,7 +9,9 @@ Route::get('/',[ProjetosController::class,'index'])->name('projetos.index');
 Route::group(['prefix' => 'aplicacoes'],function(){
     Route::get('/',[AplicacaoController::class,'index'])->name('aplicacoes.index');
     Route::get('/inserir',[AplicacaoController::class,'inserir'])->name('aplicacoes.inserir');
+    Route::get('/editar/{id}',[AplicacaoController::class,'editar'])->name('aplicacoes.editar');
 
     Route::post('/inserir',[AplicacaoController::class,'salvar'])->name('aplicacoes.salvar');
+    Route::delete('/exluir/{id}',[AplicacaoController::class,'excluir'])->name('aplicacoes.excluir');
 });
 
