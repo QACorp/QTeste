@@ -35,4 +35,10 @@ class AplicacaoRepository implements AplicacaoRepositoryContract
         $aplicacao->update();
         return AplicacaoDTO::from($aplicacao);
     }
+
+    public function excluir(int $id): bool
+    {
+        $aplicacao = Aplicacao::find($id);
+        return $aplicacao->delete();
+    }
 }

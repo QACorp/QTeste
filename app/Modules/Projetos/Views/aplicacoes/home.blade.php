@@ -39,8 +39,11 @@
                                 <td>{{ $aplicacao->descricao }}</td>
                                 <td>
                                     <a class="btn btn-warning btn-sm" href="{{ route('aplicacoes.editar',$aplicacao->id) }}"><i class="fas fa-edit"></i> </a>
-                                    <x-adminlte-modal id="modalMin_{{ $aplicacao->id }}" title="Minimal"/>
-                                    <x-adminlte-button class="btn-sm" theme="danger" label="" icon="fas fa-trash" data-toggle="modal" data-target="#modalMin_{{ $aplicacao->id }}"/>
+                                    <x-delete-modal
+                                        :registro="$aplicacao"
+                                        message="Deseja excluir o registro {{ $aplicacao->nome }}?"
+                                        route="{{ route('aplicacoes.excluir', $aplicacao->id) }}"
+                                    />
                                 </td>
                             </tr>
                         @endforeach

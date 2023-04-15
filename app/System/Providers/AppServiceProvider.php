@@ -2,6 +2,8 @@
 
 namespace App\System\Providers;
 
+use App\System\Component\DeleteModal;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,7 +21,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Blade::component('delete-modal', DeleteModal::class);
         $this->addDirectoryMigration();
+
     }
 
     private function addDirectoryMigration(){

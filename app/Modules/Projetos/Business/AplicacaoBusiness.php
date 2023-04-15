@@ -54,4 +54,12 @@ class AplicacaoBusiness implements AplicacaoBusinessContract
 
         return $this->aplicacaoRepository->alterar($aplicacaoDTO);
     }
+
+    public function excluir(int $id): bool
+    {
+        if($this->buscarPorId($id) == null){
+            throw new NotFoundException();
+        }
+        return $this->aplicacaoRepository->excluir($id);
+    }
 }

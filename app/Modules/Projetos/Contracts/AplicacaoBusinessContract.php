@@ -13,4 +13,6 @@ interface AplicacaoBusinessContract
     public function salvar(AplicacaoDTO $aplicacaoDTO):AplicacaoDTO;
 
     public function alterar(AplicacaoDTO $aplicacaoDTO): AplicacaoDTO;
+
+    public function excluir(int $id): bool;
 }

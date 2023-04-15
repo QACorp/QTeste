@@ -86,4 +86,15 @@ class AplicacaoController extends Controller
                 ->withInput();
         }
     }
+    public function excluir(Request $request, $id)
+    {
+        try{
+            $this->aplicacaoBusiness->excluir($id);
+            return redirect(route('aplicacoes.index'))
+                ->with([Controller::MESSAGE_KEY_SUCCESS => ['Aplicação removida com sucesso']]);
+        }catch (NotFoundException $exception){
+            return redirect(route('aplicacoes.index'))
+                ->with([Controller::MESSAGE_KEY_ERROR => ['Registro não encontrado']]);
+        }
+    }
 }
