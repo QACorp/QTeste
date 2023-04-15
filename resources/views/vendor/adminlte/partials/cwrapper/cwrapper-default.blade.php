@@ -22,8 +22,8 @@
     <div class="content">
         <div class="{{ config('adminlte.classes_content') ?: $def_container_class }}">
 
-            @if(session()->has(\App\System\Http\Controllers\Controller::MESSAGE_KEY_SUCESS))
-                @foreach(session()->get(\App\System\Http\Controllers\Controller::MESSAGE_KEY_SUCESS) as $message)
+            @if(session()->has(\App\System\Http\Controllers\Controller::MESSAGE_KEY_SUCCESS))
+                @foreach(session()->get(\App\System\Http\Controllers\Controller::MESSAGE_KEY_SUCCESS) as $message)
                     <x-adminlte-alert theme="success" title="Sucesso"    dismissable>
                         {{ $message }}
                     </x-adminlte-alert>

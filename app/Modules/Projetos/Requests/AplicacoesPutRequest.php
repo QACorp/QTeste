@@ -21,8 +21,6 @@ class AplicacoesPutRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        return (new AplicacoesPostRequest())->rules();
     }
 }

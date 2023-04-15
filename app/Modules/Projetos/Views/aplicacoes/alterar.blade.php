@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'QAKit - Aplicações | Inserir')
+@section('title', 'QAKit - Aplicações | Alterar')
 @section('plugins.Datatables', true)
 @section('content_header')
-    <h1 class="m-0 text-dark">Inserir Aplicação </h1>
+    <h1 class="m-0 text-dark">Alterar Aplicação </h1>
 
 @stop
 
@@ -12,17 +12,18 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <form method="post" action="{{ route('aplicacoes.salvar') }}">
+                    <form method="post" action="{{ route('aplicacoes.atualizar',$aplicacao->id) }}">
                         @csrf
+                        @method('put')
                         <div class="row">
                             <div class="col-md-9">
                                 <div class="row">
                                     <x-adminlte-input
-                                        label="Nome"
                                         name="nome"
+                                        label="Nome"
                                         placeholder="Nome"
                                         fgroup-class="col-md-6"
-                                        value="{{ old('nome','') }}"
+                                        value="{{ old('nome',$aplicacao->nome) }}"
                                     />
                                 </div>
                                 <div class="row">
@@ -32,7 +33,7 @@
                                         placeholder="Inserir uma descrição"
                                         fgroup-class="col-md-6"
                                     >
-                                    {{ old('descricao','') }}
+                                        {{ old('descricao',$aplicacao->descricao) }}
                                     </x-adminlte-textarea>
                                 </div>
                                 <div class="row p-2">

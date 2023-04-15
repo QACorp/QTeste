@@ -21,4 +21,18 @@ class AplicacaoRepository implements AplicacaoRepositoryContract
         $aplicacao->save();
         return AplicacaoDTO::from($aplicacao);
     }
+
+    public function buscarPorId(int $id): ?AplicacaoDTO
+    {
+        $aplicacao = Aplicacao::find($id);
+        return ($aplicacao != null ?  AplicacaoDTO::from(Aplicacao::find($id)) : null);
+    }
+
+    public function alterar(AplicacaoDTO $aplicacaoDTO): AplicacaoDTO
+    {
+        $aplicacao = Aplicacao::find($aplicacaoDTO->id);
+        $aplicacao->fill($aplicacaoDTO->toArray());
+        $aplicacao->update();
+        return AplicacaoDTO::from($aplicacao);
+    }
 }

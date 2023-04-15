@@ -22,7 +22,8 @@ class AplicacoesPostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nome'=> 'required',
+            'descricao' => 'required'
         ];
     }
 }
