@@ -33,6 +33,7 @@ class AplicacaoController extends Controller
         ];
 
         $config = [
+            ...config('adminlte.datatable_config'),
             'columns' => [null, null, null, ['orderable' => false]],
         ];
         return view('projetos::aplicacoes.home',

@@ -15,4 +15,10 @@ class Aplicacao extends Model
       'nome',
       'descricao'
     ];
+
+    public function projetos()
+    {
+        return $this->hasMany(Projeto::class);
+
+    }
 }

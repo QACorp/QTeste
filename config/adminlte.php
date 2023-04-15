@@ -17,7 +17,7 @@ return [
     'title' => 'QAKit',
     'title_prefix' => '',
     'title_postfix' => '',
-
+    'datatable_config' => [],
     /*
     |--------------------------------------------------------------------------
     | Favicon

@@ -14,20 +14,11 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    {{--<x-adminlte-datatable
-                        id="table2"
-                        :heads="$heads"
-                        :config="$config"
-                        head-theme="dark"
-                        striped
-                        hoverable
-                        bordered
-                        compressed
-                        with-buttons
-                    />--}}
+
                     <x-adminlte-datatable
                         id="table1"
                         :heads="$heads"
+                        :config="$config"
                         compressed
                         hoverable
                         bordered

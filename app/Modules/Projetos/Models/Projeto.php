@@ -10,4 +10,9 @@ class Projeto extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'projetos.projetos';
+    public function aplicacao()
+    {
+        return $this->belongsTo(Aplicacao::class);
+
+    }
 }
