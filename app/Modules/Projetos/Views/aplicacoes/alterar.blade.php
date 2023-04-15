@@ -39,10 +39,13 @@
                                 <div class="row p-2">
                                     <x-adminlte-button
                                         label="Salvar"
-                                        theme="primary"
-                                        icon="fas fa-disk"
+                                        theme="success"
+                                        icon="fas fa-save"
                                         type="submit"
                                     />
+                                    <a href="{{ route('aplicacoes.index') }}"
+                                       class="btn btn-primary ml-1"
+                                    ><i class="fas fa-undo"></i> Cancelar</a>
                                 </div>
                             </div>
                             <div class="col-md-3">
