@@ -29,7 +29,7 @@ class AplicacaoController extends Controller
             ['label' => 'Id', 'width' => 10],
             'Nome',
             'Descrição',
-            ['label' => 'Ações', 'width' => 10],
+            ['label' => 'Ações', 'width' => 20],
         ];
 
         $config = [

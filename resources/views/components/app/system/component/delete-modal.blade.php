@@ -35,6 +35,7 @@
     class="btn-sm"
     theme="danger"
     label=""
+    title="Exluir"
     icon="fas fa-trash"
     data-toggle="modal"
     data-target="#modalMin_{{ $registro->id }}"

@@ -6,7 +6,7 @@ use App\System\Http\Controllers\Controller;
 
 class ProjetosController extends Controller
 {
-    public function index()
+    public function index(int $id)
     {
         return view('projetos::projetos.home');
     }

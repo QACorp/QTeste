@@ -14,5 +14,8 @@ Route::group(['prefix' => 'aplicacoes'],function(){
     Route::put('/editar/{id}',[AplicacaoController::class,'atualizar'])->name('aplicacoes.atualizar');
     Route::post('/inserir',[AplicacaoController::class,'salvar'])->name('aplicacoes.salvar');
     Route::delete('/exluir/{id}',[AplicacaoController::class,'excluir'])->name('aplicacoes.excluir');
+    Route::group(['prefix' => 'aplicacoes/{id}/projetos'],function(){
+        Route::get('/',[ProjetosController::class,'index'])->name('aplicacoes.projetos.index');
+    });
 });
 

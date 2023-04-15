@@ -38,12 +38,15 @@
                                 <td>{{ $aplicacao->nome }}</td>
                                 <td>{{ $aplicacao->descricao }}</td>
                                 <td>
-                                    <a class="btn btn-warning btn-sm" href="{{ route('aplicacoes.editar',$aplicacao->id) }}"><i class="fas fa-edit"></i> </a>
+                                    <a class="btn btn-dark btn-sm" title="Acessar projetos" href="{{ route('aplicacoes.projetos.index',$aplicacao->id) }}"><i class="fas fa-cogs"></i> </a>
+
+                                    <a class="btn btn-warning btn-sm" title="Editar" href="{{ route('aplicacoes.editar',$aplicacao->id) }}"><i class="fas fa-edit"></i> </a>
                                     <x-delete-modal
                                         :registro="$aplicacao"
                                         message="Deseja excluir o registro {{ $aplicacao->nome }}?"
                                         route="{{ route('aplicacoes.excluir', $aplicacao->id) }}"
                                     />
+
                                 </td>
                             </tr>
                         @endforeach
