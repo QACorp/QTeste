@@ -8,7 +8,6 @@ use App\Modules\Projetos\DTOs\AplicacaoDTO;
 use App\Modules\Projetos\Requests\AplicacoesPostRequest;
 use App\Modules\Projetos\Requests\AplicacoesPutRequest;
 use App\System\Exceptions\UnprocessableEntityException;
-use Illuminate\Http\Request;
 use App\System\Exceptions\NotFoundException;
 use Illuminate\Support\Facades\Validator;
 use Spatie\LaravelData\DataCollection;

@@ -25,11 +25,11 @@
                                 <td>{{ $projeto->nome }}</td>
                                 <td>{{ $projeto->descricao }}</td>
                                 <td>
-                                    <a class="btn btn-warning btn-sm" title="Editar" href="{{ route('aplicacoes.editar',$projeto->id) }}"><i class="fas fa-edit"></i> </a>
+                                    <a class="btn btn-warning btn-sm" title="Editar" href="{{ route('aplicacoes.projetos.editar',[$projeto->aplicacao_id ,$projeto->id]) }}"><i class="fas fa-edit"></i> </a>
                                     <x-delete-modal
                                         :registro="$projeto"
                                         message="Deseja excluir o registro {{ $projeto->nome }}?"
-                                        route="{{ route('aplicacoes.excluir', $projeto->id) }}"
+                                        route="{{ route('aplicacoes.projetos.excluir', [ $projeto->aplicacao_id , $projeto->id]) }}"
                                     />
 
                                 </td>

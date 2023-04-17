@@ -5,7 +5,6 @@ namespace App\Modules\Projetos\DTOs;
 use App\System\Casts\CastCarbon;
 use App\System\Utils\DTO;
 use Carbon\Carbon;
-use Carbon\CarbonImmutable;
 use Spatie\LaravelData\Attributes\WithCast;
 
 class ProjetoDTO extends DTO

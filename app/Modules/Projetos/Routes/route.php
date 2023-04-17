@@ -14,8 +14,17 @@ Route::group(['prefix' => 'aplicacoes'],function(){
     Route::put('/editar/{id}',[AplicacaoController::class,'atualizar'])->name('aplicacoes.atualizar');
     Route::post('/inserir',[AplicacaoController::class,'salvar'])->name('aplicacoes.salvar');
     Route::delete('/exluir/{id}',[AplicacaoController::class,'excluir'])->name('aplicacoes.excluir');
-    Route::group(['prefix' => '{id}/projetos'],function(){
+
+    Route::group(['prefix' => '{idAplicacao}/projetos'],function(){
         Route::get('/',[ProjetoController::class,'index'])->name('aplicacoes.projetos.index');
+        Route::get('/inserir',[ProjetoController::class,'inserir'])->name('aplicacoes.projetos.inserir');
+        Route::get('/editar/{idProjeto}',[ProjetoController::class,'editar'])->name('aplicacoes.projetos.editar');
+
+        Route::put('/editar/{idProjeto}',[ProjetoController::class,'atualizar'])->name('aplicacoes.projetos.atualizar');
+        //Route::post('/inserir',[AplicacaoController::class,'salvar'])->name('aplicacoes.projetos.salvar');
+
+        Route::delete('/exluir/{idProjeto}',[ProjetoController::class,'excluir'])->name('aplicacoes.projetos.excluir');
+
     });
 });
 

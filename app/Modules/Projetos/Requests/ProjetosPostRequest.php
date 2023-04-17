@@ -11,7 +11,7 @@ class ProjetosPostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class ProjetosPostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nome' => 'required',
+            'descricao' => 'required',
+            'inicio' => 'required',
+            'termino' => 'required',
+            'aplicacao_id' => 'required|exists:App\Modules\Projetos\Models\Aplicacao,id'
         ];
     }
 }

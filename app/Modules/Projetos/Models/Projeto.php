@@ -10,6 +10,16 @@ class Projeto extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'projetos.projetos';
+    protected $casts = [
+        'inicio' => 'date',
+        'termino' => 'date'
+    ];
+    protected $fillable = [
+        'nome',
+        'descricao',
+        'inicio',
+        'termino'
+    ];
     public function aplicacao()
     {
         return $this->belongsTo(Aplicacao::class);

@@ -4,8 +4,6 @@ namespace App\Modules\Projetos\Controllers;
 
 use App\Modules\Projetos\Contracts\AplicacaoBusinessContract;
 use App\Modules\Projetos\DTOs\AplicacaoDTO;
-use App\Modules\Projetos\Requests\AplicacoesPostRequest;
-use App\Modules\Projetos\Requests\AplicacoesPutRequest;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Http\Controllers\Controller;
