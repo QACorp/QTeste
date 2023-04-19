@@ -39,4 +39,11 @@ class ProjetoRepository implements ProjetoRepositoryContract
         $projeto = Projeto::find($id);
         return $projeto->delete();
     }
+
+    public function inserir(ProjetoDTO $projetoDTO): ProjetoDTO
+    {
+        $projeto = new Projeto($projetoDTO->toArray());
+        $projeto->save();
+        return ProjetoDTO::from($projeto);
+    }
 }

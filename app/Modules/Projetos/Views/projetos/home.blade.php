@@ -3,7 +3,7 @@
 @section('title', 'QAKit - Projetos')
 
 @section('content_header')
-    <h1 class="m-0 text-dark">Projetos</h1>
+    <h1 class="m-0 text-dark">Projetos <a title="Inserir projeto" class="btn btn-primary" href="{{route('aplicacoes.projetos.inserir', $idAplicacao)}}"><i class="fas fa-plus"></i> </a></h1>
 @stop
 
 @section('content')
@@ -19,7 +19,7 @@
                         hoverable
                         bordered
                         striped>
-                        @foreach($projetos as $projeto)
+                        @forelse($projetos as $projeto)
                             <tr>
                                 <td>{{ $projeto->id }}</td>
                                 <td>{{ $projeto->nome }}</td>
@@ -34,7 +34,11 @@
 
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="4">Nenhum registro encontrado</td>
+                            </tr>
+                        @endforelse
                     </x-adminlte-datatable>
                 </div>
             </div>

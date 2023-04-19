@@ -21,7 +21,7 @@ Route::group(['prefix' => 'aplicacoes'],function(){
         Route::get('/editar/{idProjeto}',[ProjetoController::class,'editar'])->name('aplicacoes.projetos.editar');
 
         Route::put('/editar/{idProjeto}',[ProjetoController::class,'atualizar'])->name('aplicacoes.projetos.atualizar');
-        //Route::post('/inserir',[AplicacaoController::class,'salvar'])->name('aplicacoes.projetos.salvar');
+        Route::post('/inserir',[ProjetoController::class,'salvar'])->name('aplicacoes.projetos.salvar');
 
         Route::delete('/exluir/{idProjeto}',[ProjetoController::class,'excluir'])->name('aplicacoes.projetos.excluir');
 

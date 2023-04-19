@@ -7,6 +7,7 @@ use App\Modules\Projetos\Contracts\ProjetoBusinessContract;
 use App\Modules\Projetos\Contracts\ProjetoRepositoryContract;
 use App\Modules\Projetos\DTOs\ProjetoDTO;
 use App\Modules\Projetos\Requests\AplicacoesPutRequest;
+use App\Modules\Projetos\Requests\ProjetosPostRequest;
 use App\Modules\Projetos\Requests\ProjetosPutRequest;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
@@ -71,5 +72,15 @@ class ProjetoBusiness implements ProjetoBusinessContract
             return false;
         }
         return true;
+    }
+
+    public function inserir(ProjetoDTO $projetoDTO): ProjetoDTO
+    {
+        $validator = Validator::make($projetoDTO->toArray(), (new ProjetosPostRequest())->rules());
+        
+        if ($validator->fails()) {
+            throw new UnprocessableEntityException($validator);
+        }
+        return $this->projetoRepository->inserir($projetoDTO);
     }
 }

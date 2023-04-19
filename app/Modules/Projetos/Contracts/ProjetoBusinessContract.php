@@ -11,4 +11,5 @@ interface ProjetoBusinessContract
     public function buscarPorAplicacaoEProjeto(int $idAplicacao, int $idProjeto):ProjetoDTO;
     public function atualizar(ProjetoDTO $projetoDTO): ProjetoDTO;
     public function excluir(int $idAplicacao, int $idProjeto): bool;
+    public function inserir(ProjetoDTO $projetoDTO): ProjetoDTO;
 }

@@ -18,7 +18,8 @@ class Projeto extends Model
         'nome',
         'descricao',
         'inicio',
-        'termino'
+        'termino',
+        'aplicacao_id'
     ];
     public function aplicacao()
     {

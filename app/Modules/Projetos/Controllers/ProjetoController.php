@@ -33,11 +33,30 @@ class ProjetoController extends Controller
                 ...config('adminlte.datatable_config'),
                 'columns' => [null, null, null, ['orderable' => false]],
             ];
-            return view('projetos::projetos.home',compact('projetos', 'heads', 'config'));
+            return view('projetos::projetos.home',compact('idAplicacao','projetos', 'heads', 'config'));
         }catch (NotFoundException $exception){
             return redirect(route('aplicacoes.index'))
                 ->with([Controller::MESSAGE_KEY_ERROR => ['Aplicação não encontrada']]);
         }
+    }
+
+    public function inserir(int $idAplicacao){
+        return view('projetos::projetos.inserir',compact('idAplicacao'));
+    }
+
+    public function salvar(Request $request, int $idAplicacao){
+        try{
+            $projetoDTO = ProjetoDTO::from($request->all());
+            $projetoDTO->aplicacao_id = $idAplicacao;
+            $this->projetoBusiness->inserir($projetoDTO);
+            return redirect(route('aplicacoes.projetos.index',$idAplicacao))
+                ->with([Controller::MESSAGE_KEY_SUCCESS => ['Projeto inserido com sucesso!']]);
+        }catch (UnprocessableEntityException $exception){
+            return redirect(route('aplicacoes.projetos.inserir',$idAplicacao))
+                ->withErrors($exception->getValidator())
+                ->withInput();
+        }
+
     }
     public function editar(Request $request,int $idAplicacao, int $idProjeto)
     {
