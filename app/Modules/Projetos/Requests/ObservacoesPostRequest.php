@@ -11,7 +11,7 @@ class ObservacoesPostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class ObservacoesPostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'descricao' => 'required',
+            'user_id'   => 'required',
+            'projeto_id' => 'required'
         ];
     }
 }

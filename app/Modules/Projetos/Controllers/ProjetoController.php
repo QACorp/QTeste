@@ -2,9 +2,9 @@
 
 namespace App\Modules\Projetos\Controllers;
 
+use App\Modules\Projetos\Contracts\ObservacaoBusinessContract;
 use App\Modules\Projetos\Contracts\ProjetoBusinessContract;
 use App\Modules\Projetos\DTOs\ProjetoDTO;
-use App\Modules\Projetos\Models\Projeto;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Http\Controllers\Controller;
@@ -13,7 +13,8 @@ use Illuminate\Http\Request;
 class ProjetoController extends Controller
 {
     public function __construct(
-        private readonly ProjetoBusinessContract $projetoBusiness
+        private readonly ProjetoBusinessContract $projetoBusiness,
+        private readonly ObservacaoBusinessContract $observacaoBusiness
     )
     {
     }
@@ -61,8 +62,9 @@ class ProjetoController extends Controller
     public function editar(Request $request,int $idAplicacao, int $idProjeto)
     {
         try{
+            $observacoes = $this->observacaoBusiness->buscarPorProjeto($idProjeto);
             $projeto = $this->projetoBusiness->buscarPorAplicacaoEProjeto($idAplicacao, $idProjeto);
-            return view('projetos::projetos.alterar',compact('projeto'));
+            return view('projetos::projetos.alterar',compact('projeto','observacoes'));
         }catch (NotFoundException $exception){
             return redirect(route('aplicacoes.projetos.index',$idAplicacao))
                 ->with([Controller::MESSAGE_KEY_ERROR => ['Projeto não encontrado']]);
@@ -73,15 +75,17 @@ class ProjetoController extends Controller
     {
         try{
             $projetoDTO = ProjetoDTO::from($request->toArray());
+
             $projetoDTO->aplicacao_id = $idAplicacao;
             $projetoDTO->id = $idProjeto;
             $this->projetoBusiness->atualizar($projetoDTO);
-            return redirect(route('aplicacoes.projetos.index',$idAplicacao))
+            return redirect(route('aplicacoes.projetos.editar',[$idAplicacao, $idProjeto]))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Projeto alterado com sucesso!']]);
         }catch (NotFoundException $exception){
             return redirect(route('aplicacoes.projetos.index',$idAplicacao))
                 ->with([Controller::MESSAGE_KEY_ERROR => ['Projeto não encontrado']]);
         }catch (UnprocessableEntityException $exception){
+
             return redirect(route('aplicacoes.projetos.editar',[$idAplicacao, $idProjeto]))
                 ->withErrors($exception->getValidator())
                 ->withInput();

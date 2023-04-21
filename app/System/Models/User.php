@@ -3,13 +3,16 @@
 namespace App\System\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\System\UserDTO;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\LaravelData\Casts\Cast;
+use Spatie\LaravelData\Support\DataProperty;
 use Yajra\Acl\Traits\HasRoleAndPermission;
 
-class User extends Authenticatable
+class User extends Authenticatable implements Cast
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoleAndPermission;
 
@@ -42,4 +45,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function cast(DataProperty $property, mixed $value, array $context): mixed
+    {
+        return UserDTO::from($value);
+    }
 }

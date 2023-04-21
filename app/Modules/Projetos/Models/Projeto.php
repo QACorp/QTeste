@@ -26,4 +26,9 @@ class Projeto extends Model
         return $this->belongsTo(Aplicacao::class);
 
     }
+    public function observacoes()
+    {
+        return $this->hasMany(Observacao::class);
+
+    }
 }

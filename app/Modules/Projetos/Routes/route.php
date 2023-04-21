@@ -3,7 +3,7 @@
 use App\Modules\Projetos\Controllers\AplicacaoController;
 use Illuminate\Support\Facades\Route;
 use App\Modules\Projetos\Controllers\ProjetoController;
-
+use App\Modules\Projetos\Controllers\ObservacaoController;
 Route::get('/',[ProjetoController::class,'index'])->name('projetos.index');
 
 Route::group(['prefix' => 'aplicacoes'],function(){
@@ -22,6 +22,8 @@ Route::group(['prefix' => 'aplicacoes'],function(){
 
         Route::put('/editar/{idProjeto}',[ProjetoController::class,'atualizar'])->name('aplicacoes.projetos.atualizar');
         Route::post('/inserir',[ProjetoController::class,'salvar'])->name('aplicacoes.projetos.salvar');
+
+        Route::post('{idProjeto}/observacao/inserir',[ObservacaoController::class,'salvar'])->name('aplicacoes.projetos.observacao.salvar');
 
         Route::delete('/exluir/{idProjeto}',[ProjetoController::class,'excluir'])->name('aplicacoes.projetos.excluir');
 

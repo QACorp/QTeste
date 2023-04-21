@@ -77,10 +77,15 @@ class ProjetoBusiness implements ProjetoBusinessContract
     public function inserir(ProjetoDTO $projetoDTO): ProjetoDTO
     {
         $validator = Validator::make($projetoDTO->toArray(), (new ProjetosPostRequest())->rules());
-        
+
         if ($validator->fails()) {
             throw new UnprocessableEntityException($validator);
         }
         return $this->projetoRepository->inserir($projetoDTO);
+    }
+
+    public function buscarPorIdProjeto(int $idProjeto): ProjetoDTO
+    {
+        return $this->projetoRepository->buscarPorId($idProjeto);
     }
 }
