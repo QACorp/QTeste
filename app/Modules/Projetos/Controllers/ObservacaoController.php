@@ -22,7 +22,6 @@ class ObservacaoController extends Controller
     {
         try{
             $observacaoDTO = ObservacaoDTO::from($request->all());
-            $observacaoDTO->descricao = $request->post('observacao')['descricao'];
             $observacaoDTO->projeto_id = $idProjeto;
 
             $this->observacaoBusiness->salvar($observacaoDTO);
@@ -33,7 +32,6 @@ class ObservacaoController extends Controller
             return redirect(route('aplicacoes.projetos.index',$idAplicacao))
                 ->with([Controller::MESSAGE_KEY_ERROR => ['Projeto não encontrado']]);
         }catch (UnprocessableEntityException $exception) {
-            dd($exception);
             return redirect(route('aplicacoes.projetos.editar', [$idAplicacao, $idProjeto]))
                 ->withErrors($exception->getValidator())
                 ->withInput();

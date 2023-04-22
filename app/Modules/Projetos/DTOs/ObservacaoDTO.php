@@ -15,7 +15,7 @@ class ObservacaoDTO extends DTO
 {
     public function __construct(
         public ?int $id,
-        public ?string $descricao,
+        public ?string $observacao,
         #[WithCast(User::class)]
         public ?UserDTO $user,
         public ?int $user_id,

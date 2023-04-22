@@ -22,7 +22,7 @@ class ObservacoesPostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'descricao' => 'required',
+            'observacao' => 'required',
             'user_id'   => 'required',
             'projeto_id' => 'required'
         ];

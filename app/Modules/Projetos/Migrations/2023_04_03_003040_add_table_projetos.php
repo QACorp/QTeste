@@ -44,7 +44,7 @@ return new class extends Migration
 
         Schema::create('projetos.observacoes', function (Blueprint $table) {
             $table->id();
-            $table->longText('descricao')->nullable();
+            $table->longText('observacao')->nullable();
             $table->bigInteger('projeto_id');
             $table->bigInteger('user_id');
             $table->foreign('projeto_id')->on('projetos.projetos')->references('id');

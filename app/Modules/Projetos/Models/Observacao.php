@@ -15,8 +15,9 @@ class Observacao extends Model
         'created_at' => 'datetime',
     ];
     protected $fillable = [
-        'descricao',
-        'projeto_id'
+        'observacao',
+        'projeto_id',
+        'user_id'
     ];
 
     public function projeto()
