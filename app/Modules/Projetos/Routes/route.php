@@ -1,6 +1,7 @@
 <?php
 
 use App\Modules\Projetos\Controllers\AplicacaoController;
+use App\Modules\Projetos\Controllers\DocumentoController;
 use Illuminate\Support\Facades\Route;
 use App\Modules\Projetos\Controllers\ProjetoController;
 use App\Modules\Projetos\Controllers\ObservacaoController;
@@ -18,14 +19,16 @@ Route::group(['prefix' => 'aplicacoes'],function(){
     Route::group(['prefix' => '{idAplicacao}/projetos'],function(){
         Route::get('/',[ProjetoController::class,'index'])->name('aplicacoes.projetos.index');
         Route::get('/inserir',[ProjetoController::class,'inserir'])->name('aplicacoes.projetos.inserir');
-        Route::get('/editar/{idProjeto}',[ProjetoController::class,'editar'])->name('aplicacoes.projetos.editar');
+        Route::get('/{idProjeto}/editar',[ProjetoController::class,'editar'])->name('aplicacoes.projetos.editar');
 
-        Route::put('/editar/{idProjeto}',[ProjetoController::class,'atualizar'])->name('aplicacoes.projetos.atualizar');
+        Route::put('/{idProjeto}/editar',[ProjetoController::class,'atualizar'])->name('aplicacoes.projetos.atualizar');
         Route::post('/inserir',[ProjetoController::class,'salvar'])->name('aplicacoes.projetos.salvar');
 
         Route::post('{idProjeto}/observacao/inserir',[ObservacaoController::class,'salvar'])->name('aplicacoes.projetos.observacao.salvar');
+        Route::post('{idProjeto}/documento/inserir',[DocumentoController::class,'salvar'])->name('aplicacoes.projetos.documento.salvar');
 
-        Route::delete('/exluir/{idProjeto}',[ProjetoController::class,'excluir'])->name('aplicacoes.projetos.excluir');
+        Route::delete('/{idProjeto}/excluir',[ProjetoController::class,'excluir'])->name('aplicacoes.projetos.excluir');
+        Route::delete('/{idProjeto}/documento/{idDocumento}/excluir',[DocumentoController::class,'excluir'])->name('aplicacoes.projetos.documento.excluir');
 
     });
 });

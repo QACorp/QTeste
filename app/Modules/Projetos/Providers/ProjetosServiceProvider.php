@@ -3,16 +3,20 @@
 namespace App\Modules\Projetos\Providers;
 
 use App\Modules\Projetos\Business\AplicacaoBusiness;
+use App\Modules\Projetos\Business\DocumentoBusiness;
 use App\Modules\Projetos\Business\ObservacaoBusiness;
 use App\Modules\Projetos\Business\ProjetoBusiness;
 use App\Modules\Projetos\Config\MenuConfig;
 use App\Modules\Projetos\Contracts\AplicacaoBusinessContract;
 use App\Modules\Projetos\Contracts\AplicacaoRepositoryContract;
+use App\Modules\Projetos\Contracts\DocumentoBusinessContract;
+use App\Modules\Projetos\Contracts\DocumentoRepositoryContract;
 use App\Modules\Projetos\Contracts\ObservacaoBusinessContract;
 use App\Modules\Projetos\Contracts\ObservacaoRepositoryContract;
 use App\Modules\Projetos\Contracts\ProjetoBusinessContract;
 use App\Modules\Projetos\Contracts\ProjetoRepositoryContract;
 use App\Modules\Projetos\Repositorys\AplicacaoRepository;
+use App\Modules\Projetos\Repositorys\DocumentoRepository;
 use App\Modules\Projetos\Repositorys\ObservacaoRespository;
 use App\Modules\Projetos\Repositorys\ProjetoRepository;
 use App\System\Impl\ServiceProviderAbstract;
@@ -28,7 +32,9 @@ class ProjetosServiceProvider extends ServiceProviderAbstract
         ProjetoRepositoryContract::class => ProjetoRepository::class,
         ProjetoBusinessContract::class => ProjetoBusiness::class,
         ObservacaoBusinessContract::class => ObservacaoBusiness::class,
-        ObservacaoRepositoryContract::class => ObservacaoRespository::class
+        ObservacaoRepositoryContract::class => ObservacaoRespository::class,
+        DocumentoBusinessContract::class => DocumentoBusiness::class,
+        DocumentoRepositoryContract::class => DocumentoRepository::class
     ];
     /**
      * Register services.

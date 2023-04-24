@@ -33,7 +33,7 @@ return new class extends Migration
 
         Schema::create('projetos.documentos', function (Blueprint $table) {
             $table->id();
-            $table->string('nome',255);
+            $table->string('titulo',255);
             $table->longText('descricao')->nullable();
             $table->longText('url');
             $table->bigInteger('projeto_id');

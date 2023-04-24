@@ -1,6 +1,6 @@
 <x-adminlte-modal
     id="modalMin_{{ $registro->id }}"
-    title="Exluir registro"
+    title="Excluir registro"
     static-backdrop
 >
 
@@ -35,7 +35,7 @@
     class="btn-sm"
     theme="danger"
     label=""
-    title="Exluir"
+    title="Excluir"
     icon="fas fa-trash"
     data-toggle="modal"
     data-target="#modalMin_{{ $registro->id }}"

@@ -2,6 +2,7 @@
 
 namespace App\Modules\Projetos\Controllers;
 
+use App\Modules\Projetos\Contracts\DocumentoBusinessContract;
 use App\Modules\Projetos\Contracts\ObservacaoBusinessContract;
 use App\Modules\Projetos\Contracts\ProjetoBusinessContract;
 use App\Modules\Projetos\DTOs\ProjetoDTO;
@@ -9,12 +10,14 @@ use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProjetoController extends Controller
 {
     public function __construct(
         private readonly ProjetoBusinessContract $projetoBusiness,
-        private readonly ObservacaoBusinessContract $observacaoBusiness
+        private readonly ObservacaoBusinessContract $observacaoBusiness,
+        private readonly DocumentoBusinessContract $documentoBusiness
     )
     {
     }
@@ -34,6 +37,7 @@ class ProjetoController extends Controller
                 ...config('adminlte.datatable_config'),
                 'columns' => [null, null, null, ['orderable' => false]],
             ];
+
             return view('projetos::projetos.home',compact('idAplicacao','projetos', 'heads', 'config'));
         }catch (NotFoundException $exception){
             return redirect(route('aplicacoes.index'))
@@ -62,9 +66,10 @@ class ProjetoController extends Controller
     public function editar(Request $request,int $idAplicacao, int $idProjeto)
     {
         try{
+            $documentos = $this->documentoBusiness->buscarTodosPorProjeto($idProjeto);
             $observacoes = $this->observacaoBusiness->buscarPorProjeto($idProjeto);
             $projeto = $this->projetoBusiness->buscarPorAplicacaoEProjeto($idAplicacao, $idProjeto);
-            return view('projetos::projetos.alterar',compact('projeto','observacoes'));
+            return view('projetos::projetos.alterar',compact('projeto','observacoes', 'documentos'));
         }catch (NotFoundException $exception){
             return redirect(route('aplicacoes.projetos.index',$idAplicacao))
                 ->with([Controller::MESSAGE_KEY_ERROR => ['Projeto não encontrado']]);
@@ -75,7 +80,6 @@ class ProjetoController extends Controller
     {
         try{
             $projetoDTO = ProjetoDTO::from($request->toArray());
-
             $projetoDTO->aplicacao_id = $idAplicacao;
             $projetoDTO->id = $idProjeto;
             $this->projetoBusiness->atualizar($projetoDTO);
@@ -85,7 +89,6 @@ class ProjetoController extends Controller
             return redirect(route('aplicacoes.projetos.index',$idAplicacao))
                 ->with([Controller::MESSAGE_KEY_ERROR => ['Projeto não encontrado']]);
         }catch (UnprocessableEntityException $exception){
-
             return redirect(route('aplicacoes.projetos.editar',[$idAplicacao, $idProjeto]))
                 ->withErrors($exception->getValidator())
                 ->withInput();

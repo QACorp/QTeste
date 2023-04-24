@@ -31,4 +31,9 @@ class Projeto extends Model
         return $this->hasMany(Observacao::class);
 
     }
+    public function documentos()
+    {
+        return $this->hasMany(Documento::class);
+
+    }
 }
