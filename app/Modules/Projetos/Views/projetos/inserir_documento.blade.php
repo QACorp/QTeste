@@ -64,7 +64,7 @@
             </tr>
         @empty
             <tr>
-                <td>Nenhum documento encontrado</td>
+                <td colspan="3">Nenhum documento encontrado</td>
             </tr>
         @endforelse
     </x-adminlte-datatable>
