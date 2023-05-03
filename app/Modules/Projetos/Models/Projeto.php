@@ -36,4 +36,9 @@ class Projeto extends Model
         return $this->hasMany(Documento::class);
 
     }
+    public function planos_teste()
+    {
+        return $this->hasMany(PlanoTeste::class);
+
+    }
 }
