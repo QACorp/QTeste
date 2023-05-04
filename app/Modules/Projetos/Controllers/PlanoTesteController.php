@@ -3,6 +3,7 @@
 namespace App\Modules\Projetos\Controllers;
 
 use App\Modules\Projetos\Contracts\PlanoTesteBusinessContract;
+use App\Modules\Projetos\Contracts\ProjetoBusinessContract;
 use App\Modules\Projetos\DTOs\PlanoTesteDTO;
 use App\Modules\Projetos\Models\PlanoTeste;
 use App\System\Exceptions\NotFoundException;
@@ -14,12 +15,14 @@ use Illuminate\Support\Facades\Auth;
 class PlanoTesteController extends Controller
 {
     public function __construct(
-        private readonly PlanoTesteBusinessContract $planoTesteBusiness
+        private readonly PlanoTesteBusinessContract $planoTesteBusiness,
+        private readonly ProjetoBusinessContract $projetoBusiness
     )
     {
     }
 
     public function index(int $idAplicacao, int $idProjeto){
+        $projeto = $this->projetoBusiness->buscarPorIdProjeto($idProjeto);
         $heads = [
             ['label' => 'Id', 'width' => 10],
             'Nome',
@@ -37,7 +40,8 @@ class PlanoTesteController extends Controller
             'config',
             'planos_teste',
             'idProjeto',
-            'idAplicacao'
+            'idAplicacao',
+            'projeto'
         ));
     }
     public function inserir(int $idAplicacao, int $idProjeto)

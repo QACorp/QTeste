@@ -4,7 +4,10 @@
 @section('plugins.Datatables', true)
 @section('plugins.DatatablesPlugin', true)
 @section('content_header')
-    <h1 class="m-0 text-dark">Planos de teste   <a class="btn btn-primary" href="{{route('aplicacoes.projetos.planos-teste.inserir',[$idAplicacao, $idProjeto])}}"><i class="fas fa-plus"></i> </a></h1>
+    <h1 class="m-0 text-dark">Planos de teste de <strong>{{ $projeto->nome }}</strong> </h1>
+    <a class="btn btn-warning" href="{{route('aplicacoes.projetos.index',$idAplicacao)}}"><i class="fas fa-undo"></i> Lista de projetos</a>
+    <a class="btn btn-primary" href="{{route('aplicacoes.projetos.planos-teste.inserir',[$idAplicacao, $idProjeto])}}"><i class="fas fa-plus"></i> Inserir plano de teste</a>
+
 
 @stop
 
