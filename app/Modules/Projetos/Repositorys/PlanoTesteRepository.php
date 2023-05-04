@@ -36,4 +36,13 @@ class PlanoTesteRepository implements PlanoTesteRepositoryContract
         $planoTeste = PlanoTeste::find($idPlanoTeste);
         return $planoTeste == null ? null : PlanoTesteDTO::from($planoTeste);
     }
+
+    public function alterarPlanoTeste(PlanoTesteDTO $planoTesteDTO): PlanoTesteDTO
+    {
+        $planoTeste = PlanoTeste::find($planoTesteDTO->id);
+        $planoTeste->titulo = $planoTesteDTO->titulo;
+        $planoTeste->descricao = $planoTesteDTO->descricao;
+        $planoTeste->update();
+        return PlanoTesteDTO::from($planoTeste);
+    }
 }

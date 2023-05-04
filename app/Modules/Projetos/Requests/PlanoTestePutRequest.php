@@ -21,8 +21,6 @@ class PlanoTestePutRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        return (new PlanoTestePostRequest())->rules();
     }
 }

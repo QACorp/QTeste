@@ -80,4 +80,42 @@ class PlanoTesteController extends Controller
                 ->with([Controller::MESSAGE_KEY_ERROR => ['Registro não encontrado']]);
         }
     }
+    public function visualizar(int $idAplicacao, int $idProjeto, int $idPlanoTeste)
+    {
+        try{
+            $planoTeste = $this->planoTesteBusiness->buscarPlanoTestePorId($idPlanoTeste);
+        }catch (NotFoundException $exception) {
+            return redirect(route('aplicacoes.projetos.planos-teste.index', [$idAplicacao, $idProjeto]))
+                ->with([Controller::MESSAGE_KEY_ERROR => ['Registro não encontrado']]);
+        }
+
+
+        return view('projetos::planos_teste.alterar',compact(
+            'idProjeto',
+            'idAplicacao',
+            'idPlanoTeste',
+            'planoTeste'
+        ));
+
+    }
+    public function alterar(Request $request, int $idAplicacao, int $idProjeto, int $idPlanoTeste)
+    {
+        try {
+            $planoTesteDto = PlanoTesteDTO::from($request->all());
+            $planoTesteDto->id = $idPlanoTeste;
+
+            $this->planoTesteBusiness->alterarPlanoTeste($planoTesteDto);
+
+            return redirect(route('aplicacoes.projetos.planos-teste.visualizar', [$idAplicacao, $idProjeto, $idPlanoTeste]))
+                ->with([Controller::MESSAGE_KEY_SUCCESS => ['Plano de teste alterado com sucesso']]);
+        }catch (NotFoundException $exception){
+            return redirect(route('aplicacoes.projetos.planos-teste.index',[$idAplicacao, $idProjeto]))
+                ->with([Controller::MESSAGE_KEY_ERROR => ['Registro não encontrado']]);
+        }catch (UnprocessableEntityException $exception) {
+            dd($exception);
+            return redirect(route('aplicacoes.projetos.planos-teste.visualizar', [$idAplicacao, $idProjeto, $idPlanoTeste]))
+                ->withErrors($exception->getValidator())
+                ->withInput();
+        }
+    }
 }

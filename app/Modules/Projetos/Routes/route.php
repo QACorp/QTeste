@@ -34,10 +34,11 @@ Route::group(['prefix' => 'aplicacoes'],function(){
         Route::group(['prefix' => '/{idProjeto}/planos-teste'],function() {
             Route::get('/', [PlanoTesteController::class, 'index'])->name('aplicacoes.projetos.planos-teste.index');
             Route::get('/inserir', [PlanoTesteController::class, 'inserir'])->name('aplicacoes.projetos.planos-teste.inserir');
+            Route::get('/{idPlanoTeste}/visualizar', [PlanoTesteController::class, 'visualizar'])->name('aplicacoes.projetos.planos-teste.visualizar');
 
             Route::post('/inserir', [PlanoTesteController::class, 'salvar'])->name('aplicacoes.projetos.planos-teste.salvar');
             Route::delete('/{idPlanoTeste}/excluir',[PlanoTesteController::class,'excluir'])->name('aplicacoes.projetos.planos-teste.excluir');
-
+            Route::put('/{idPlanoTeste}/alterar', [PlanoTesteController::class, 'alterar'])->name('aplicacoes.projetos.planos-teste.alterar');
         });
     });
 });

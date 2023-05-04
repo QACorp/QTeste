@@ -32,9 +32,8 @@
                                 <td>{{ $plano_teste->titulo }}</td>
                                 <td>{{ $plano_teste->created_at }}</td>
                                 <td>
-                                    <a class="btn btn-dark btn-sm" title="Acessar projetos" href="{{ route('aplicacoes.projetos.index',$plano_teste->id) }}"><i class="fas fa-cogs"></i> </a>
 
-                                    <a class="btn btn-warning btn-sm" title="Editar" href="{{ route('aplicacoes.editar',$plano_teste->id) }}"><i class="fas fa-edit"></i> </a>
+                                    <a class="btn btn-primary btn-sm" title="Visualizar" href="{{ route('aplicacoes.projetos.planos-teste.visualizar',[$idAplicacao, $idProjeto, $plano_teste->id]) }}"><i class="fas fa-eye"></i> </a>
                                     <x-delete-modal
                                         :registro="$plano_teste"
                                         message="Deseja excluir o registro {{ $plano_teste->titulo }}?"
