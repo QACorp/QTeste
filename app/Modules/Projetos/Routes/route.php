@@ -2,6 +2,7 @@
 
 use App\Modules\Projetos\Controllers\AplicacaoController;
 use App\Modules\Projetos\Controllers\DocumentoController;
+use App\Modules\Projetos\Controllers\PlanoTesteController;
 use Illuminate\Support\Facades\Route;
 use App\Modules\Projetos\Controllers\ProjetoController;
 use App\Modules\Projetos\Controllers\ObservacaoController;
@@ -30,6 +31,14 @@ Route::group(['prefix' => 'aplicacoes'],function(){
         Route::delete('/{idProjeto}/excluir',[ProjetoController::class,'excluir'])->name('aplicacoes.projetos.excluir');
         Route::delete('/{idProjeto}/documento/{idDocumento}/excluir',[DocumentoController::class,'excluir'])->name('aplicacoes.projetos.documento.excluir');
 
+        Route::group(['prefix' => '/{idProjeto}/planos-teste'],function() {
+            Route::get('/', [PlanoTesteController::class, 'index'])->name('aplicacoes.projetos.planos-teste.index');
+            Route::get('/inserir', [PlanoTesteController::class, 'inserir'])->name('aplicacoes.projetos.planos-teste.inserir');
+
+            Route::post('/inserir', [PlanoTesteController::class, 'salvar'])->name('aplicacoes.projetos.planos-teste.salvar');
+            Route::delete('/{idPlanoTeste}/excluir',[PlanoTesteController::class,'excluir'])->name('aplicacoes.projetos.planos-teste.excluir');
+
+        });
     });
 });
 

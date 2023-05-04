@@ -84,7 +84,7 @@ class ProjetoBusiness implements ProjetoBusinessContract
         return $this->projetoRepository->inserir($projetoDTO);
     }
 
-    public function buscarPorIdProjeto(int $idProjeto): ProjetoDTO
+    public function buscarPorIdProjeto(int $idProjeto): ?ProjetoDTO
     {
         return $this->projetoRepository->buscarPorId($idProjeto);
     }

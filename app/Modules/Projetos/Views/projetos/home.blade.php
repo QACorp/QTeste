@@ -26,6 +26,7 @@
                                 <td>{{ $projeto->descricao }}</td>
                                 <td>
                                     <a class="btn btn-warning btn-sm" title="Editar" href="{{ route('aplicacoes.projetos.editar',[$projeto->aplicacao_id ,$projeto->id]) }}"><i class="fas fa-edit"></i> </a>
+                                    <a class="btn btn-primary btn-sm" title="Planos de teste" href="{{ route('aplicacoes.projetos.planos-teste.index',[$projeto->aplicacao_id ,$projeto->id]) }}"><i class="fas fa-file-alt"></i> </a>
                                     <x-delete-modal
                                         :registro="$projeto"
                                         message="Deseja excluir o registro {{ $projeto->nome }}?"

@@ -11,7 +11,10 @@ class PlanoTeste extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'projetos.planos.teste';
+    protected $table = 'projetos.planos_teste';
+    protected $casts = [
+        'created_at' => 'datetime',
+    ];
     protected $fillable = [
         'titulo',
         'descricao',

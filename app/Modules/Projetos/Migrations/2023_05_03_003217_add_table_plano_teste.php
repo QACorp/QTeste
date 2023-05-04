@@ -39,14 +39,14 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('projetos.caso_teste_plano_teste', function (Blueprint $table) {
+        Schema::create('projetos.casos_teste_planos_teste', function (Blueprint $table) {
 
             $table->id();
             $table->bigInteger('caso_teste_id');
-            $table->foreign('caso_teste_id')->on('projetos.caso_teste')->references('id');
+            $table->foreign('caso_teste_id')->on('projetos.casos_teste')->references('id');
 
             $table->bigInteger('plano_teste_id');
-            $table->foreign('plano_teste_id')->on('projetos.plano_teste')->references('id');
+            $table->foreign('plano_teste_id')->on('projetos.planos_teste')->references('id');
 
         });
 
@@ -61,7 +61,7 @@ return new class extends Migration
             $table->dateTime('data_execucao')->nullable();
             $table->bigInteger('user_id');
             $table->bigInteger('caso_teste_plano_teste_id');
-            $table->foreign('caso_teste_plano_teste_id')->on('projetos.caso_teste_plano_teste')->references('id');
+            $table->foreign('caso_teste_plano_teste_id')->on('projetos.casos_teste_planos_teste')->references('id');
             $table->foreign('user_id')->on('users')->references('id');
             $table->softDeletes();
             $table->timestamps();
