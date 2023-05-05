@@ -3,6 +3,7 @@
 namespace App\Modules\Projetos\Providers;
 
 use App\Modules\Projetos\Business\AplicacaoBusiness;
+use App\Modules\Projetos\Business\CasoTesteBusiness;
 use App\Modules\Projetos\Business\DocumentoBusiness;
 use App\Modules\Projetos\Business\ObservacaoBusiness;
 use App\Modules\Projetos\Business\PlanoTesteBusiness;
@@ -10,6 +11,8 @@ use App\Modules\Projetos\Business\ProjetoBusiness;
 use App\Modules\Projetos\Config\MenuConfig;
 use App\Modules\Projetos\Contracts\AplicacaoBusinessContract;
 use App\Modules\Projetos\Contracts\AplicacaoRepositoryContract;
+use App\Modules\Projetos\Contracts\CasoTesteBusinessContract;
+use App\Modules\Projetos\Contracts\CasoTesteRespositoryContract;
 use App\Modules\Projetos\Contracts\DocumentoBusinessContract;
 use App\Modules\Projetos\Contracts\DocumentoRepositoryContract;
 use App\Modules\Projetos\Contracts\ObservacaoBusinessContract;
@@ -19,6 +22,7 @@ use App\Modules\Projetos\Contracts\PlanoTesteRepositoryContract;
 use App\Modules\Projetos\Contracts\ProjetoBusinessContract;
 use App\Modules\Projetos\Contracts\ProjetoRepositoryContract;
 use App\Modules\Projetos\Repositorys\AplicacaoRepository;
+use App\Modules\Projetos\Repositorys\CasoTesteRepository;
 use App\Modules\Projetos\Repositorys\DocumentoRepository;
 use App\Modules\Projetos\Repositorys\ObservacaoRespository;
 use App\Modules\Projetos\Repositorys\PlanoTesteRepository;
@@ -40,7 +44,9 @@ class ProjetosServiceProvider extends ServiceProviderAbstract
         DocumentoBusinessContract::class => DocumentoBusiness::class,
         DocumentoRepositoryContract::class => DocumentoRepository::class,
         PlanoTesteBusinessContract::class => PlanoTesteBusiness::class,
-        PlanoTesteRepositoryContract::class => PlanoTesteRepository::class
+        PlanoTesteRepositoryContract::class => PlanoTesteRepository::class,
+        CasoTesteBusinessContract::class => CasoTesteBusiness::class,
+        CasoTesteRespositoryContract::class => CasoTesteRepository::class
     ];
     /**
      * Register services.

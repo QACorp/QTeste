@@ -2,6 +2,7 @@
 
 @section('title', 'QAKit - Aplicações | Projetos | Planos de Teste | Visualizar')
 @section('plugins.Datatables', true)
+@section('plugins.JqueryUi', true)
 @section('content_header')
     <h1 class="m-0 text-dark">Visualizar Plano de teste <strong>{{ $planoTeste->titulo }}</strong></h1>
 
@@ -71,7 +72,7 @@
                             Casos de teste
                         </div>
                         <div class="card-body">
-
+                            @include('projetos::planos_teste.casos_teste_list')
                         </div>
                     </div>
                 </div>

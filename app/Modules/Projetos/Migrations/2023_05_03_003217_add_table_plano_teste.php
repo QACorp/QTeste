@@ -39,7 +39,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('projetos.casos_teste_planos_teste', function (Blueprint $table) {
+        Schema::create('projetos.caso_teste_plano_teste', function (Blueprint $table) {
 
             $table->id();
             $table->bigInteger('caso_teste_id');

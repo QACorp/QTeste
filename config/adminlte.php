@@ -441,7 +441,7 @@ return [
             ],
         ],
         'DatatablesPlugins' => [
-            'active' => true,
+            'active' => false,
             'files' => [
                 [
                     'type' => 'js',
@@ -485,8 +485,25 @@ return [
                 ],
             ],
         ],
-        'Select2' => [
+        'JqueryUi' => [
             'active' => false,
+            'files' => [
+
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/jquery-ui/jquery-ui.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/jquery-ui/jquery-ui.css',
+                ],
+
+            ],
+        ],
+        'Select2' => [
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',

@@ -2,6 +2,7 @@
 
 namespace App\Modules\Projetos\Controllers;
 
+use App\Modules\Projetos\Contracts\CasoTesteBusinessContract;
 use App\Modules\Projetos\Contracts\PlanoTesteBusinessContract;
 use App\Modules\Projetos\Contracts\ProjetoBusinessContract;
 use App\Modules\Projetos\DTOs\PlanoTesteDTO;
@@ -16,7 +17,8 @@ class PlanoTesteController extends Controller
 {
     public function __construct(
         private readonly PlanoTesteBusinessContract $planoTesteBusiness,
-        private readonly ProjetoBusinessContract $projetoBusiness
+        private readonly ProjetoBusinessContract $projetoBusiness,
+        private readonly CasoTesteBusinessContract $casoTesteBusinessContract
     )
     {
     }
@@ -84,23 +86,41 @@ class PlanoTesteController extends Controller
     {
         try{
             $planoTeste = $this->planoTesteBusiness->buscarPlanoTestePorId($idPlanoTeste);
+            $heads = [
+                ['label' => 'Id', 'width' => 10],
+                ['label' => 'Requisito', 'width' => 25],
+                'Título',
+                ['label' => 'Status', 'width' => 15],
+                ['label' => 'Ações', 'width' => 20],
+            ];
+
+            $config = [
+                ...config('adminlte.datatable_config'),
+                'columns' => [null, null, null, null, ['orderable' => false]],
+            ];
+            $casosTeste = $this->casoTesteBusinessContract->buscarCasoTestePorPlanoTeste($idPlanoTeste);
+            return view('projetos::planos_teste.alterar',compact(
+                'idProjeto',
+                'idAplicacao',
+                'idPlanoTeste',
+                'planoTeste',
+                'heads',
+                'config',
+                'casosTeste'
+            ));
+
         }catch (NotFoundException $exception) {
             return redirect(route('aplicacoes.projetos.planos-teste.index', [$idAplicacao, $idProjeto]))
                 ->with([Controller::MESSAGE_KEY_ERROR => ['Registro não encontrado']]);
         }
 
 
-        return view('projetos::planos_teste.alterar',compact(
-            'idProjeto',
-            'idAplicacao',
-            'idPlanoTeste',
-            'planoTeste'
-        ));
 
     }
     public function alterar(Request $request, int $idAplicacao, int $idProjeto, int $idPlanoTeste)
     {
         try {
+
             $planoTesteDto = PlanoTesteDTO::from($request->all());
             $planoTesteDto->id = $idPlanoTeste;
 
@@ -112,7 +132,6 @@ class PlanoTesteController extends Controller
             return redirect(route('aplicacoes.projetos.planos-teste.index',[$idAplicacao, $idProjeto]))
                 ->with([Controller::MESSAGE_KEY_ERROR => ['Registro não encontrado']]);
         }catch (UnprocessableEntityException $exception) {
-            dd($exception);
             return redirect(route('aplicacoes.projetos.planos-teste.visualizar', [$idAplicacao, $idProjeto, $idPlanoTeste]))
                 ->withErrors($exception->getValidator())
                 ->withInput();
