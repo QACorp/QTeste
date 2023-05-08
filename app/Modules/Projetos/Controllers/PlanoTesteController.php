@@ -6,6 +6,7 @@ use App\Modules\Projetos\Contracts\CasoTesteBusinessContract;
 use App\Modules\Projetos\Contracts\PlanoTesteBusinessContract;
 use App\Modules\Projetos\Contracts\ProjetoBusinessContract;
 use App\Modules\Projetos\DTOs\PlanoTesteDTO;
+use App\Modules\Projetos\Enums\CasoTesteEnum;
 use App\Modules\Projetos\Models\PlanoTeste;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;

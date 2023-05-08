@@ -1,6 +1,30 @@
-<div class="form-group">
-    <label for="caso_teste">Caso de teste:</label>
-    <input type="text" id="caso_teste" name="caso_teste" class="form-control">
+<div class="row">
+    <div class="col-md-12 p-0">
+        @include('projetos::planos_teste.casos_teste_novo')
+        <form
+            action="{{ route('aplicacoes.projetos.planos-teste.casos-teste.vincular',[$idAplicacao, $idProjeto, $idPlanoTeste]) }}"
+            method="post"
+            class="col-md-9 d-inline"
+        >
+            <x-adminlte-input
+                name="caso_teste"
+                label="Vincular caso de teste existente"
+                placeholder="Caso de teste"
+
+
+            >
+                <x-slot name="appendSlot">
+
+                        @csrf
+                        <input type="hidden" name="caso_teste_id" id="caso_teste_id" value="0">
+                        <x-adminlte-button title="Vincular" type="submit" label="" theme="primary" icon="fas fa-arrow-alt-circle-down"/>
+
+
+                </x-slot>
+            </x-adminlte-input>
+        </form>
+
+    </div>
 </div>
 <x-adminlte-datatable
     id="casos_teste"
@@ -35,17 +59,25 @@
     <script>
         $(document).ready(function() {
             $( "#caso_teste" ).autocomplete({
+                select: function( event, ui ) {
+                    console.log(ui.item);
+                    $('#caso_teste_id').val(ui.item.id);
+
+                },
                 source: function(request, response) {
                     $.ajax({
-                        url:  '/' +"autocomplete",
+                        url:  '/projetos/aplicacoes/casos-teste/list',
                         data:{
                             term : request.term
                         },
                         dataType: "json",
                         success: function(data){
-                            console.log(data);
                             var resp = $.map(data,function(obj){
-                                return obj.name;
+                                return {
+                                    label:obj.requisito + ' - ' + obj.titulo,
+                                    value:obj.requisito + ' - ' + obj.titulo,
+                                    id: obj.id
+                                };
                             });
                             response(resp);
                         }

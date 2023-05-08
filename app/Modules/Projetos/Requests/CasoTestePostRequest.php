@@ -2,7 +2,10 @@
 
 namespace App\Modules\Projetos\Requests;
 
+use App\Modules\Projetos\Enums\CasoTesteEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
+use Spatie\LaravelData\Attributes\Validation\Required;
 
 class CasoTestePostRequest extends FormRequest
 {
@@ -11,7 +14,7 @@ class CasoTestePostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +25,12 @@ class CasoTestePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'titulo'                => 'required',
+            'teste'                 => 'required',
+            'requisito'             => 'required',
+            'cenario'               => 'required',
+            'resultado_esperado'    => 'required',
+            'status'                => [new Required(), new Enum(CasoTesteEnum::class)]
         ];
     }
 }

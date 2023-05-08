@@ -1,6 +1,7 @@
 <?php
 
 use App\Modules\Projetos\Controllers\AplicacaoController;
+use App\Modules\Projetos\Controllers\CasoTesteController;
 use App\Modules\Projetos\Controllers\DocumentoController;
 use App\Modules\Projetos\Controllers\PlanoTesteController;
 use Illuminate\Support\Facades\Route;
@@ -10,12 +11,15 @@ Route::get('/',[ProjetoController::class,'index'])->name('projetos.index');
 
 Route::group(['prefix' => 'aplicacoes'],function(){
     Route::get('/',[AplicacaoController::class,'index'])->name('aplicacoes.index');
+
     Route::get('/inserir',[AplicacaoController::class,'inserir'])->name('aplicacoes.inserir');
     Route::get('/editar/{id}',[AplicacaoController::class,'editar'])->name('aplicacoes.editar');
 
     Route::put('/editar/{id}',[AplicacaoController::class,'atualizar'])->name('aplicacoes.atualizar');
     Route::post('/inserir',[AplicacaoController::class,'salvar'])->name('aplicacoes.salvar');
     Route::delete('/exluir/{id}',[AplicacaoController::class,'excluir'])->name('aplicacoes.excluir');
+
+    Route::get('/casos-teste/list',[CasoTesteController::class,'list'])->name('caos-teste.list');
 
     Route::group(['prefix' => '{idAplicacao}/projetos'],function(){
         Route::get('/',[ProjetoController::class,'index'])->name('aplicacoes.projetos.index');
@@ -39,6 +43,12 @@ Route::group(['prefix' => 'aplicacoes'],function(){
             Route::post('/inserir', [PlanoTesteController::class, 'salvar'])->name('aplicacoes.projetos.planos-teste.salvar');
             Route::delete('/{idPlanoTeste}/excluir',[PlanoTesteController::class,'excluir'])->name('aplicacoes.projetos.planos-teste.excluir');
             Route::put('/{idPlanoTeste}/alterar', [PlanoTesteController::class, 'alterar'])->name('aplicacoes.projetos.planos-teste.alterar');
+
+            Route::group(['prefix' => '/{idPlanoTeste}/casos-teste'],function() {
+                Route::post('/vincular', [CasoTesteController::class, 'vincular'])->name('aplicacoes.projetos.planos-teste.casos-teste.vincular');
+                Route::post('/inserir', [CasoTesteController::class, 'inserir'])->name('aplicacoes.projetos.planos-teste.casos-teste.inserir');
+
+            });
         });
     });
 });

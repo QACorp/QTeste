@@ -7,7 +7,7 @@ use Illuminate\Validation\Validator;
 
 class UnprocessableEntityException extends Exception
 {
-    private Validator $validator;
+    private ?Validator $validator;
     public function __construct(Validator $validator = null, string $message = "422 - Unprocessable Entity", int $code = 422)
     {
         $this->validator = $validator;

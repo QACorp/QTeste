@@ -72,7 +72,7 @@
                             Casos de teste
                         </div>
                         <div class="card-body">
-                            @include('projetos::planos_teste.casos_teste_list')
+                            @include('projetos::planos_teste.casos_teste_lista')
                         </div>
                     </div>
                 </div>
