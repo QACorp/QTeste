@@ -47,6 +47,7 @@ Route::group(['prefix' => 'aplicacoes'],function(){
             Route::group(['prefix' => '/{idPlanoTeste}/casos-teste'],function() {
                 Route::post('/vincular', [CasoTesteController::class, 'vincular'])->name('aplicacoes.projetos.planos-teste.casos-teste.vincular');
                 Route::post('/inserir', [CasoTesteController::class, 'inserir'])->name('aplicacoes.projetos.planos-teste.casos-teste.inserir');
+                Route::delete('/desvincular/{idCasoTeste}', [CasoTesteController::class, 'desvincular'])->name('aplicacoes.projetos.planos-teste.casos-teste.desvincular');
 
             });
         });

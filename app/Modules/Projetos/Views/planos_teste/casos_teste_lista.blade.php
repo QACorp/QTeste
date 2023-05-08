@@ -10,16 +10,11 @@
                 name="caso_teste"
                 label="Vincular caso de teste existente"
                 placeholder="Caso de teste"
-
-
             >
                 <x-slot name="appendSlot">
-
                         @csrf
                         <input type="hidden" name="caso_teste_id" id="caso_teste_id" value="0">
                         <x-adminlte-button title="Vincular" type="submit" label="" theme="primary" icon="fas fa-arrow-alt-circle-down"/>
-
-
                 </x-slot>
             </x-adminlte-input>
         </form>
@@ -45,8 +40,8 @@
                 <a class="btn btn-primary btn-sm" title="Visualizar" href="{{ route('aplicacoes.projetos.planos-teste.visualizar',[$idAplicacao, $idProjeto, $casoTeste->id]) }}"><i class="fas fa-eye"></i> </a>
                 <x-delete-modal
                     :registro="$casoTeste"
-                    message="Deseja excluir o registro {{ $casoTeste->titulo }}?"
-                    route="{{ route('aplicacoes.projetos.planos-teste.excluir', [$idAplicacao, $idProjeto, $casoTeste->id]) }}"
+                    message="Deseja desvincular caso de teste?"
+                    route="{{ route('aplicacoes.projetos.planos-teste.casos-teste.desvincular',[$idAplicacao, $idProjeto, $idPlanoTeste, $casoTeste->id]) }}"
                 />
 
             </td>

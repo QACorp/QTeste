@@ -39,13 +39,36 @@ class CasoTesteController extends Controller
             return redirect(route('aplicacoes.projetos.planos-teste.visualizar', [$idAplicacao, $idProjeto, $idPlanoTeste]))
                 ->with([Controller::MESSAGE_KEY_ERROR => ['O caso de teste informado não existe!']]);
         }
+    }
 
+    public function desvincular(Request $request, $idAplicacao, $idProjeto, $idPlanoTeste, $idCasoTeste)
+    {
+
+        try{
+            $this->casoTesteBusiness->desvincular($idPlanoTeste, $idCasoTeste);
+
+            return redirect(route('aplicacoes.projetos.planos-teste.visualizar', [$idAplicacao, $idProjeto, $idPlanoTeste]))
+                ->with([Controller::MESSAGE_KEY_SUCCESS => ['Caso de teste desvinculado com sucesso']]);
+
+        }catch (UnprocessableEntityException $exception) {
+            return redirect(route('aplicacoes.projetos.planos-teste.visualizar', [$idAplicacao, $idProjeto, $idPlanoTeste]))
+                ->with([Controller::MESSAGE_KEY_ERROR => ['Este caso de teste não está vinculado a este plano de teste! ']]);
+        }catch (NotFoundException $exception) {
+            return redirect(route('aplicacoes.projetos.planos-teste.visualizar', [$idAplicacao, $idProjeto, $idPlanoTeste]))
+                ->with([Controller::MESSAGE_KEY_ERROR => ['O caso de teste informado não existe!']]);
+        }
     }
     public function inserir(Request $request, int $idAplicacao, int $idProjeto, ?int $idPlanoTeste){
         $casoTesteDTO = CasoTesteDTO::from($request);
-        $casoTeste = $this->casoTesteBusiness->inserirCasoTeste($casoTesteDTO);
-        $this->casoTesteBusiness->vincular($idPlanoTeste, $casoTeste);
-        return redirect(route('aplicacoes.projetos.planos-teste.visualizar', [$idAplicacao, $idProjeto, $idPlanoTeste]))
-            ->with([Controller::MESSAGE_KEY_SUCCESS => ['Caso de teste criado com sucesso', 'Caso de teste vinculado com sucesso']]);
+        try{
+            $casoTeste = $this->casoTesteBusiness->inserirCasoTeste($casoTesteDTO);
+            $this->casoTesteBusiness->vincular($idPlanoTeste, $casoTeste);
+            return redirect(route('aplicacoes.projetos.planos-teste.visualizar', [$idAplicacao, $idProjeto, $idPlanoTeste]))
+                ->with([Controller::MESSAGE_KEY_SUCCESS => ['Caso de teste criado com sucesso', 'Caso de teste vinculado com sucesso']]);
+
+        }catch (NotFoundException $exception){
+            return redirect(route('aplicacoes.projetos.planos-teste.visualizar', [$idAplicacao, $idProjeto, $idPlanoTeste]))
+                ->with([Controller::MESSAGE_KEY_ERROR => ['Caso de teste não existe']]);
+        }
     }
 }

@@ -15,7 +15,10 @@ class CasoTesteRepository implements CasoTesteRespositoryContract
     public function buscarCasoTestePorPlanoTeste(int $idPlanoTeste): ?DataCollection
     {
         return CasoTesteDTO::collection(
-            PlanoTeste::find($idPlanoTeste)->casos_teste
+            PlanoTeste::find($idPlanoTeste)
+                ->casos_teste()
+                ->where('projetos.caso_teste_plano_teste.deleted_at', null)
+                ->get()
         );
     }
 
@@ -37,7 +40,14 @@ class CasoTesteRepository implements CasoTesteRespositoryContract
         $planoTeste->save();
         return PlanoTesteDTO::from($planoTeste);
     }
+    public function desvincular(int $idPlanoTeste, int $idCasoTeste): PlanoTesteDTO
+    {
 
+        $planoTeste = PlanoTeste::find($idPlanoTeste);
+        $planoTeste->casos_teste()->detach($idCasoTeste);
+        $planoTeste->save();
+        return PlanoTesteDTO::from($planoTeste);
+    }
     public function existeVinculo(int $idPlanoTeste, int $idCasoTeste): bool
     {
         $planoTeste = PlanoTeste::find($idPlanoTeste);

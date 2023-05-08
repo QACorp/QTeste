@@ -47,7 +47,8 @@ return new class extends Migration
 
             $table->bigInteger('plano_teste_id');
             $table->foreign('plano_teste_id')->on('projetos.planos_teste')->references('id');
-
+            $table->softDeletes();
+            $table->timestamps();
         });
 
         Schema::create('projetos.plano_teste_execucoes', function (Blueprint $table) {

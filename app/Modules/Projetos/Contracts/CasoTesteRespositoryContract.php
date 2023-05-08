@@ -12,6 +12,7 @@ interface CasoTesteRespositoryContract
     public function buscarCasoTestePorString(string $term): ?DataCollection;
 
     public function vincular(int $idPlanoTeste, CasoTesteDTO $casoTesteDTO): PlanoTesteDTO;
+    public function desvincular(int $idPlanoTeste, int $idCasoTeste): PlanoTesteDTO;
     public function existeVinculo(int $idPlanoTeste, int $idCasoTeste):bool;
     public function existeCasoTeste(int $idCasoTeste):bool;
     public function inserirCasoTeste(CasoTesteDTO $casoTesteDTO):CasoTesteDTO;

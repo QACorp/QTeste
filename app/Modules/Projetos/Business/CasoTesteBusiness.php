@@ -51,4 +51,16 @@ class CasoTesteBusiness implements CasoTesteBusinessContract
         }
         return $this->casoTesteRespository->inserirCasoTeste($casoTesteDTO);
     }
+
+    public function desvincular(int $idPlanoTeste, int $idCasoTeste): PlanoTesteDTO
+    {
+        if(!$this->casoTesteRespository->existeVinculo($idPlanoTeste, $idCasoTeste)){
+            throw new UnprocessableEntityException();
+        }
+
+        if(!$this->casoTesteRespository->existeCasoTeste($idCasoTeste)){
+            throw new NotFoundException();
+        }
+        return $this->casoTesteRespository->desvincular($idPlanoTeste, $idCasoTeste);
+    }
 }
