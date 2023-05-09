@@ -14,10 +14,7 @@ class CasoTesteDetalhes extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public CasoTesteDTO $registro,
-        public int $idAplicacao,
-        public int $idProjeto,
-        public int $idPlanoTeste
+        public CasoTesteDTO $registro
     )
     {
         //

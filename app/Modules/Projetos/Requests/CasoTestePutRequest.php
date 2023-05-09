@@ -21,8 +21,6 @@ class CasoTestePutRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        return (new CasoTestePostRequest())->rules();
     }
 }

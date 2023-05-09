@@ -1,5 +1,5 @@
 <x-adminlte-modal
-    id="modalMin_{{ $registro->id }}"
+    id="modalDetalhe_{{ $registro->id }}"
     title="Visualizar {{ $registro->titulo }}"
     static-backdrop
     size="lg"
@@ -103,5 +103,5 @@
     title="Visualizar"
     icon="fas fa-eye"
     data-toggle="modal"
-    data-target="#modalMin_{{ $registro->id }}"
+    data-target="#modalDetalhe_{{ $registro->id }}"
 />

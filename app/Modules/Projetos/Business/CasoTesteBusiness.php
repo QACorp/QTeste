@@ -6,8 +6,8 @@ use App\Modules\Projetos\Contracts\CasoTesteBusinessContract;
 use App\Modules\Projetos\Contracts\CasoTesteRespositoryContract;
 use App\Modules\Projetos\DTOs\CasoTesteDTO;
 use App\Modules\Projetos\DTOs\PlanoTesteDTO;
-use App\Modules\Projetos\Requests\AplicacoesPostRequest;
 use App\Modules\Projetos\Requests\CasoTestePostRequest;
+use App\Modules\Projetos\Requests\CasoTestePutRequest;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use Illuminate\Support\Facades\Validator;
@@ -62,5 +62,40 @@ class CasoTesteBusiness implements CasoTesteBusinessContract
             throw new NotFoundException();
         }
         return $this->casoTesteRespository->desvincular($idPlanoTeste, $idCasoTeste);
+    }
+
+    public function buscarTodos(): DataCollection
+    {
+        return $this->casoTesteRespository->buscarTodos();
+    }
+
+    public function excluir(int $idCasoTeste): bool
+    {
+        if(!$this->casoTesteRespository->existeCasoTeste($idCasoTeste)){
+            throw new NotFoundException();
+        }
+        return $this->casoTesteRespository->excluir($idCasoTeste);
+    }
+
+    public function buscarCasoTestePorId(int $idCasoTeste): ?CasoTesteDTO
+    {
+        $casoTeste = $this->casoTesteRespository->buscarCasoTestePorId($idCasoTeste);
+        if($casoTeste == null)
+            throw new NotFoundException();
+
+        return $casoTeste;
+    }
+
+    public function alterarCasoTeste(CasoTesteDTO $casoTesteDTO): CasoTesteDTO
+    {
+        if(!$this->casoTesteRespository->existeCasoTeste($casoTesteDTO->id))
+            throw new NotFoundException();
+
+        $validator = Validator::make($casoTesteDTO->toArray(), (new CasoTestePutRequest())->rules());
+        if ($validator->fails()) {
+            throw new UnprocessableEntityException($validator);
+        }
+
+        return $this->casoTesteRespository->alterarCasoTeste($casoTesteDTO);
     }
 }

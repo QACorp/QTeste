@@ -38,9 +38,6 @@
             <td>
 
                 <x-caso-teste-detalhes
-                    :idAplicacao="$idAplicacao"
-                    :idProjeto="$idProjeto"
-                    :idPlanoTeste="$idPlanoTeste"
                     :registro="$casoTeste"
                 />
                  <x-delete-modal

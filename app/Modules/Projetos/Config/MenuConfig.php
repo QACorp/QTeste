@@ -25,23 +25,19 @@ class MenuConfig extends MenuConfigAbstract
                 'route' => 'aplicacoes.index',
                 'icon'  => 'fas fa-cogs',
                 'text' => 'Aplicações',
-                'active' => ['projetos/aplicacoes/*'],
+                'active' => ['projetos/aplicacoes/*', 'projetos/casos-teste/*'],
                 'submenu' => [
                     [
                         'text' => 'Listar aplicações',
                         'route'  => 'aplicacoes.index',
                         'icon'  => 'fas fa-list',
-                        'active' => ['projetos/aplicacoes/', 'projetos/aplicacoes/*/*'],
+                        'active' => ['projetos/aplicacoes/*'],
                     ],
                     [
-                        'text' => 'Inserir aplicação',
-                        'route'  => 'aplicacoes.inserir',
-                        'icon'  => 'fas fa-plus',
-                    ],
-                    [
-                    'text' => 'Casos de teste',
-                    'route'  => 'aplicacoes.index',
-                    'icon'  => 'fas fa-plus',
+                    'text' => 'Listar casos de teste',
+                    'route'  => 'aplicacoes.casos-teste.index',
+                    'icon'  => 'fas fa-cubes',
+                    'active' => ['projetos/casos-teste/*'],
                 ]
                 ]
             ]);

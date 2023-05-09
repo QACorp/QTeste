@@ -46,7 +46,7 @@ Route::group(['prefix' => 'aplicacoes'],function(){
 
             Route::group(['prefix' => '/{idPlanoTeste}/casos-teste'],function() {
                 Route::post('/vincular', [CasoTesteController::class, 'vincular'])->name('aplicacoes.projetos.planos-teste.casos-teste.vincular');
-                Route::post('/inserir', [CasoTesteController::class, 'inserir'])->name('aplicacoes.projetos.planos-teste.casos-teste.inserir');
+                Route::post('/inserir', [CasoTesteController::class, 'inserirEVincular'])->name('aplicacoes.projetos.planos-teste.casos-teste.inserir');
                 Route::delete('/desvincular/{idCasoTeste}', [CasoTesteController::class, 'desvincular'])->name('aplicacoes.projetos.planos-teste.casos-teste.desvincular');
 
             });
@@ -56,6 +56,11 @@ Route::group(['prefix' => 'aplicacoes'],function(){
 });
 Route::group(['prefix' => '/casos-teste'],function() {
     Route::get('/', [CasoTesteController::class, 'index'])->name('aplicacoes.casos-teste.index');
+    Route::get('/inserir', [CasoTesteController::class, 'inserir'])->name('aplicacoes.casos-teste.inserir');
+    Route::get('/{idCasoTeste}', [CasoTesteController::class, 'editar'])->name('aplicacoes.casos-teste.editar');
 
+    Route::post('/inserir', [CasoTesteController::class, 'salvar'])->name('aplicacoes.casos-teste.salvar');
+    Route::put('/{idCasoTeste}', [CasoTesteController::class, 'atualizar'])->name('aplicacoes.casos-teste.atualizar');
+    Route::delete('/{idCasoTeste}', [CasoTesteController::class, 'excluir'])->name('aplicacoes.casos-teste.excluir');
 });
 

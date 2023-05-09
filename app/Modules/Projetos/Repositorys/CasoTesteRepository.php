@@ -5,6 +5,7 @@ namespace App\Modules\Projetos\Repositorys;
 use App\Modules\Projetos\Contracts\CasoTesteRespositoryContract;
 use App\Modules\Projetos\DTOs\CasoTesteDTO;
 use App\Modules\Projetos\DTOs\PlanoTesteDTO;
+use App\Modules\Projetos\Enums\CasoTesteEnum;
 use App\Modules\Projetos\Models\CasoTeste;
 use App\Modules\Projetos\Models\PlanoTeste;
 use Spatie\LaravelData\DataCollection;
@@ -27,6 +28,7 @@ class CasoTesteRepository implements CasoTesteRespositoryContract
         return CasoTesteDTO::collection(
             CasoTeste::where('titulo','ILIKE','%'.$term.'%')
                 ->orWhere('requisito','ILIKE','%'.$term.'%')
+                ->where('status', CasoTesteEnum::CONCLUIDO->value)
                 ->get()
         );
     }
@@ -60,10 +62,31 @@ class CasoTesteRepository implements CasoTesteRespositoryContract
     {
         return CasoTeste::find($idCasoTeste) != null;
     }
-
     public function inserirCasoTeste(CasoTesteDTO $casoTesteDTO): CasoTesteDTO
     {
         $casoTeste = new CasoTeste($casoTesteDTO->toArray());
+        $casoTeste->save();
+        return CasoTesteDTO::from($casoTeste);
+    }
+    public function buscarTodos(): DataCollection
+    {
+        return CasoTesteDTO::collection(CasoTeste::all());
+    }
+    public function excluir(int $idCasoTeste): bool
+    {
+        return CasoTeste::find($idCasoTeste)->delete();
+    }
+
+    public function buscarCasoTestePorId(int $idCasoTeste): ?CasoTesteDTO
+    {
+        $casoTeste = CasoTeste::find($idCasoTeste);
+        return $casoTeste ? CasoTesteDTO::from($casoTeste) : null;
+    }
+
+    public function alterarCasoTeste(CasoTesteDTO $casoTesteDTO): CasoTesteDTO
+    {
+        $casoTeste = CasoTeste::find($casoTesteDTO->id);
+        $casoTeste->fill($casoTesteDTO->toArray());
         $casoTeste->save();
         return CasoTesteDTO::from($casoTeste);
     }
