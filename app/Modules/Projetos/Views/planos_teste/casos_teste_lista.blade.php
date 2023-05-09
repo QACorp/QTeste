@@ -37,8 +37,13 @@
             <td>{{ $casoTeste->status }}</td>
             <td>
 
-                <a class="btn btn-primary btn-sm" title="Visualizar" href="{{ route('aplicacoes.projetos.planos-teste.visualizar',[$idAplicacao, $idProjeto, $casoTeste->id]) }}"><i class="fas fa-eye"></i> </a>
-                <x-delete-modal
+                <x-caso-teste-detalhes
+                    :idAplicacao="$idAplicacao"
+                    :idProjeto="$idProjeto"
+                    :idPlanoTeste="$idPlanoTeste"
+                    :registro="$casoTeste"
+                />
+                 <x-delete-modal
                     :registro="$casoTeste"
                     message="Deseja desvincular caso de teste?"
                     route="{{ route('aplicacoes.projetos.planos-teste.casos-teste.desvincular',[$idAplicacao, $idProjeto, $idPlanoTeste, $casoTeste->id]) }}"

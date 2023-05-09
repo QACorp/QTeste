@@ -51,6 +51,11 @@ Route::group(['prefix' => 'aplicacoes'],function(){
 
             });
         });
+
     });
+});
+Route::group(['prefix' => '/casos-teste'],function() {
+    Route::get('/', [CasoTesteController::class, 'index'])->name('aplicacoes.casos-teste.index');
+
 });
 

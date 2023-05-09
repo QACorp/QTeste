@@ -28,15 +28,21 @@ class MenuConfig extends MenuConfigAbstract
                 'active' => ['projetos/aplicacoes/*'],
                 'submenu' => [
                     [
-                        'text' => 'Listar',
+                        'text' => 'Listar aplicações',
                         'route'  => 'aplicacoes.index',
                         'icon'  => 'fas fa-list',
+                        'active' => ['projetos/aplicacoes/', 'projetos/aplicacoes/*/*'],
                     ],
                     [
-                        'text' => 'Inserir',
+                        'text' => 'Inserir aplicação',
                         'route'  => 'aplicacoes.inserir',
                         'icon'  => 'fas fa-plus',
-                    ]
+                    ],
+                    [
+                    'text' => 'Casos de teste',
+                    'route'  => 'aplicacoes.index',
+                    'icon'  => 'fas fa-plus',
+                ]
                 ]
             ]);
         });

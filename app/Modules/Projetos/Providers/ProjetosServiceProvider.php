@@ -8,6 +8,7 @@ use App\Modules\Projetos\Business\DocumentoBusiness;
 use App\Modules\Projetos\Business\ObservacaoBusiness;
 use App\Modules\Projetos\Business\PlanoTesteBusiness;
 use App\Modules\Projetos\Business\ProjetoBusiness;
+use App\Modules\Projetos\Components\CasoTesteDetalhes;
 use App\Modules\Projetos\Config\MenuConfig;
 use App\Modules\Projetos\Contracts\AplicacaoBusinessContract;
 use App\Modules\Projetos\Contracts\AplicacaoRepositoryContract;
@@ -27,7 +28,9 @@ use App\Modules\Projetos\Repositorys\DocumentoRepository;
 use App\Modules\Projetos\Repositorys\ObservacaoRespository;
 use App\Modules\Projetos\Repositorys\PlanoTesteRepository;
 use App\Modules\Projetos\Repositorys\ProjetoRepository;
+use App\System\Component\DeleteModal;
 use App\System\Impl\ServiceProviderAbstract;
+use Illuminate\Support\Facades\Blade;
 
 class ProjetosServiceProvider extends ServiceProviderAbstract
 {
@@ -58,6 +61,7 @@ class ProjetosServiceProvider extends ServiceProviderAbstract
 
     public function boot(): void
     {
+        Blade::component('caso-teste-detalhes', CasoTesteDetalhes::class);
         MenuConfig::configureMenuModule();
         parent::boot();
     }
