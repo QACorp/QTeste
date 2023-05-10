@@ -12,4 +12,5 @@ interface PlanoTesteBusinessContract
     public function alterarPlanoTeste(PlanoTesteDTO $planoTesteDTO):PlanoTesteDTO;
     public function excluirPlanoTeste(int $idPlanoTeste):bool;
     public function buscarPlanoTestePorId(int $idPlanoTeste): ?PlanoTesteDTO;
+    public function buscarTodosPlanoTeste(): DataCollection;
 }

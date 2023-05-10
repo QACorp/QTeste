@@ -2,6 +2,7 @@
 
 namespace App\Modules\Projetos\DTOs;
 
+use App\Modules\Projetos\Casts\CastProjeto;
 use App\System\Casts\CastCarbonDateTime;
 use App\System\Utils\DTO;
 use Carbon\Carbon;
@@ -15,6 +16,8 @@ class PlanoTesteDTO extends DTO
         public ?string $descricao,
         public ?int $user_id,
         public ?int $projeto_id,
+        #[WithCast(CastProjeto::class)]
+        public ?ProjetoDTO $projeto,
         #[WithCast(CastCarbonDateTime::class)]
         public ?Carbon $created_at,
         #[WithCast(CastCarbonDateTime::class)]

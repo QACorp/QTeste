@@ -34,11 +34,17 @@ class MenuConfig extends MenuConfigAbstract
                         'active' => ['projetos/aplicacoes/*'],
                     ],
                     [
-                    'text' => 'Listar casos de teste',
-                    'route'  => 'aplicacoes.casos-teste.index',
-                    'icon'  => 'fas fa-cubes',
-                    'active' => ['projetos/casos-teste/*'],
-                ]
+                        'text' => 'Listar casos de teste',
+                        'route'  => 'aplicacoes.casos-teste.index',
+                        'icon'  => 'fas fa-cubes',
+                        'active' => ['projetos/casos-teste/*'],
+                    ],
+                    [
+                        'text' => 'Listar planos de teste',
+                        'route'  => 'aplicacoes.planos-teste.index',
+                        'icon'  => 'fas fa-file-alt',
+                        'active' => ['projetos/planos-teste/*'],
+                    ]
                 ]
             ]);
         });

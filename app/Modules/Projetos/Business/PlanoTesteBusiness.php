@@ -68,4 +68,9 @@ class PlanoTesteBusiness implements PlanoTesteBusinessContract
 
         return $this->planoTesteRepository->alterarPlanoTeste($planoTesteDTO);
     }
+
+    public function buscarTodosPlanoTeste(): DataCollection
+    {
+        return $this->planoTesteRepository->buscarTodosPlanoTeste();
+    }
 }

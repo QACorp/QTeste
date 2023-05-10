@@ -19,7 +19,6 @@ Route::group(['prefix' => 'aplicacoes'],function(){
     Route::post('/inserir',[AplicacaoController::class,'salvar'])->name('aplicacoes.salvar');
     Route::delete('/exluir/{id}',[AplicacaoController::class,'excluir'])->name('aplicacoes.excluir');
 
-    Route::get('/casos-teste/list',[CasoTesteController::class,'list'])->name('caos-teste.list');
 
     Route::group(['prefix' => '{idAplicacao}/projetos'],function(){
         Route::get('/',[ProjetoController::class,'index'])->name('aplicacoes.projetos.index');
@@ -36,7 +35,7 @@ Route::group(['prefix' => 'aplicacoes'],function(){
         Route::delete('/{idProjeto}/documento/{idDocumento}/excluir',[DocumentoController::class,'excluir'])->name('aplicacoes.projetos.documento.excluir');
 
         Route::group(['prefix' => '/{idProjeto}/planos-teste'],function() {
-            Route::get('/', [PlanoTesteController::class, 'index'])->name('aplicacoes.projetos.planos-teste.index');
+            Route::get('/', [PlanoTesteController::class, 'indexPorProjeto'])->name('aplicacoes.projetos.planos-teste.index');
             Route::get('/inserir', [PlanoTesteController::class, 'inserir'])->name('aplicacoes.projetos.planos-teste.inserir');
             Route::get('/{idPlanoTeste}/visualizar', [PlanoTesteController::class, 'visualizar'])->name('aplicacoes.projetos.planos-teste.visualizar');
 
@@ -53,14 +52,27 @@ Route::group(['prefix' => 'aplicacoes'],function(){
         });
 
     });
+
 });
 Route::group(['prefix' => '/casos-teste'],function() {
     Route::get('/', [CasoTesteController::class, 'index'])->name('aplicacoes.casos-teste.index');
+    Route::get('/list',[CasoTesteController::class,'list'])->name('aplicacoes.casos-teste.list');
+
     Route::get('/inserir', [CasoTesteController::class, 'inserir'])->name('aplicacoes.casos-teste.inserir');
     Route::get('/{idCasoTeste}', [CasoTesteController::class, 'editar'])->name('aplicacoes.casos-teste.editar');
 
     Route::post('/inserir', [CasoTesteController::class, 'salvar'])->name('aplicacoes.casos-teste.salvar');
     Route::put('/{idCasoTeste}', [CasoTesteController::class, 'atualizar'])->name('aplicacoes.casos-teste.atualizar');
     Route::delete('/{idCasoTeste}', [CasoTesteController::class, 'excluir'])->name('aplicacoes.casos-teste.excluir');
+
 });
 
+Route::group(['prefix' => '/planos-teste'],function() {
+    Route::get('/', [PlanoTesteController::class, 'index'])->name('aplicacoes.planos-teste.index');
+//    Route::get('/inserir', [CasoTesteController::class, 'inserir'])->name('aplicacoes.casos-teste.inserir');
+//    Route::get('/{idCasoTeste}', [CasoTesteController::class, 'editar'])->name('aplicacoes.casos-teste.editar');
+//
+//    Route::post('/inserir', [CasoTesteController::class, 'salvar'])->name('aplicacoes.casos-teste.salvar');
+//    Route::put('/{idCasoTeste}', [CasoTesteController::class, 'atualizar'])->name('aplicacoes.casos-teste.atualizar');
+//    Route::delete('/{idCasoTeste}', [CasoTesteController::class, 'excluir'])->name('aplicacoes.casos-teste.excluir');
+});

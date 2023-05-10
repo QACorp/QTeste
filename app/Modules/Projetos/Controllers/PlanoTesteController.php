@@ -24,7 +24,7 @@ class PlanoTesteController extends Controller
     {
     }
 
-    public function index(int $idAplicacao, int $idProjeto){
+    public function indexPorProjeto(int $idAplicacao, int $idProjeto){
         $projeto = $this->projetoBusiness->buscarPorIdProjeto($idProjeto);
         $heads = [
             ['label' => 'Id', 'width' => 10],
@@ -137,5 +137,25 @@ class PlanoTesteController extends Controller
                 ->withErrors($exception->getValidator())
                 ->withInput();
         }
+    }
+    public function index(){
+        $planos_teste = $this->planoTesteBusiness->buscarTodosPlanoTeste();
+
+        $heads = [
+            ['label' => 'Id', 'width' => 10],
+            'Nome',
+            ['label' => 'Data de Criação', 'width' => 15],
+            ['label' => 'Ações', 'width' => 20],
+        ];
+
+        $config = [
+            ...config('adminlte.datatable_config'),
+            'columns' => [null, null, null, ['orderable' => false]],
+        ];
+        return view('projetos::planos_teste.geral', compact(
+            'heads',
+            'config',
+            'planos_teste'
+        ));
     }
 }

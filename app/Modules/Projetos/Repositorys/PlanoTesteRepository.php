@@ -45,4 +45,9 @@ class PlanoTesteRepository implements PlanoTesteRepositoryContract
         $planoTeste->update();
         return PlanoTesteDTO::from($planoTeste);
     }
+
+    public function buscarTodosPlanoTeste(): DataCollection
+    {
+        return PlanoTesteDTO::collection(PlanoTeste::with('projeto')->get());
+    }
 }
