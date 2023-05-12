@@ -25,4 +25,9 @@ class CasoTeste extends Model
     {
         return $this->belongsToMany(PlanoTeste::class,'projetos.caso_teste_plano_teste')->using(CasoTestePlanoTeste::class);
     }
+    public function execucao()
+    {
+        return $this->hasMany(CasoTesteExecucao::class);
+
+    }
 }

@@ -6,27 +6,27 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class PlanoTesteExecucao extends Model
+class CasoTesteExecucao extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'projetos.plano_teste_execucoes';
+    protected $table = 'projetos.caso_teste_execucoes';
     protected $fillable = [
         'resultado',
         'user_id',
         'data_execucao',
-        'plano_teste_id',
+        'plano_teste_execucao_id',
         'caso_teste_id'
     ];
-    public function caso_teste_execucao()
+    public function caso_teste()
     {
-        return $this->hasMany(CasoTesteExecucao::class);
+        return $this->belongsTo(CasoTeste::class);
 
     }
 
-    public function plano_teste()
+    public function plano_teste_execucao()
     {
-        return $this->belongsTo(PlanoTeste::class);
+        return $this->belongsTo(PlanoTesteExecucao::class);
 
     }
 }

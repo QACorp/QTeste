@@ -4,6 +4,7 @@ use App\Modules\Projetos\Controllers\AplicacaoController;
 use App\Modules\Projetos\Controllers\CasoTesteController;
 use App\Modules\Projetos\Controllers\DocumentoController;
 use App\Modules\Projetos\Controllers\PlanoTesteController;
+use App\Modules\Projetos\Controllers\PlanoTesteExecucaoController;
 use Illuminate\Support\Facades\Route;
 use App\Modules\Projetos\Controllers\ProjetoController;
 use App\Modules\Projetos\Controllers\ObservacaoController;
@@ -42,6 +43,8 @@ Route::group(['prefix' => 'aplicacoes'],function(){
             Route::post('/inserir', [PlanoTesteController::class, 'salvar'])->name('aplicacoes.projetos.planos-teste.salvar');
             Route::delete('/{idPlanoTeste}/excluir',[PlanoTesteController::class,'excluir'])->name('aplicacoes.projetos.planos-teste.excluir');
             Route::put('/{idPlanoTeste}/alterar', [PlanoTesteController::class, 'alterar'])->name('aplicacoes.projetos.planos-teste.alterar');
+            Route::get('/{idPlanoTeste}/executar', [PlanoTesteExecucaoController::class, 'executar'])->name('aplicacoes.projetos.planos-teste.executar');
+
 
             Route::group(['prefix' => '/{idPlanoTeste}/casos-teste'],function() {
                 Route::post('/vincular', [CasoTesteController::class, 'vincular'])->name('aplicacoes.projetos.planos-teste.casos-teste.vincular');
@@ -69,10 +72,4 @@ Route::group(['prefix' => '/casos-teste'],function() {
 
 Route::group(['prefix' => '/planos-teste'],function() {
     Route::get('/', [PlanoTesteController::class, 'index'])->name('aplicacoes.planos-teste.index');
-//    Route::get('/inserir', [CasoTesteController::class, 'inserir'])->name('aplicacoes.casos-teste.inserir');
-//    Route::get('/{idCasoTeste}', [CasoTesteController::class, 'editar'])->name('aplicacoes.casos-teste.editar');
-//
-//    Route::post('/inserir', [CasoTesteController::class, 'salvar'])->name('aplicacoes.casos-teste.salvar');
-//    Route::put('/{idCasoTeste}', [CasoTesteController::class, 'atualizar'])->name('aplicacoes.casos-teste.atualizar');
-//    Route::delete('/{idCasoTeste}', [CasoTesteController::class, 'excluir'])->name('aplicacoes.casos-teste.excluir');
 });

@@ -33,7 +33,7 @@ class PlanoTesteRepository implements PlanoTesteRepositoryContract
 
     public function buscarPlanoTestePorId(int $idPlanoTeste): ?PlanoTesteDTO
     {
-        $planoTeste = PlanoTeste::find($idPlanoTeste);
+        $planoTeste = PlanoTeste::where('id',$idPlanoTeste)->with('casos_teste')->first();
         return $planoTeste == null ? null : PlanoTesteDTO::from($planoTeste);
     }
 

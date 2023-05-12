@@ -13,8 +13,5 @@ class CasoTestePlanoTeste extends Pivot
     use HasFactory, SoftDeletes;
 
     protected $table = 'projetos.caso_teste_plano_teste';
-    public function plano_teste_execucoes()
-    {
-        return $this->belongsTo(PlanoTesteExecucao::class);
-    }
+
 }

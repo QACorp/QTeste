@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-12 p-0">
         @include('projetos::planos_teste.casos_teste_novo')
-        <a href="" class="btn btn-danger mb-2"><i class="fas fa-ruler"></i> Executar testes</a>
+        <a href="{{ route('aplicacoes.projetos.planos-teste.executar',[$idAplicacao, $idProjeto, $idPlanoTeste]) }}" class="btn btn-danger mb-2"><i class="fas fa-ruler"></i> Iniciar uma execução</a>
         <form
             action="{{ route('aplicacoes.projetos.planos-teste.casos-teste.vincular',[$idAplicacao, $idProjeto, $idPlanoTeste]) }}"
             method="post"

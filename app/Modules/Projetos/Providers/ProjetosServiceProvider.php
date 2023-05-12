@@ -7,6 +7,7 @@ use App\Modules\Projetos\Business\CasoTesteBusiness;
 use App\Modules\Projetos\Business\DocumentoBusiness;
 use App\Modules\Projetos\Business\ObservacaoBusiness;
 use App\Modules\Projetos\Business\PlanoTesteBusiness;
+use App\Modules\Projetos\Business\PlanoTesteExecucaoBusiness;
 use App\Modules\Projetos\Business\ProjetoBusiness;
 use App\Modules\Projetos\Components\CasoTesteDetalhes;
 use App\Modules\Projetos\Config\MenuConfig;
@@ -19,6 +20,8 @@ use App\Modules\Projetos\Contracts\DocumentoRepositoryContract;
 use App\Modules\Projetos\Contracts\ObservacaoBusinessContract;
 use App\Modules\Projetos\Contracts\ObservacaoRepositoryContract;
 use App\Modules\Projetos\Contracts\PlanoTesteBusinessContract;
+use App\Modules\Projetos\Contracts\PlanoTesteExecucaoBusinessContract;
+use App\Modules\Projetos\Contracts\PlanoTesteExecucaoRepositoryContract;
 use App\Modules\Projetos\Contracts\PlanoTesteRepositoryContract;
 use App\Modules\Projetos\Contracts\ProjetoBusinessContract;
 use App\Modules\Projetos\Contracts\ProjetoRepositoryContract;
@@ -26,6 +29,7 @@ use App\Modules\Projetos\Repositorys\AplicacaoRepository;
 use App\Modules\Projetos\Repositorys\CasoTesteRepository;
 use App\Modules\Projetos\Repositorys\DocumentoRepository;
 use App\Modules\Projetos\Repositorys\ObservacaoRespository;
+use App\Modules\Projetos\Repositorys\PlanoTesteExecucaoRepository;
 use App\Modules\Projetos\Repositorys\PlanoTesteRepository;
 use App\Modules\Projetos\Repositorys\ProjetoRepository;
 use App\System\Component\DeleteModal;
@@ -49,7 +53,9 @@ class ProjetosServiceProvider extends ServiceProviderAbstract
         PlanoTesteBusinessContract::class => PlanoTesteBusiness::class,
         PlanoTesteRepositoryContract::class => PlanoTesteRepository::class,
         CasoTesteBusinessContract::class => CasoTesteBusiness::class,
-        CasoTesteRespositoryContract::class => CasoTesteRepository::class
+        CasoTesteRespositoryContract::class => CasoTesteRepository::class,
+        PlanoTesteExecucaoBusinessContract::class => PlanoTesteExecucaoBusiness::class,
+        PlanoTesteExecucaoRepositoryContract::class => PlanoTesteExecucaoRepository::class
     ];
     /**
      * Register services.

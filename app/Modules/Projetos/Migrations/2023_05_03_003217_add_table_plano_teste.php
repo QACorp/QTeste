@@ -41,7 +41,6 @@ return new class extends Migration
 
         Schema::create('projetos.caso_teste_plano_teste', function (Blueprint $table) {
 
-            $table->id();
             $table->bigInteger('caso_teste_id');
             $table->foreign('caso_teste_id')->on('projetos.casos_teste')->references('id');
 
@@ -58,12 +57,34 @@ return new class extends Migration
                 'Falhou',
                 'Abandonado',
                 'Em correção',
-            ]);
+            ])->nullable();
             $table->dateTime('data_execucao')->nullable();
             $table->bigInteger('user_id');
-            $table->bigInteger('caso_teste_plano_teste_id');
-            $table->foreign('caso_teste_plano_teste_id')->on('projetos.casos_teste_planos_teste')->references('id');
             $table->foreign('user_id')->on('users')->references('id');
+
+            $table->bigInteger('plano_teste_id');
+            $table->foreign('plano_teste_id')->on('projetos.planos_teste')->references('id');
+
+            $table->softDeletes();
+            $table->timestamps();
+        });
+
+
+        Schema::create('projetos.caso_teste_execucoes', function (Blueprint $table) {
+            $table->id();
+            $table->enum('resultado', [
+                'Passou',
+                'Falhou',
+                'Abandonado',
+                'Em correção',
+            ])->nullable();
+            $table->dateTime('data_execucao')->nullable();
+            $table->bigInteger('user_id');
+            $table->foreign('user_id')->on('users')->references('id');
+
+            $table->bigInteger('caso_teste_id');
+            $table->foreign('caso_teste_id')->on('projetos.casos_teste')->references('id');
+
             $table->softDeletes();
             $table->timestamps();
         });
