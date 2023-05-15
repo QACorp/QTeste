@@ -7,6 +7,8 @@ use Spatie\LaravelData\DataCollection;
 
 interface PlanoTesteExecucaoRepositoryContract
 {
-    public function buscarPlanoTesteExecucaoPorPlanoTeste(int $idPlanoTeste): ?PlanoTesteExecucaoDTO;
+    public function buscarUltimoPlanoTesteExecucaoPorPlanoTeste(int $idPlanoTeste): ?PlanoTesteExecucaoDTO;
+    public function buscarPlanoTesteExecucaoPorId(int $idPlanoTesteExecucao):?PlanoTesteExecucaoDTO;
     public function criarExecucaoTeste(int $idPlanoTeste):PlanoTesteExecucaoDTO;
+    public function finalizarPlanoTesteExecucao(int $idPlanoTesteExecucao, string $resultado):bool;
 }

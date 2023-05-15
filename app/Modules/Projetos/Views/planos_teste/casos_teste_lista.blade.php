@@ -1,7 +1,10 @@
 <div class="row">
     <div class="col-md-12 p-0">
         @include('projetos::planos_teste.casos_teste_novo')
-        <a href="{{ route('aplicacoes.projetos.planos-teste.executar',[$idAplicacao, $idProjeto, $idPlanoTeste]) }}" class="btn btn-danger mb-2"><i class="fas fa-ruler"></i> Iniciar uma execução</a>
+        <a href="{{ route('aplicacoes.projetos.planos-teste.criar',[$idAplicacao, $idProjeto, $idPlanoTeste]) }}" class="btn btn-danger mb-2"><i class="fas fa-list"></i> Iniciar uma  nova execução</a>
+        @if($existePlanoTesteExecucao)
+            <a href="{{ route('aplicacoes.projetos.planos-teste.executar',[$idAplicacao, $idProjeto, $idPlanoTeste]) }}" class="btn btn-primary mb-2"><i class="fas fa-tasks"></i> Continuar última execução</a>
+        @endif
         <form
             action="{{ route('aplicacoes.projetos.planos-teste.casos-teste.vincular',[$idAplicacao, $idProjeto, $idPlanoTeste]) }}"
             method="post"
@@ -64,7 +67,7 @@
                 },
                 source: function(request, response) {
                     $.ajax({
-                        url:  {{ route('aplicacoes.casos-teste.list') }},
+                        url:  "{{ route('aplicacoes.casos-teste.list') }}",
                         data:{
                             term : request.term
                         },

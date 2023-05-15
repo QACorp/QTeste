@@ -2,6 +2,7 @@
 
 namespace App\Modules\Projetos\Models;
 
+use App\System\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -23,7 +24,11 @@ class PlanoTesteExecucao extends Model
         return $this->hasMany(CasoTesteExecucao::class);
 
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
 
+    }
     public function plano_teste()
     {
         return $this->belongsTo(PlanoTeste::class);

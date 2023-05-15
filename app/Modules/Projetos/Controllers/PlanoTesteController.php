@@ -3,7 +3,9 @@
 namespace App\Modules\Projetos\Controllers;
 
 use App\Modules\Projetos\Contracts\CasoTesteBusinessContract;
+use App\Modules\Projetos\Contracts\CasoTesteExecucaoBusinessContract;
 use App\Modules\Projetos\Contracts\PlanoTesteBusinessContract;
+use App\Modules\Projetos\Contracts\PlanoTesteExecucaoBusinessContract;
 use App\Modules\Projetos\Contracts\ProjetoBusinessContract;
 use App\Modules\Projetos\DTOs\PlanoTesteDTO;
 use App\Modules\Projetos\Enums\CasoTesteEnum;
@@ -19,7 +21,8 @@ class PlanoTesteController extends Controller
     public function __construct(
         private readonly PlanoTesteBusinessContract $planoTesteBusiness,
         private readonly ProjetoBusinessContract $projetoBusiness,
-        private readonly CasoTesteBusinessContract $casoTesteBusinessContract
+        private readonly CasoTesteBusinessContract $casoTesteBusiness,
+        private readonly PlanoTesteExecucaoBusinessContract $planoTesteExecucaoBusiness
     )
     {
     }
@@ -99,7 +102,9 @@ class PlanoTesteController extends Controller
                 ...config('adminlte.datatable_config'),
                 'columns' => [null, null, null, null, ['orderable' => false]],
             ];
-            $casosTeste = $this->casoTesteBusinessContract->buscarCasoTestePorPlanoTeste($idPlanoTeste);
+            $existePlanoTesteExecucao =
+                $this->planoTesteExecucaoBusiness->buscarPlanoTesteExecucaoPorPlanoTeste($idPlanoTeste) != null;
+            $casosTeste = $this->casoTesteBusiness->buscarCasoTestePorPlanoTeste($idPlanoTeste);
             return view('projetos::planos_teste.alterar',compact(
                 'idProjeto',
                 'idAplicacao',
@@ -107,7 +112,8 @@ class PlanoTesteController extends Controller
                 'planoTeste',
                 'heads',
                 'config',
-                'casosTeste'
+                'casosTeste',
+                'existePlanoTesteExecucao'
             ));
 
         }catch (NotFoundException $exception) {

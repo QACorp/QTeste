@@ -4,6 +4,7 @@ namespace App\Modules\Projetos\Providers;
 
 use App\Modules\Projetos\Business\AplicacaoBusiness;
 use App\Modules\Projetos\Business\CasoTesteBusiness;
+use App\Modules\Projetos\Business\CasoTesteExecucaoBusiness;
 use App\Modules\Projetos\Business\DocumentoBusiness;
 use App\Modules\Projetos\Business\ObservacaoBusiness;
 use App\Modules\Projetos\Business\PlanoTesteBusiness;
@@ -14,6 +15,8 @@ use App\Modules\Projetos\Config\MenuConfig;
 use App\Modules\Projetos\Contracts\AplicacaoBusinessContract;
 use App\Modules\Projetos\Contracts\AplicacaoRepositoryContract;
 use App\Modules\Projetos\Contracts\CasoTesteBusinessContract;
+use App\Modules\Projetos\Contracts\CasoTesteExecucaoBusinessContract;
+use App\Modules\Projetos\Contracts\CasoTesteExecucaoRepositoryContract;
 use App\Modules\Projetos\Contracts\CasoTesteRespositoryContract;
 use App\Modules\Projetos\Contracts\DocumentoBusinessContract;
 use App\Modules\Projetos\Contracts\DocumentoRepositoryContract;
@@ -26,6 +29,7 @@ use App\Modules\Projetos\Contracts\PlanoTesteRepositoryContract;
 use App\Modules\Projetos\Contracts\ProjetoBusinessContract;
 use App\Modules\Projetos\Contracts\ProjetoRepositoryContract;
 use App\Modules\Projetos\Repositorys\AplicacaoRepository;
+use App\Modules\Projetos\Repositorys\CasoTesteExecucaoRepository;
 use App\Modules\Projetos\Repositorys\CasoTesteRepository;
 use App\Modules\Projetos\Repositorys\DocumentoRepository;
 use App\Modules\Projetos\Repositorys\ObservacaoRespository;
@@ -55,7 +59,9 @@ class ProjetosServiceProvider extends ServiceProviderAbstract
         CasoTesteBusinessContract::class => CasoTesteBusiness::class,
         CasoTesteRespositoryContract::class => CasoTesteRepository::class,
         PlanoTesteExecucaoBusinessContract::class => PlanoTesteExecucaoBusiness::class,
-        PlanoTesteExecucaoRepositoryContract::class => PlanoTesteExecucaoRepository::class
+        PlanoTesteExecucaoRepositoryContract::class => PlanoTesteExecucaoRepository::class,
+        CasoTesteExecucaoBusinessContract::class => CasoTesteExecucaoBusiness::class,
+        CasoTesteExecucaoRepositoryContract::class => CasoTesteExecucaoRepository::class
     ];
     /**
      * Register services.

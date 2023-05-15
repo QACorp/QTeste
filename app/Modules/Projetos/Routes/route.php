@@ -44,6 +44,10 @@ Route::group(['prefix' => 'aplicacoes'],function(){
             Route::delete('/{idPlanoTeste}/excluir',[PlanoTesteController::class,'excluir'])->name('aplicacoes.projetos.planos-teste.excluir');
             Route::put('/{idPlanoTeste}/alterar', [PlanoTesteController::class, 'alterar'])->name('aplicacoes.projetos.planos-teste.alterar');
             Route::get('/{idPlanoTeste}/executar', [PlanoTesteExecucaoController::class, 'executar'])->name('aplicacoes.projetos.planos-teste.executar');
+            Route::get('/{idPlanoTeste}/criar', [PlanoTesteExecucaoController::class, 'criar'])->name('aplicacoes.projetos.planos-teste.criar');
+
+            Route::post('/{idPlanoTeste}/execucao/{idPlanoTesteExecucao}/finalizar', [PlanoTesteExecucaoController::class, 'finalizar'])->name('aplicacoes.projetos.planos-teste.finalizar');
+            Route::post('/{idPlanoTeste}/executar/{idPlanoTesteExecucao}/{idCasoTeste}', [PlanoTesteExecucaoController::class, 'executarCasoTeste'])->name('aplicacoes.projetos.planos-teste.executar-caso-teste');
 
 
             Route::group(['prefix' => '/{idPlanoTeste}/casos-teste'],function() {
