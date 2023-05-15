@@ -77,6 +77,18 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            Execuções
+                        </div>
+                        <div class="card-body">
+                            @include('projetos::plano_teste_execucao.geral')
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 </div>
 

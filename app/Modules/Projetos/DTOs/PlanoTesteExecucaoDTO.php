@@ -20,6 +20,8 @@ class PlanoTesteExecucaoDTO extends DTO
         public ?PlanoTesteDTO $plano_teste,
         public ?string $resultado,
         #[WithCast(CastCarbonDateTime::class)]
+        public ?Carbon $created_at,
+        #[WithCast(CastCarbonDateTime::class)]
         public ?Carbon $data_execucao,
         public ?UserDTO $user
 

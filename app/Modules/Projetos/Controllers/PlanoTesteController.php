@@ -103,11 +103,31 @@ class PlanoTesteController extends Controller
                 'columns' => [null, null, null, null, ['orderable' => false]],
             ];
             $existePlanoTesteExecucao =
-                $this->planoTesteExecucaoBusiness->buscarPlanoTesteExecucaoPorPlanoTeste($idPlanoTeste) != null;
+                $this->planoTesteExecucaoBusiness->buscarUltimoPlanoTesteExecucaoPorPlanoTeste($idPlanoTeste) != null;
             $casosTeste = $this->casoTesteBusiness->buscarCasoTestePorPlanoTeste($idPlanoTeste);
+
+            $planoTesteExecucoes = $this->planoTesteExecucaoBusiness->buscarPlanosTesteExecucaoPorPlanoTeste($idPlanoTeste);
+            $headsPlanoTesteExecucao = [
+                ['label' => 'Id', 'width' => 10],
+                ['label' => 'Data Criação', 'width' => 25],
+                'Criador',
+                ['label' => 'Status', 'width' => 15],
+                ['label' => 'Ações', 'width' => 20],
+            ];
+
+            $configPlanoTesteExecucao = [
+                ...config('adminlte.datatable_config'),
+                'order' => [0,'ASC'],
+                'columns' => [null, null,null, null, ['orderable' => false]],
+            ];
+
+
             return view('projetos::planos_teste.alterar',compact(
                 'idProjeto',
                 'idAplicacao',
+                'headsPlanoTesteExecucao',
+                'configPlanoTesteExecucao',
+                'planoTesteExecucoes',
                 'idPlanoTeste',
                 'planoTeste',
                 'heads',

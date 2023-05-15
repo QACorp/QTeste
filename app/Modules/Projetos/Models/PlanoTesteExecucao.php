@@ -12,6 +12,9 @@ class PlanoTesteExecucao extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'projetos.plano_teste_execucoes';
+    protected $casts = [
+        'created_at' => 'datetime',
+    ];
     protected $fillable = [
         'resultado',
         'user_id',

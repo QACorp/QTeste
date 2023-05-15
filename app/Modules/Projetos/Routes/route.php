@@ -47,6 +47,8 @@ Route::group(['prefix' => 'aplicacoes'],function(){
             Route::get('/{idPlanoTeste}/criar', [PlanoTesteExecucaoController::class, 'criar'])->name('aplicacoes.projetos.planos-teste.criar');
 
             Route::post('/{idPlanoTeste}/execucao/{idPlanoTesteExecucao}/finalizar', [PlanoTesteExecucaoController::class, 'finalizar'])->name('aplicacoes.projetos.planos-teste.finalizar');
+            Route::get('/{idPlanoTeste}/plano-teste-execucao/{idPlanoTesteExecucao}/executar', [PlanoTesteExecucaoController::class, 'executarGeral'])->name('aplicacoes.projetos.planos-teste-execucao.visualizar');
+
             Route::post('/{idPlanoTeste}/executar/{idPlanoTesteExecucao}/{idCasoTeste}', [PlanoTesteExecucaoController::class, 'executarCasoTeste'])->name('aplicacoes.projetos.planos-teste.executar-caso-teste');
 
 
@@ -77,3 +79,4 @@ Route::group(['prefix' => '/casos-teste'],function() {
 Route::group(['prefix' => '/planos-teste'],function() {
     Route::get('/', [PlanoTesteController::class, 'index'])->name('aplicacoes.planos-teste.index');
 });
+

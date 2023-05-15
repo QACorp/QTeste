@@ -8,7 +8,6 @@ use App\Modules\Projetos\Contracts\PlanoTesteExecucaoRepositoryContract;
 use App\Modules\Projetos\DTOs\PlanoTesteExecucaoDTO;
 use App\Modules\Projetos\Enums\PlanoTesteExecucaoEnum;
 use App\System\Exceptions\NotFoundException;
-use http\Client\Curl\User;
 use Spatie\LaravelData\DataCollection;
 
 class PlanoTesteExecucaoBusiness implements PlanoTesteExecucaoBusinessContract
@@ -20,9 +19,12 @@ class PlanoTesteExecucaoBusiness implements PlanoTesteExecucaoBusinessContract
     {
     }
 
-    public function buscarPlanoTesteExecucaoPorPlanoTeste(int $idPlanoTeste): ?PlanoTesteExecucaoDTO
+    public function buscarUltimoPlanoTesteExecucaoPorPlanoTeste(int $idPlanoTeste): ?PlanoTesteExecucaoDTO
     {
-        return  $this->planoTesteExecucaoRepository->buscarUltimoPlanoTesteExecucaoPorPlanoTeste($idPlanoTeste);
+        $planoTesteExecucao =  $this->planoTesteExecucaoRepository->buscarUltimoPlanoTesteExecucaoPorPlanoTeste($idPlanoTeste);
+        if($planoTesteExecucao == null)
+            throw new NotFoundException();
+        return $planoTesteExecucao;
 
     }
 
@@ -50,5 +52,24 @@ class PlanoTesteExecucaoBusiness implements PlanoTesteExecucaoBusinessContract
         });
         return $this->planoTesteExecucaoRepository->finalizarPlanoTesteExecucao($idPlanoTesteExecucao, $status);
 
+    }
+
+    public function buscarTodosPlanoTesteExecucao(): DataCollection
+    {
+        return $this->planoTesteExecucaoRepository->buscarTodosPlanoTesteExecucao();
+    }
+
+    public function buscarPlanoTesteExecucaoPorId(int $idPlanoTesteExecucao): ?PlanoTesteExecucaoDTO
+    {
+        $planoTesteExecucao = $this->planoTesteExecucaoRepository->buscarPlanoTesteExecucaoPorId($idPlanoTesteExecucao);
+        if(!$planoTesteExecucao)
+            throw new NotFoundException();
+
+        return $planoTesteExecucao;
+    }
+
+    public function buscarPlanosTesteExecucaoPorPlanoTeste(int $idPlanoTeste): DataCollection
+    {
+        return $this->planoTesteExecucaoRepository->buscarPlanosTesteExecucaoPorPlanoTeste($idPlanoTeste);
     }
 }

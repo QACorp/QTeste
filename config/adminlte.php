@@ -17,7 +17,21 @@ return [
     'title' => 'QAKit',
     'title_prefix' => '',
     'title_postfix' => '',
-    'datatable_config' => [],
+    'datatable_config' => [
+        'language' => [
+            'lengthMenu' => 'Mostrando _MENU_ registros',
+            'info'      => 'Mostrando _START_ até _END_ de um total de _TOTAL_ registros',
+            'search'    => 'Buscar',
+            'emptyTable'=> 'Nenhuma informação disponível',
+            'decimal'   => ",",
+            'paginate'  => [
+                'first'     => 'Primeiro',
+                'previous'  => 'Anterior',
+                'next'      => 'Próximo',
+                'last'      => 'ùltimo'
+            ]
+        ]
+    ],
     /*
     |--------------------------------------------------------------------------
     | Favicon
