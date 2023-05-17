@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\System\Models\User;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -37,5 +41,13 @@ Route::post('password/reset', 'App\System\Http\Controllers\Auth\ResetPasswordCon
 Route::get('/home', function() {
     return view('home');
 })->name('home')->middleware('auth');
+Route::get('/teste', function() {
+    $user = User::find(3);
+//    $role = Role::create(['name' => 'ADMINISTRADOR']);
+//    $permission = Permission::create(['name' => 'LISTAR_APLICACAO']);
+//    $role->givePermissionTo($permission);
+    $user->assignRole('ADMINISTRADOR');
 
+    dd($user->can('LISTAR_APLICACAO'));
+})->name('home')->middleware('auth');
 

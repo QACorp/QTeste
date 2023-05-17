@@ -10,11 +10,12 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\DataProperty;
+use Spatie\Permission\Traits\HasRoles;
 use Yajra\Acl\Traits\HasRoleAndPermission;
 
 class User extends Authenticatable implements Cast
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoleAndPermission;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
