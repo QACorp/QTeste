@@ -10,10 +10,12 @@ use App\Modules\Projetos\Requests\PlanoTestePostRequest;
 use App\Modules\Projetos\Requests\PlanoTestePutRequest;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
+use App\System\Impl\BusinessAbstract;
+use App\System\PermisissionEnum;
 use Illuminate\Support\Facades\Validator;
 use Spatie\LaravelData\DataCollection;
 
-class PlanoTesteBusiness implements PlanoTesteBusinessContract
+class PlanoTesteBusiness extends BusinessAbstract implements PlanoTesteBusinessContract
 {
     public function __construct(
         private readonly PlanoTesteRepositoryContract $planoTesteRepository,
@@ -24,15 +26,17 @@ class PlanoTesteBusiness implements PlanoTesteBusinessContract
 
     public function buscarPlanosTestePorProjeto(int $idProjeto): DataCollection
     {
+        $this->can(PermisissionEnum::LISTAR_PLANO_TESTE->value);
         return $this->planoTesteRepository->buscarPlanosTestePorProjeto($idProjeto);
     }
 
-    public function salvarPlanoTeste(PlanoTesteDTO $planoTesteDTO): PlanoTesteDTO
+    public function salvarPlanoTeste(PlanoTesteDTO $planoTesteDTO, PlanoTestePostRequest $planoTestePostRequest = new PlanoTestePostRequest()): PlanoTesteDTO
     {
+        $this->can(PermisissionEnum::INSERIR_PLANO_TESTE->value);
         if($this->projetoBusiness->buscarPorIdProjeto($planoTesteDTO->projeto_id) == null)
             throw new NotFoundException();
 
-        $validator = Validator::make($planoTesteDTO->toArray(), (new PlanoTestePostRequest())->rules());
+        $validator = Validator::make($planoTesteDTO->toArray(), $planoTestePostRequest->rules());
         if ($validator->fails()) {
             throw new UnprocessableEntityException($validator);
         }
@@ -42,6 +46,7 @@ class PlanoTesteBusiness implements PlanoTesteBusinessContract
 
     public function excluirPlanoTeste(int $idPlanoTeste): bool
     {
+        $this->can(PermisissionEnum::REMOVER_PLANO_TESTE->value);
         if($this->planoTesteRepository->buscarPlanoTestePorId($idPlanoTeste) == null)
             throw new NotFoundException();
         return $this->planoTesteRepository->excluirPlanoTeste($idPlanoTeste);
@@ -49,19 +54,20 @@ class PlanoTesteBusiness implements PlanoTesteBusinessContract
 
     public function buscarPlanoTestePorId(int $idPlanoTeste): ?PlanoTesteDTO
     {
+        $this->can(PermisissionEnum::LISTAR_PLANO_TESTE->value);
         $planoTeste = $this->planoTesteRepository->buscarPlanoTestePorId($idPlanoTeste);
         if(!$planoTeste)
             throw new NotFoundException();
         return $planoTeste;
     }
 
-    public function alterarPlanoTeste(PlanoTesteDTO $planoTesteDTO): PlanoTesteDTO
+    public function alterarPlanoTeste(PlanoTesteDTO $planoTesteDTO, PlanoTestePutRequest $planoTestePutRequest = new PlanoTestePutRequest()): PlanoTesteDTO
     {
-
+        $this->can(PermisissionEnum::ALTERAR_PLANO_TESTE->value);
         if($this->buscarPlanoTestePorId($planoTesteDTO->id) == null)
             throw new NotFoundException();
 
-        $validator = Validator::make($planoTesteDTO->toArray(), (new PlanoTestePutRequest())->rules());
+        $validator = Validator::make($planoTesteDTO->toArray(), $planoTestePutRequest->rules());
         if ($validator->fails()) {
             throw new UnprocessableEntityException($validator);
         }
@@ -71,6 +77,7 @@ class PlanoTesteBusiness implements PlanoTesteBusinessContract
 
     public function buscarTodosPlanoTeste(): DataCollection
     {
+        $this->can(PermisissionEnum::LISTAR_PLANO_TESTE->value);
         return $this->planoTesteRepository->buscarTodosPlanoTeste();
     }
 }

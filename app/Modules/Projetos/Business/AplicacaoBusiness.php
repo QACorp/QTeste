@@ -9,10 +9,12 @@ use App\Modules\Projetos\Requests\AplicacoesPostRequest;
 use App\Modules\Projetos\Requests\AplicacoesPutRequest;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Exceptions\NotFoundException;
+use App\System\Impl\BusinessAbstract;
+use App\System\PermisissionEnum;
 use Illuminate\Support\Facades\Validator;
 use Spatie\LaravelData\DataCollection;
 
-class AplicacaoBusiness implements AplicacaoBusinessContract
+class AplicacaoBusiness extends BusinessAbstract implements AplicacaoBusinessContract
 {
     public function __construct(
         private readonly AplicacaoRepositoryContract $aplicacaoRepository
@@ -22,13 +24,15 @@ class AplicacaoBusiness implements AplicacaoBusinessContract
 
     public function buscarTodos(): DataCollection
     {
+
+        $this->can(PermisissionEnum::LISTAR_APLICACAO->value);
         return  $this->aplicacaoRepository->buscarTodos();
     }
 
-    public function salvar(AplicacaoDTO $aplicacaoDTO): AplicacaoDTO
+    public function salvar(AplicacaoDTO $aplicacaoDTO, AplicacoesPostRequest $aplicacoesPostRequest = new AplicacoesPostRequest()): AplicacaoDTO
     {
-
-        $validator = Validator::make($aplicacaoDTO->toArray(), (new AplicacoesPostRequest())->rules());
+        $this->can(PermisissionEnum::INSERIR_APLICACAO->value);
+        $validator = Validator::make($aplicacaoDTO->toArray(), $aplicacoesPostRequest->rules());
         if ($validator->fails()) {
             throw new UnprocessableEntityException($validator);
         }
@@ -37,16 +41,18 @@ class AplicacaoBusiness implements AplicacaoBusinessContract
 
     public function buscarPorId(int $id): AplicacaoDTO
     {
+        $this->can(PermisissionEnum::LISTAR_APLICACAO->value);
         return $this->aplicacaoRepository->buscarPorId($id) ?? throw new NotFoundException();
     }
 
-    public function alterar(AplicacaoDTO $aplicacaoDTO): AplicacaoDTO
+    public function alterar(AplicacaoDTO $aplicacaoDTO, AplicacoesPutRequest $aplicacoesPutRequest = new AplicacoesPutRequest()): AplicacaoDTO
     {
+        $this->can(PermisissionEnum::ALTERAR_APLICACAO->value);
         if($this->buscarPorId($aplicacaoDTO->id) == null){
             throw new NotFoundException();
         }
 
-        $validator = Validator::make($aplicacaoDTO->toArray(), (new AplicacoesPutRequest())->rules());
+        $validator = Validator::make($aplicacaoDTO->toArray(), $aplicacoesPutRequest->rules());
         if ($validator->fails()) {
             throw new UnprocessableEntityException($validator);
         }
@@ -56,6 +62,7 @@ class AplicacaoBusiness implements AplicacaoBusinessContract
 
     public function excluir(int $id): bool
     {
+        $this->can(PermisissionEnum::REMOVER_APLICACAO->value);
         if($this->buscarPorId($id) == null){
             throw new NotFoundException();
         }

@@ -8,9 +8,11 @@ use App\Modules\Projetos\Contracts\PlanoTesteExecucaoRepositoryContract;
 use App\Modules\Projetos\DTOs\PlanoTesteExecucaoDTO;
 use App\Modules\Projetos\Enums\PlanoTesteExecucaoEnum;
 use App\System\Exceptions\NotFoundException;
+use App\System\Impl\BusinessAbstract;
+use App\System\PermisissionEnum;
 use Spatie\LaravelData\DataCollection;
 
-class PlanoTesteExecucaoBusiness implements PlanoTesteExecucaoBusinessContract
+class PlanoTesteExecucaoBusiness extends BusinessAbstract implements PlanoTesteExecucaoBusinessContract
 {
     public function __construct(
         private readonly PlanoTesteExecucaoRepositoryContract $planoTesteExecucaoRepository,
@@ -21,6 +23,7 @@ class PlanoTesteExecucaoBusiness implements PlanoTesteExecucaoBusinessContract
 
     public function buscarUltimoPlanoTesteExecucaoPorPlanoTeste(int $idPlanoTeste): ?PlanoTesteExecucaoDTO
     {
+        $this->can(PermisissionEnum::LISTAR_EXECUCAO_PLANO_TESTE->value);
         $planoTesteExecucao =  $this->planoTesteExecucaoRepository->buscarUltimoPlanoTesteExecucaoPorPlanoTeste($idPlanoTeste);
         if($planoTesteExecucao == null)
             throw new NotFoundException();
@@ -30,11 +33,13 @@ class PlanoTesteExecucaoBusiness implements PlanoTesteExecucaoBusinessContract
 
     public function criarExecucaoTeste(int $idPlanoTeste): PlanoTesteExecucaoDTO
     {
+        $this->can(PermisissionEnum::INSERIR_EXECUCAO_PLANO_TESTE->value);
         return $this->planoTesteExecucaoRepository->criarExecucaoTeste($idPlanoTeste);
     }
 
     public function finalizarPlanoTesteExecucao(int $idPlanoTesteExecucao): bool
     {
+        $this->can(PermisissionEnum::FINALIZAR_PLANO_TESTE->value);
         if(!$this->planoTesteExecucaoRepository->buscarPlanoTesteExecucaoPorId($idPlanoTesteExecucao))
             throw new NotFoundException();
 
@@ -56,11 +61,13 @@ class PlanoTesteExecucaoBusiness implements PlanoTesteExecucaoBusinessContract
 
     public function buscarTodosPlanoTesteExecucao(): DataCollection
     {
+        $this->can(PermisissionEnum::LISTAR_EXECUCAO_PLANO_TESTE->value);
         return $this->planoTesteExecucaoRepository->buscarTodosPlanoTesteExecucao();
     }
 
     public function buscarPlanoTesteExecucaoPorId(int $idPlanoTesteExecucao): ?PlanoTesteExecucaoDTO
     {
+        $this->can(PermisissionEnum::LISTAR_EXECUCAO_PLANO_TESTE->value);
         $planoTesteExecucao = $this->planoTesteExecucaoRepository->buscarPlanoTesteExecucaoPorId($idPlanoTesteExecucao);
         if(!$planoTesteExecucao)
             throw new NotFoundException();
@@ -70,6 +77,7 @@ class PlanoTesteExecucaoBusiness implements PlanoTesteExecucaoBusinessContract
 
     public function buscarPlanosTesteExecucaoPorPlanoTeste(int $idPlanoTeste): DataCollection
     {
+        $this->can(PermisissionEnum::LISTAR_EXECUCAO_PLANO_TESTE->value);
         return $this->planoTesteExecucaoRepository->buscarPlanosTesteExecucaoPorPlanoTeste($idPlanoTeste);
     }
 }

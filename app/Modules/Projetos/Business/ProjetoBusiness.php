@@ -11,10 +11,12 @@ use App\Modules\Projetos\Requests\ProjetosPostRequest;
 use App\Modules\Projetos\Requests\ProjetosPutRequest;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
+use App\System\Impl\BusinessAbstract;
+use App\System\PermisissionEnum;
 use Illuminate\Support\Facades\Validator;
 use Spatie\LaravelData\DataCollection;
 
-class ProjetoBusiness implements ProjetoBusinessContract
+class ProjetoBusiness extends BusinessAbstract implements ProjetoBusinessContract
 {
     public function __construct(
         private readonly ProjetoRepositoryContract $projetoRepository,
@@ -25,6 +27,7 @@ class ProjetoBusiness implements ProjetoBusinessContract
 
     public function buscarTodosPorAplicacao(int $aplicacaoId): DataCollection
     {
+        $this->can(PermisissionEnum::LISTAR_PROJETO->value);
         try {
             $this->aplicacaoBusiness->buscarPorId($aplicacaoId);
             return $this->projetoRepository->buscarTodosPorAplicacao($aplicacaoId);
@@ -36,6 +39,7 @@ class ProjetoBusiness implements ProjetoBusinessContract
 
     public function buscarPorAplicacaoEProjeto(int $idAplicacao, int $idProjeto): ProjetoDTO
     {
+        $this->can(PermisissionEnum::LISTAR_PROJETO->value);
         $projeto = $this->projetoRepository->buscarPorId($idProjeto);
 
         if($projeto == null || $projeto->aplicacao_id != $idAplicacao)
@@ -44,12 +48,13 @@ class ProjetoBusiness implements ProjetoBusinessContract
         return $projeto;
     }
 
-    public function atualizar(ProjetoDTO $projetoDTO): ProjetoDTO
+    public function atualizar(ProjetoDTO $projetoDTO, ProjetosPutRequest $projetosPutRequest = new ProjetosPutRequest()): ProjetoDTO
     {
+        $this->can(PermisissionEnum::ALTERAR_PROJETO->value);
         if(!$this->projetoExists($projetoDTO->aplicacao_id, $projetoDTO->id))
             throw new NotFoundException();
 
-        $validator = Validator::make($projetoDTO->toArray(), (new ProjetosPutRequest())->rules());
+        $validator = Validator::make($projetoDTO->toArray(), $projetosPutRequest->rules());
         if ($validator->fails()) {
             throw new UnprocessableEntityException($validator);
         }
@@ -59,6 +64,7 @@ class ProjetoBusiness implements ProjetoBusinessContract
 
     public function excluir(int $idAplicacao, int $idProjeto): bool
     {
+        $this->can(PermisissionEnum::REMOVER_PROJETO->value);
         if(!$this->projetoExists($idAplicacao, $idProjeto))
             throw new NotFoundException();
 
@@ -74,9 +80,10 @@ class ProjetoBusiness implements ProjetoBusinessContract
         return true;
     }
 
-    public function inserir(ProjetoDTO $projetoDTO): ProjetoDTO
+    public function inserir(ProjetoDTO $projetoDTO, ProjetosPostRequest $projetosPostRequest = new ProjetosPostRequest()): ProjetoDTO
     {
-        $validator = Validator::make($projetoDTO->toArray(), (new ProjetosPostRequest())->rules());
+        //$this->can(PermisissionEnum::INSERIR_PROJETO->value);
+        $validator = Validator::make($projetoDTO->toArray(), $projetosPostRequest->rules());
 
         if ($validator->fails()) {
             throw new UnprocessableEntityException($validator);
@@ -86,6 +93,7 @@ class ProjetoBusiness implements ProjetoBusinessContract
 
     public function buscarPorIdProjeto(int $idProjeto): ?ProjetoDTO
     {
+        $this->can(PermisissionEnum::LISTAR_PROJETO->value);
         return $this->projetoRepository->buscarPorId($idProjeto);
     }
 }

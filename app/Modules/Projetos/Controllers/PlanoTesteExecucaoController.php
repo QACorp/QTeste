@@ -9,6 +9,7 @@ use App\Modules\Projetos\DTOs\PlanoTesteExecucaoDTO;
 use App\System\Exceptions\ConflictException;
 use App\System\Exceptions\NotFoundException;
 use App\System\Http\Controllers\Controller;
+use App\System\PermisissionEnum;
 use Illuminate\Http\Request;
 use Spatie\LaravelData\DataCollection;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
@@ -21,6 +22,7 @@ class PlanoTesteExecucaoController extends Controller
         private readonly CasoTesteExecucaoBusinessContract $casoTesteExecucaoBusiness
     )
     {
+        $this->middleware = ['middleware' => 'permission:'.PermisissionEnum::EXECUTAR_CASO_TESTE->value];
     }
 
     public function executar(Request $request, int $idAplicacao, int $idProjeto, int $idPlanoTeste)

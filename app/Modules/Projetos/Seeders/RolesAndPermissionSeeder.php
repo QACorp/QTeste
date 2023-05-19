@@ -14,6 +14,8 @@ class RolesAndPermissionSeeder extends Seeder
      */
     public function run(): void
     {
+        Permission::create(['name' => 'ACESSAR_SISTEMA']);
+
         Permission::create(['name' => 'LISTAR_APLICACAO']);
         Permission::create(['name' => 'REMOVER_APLICACAO']);
         Permission::create(['name' => 'INSERIR_APLICACAO']);
@@ -25,6 +27,8 @@ class RolesAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'ALTERAR_PROJETO']);
         Permission::create(['name' => 'ADICIONAR_COMENTARIO_PROJETO']);
         Permission::create(['name' => 'ADICIONAR_DOCUMENTO_PROJETO']);
+        Permission::create(['name' => 'REMOVER_COMENTARIO_PROJETO']);
+        Permission::create(['name' => 'REMOVER_DOCUMENTO_PROJETO']);
 
         Permission::create(['name' => 'LISTAR_PLANO_TESTE']);
         Permission::create(['name' => 'REMOVER_PLANO_TESTE']);
@@ -32,6 +36,8 @@ class RolesAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'ALTERAR_PLANO_TESTE']);
 
         Permission::create(['name' => 'LISTAR_CASO_TESTE']);
+        Permission::create(['name' => 'VINCULAR_CASO_TESTE']);
+        Permission::create(['name' => 'DESVINCULAR_CASO_TESTE']);
         Permission::create(['name' => 'REMOVER_CASO_TESTE']);
         Permission::create(['name' => 'INSERIR_CASO_TESTE']);
         Permission::create(['name' => 'ALTERAR_CASO_TESTE']);
@@ -61,7 +67,10 @@ class RolesAndPermissionSeeder extends Seeder
             'LISTAR_PLANO_TESTE',
             'EXECUTAR_CASO_TESTE',
             'FINALIZAR_PLANO_TESTE',
-            'ALTERAR_PROJETO'
+            'ALTERAR_PROJETO',
+            'ACESSAR_SISTEMA',
+            'VINCULAR_CASO_TESTE',
+            'DESVINCULAR_CASO_TESTE',
 
         ]);
 
@@ -80,7 +89,10 @@ class RolesAndPermissionSeeder extends Seeder
             'LISTAR_PLANO_TESTE',
             'ALTERAR_APLICACAO',
             'ADICIONAR_COMENTARIO_PROJETO',
-            'ADICIONAR_DOCUMENTO_PROJETO'
+            'ADICIONAR_DOCUMENTO_PROJETO',
+            'ACESSAR_SISTEMA',
+            'REMOVER_COMENTARIO_PROJETO',
+            'REMOVER_DOCUMENTO_PROJETO'
         ]);
 
         $roleDesenvolvedor= Role::create(['name' => 'DESENVOLVEDOR']);
@@ -92,7 +104,8 @@ class RolesAndPermissionSeeder extends Seeder
             'LISTAR_PROJETO',
             'LISTAR_PLANO_TESTE',
             'EXECUTAR_CASO_TESTE',
-            'FINALIZAR_PLANO_TESTE'
+            'FINALIZAR_PLANO_TESTE',
+            'ACESSAR_SISTEMA'
         ]);
 
     }

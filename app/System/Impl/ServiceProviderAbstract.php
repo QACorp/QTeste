@@ -2,6 +2,7 @@
 
 namespace App\System\Impl;
 
+use App\System\PermisissionEnum;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -15,7 +16,7 @@ abstract class ServiceProviderAbstract extends ServiceProvider
     {
         View::addNamespace($this->view_namespace, app_path($this->module_path. '/Views'));
         Route::prefix($this->prefix)
-            ->middleware(['web', 'auth'])
+            ->middleware(['web', 'auth'/*,'permission:'.PermisissionEnum::ACESSAR_SISTEMA->value*/])
             ->group(app_path($this->module_path. '/Routes/route.php'));
 
     }

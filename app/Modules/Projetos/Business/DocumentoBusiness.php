@@ -10,10 +10,12 @@ use App\Modules\Projetos\Requests\DocumentosPostRequest;
 use App\Modules\Projetos\Requests\ProjetosPostRequest;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
+use App\System\Impl\BusinessAbstract;
+use App\System\PermisissionEnum;
 use Illuminate\Support\Facades\Validator;
 use Spatie\LaravelData\DataCollection;
 
-class DocumentoBusiness implements DocumentoBusinessContract
+class DocumentoBusiness extends BusinessAbstract implements DocumentoBusinessContract
 {
     public function __construct(
         private readonly DocumentoRepositoryContract $documentoRepository,
@@ -31,13 +33,14 @@ class DocumentoBusiness implements DocumentoBusinessContract
         return $this->documentoRepository->buscarTodosPorProjeto($idProjeto);
     }
 
-    public function salvar(DocumentoDTO $documentoDTO): DocumentoDTO
+    public function salvar(DocumentoDTO $documentoDTO, DocumentosPostRequest $documentosPostRequest = new DocumentosPostRequest()): DocumentoDTO
     {
+        $this->can(PermisissionEnum::ADICIONAR_DOCUMENTO_PROJETO->value);
         $projeto = $this->projetoBusiness->buscarPorIdProjeto($documentoDTO->projeto_id);
         if($projeto == null)
             throw new NotFoundException();
 
-        $validator = Validator::make($documentoDTO->toArray(), (new DocumentosPostRequest())->rules());
+        $validator = Validator::make($documentoDTO->toArray(), $documentosPostRequest->rules());
 
         if ($validator->fails()) {
             throw new UnprocessableEntityException($validator);
@@ -48,6 +51,7 @@ class DocumentoBusiness implements DocumentoBusinessContract
 
     public function excluir(int $idProjeto, int $idDocumento): bool
     {
+        $this->can(PermisissionEnum::REMOVER_DOCUMENTO_PROJETO->value);
         $projeto = $this->projetoBusiness->buscarPorIdProjeto($idProjeto);
         if($projeto == null)
             throw new NotFoundException();
