@@ -1,4 +1,5 @@
 <div class="row">
+    @can(\App\System\Enuns\PermisissionEnum::ADICIONAR_DOCUMENTO_PROJETO->value)
     <form method="post" action="{{ route('aplicacoes.projetos.documento.salvar',[$projeto->aplicacao_id , $projeto->id]) }}">
         @csrf
         <div class="row">
@@ -31,6 +32,7 @@
             </div>
         </div>
     </form>
+    @endcan
 </div>
 <div class="row">
     <x-adminlte-datatable
@@ -55,11 +57,13 @@
                 <td><a target="__blank" href="{{ $documento->url }}">{{ $documento->titulo }}</a></td>
                 <td>{{ $documento->created_at->format('d/m/Y H\hi') }}</td>
                 <td>
+                    @can(\App\System\Enuns\PermisissionEnum::REMOVER_DOCUMENTO_PROJETO->value)
                     <x-delete-modal
                         :registro="$documento"
                         message="Deseja excluir o registro {{ $documento->titulo }}?"
                         route="{{ route('aplicacoes.projetos.documento.excluir', [$projeto->aplicacao_id, $projeto->id, $documento->id]) }}"
                     />
+                    @endcan
                 </td>
             </tr>
         @empty

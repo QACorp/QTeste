@@ -2,16 +2,11 @@
 
 namespace App\Modules\Projetos\DTOs;
 
-use App\Modules\Projetos\Casts\CastCasosTesteCollection;
-use App\Modules\Projetos\Casts\CastPlanoTeste;
-use App\Modules\Projetos\Casts\CastProjeto;
 use App\System\Casts\CastCarbonDateTime;
-use App\System\UserDTO;
+use App\System\DTOs\UserDTO;
 use App\System\Utils\DTO;
 use Carbon\Carbon;
 use Spatie\LaravelData\Attributes\WithCast;
-use Spatie\LaravelData\Contracts\DataCollectable;
-use Spatie\LaravelData\DataCollection;
 
 class PlanoTesteExecucaoDTO extends DTO
 {

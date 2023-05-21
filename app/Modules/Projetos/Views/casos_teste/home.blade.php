@@ -4,7 +4,11 @@
 @section('plugins.Datatables', true)
 @section('plugins.DatatablesPlugin', true)
 @section('content_header')
-    <h1 class="m-0 text-dark">Casos de teste   <a class="btn btn-primary" href="{{route('aplicacoes.casos-teste.inserir')}}"><i class="fas fa-plus"></i> </a></h1>
+    <h1 class="m-0 text-dark">Casos de teste
+        @can(\App\System\Enuns\PermisissionEnum::INSERIR_CASO_TESTE->value)
+        <a class="btn btn-primary" href="{{route('aplicacoes.casos-teste.inserir')}}"><i class="fas fa-plus"></i> </a>
+        @endcan
+    </h1>
 
 @stop
 
@@ -32,16 +36,18 @@
                                     <x-caso-teste-detalhes
                                         :registro="$casoTeste"
                                     />
+                                    @can(\App\System\Enuns\PermisissionEnum::ALTERAR_CASO_TESTE->value)
                                     <a class="btn btn-warning btn-sm" title="Alterar" href="{{ route('aplicacoes.casos-teste.editar',$casoTeste->id) }}">
                                         <i class="fas fa-edit"></i>
                                     </a>
-
+                                    @endcan
+                                    @can(\App\System\Enuns\PermisissionEnum::REMOVER_CASO_TESTE->value)
                                     <x-delete-modal
                                         :registro="$casoTeste"
                                         message="Deseja excluir caso de teste?"
                                         route="{{ route('aplicacoes.casos-teste.excluir',$casoTeste->id) }}"
                                     />
-
+                                    @endcan
                                 </td>
                             </tr>
                         @endforeach

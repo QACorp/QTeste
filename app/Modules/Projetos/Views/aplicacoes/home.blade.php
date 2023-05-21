@@ -4,7 +4,12 @@
 @section('plugins.Datatables', true)
 @section('plugins.DatatablesPlugin', true)
 @section('content_header')
-    <h1 class="m-0 text-dark">Aplicações   <a class="btn btn-primary" href="{{route('aplicacoes.inserir')}}"><i class="fas fa-plus"></i> </a></h1>
+    <h1 class="m-0 text-dark">Aplicações
+        @can(\App\System\Enuns\PermisissionEnum::INSERIR_APLICACAO->value)
+        <a class="btn btn-primary" href="{{route('aplicacoes.inserir')}}"><i class="fas fa-plus"></i> </a>
+        @endcan
+    </h1>
+
 
 @stop
 
@@ -29,14 +34,19 @@
                                 <td>{{ $aplicacao->nome }}</td>
                                 <td>{{ $aplicacao->descricao }}</td>
                                 <td>
+                                    @can(\App\System\Enuns\PermisissionEnum::LISTAR_PROJETO->value)
                                     <a class="btn btn-dark btn-sm" title="Acessar projetos" href="{{ route('aplicacoes.projetos.index',$aplicacao->id) }}"><i class="fas fa-cogs"></i> </a>
-
+                                    @endcan
+                                    @can(\App\System\Enuns\PermisissionEnum::ALTERAR_APLICACAO->value)
                                     <a class="btn btn-warning btn-sm" title="Editar" href="{{ route('aplicacoes.editar',$aplicacao->id) }}"><i class="fas fa-edit"></i> </a>
+                                    @endcan
+                                    @can(\App\System\Enuns\PermisissionEnum::REMOVER_APLICACAO->value)
                                     <x-delete-modal
                                         :registro="$aplicacao"
                                         message="Deseja excluir o registro {{ $aplicacao->nome }}?"
                                         route="{{ route('aplicacoes.excluir', $aplicacao->id) }}"
                                     />
+                                    @endcan
 
                                 </td>
                             </tr>

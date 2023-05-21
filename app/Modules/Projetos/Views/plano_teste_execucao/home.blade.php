@@ -21,12 +21,14 @@
                                 </p>
                                 <h3 class="display-3">{{ $planoTesteExecucao->resultado }}</h3>
                                 <hr class="my-4">
+                                @can(\App\System\Enuns\PermisissionEnum::INSERIR_EXECUCAO_PLANO_TESTE->value)
                                 <a class="btn btn-{{$planoTesteExecucao->resultado == \App\Modules\Projetos\Enums\PlanoTesteExecucaoEnum::PASSOU->value ? 'success' : 'danger' }} btn-lg"
                                    href="{{ route('aplicacoes.projetos.planos-teste.criar',[$idAplicacao, $idProjeto, $planoTesteExecucao->plano_teste->id]) }}"
                                    role="button"
                                 >
                                     Gerar uma nova execução
                                 </a>
+                                @endcan
                             </div>
                         </div>
                     </div>
@@ -79,7 +81,9 @@
                                                         </div>
                                                         @php $casoTesteExiste = $casoTesteExecucaoBusiness->casoTesteExecutado($planoTesteExecucao->id, $casoTeste->id)  @endphp
                                                         <div class="row mt-2 bg-gray-light rounded-bottom rounded-top p-3">
-                                                            @if(!$casoTesteExiste && $planoTesteExecucao->resultado == null)
+                                                            @if(!$casoTesteExiste &&
+                                                                    $planoTesteExecucao->resultado == null)
+                                                                @can(\App\System\Enuns\PermisissionEnum::EXECUTAR_CASO_TESTE->value)
                                                                 <div class="col-md-1">
                                                                     <form method="post" action="{{ route('aplicacoes.projetos.planos-teste.executar-caso-teste', [$idAplicacao, $idProjeto, $planoTesteExecucao->plano_teste->id, $planoTesteExecucao->id, $casoTeste->id]) }}">
                                                                         @csrf
@@ -105,6 +109,7 @@
                                                                         />
                                                                     </form>
                                                                 </div>
+                                                                @endcan
                                                             @else
                                                                 <div class="col-md-12">
 
@@ -126,9 +131,11 @@
                                             </div>
                                         @endforeach
                                         @if($casosTeste->count() > 0 && $planoTesteExecucao->resultado == null)
+                                                @can(\App\System\Enuns\PermisissionEnum::FINALIZAR_PLANO_TESTE->value)
                                                 <div class="row mt-2 bg-gray-light rounded-bottom rounded-top p-3">
                                                     @include('projetos::plano_teste_execucao.modal_finalizar_execucao')
                                                 </div>
+                                                @endcan
                                         @endif
 
                             </div>

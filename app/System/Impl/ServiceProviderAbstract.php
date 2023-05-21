@@ -2,7 +2,6 @@
 
 namespace App\System\Impl;
 
-use App\System\PermisissionEnum;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;

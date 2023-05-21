@@ -6,13 +6,12 @@ use App\Modules\Projetos\Contracts\CasoTesteBusinessContract;
 use App\Modules\Projetos\Contracts\CasoTesteExecucaoBusinessContract;
 use App\Modules\Projetos\Contracts\PlanoTesteExecucaoBusinessContract;
 use App\Modules\Projetos\DTOs\PlanoTesteExecucaoDTO;
+use App\System\Enuns\PermisissionEnum;
 use App\System\Exceptions\ConflictException;
 use App\System\Exceptions\NotFoundException;
 use App\System\Http\Controllers\Controller;
-use App\System\PermisissionEnum;
 use Illuminate\Http\Request;
 use Spatie\LaravelData\DataCollection;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 
 class PlanoTesteExecucaoController extends Controller
 {

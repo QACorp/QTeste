@@ -7,10 +7,12 @@ use App\Modules\Projetos\Contracts\AplicacaoRepositoryContract;
 use App\Modules\Projetos\DTOs\AplicacaoDTO;
 use App\Modules\Projetos\Requests\AplicacoesPostRequest;
 use App\Modules\Projetos\Requests\AplicacoesPutRequest;
-use App\System\Exceptions\UnprocessableEntityException;
+use App\System\Enuns\PermisissionEnum;
+use App\System\Enuns\RoleEnum;
 use App\System\Exceptions\NotFoundException;
+use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Impl\BusinessAbstract;
-use App\System\PermisissionEnum;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Spatie\LaravelData\DataCollection;
 

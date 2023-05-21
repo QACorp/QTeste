@@ -5,9 +5,9 @@ namespace App\Modules\Projetos\Business;
 use App\Modules\Projetos\Contracts\CasoTesteExecucaoBusinessContract;
 use App\Modules\Projetos\Contracts\CasoTesteExecucaoRepositoryContract;
 use App\Modules\Projetos\DTOs\CasoTesteExecucaoDTO;
+use App\System\Enuns\PermisissionEnum;
 use App\System\Exceptions\ConflictException;
 use App\System\Impl\BusinessAbstract;
-use App\System\PermisissionEnum;
 use Spatie\LaravelData\DataCollection;
 
 class CasoTesteExecucaoBusiness extends BusinessAbstract implements CasoTesteExecucaoBusinessContract

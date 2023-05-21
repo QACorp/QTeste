@@ -7,9 +7,9 @@ use App\Modules\Projetos\Contracts\PlanoTesteExecucaoBusinessContract;
 use App\Modules\Projetos\Contracts\PlanoTesteExecucaoRepositoryContract;
 use App\Modules\Projetos\DTOs\PlanoTesteExecucaoDTO;
 use App\Modules\Projetos\Enums\PlanoTesteExecucaoEnum;
+use App\System\Enuns\PermisissionEnum;
 use App\System\Exceptions\NotFoundException;
 use App\System\Impl\BusinessAbstract;
-use App\System\PermisissionEnum;
 use Spatie\LaravelData\DataCollection;
 
 class PlanoTesteExecucaoBusiness extends BusinessAbstract implements PlanoTesteExecucaoBusinessContract

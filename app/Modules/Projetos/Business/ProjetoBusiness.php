@@ -6,13 +6,12 @@ use App\Modules\Projetos\Contracts\AplicacaoBusinessContract;
 use App\Modules\Projetos\Contracts\ProjetoBusinessContract;
 use App\Modules\Projetos\Contracts\ProjetoRepositoryContract;
 use App\Modules\Projetos\DTOs\ProjetoDTO;
-use App\Modules\Projetos\Requests\AplicacoesPutRequest;
 use App\Modules\Projetos\Requests\ProjetosPostRequest;
 use App\Modules\Projetos\Requests\ProjetosPutRequest;
+use App\System\Enuns\PermisissionEnum;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Impl\BusinessAbstract;
-use App\System\PermisissionEnum;
 use Illuminate\Support\Facades\Validator;
 use Spatie\LaravelData\DataCollection;
 

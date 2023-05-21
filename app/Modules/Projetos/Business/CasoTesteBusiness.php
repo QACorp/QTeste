@@ -8,10 +8,10 @@ use App\Modules\Projetos\DTOs\CasoTesteDTO;
 use App\Modules\Projetos\DTOs\PlanoTesteDTO;
 use App\Modules\Projetos\Requests\CasoTestePostRequest;
 use App\Modules\Projetos\Requests\CasoTestePutRequest;
+use App\System\Enuns\PermisissionEnum;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Impl\BusinessAbstract;
-use App\System\PermisissionEnum;
 use Illuminate\Support\Facades\Validator;
 use Spatie\LaravelData\DataCollection;
 

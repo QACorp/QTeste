@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\System\PermisissionEnum;
 /*
 |--------------------------------------------------------------------------
 | Web Routes

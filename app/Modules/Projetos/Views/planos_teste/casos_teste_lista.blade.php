@@ -1,10 +1,15 @@
 <div class="row">
     <div class="col-md-12 p-0">
         @include('projetos::planos_teste.casos_teste_novo')
+        @can(\App\System\Enuns\PermisissionEnum::INSERIR_EXECUCAO_PLANO_TESTE->value)
         <a href="{{ route('aplicacoes.projetos.planos-teste.criar',[$idAplicacao, $idProjeto, $idPlanoTeste]) }}" class="btn btn-danger mb-2"><i class="fas fa-list"></i> Iniciar uma  nova execução</a>
-        @if($existePlanoTesteExecucao)
-            <a href="{{ route('aplicacoes.projetos.planos-teste.executar',[$idAplicacao, $idProjeto, $idPlanoTeste]) }}" class="btn btn-primary mb-2"><i class="fas fa-tasks"></i> Continuar última execução</a>
-        @endif
+        @endcan
+        @can(\App\System\Enuns\PermisissionEnum::EXECUTAR_CASO_TESTE->value)
+            @if($existePlanoTesteExecucao)
+                <a href="{{ route('aplicacoes.projetos.planos-teste.executar',[$idAplicacao, $idProjeto, $idPlanoTeste]) }}" class="btn btn-primary mb-2"><i class="fas fa-tasks"></i> Continuar última execução</a>
+            @endif
+        @endcan
+        @can(\App\System\Enuns\PermisissionEnum::VINCULAR_CASO_TESTE->value)
         <form
             action="{{ route('aplicacoes.projetos.planos-teste.casos-teste.vincular',[$idAplicacao, $idProjeto, $idPlanoTeste]) }}"
             method="post"
@@ -22,9 +27,10 @@
                 </x-slot>
             </x-adminlte-input>
         </form>
-
+        @endcan
     </div>
 </div>
+@can(\App\System\Enuns\PermisissionEnum::LISTAR_CASO_TESTE->value)
 <x-adminlte-datatable
     id="casos_teste"
     :heads="$heads"
@@ -44,16 +50,19 @@
                 <x-caso-teste-detalhes
                     :registro="$casoTeste"
                 />
+                @can(\App\System\Enuns\PermisissionEnum::DESVINCULAR_CASO_TESTE->value)
                  <x-delete-modal
                     :registro="$casoTeste"
                     message="Deseja desvincular caso de teste?"
                     route="{{ route('aplicacoes.projetos.planos-teste.casos-teste.desvincular',[$idAplicacao, $idProjeto, $idPlanoTeste, $casoTeste->id]) }}"
                 />
+                @endcan
 
             </td>
         </tr>
     @endforeach
 </x-adminlte-datatable>
+@endcan
 
 @section('js')
 

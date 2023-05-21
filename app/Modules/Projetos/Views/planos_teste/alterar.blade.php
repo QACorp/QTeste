@@ -72,7 +72,9 @@
                             Casos de teste
                         </div>
                         <div class="card-body">
+                            @can(\App\System\Enuns\PermisissionEnum::LISTAR_CASO_TESTE->value)
                             @include('projetos::planos_teste.casos_teste_lista')
+                            @endcan
                         </div>
                     </div>
                 </div>
@@ -84,7 +86,9 @@
                             Execuções
                         </div>
                         <div class="card-body">
+                            @can(\App\System\Enuns\PermisissionEnum::LISTAR_EXECUCAO_PLANO_TESTE->value)
                             @include('projetos::plano_teste_execucao.geral')
+                            @endcan
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\System;
+namespace App\System\DTOs;
 
 use App\System\Utils\DTO;
 

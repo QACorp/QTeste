@@ -2,14 +2,12 @@
 
 namespace App\Modules\Projetos\DTOs;
 
-use App\System\Casts\CastCarbonDate;
 use App\System\Casts\CastCarbonDateTime;
+use App\System\DTOs\UserDTO;
 use App\System\Models\User;
-use App\System\UserDTO;
 use App\System\Utils\DTO;
 use Carbon\Carbon;
 use Spatie\LaravelData\Attributes\WithCast;
-use Spatie\LaravelData\Casts\DateTimeInterfaceCast;
 
 class ObservacaoDTO extends DTO
 {
