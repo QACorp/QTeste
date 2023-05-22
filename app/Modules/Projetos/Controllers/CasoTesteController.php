@@ -5,10 +5,12 @@ namespace App\Modules\Projetos\Controllers;
 
 use App\Modules\Projetos\Contracts\CasoTesteBusinessContract;
 use App\Modules\Projetos\DTOs\CasoTesteDTO;
+use App\System\Enuns\PermisissionEnum;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CasoTesteController extends Controller
 {
@@ -19,11 +21,13 @@ class CasoTesteController extends Controller
     }
 
     public function list(Request $request){
+        Auth::user()->can(PermisissionEnum::LISTAR_CASO_TESTE->value);
         return response($this->casoTesteBusiness->buscarCasoTestePorString($request->term)->toJson());
     }
 
     public function vincular(Request $request, $idAplicacao, $idProjeto, $idPlanoTeste)
     {
+        Auth::user()->can(PermisissionEnum::VINCULAR_CASO_TESTE->value);
         $casoTesteDTO = CasoTesteDTO::from($request->all());
         $casoTesteDTO->id = $request->post('caso_teste_id');
         try{
@@ -44,6 +48,7 @@ class CasoTesteController extends Controller
     public function desvincular(Request $request, $idAplicacao, $idProjeto, $idPlanoTeste, $idCasoTeste)
     {
         try{
+            Auth::user()->can(PermisissionEnum::DESVINCULAR_CASO_TESTE->value);
             $this->casoTesteBusiness->desvincular($idPlanoTeste, $idCasoTeste);
 
             return redirect(route('aplicacoes.projetos.planos-teste.visualizar', [$idAplicacao, $idProjeto, $idPlanoTeste]))
@@ -58,6 +63,8 @@ class CasoTesteController extends Controller
         }
     }
     public function inserirEVincular(Request $request, int $idAplicacao, int $idProjeto, ?int $idPlanoTeste){
+        Auth::user()->can([PermisissionEnum::INSERIR_CASO_TESTE->value,PermisissionEnum::VINCULAR_CASO_TESTE->value]);
+
         $casoTesteDTO = CasoTesteDTO::from($request);
         try{
             $casoTeste = $this->casoTesteBusiness->inserirCasoTeste($casoTesteDTO);
@@ -72,6 +79,7 @@ class CasoTesteController extends Controller
     }
 
     public function index(){
+        Auth::user()->can(PermisissionEnum::LISTAR_CASO_TESTE->value);
         $heads = [
             ['label' => 'Id', 'width' => 10],
             ['label' => 'Requisito', 'width' => 25],
@@ -92,6 +100,7 @@ class CasoTesteController extends Controller
 
     public function excluir(Request $request, int $idCasoTeste)
     {
+        Auth::user()->can(PermisissionEnum::REMOVER_CASO_TESTE->value);
         try{
             $this->casoTesteBusiness->excluir($idCasoTeste);
             return redirect(route('aplicacoes.casos-teste.index'))
@@ -104,6 +113,7 @@ class CasoTesteController extends Controller
 
     public function editar(Request $request, int $idCasoTeste)
     {
+        Auth::user()->can(PermisissionEnum::ALTERAR_CASO_TESTE->value);
         try{
             $casoTeste = $this->casoTesteBusiness->buscarCasoTestePorId($idCasoTeste);
             return view('projetos::casos_teste.alterar',compact('casoTeste'));
@@ -115,6 +125,7 @@ class CasoTesteController extends Controller
     }
     public function atualizar(Request $request, int $idCasoTeste)
     {
+        Auth::user()->can(PermisissionEnum::ALTERAR_CASO_TESTE->value);
         try{
             $casoTesteDTO = CasoTesteDTO::from($request->all());
             $casoTesteDTO->id = $idCasoTeste;
@@ -134,10 +145,12 @@ class CasoTesteController extends Controller
 
     public function inserir()
     {
+        Auth::user()->can(PermisissionEnum::INSERIR_CASO_TESTE->value);
         return view('projetos::casos_teste.inserir');
     }
     public function salvar(Request $request)
     {
+        Auth::user()->can(PermisissionEnum::INSERIR_CASO_TESTE->value);
         try{
             $casoTesteDTO = CasoTesteDTO::from($request->all());
             $this->casoTesteBusiness->inserirCasoTeste($casoTesteDTO);

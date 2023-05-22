@@ -11,6 +11,7 @@ use App\System\Exceptions\ConflictException;
 use App\System\Exceptions\NotFoundException;
 use App\System\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Spatie\LaravelData\DataCollection;
 
 class PlanoTesteExecucaoController extends Controller
@@ -21,7 +22,7 @@ class PlanoTesteExecucaoController extends Controller
         private readonly CasoTesteExecucaoBusinessContract $casoTesteExecucaoBusiness
     )
     {
-        $this->middleware = ['middleware' => 'permission:'.PermisissionEnum::EXECUTAR_CASO_TESTE->value];
+
     }
 
     public function executar(Request $request, int $idAplicacao, int $idProjeto, int $idPlanoTeste)
@@ -53,7 +54,7 @@ class PlanoTesteExecucaoController extends Controller
 
     public function criar(int $idAplicacao, int $idProjeto, int $idPlanoTeste)
     {
-
+        Auth::user()->can(PermisissionEnum::INSERIR_EXECUCAO_PLANO_TESTE->value);
         $this->planoTesteExecucaoBusiness->criarExecucaoTeste($idPlanoTeste);
         return redirect(route('aplicacoes.projetos.planos-teste.executar',[$idAplicacao, $idProjeto, $idPlanoTeste]))
             ->with([Controller::MESSAGE_KEY_SUCCESS => ['Execução criada com sucesso'],]);
@@ -67,6 +68,7 @@ class PlanoTesteExecucaoController extends Controller
                                       int $idPlanoTesteExecucao,
                                       int $idCasoTeste)
     {
+        Auth::user()->can(PermisissionEnum::EXECUTAR_CASO_TESTE->value);
         try{
             $this->casoTesteExecucaoBusiness->executarCasoTeste($idPlanoTesteExecucao, $idCasoTeste, $request->status);
             return redirect(route('aplicacoes.projetos.planos-teste.executar',[$idAplicacao, $idProjeto, $idPlanoTeste]))
@@ -84,6 +86,7 @@ class PlanoTesteExecucaoController extends Controller
                                       int $idPlanoTesteExecucao
     )
     {
+        Auth::user()->can(PermisissionEnum::FINALIZAR_PLANO_TESTE->value);
         try {
             $this->planoTesteExecucaoBusiness->finalizarPlanoTesteExecucao($idPlanoTesteExecucao);
             return redirect(route('aplicacoes.projetos.planos-teste.executar',[$idAplicacao, $idProjeto, $idPlanoTeste]))
@@ -110,8 +113,5 @@ class PlanoTesteExecucaoController extends Controller
                 ->with([Controller::MESSAGE_KEY_ERROR => ['Não existe esta excução']]);
 
         }
-
-
     }
-
 }

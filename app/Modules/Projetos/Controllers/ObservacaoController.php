@@ -4,10 +4,12 @@ namespace App\Modules\Projetos\Controllers;
 
 use App\Modules\Projetos\Contracts\ObservacaoBusinessContract;
 use App\Modules\Projetos\DTOs\ObservacaoDTO;
+use App\System\Enuns\PermisissionEnum;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 class ObservacaoController extends Controller
@@ -20,6 +22,7 @@ class ObservacaoController extends Controller
 
     public function salvar(Request $request, int $idAplicacao, int $idProjeto)
     {
+        Auth::user()->can(PermisissionEnum::ADICIONAR_COMENTARIO_PROJETO->value);
         try{
             $observacaoDTO = ObservacaoDTO::from($request->all());
             $observacaoDTO->projeto_id = $idProjeto;

@@ -4,10 +4,12 @@ namespace App\Modules\Projetos\Controllers;
 
 use App\Modules\Projetos\Contracts\AplicacaoBusinessContract;
 use App\Modules\Projetos\DTOs\AplicacaoDTO;
+use App\System\Enuns\PermisissionEnum;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 class AplicacaoController extends Controller
@@ -21,6 +23,7 @@ class AplicacaoController extends Controller
     }
     public function index()
     {
+        Auth::user()->can(PermisissionEnum::LISTAR_APLICACAO->value);
         $aplicacoes = $this->aplicacaoBusiness->buscarTodos();
 
         $heads = [
@@ -40,11 +43,13 @@ class AplicacaoController extends Controller
 
     public function inserir()
     {
+        Auth::user()->can(PermisissionEnum::INSERIR_APLICACAO->value);
         return view('projetos::aplicacoes.inserir');
     }
 
     public function salvar(Request $request)
     {
+        Auth::user()->can(PermisissionEnum::INSERIR_APLICACAO->value);
         try {
             $this->aplicacaoBusiness->salvar(AplicacaoDTO::from($request->all()));
             return redirect(route('aplicacoes.index'))
@@ -59,6 +64,7 @@ class AplicacaoController extends Controller
     public function editar(Request $request, int $id)
     {
         try{
+            Auth::user()->can(PermisissionEnum::ALTERAR_APLICACAO->value);
             $aplicacao = $this->aplicacaoBusiness->buscarPorId($id);
             return view('projetos::aplicacoes.alterar',compact('aplicacao'));
         }catch (NotFoundException $exception){
@@ -70,6 +76,7 @@ class AplicacaoController extends Controller
 
     public function atualizar(Request $request, int $id)
     {
+        Auth::user()->can(PermisissionEnum::ALTERAR_APLICACAO->value);
         try{
             $aplicacaoDTO = AplicacaoDTO::from($request->all());
             $aplicacaoDTO->id = $id;
@@ -88,6 +95,7 @@ class AplicacaoController extends Controller
     public function excluir(Request $request, $id)
     {
         try{
+            Auth::user()->can(PermisissionEnum::REMOVER_APLICACAO->value);
             $this->aplicacaoBusiness->excluir($id);
             return redirect(route('aplicacoes.index'))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Aplicação removida com sucesso']]);
