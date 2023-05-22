@@ -30,10 +30,11 @@ class PlanoTesteExecucaoController extends Controller
         try{
 
             $planoTesteExecucao = $this->planoTesteExecucaoBusiness->buscarUltimoPlanoTesteExecucaoPorPlanoTeste($idPlanoTeste);
+            if($planoTesteExecucao == null) throw new NotFoundException();
             $casosTeste = $this->casoTesteBusiness->buscarCasoTestePorPlanoTeste($idPlanoTeste);
             return $this->exibirViewExecucao($request, $planoTesteExecucao, $casosTeste, $idAplicacao, $idProjeto);
         }catch (NotFoundException $exception){
-            return redirect(route('aplicacoes.projetos.planos-teste.index',[$idAplicacao, $idProjeto]))
+            return redirect(route('aplicacoes.projetos.planos-teste.visualizar',[$idAplicacao, $idProjeto, $idPlanoTeste]))
                 ->with([Controller::MESSAGE_KEY_ERROR => ['Não existe execução para o plano de teste #'.$idPlanoTeste]]);
         }
 

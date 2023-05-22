@@ -83,7 +83,7 @@ return new class extends Migration
             $table->foreign('user_id')->on('users')->references('id');
 
             $table->bigInteger('plano_teste_execucao_id');
-            $table->foreign('plano_teste_execucao_id')->on('plano_teste_execucoes')->references('id');
+            $table->foreign('plano_teste_execucao_id')->on('rojetos.plano_teste_execucoes')->references('id');
 
             $table->bigInteger('caso_teste_id');
             $table->foreign('caso_teste_id')->on('projetos.casos_teste')->references('id');

@@ -24,9 +24,7 @@ class PlanoTesteExecucaoBusiness extends BusinessAbstract implements PlanoTesteE
     public function buscarUltimoPlanoTesteExecucaoPorPlanoTeste(int $idPlanoTeste): ?PlanoTesteExecucaoDTO
     {
         $this->can(PermisissionEnum::LISTAR_EXECUCAO_PLANO_TESTE->value);
-        $planoTesteExecucao =  $this->planoTesteExecucaoRepository->buscarUltimoPlanoTesteExecucaoPorPlanoTeste($idPlanoTeste);
-        if($planoTesteExecucao == null)
-            throw new NotFoundException();
+        $planoTesteExecucao =  $this->planoTesteExecucaoRepository->buscarUltimoPlanoTesteExecucaoPorPlanoTeste($idPlanoTeste);    
         return $planoTesteExecucao;
 
     }
