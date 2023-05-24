@@ -211,7 +211,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // 'ExampleClass' => App\Example\ExampleClass::class,
+         'StringUtils' => \App\System\Helpers\StringUtils::class,
     ])->toArray(),
 
 ];

@@ -48,10 +48,10 @@ return new class extends Migration
         Permission::create(['name' => 'EXECUTAR_CASO_TESTE']);
         Permission::create(['name' => 'FINALIZAR_PLANO_TESTE']);
 
-        $roleAdministrador = Role::create(['name' => 'ADMINISTRADOR']);
+        $roleAdministrador = Role::findByName('ADMINISTRADOR');
         $roleAdministrador->syncPermissions(Permission::all());
 
-        $roleAuditor = Role::create(['name' => 'AUDITOR']);
+        $roleAuditor = Role::findByName('AUDITOR');
         $roleAuditor->syncPermissions([
             'LISTAR_EXECUCAO_PLANO_TESTE',
             'REMOVER_EXECUCAO_PLANO_TESTE',
@@ -73,7 +73,7 @@ return new class extends Migration
 
         ]);
 
-        $roleGestor= Role::create(['name' => 'GESTOR']);
+        $roleGestor = Role::findByName('GESTOR');
         $roleGestor->syncPermissions([
             'LISTAR_EXECUCAO_PLANO_TESTE',
             'REMOVER_EXECUCAO_PLANO_TESTE',
@@ -94,7 +94,7 @@ return new class extends Migration
             'REMOVER_DOCUMENTO_PROJETO'
         ]);
 
-        $roleDesenvolvedor= Role::create(['name' => 'DESENVOLVEDOR']);
+        $roleDesenvolvedor = Role::findByName('DESENVOLVEDOR');
         $roleDesenvolvedor->syncPermissions([
             'LISTAR_EXECUCAO_PLANO_TESTE',
             'INSERIR_EXECUCAO_PLANO_TESTE',

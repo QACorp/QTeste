@@ -15,7 +15,7 @@ abstract class ServiceProviderAbstract extends ServiceProvider
     {
         View::addNamespace($this->view_namespace, app_path($this->module_path. '/Views'));
         Route::prefix($this->prefix)
-            ->middleware(['web', 'auth'/*,'permission:'.PermisissionEnum::ACESSAR_SISTEMA->value*/])
+            ->middleware(['web', 'auth'])
             ->group(app_path($this->module_path. '/Routes/route.php'));
 
     }

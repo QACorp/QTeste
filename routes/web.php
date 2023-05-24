@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\System\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,6 +35,14 @@ Route::post('password/email', 'App\System\Http\Controllers\Auth\ResetPasswordCon
 Route::post('password/reset', 'App\System\Http\Controllers\Auth\ResetPasswordController@reset');
 
 //Route::get('teste',[\App\Modules\Example\Controller\ExampleController::class,'myMethod'])->middleware('auth');
+
+Route::group(['prefix' => 'usuarios', 'middleware' => 'auth'],function(){
+    Route::get('/', [UserController::class,'index'])->name('users.index');
+    Route::get('/{idUsuario}', [UserController::class,'editar'])->name('users.editar');
+
+    Route::put('/{idUsuario}', [UserController::class,'atualizar'])->name('users.atualizar');
+});
+
 Route::get('/home', function() {
     return view('home');
 })->name('home')->middleware(['auth']);
