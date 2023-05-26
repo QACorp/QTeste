@@ -15,7 +15,7 @@
                         @csrf
                         @method('put')
                         <div class="row">
-                            <div class="col-md-9">
+                            <div class="col-md-6">
                                 <div class="row">
                                     <x-adminlte-input
                                         name="name"
@@ -47,7 +47,7 @@
                                         fgroup-class="col-md-6"
                                     >
                                         @foreach(\App\System\Enuns\RoleEnum::cases() as $role)
-                                            <option @if(collect(old('roles',$user->roles->items()))->where('name',$role->value)->count() > 0)) selected @endif value="{{ $role->value }}">{{ $role->value }}</option>
+                                            <option @if(collect($userController->convertDataCollectionRoleDTO(old('roles',$user->roles->items())))->where('name',$role->value)->count() > 0)) selected @endif value="{{ $role->value }}">{{ $role->value }}</option>
                                         @endforeach
                                     </x-adminlte-select2>
                                 </div>
@@ -63,7 +63,7 @@
                                     ><i class="fas fa-undo"></i> Cancelar</a>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-6">
 
                             </div>
                         </div>

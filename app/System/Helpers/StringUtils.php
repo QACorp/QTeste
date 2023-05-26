@@ -12,6 +12,6 @@ class StringUtils
         foreach ($collection as $item){
             $stringReturnable[] = $item[$field];
         }
-        return implode(',', $stringReturnable);
+        return implode(', ', $stringReturnable);
     }
 }

@@ -14,6 +14,7 @@ class UserDTO extends DTO
         public int $id,
         public string $name,
         public string $email,
+        public ?string $password,
         #[WithCast(CastRoles::class)]
         public ?DataCollectable $roles,
     )

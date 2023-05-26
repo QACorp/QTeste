@@ -25,4 +25,24 @@ class UserRepository implements UserRepositoryContract
                     ->first();
         return $user ? UserDTO::from($user) : null;
     }
+
+    public function alterar(UserDTO $userDTO): UserDTO
+    {
+
+        $user = User::find($userDTO->id);
+        if(empty($userDTO->password))
+            $userDTO->password = $user->password;
+
+        $user->fill($userDTO->toArray());
+        $user->update();
+        return UserDTO::from($user);
+    }
+
+    public function vincularPerfil(array $perfil, int $userId): UserDTO
+    {
+        $user = User::find($userId);
+        $user->syncRoles($perfil);
+
+        return UserDTO::from($user);
+    }
 }
