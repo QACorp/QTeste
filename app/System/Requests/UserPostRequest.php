@@ -23,8 +23,7 @@ class UserPostRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'email' => 'unique:users,email|email:rfc,dns',
-            'password' => 'same:password_confirm'
+            'email' => 'unique:users,email|email:rfc,dns'
         ];
     }
 }

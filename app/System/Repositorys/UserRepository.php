@@ -45,4 +45,11 @@ class UserRepository implements UserRepositoryContract
 
         return UserDTO::from($user);
     }
+
+    public function salvar(UserDTO $userDTO): UserDTO
+    {
+        $user = new User($userDTO->toArray());
+        $user->save();
+        return UserDTO::from($user);
+    }
 }

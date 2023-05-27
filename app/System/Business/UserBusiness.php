@@ -9,6 +9,7 @@ use App\System\Enuns\PermisissionEnum;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Impl\BusinessAbstract;
+use App\System\Requests\UserPostRequest;
 use App\System\Requests\UserPutRequest;
 use Illuminate\Support\Facades\Validator;
 use Spatie\LaravelData\DataCollection;
@@ -44,6 +45,18 @@ class UserBusiness extends BusinessAbstract implements UserBusinessContract
             throw new UnprocessableEntityException($validator);
         }
         $user = $this->userRepository->alterar($userDTO);
+        $this->userRepository->vincularPerfil($userDTO->roles->toArray(), $user->id);
+        return $user;
+    }
+
+    public function salvar(UserDTO $userDTO, UserPostRequest $userPostRequest = new UserPostRequest()): UserDTO
+    {
+        $this->can(PermisissionEnum::INSERIR_USUARIO->value);
+        $validator = Validator::make($userDTO->toArray(), $userPostRequest->rules());
+        if ($validator->fails()) {
+            throw new UnprocessableEntityException($validator);
+        }
+        $user = $this->userRepository->salvar($userDTO);
         $this->userRepository->vincularPerfil($userDTO->roles->toArray(), $user->id);
         return $user;
     }

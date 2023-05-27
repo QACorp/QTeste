@@ -62,8 +62,6 @@ class UserController extends Controller
                 ->withErrors($exception->getValidator())
                 ->withInput();
         }
-
-
     }
 
     public function editarSenha(Request $request, int $idUsuario)
@@ -98,7 +96,19 @@ class UserController extends Controller
 
     public function salvar(Request $request)
     {
-        dd($request->all());
+        try {
+            $userDTO = UserDTO::from([
+                ...$request->only(['name', 'email']),
+                'roles' => $this->converterArrayEmRoleDTO($request->roles)
+            ]);
+            $this->userBusiness->salvar($userDTO);
+            return redirect(route('users.index'))
+                ->with([Controller::MESSAGE_KEY_SUCCESS => ['Usuário inserido com sucesso']]);
+        }catch (UnprocessableEntityException $exception){
+            return redirect(route('users.inserir'))
+                ->withErrors($exception->getValidator())
+                ->withInput();
+        }
 
     }
 }
