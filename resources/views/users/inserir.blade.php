@@ -1,8 +1,8 @@
 @extends('adminlte::page')
 @section('plugins.Select2', true)
-@section('title', 'QAKit - Usuários | Alterar')
+@section('title', 'QAKit - Usuários | Inserir')
 @section('content_header')
-    <h1 class="m-0 text-dark">Alterar usuário </h1>
+    <h1 class="m-0 text-dark">Inserir usuário </h1>
 
 @stop
 
@@ -11,9 +11,8 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <form method="post" action="{{ route('users.atualizar',$user->id) }}">
+                    <form method="post" action="{{ route('users.salvar') }}">
                         @csrf
-                        @method('put')
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="row">
@@ -22,7 +21,7 @@
                                         label="Nome"
                                         placeholder="Nome"
                                         fgroup-class="col-md-6"
-                                        value="{{ old('nome',$user->name) }}"
+                                        value="{{ old('nome','') }}"
                                         required
                                     />
                                 </div>
@@ -32,7 +31,7 @@
                                         label="E-mail"
                                         placeholder="algum@email.com"
                                         fgroup-class="col-md-6"
-                                        value="{{ old('email',$user->email) }}"
+                                        value="{{ old('email','') }}"
                                         required
                                     />
                                 </div>
@@ -47,7 +46,7 @@
                                         fgroup-class="col-md-6"
                                     >
                                         @foreach(\App\System\Enuns\RoleEnum::cases() as $role)
-                                            <option @if(collect($userController->convertArrayRoleDTO(old('roles',$user->roles->items())))->where('name',$role->value)->count() > 0)) selected @endif value="{{ $role->value }}">{{ $role->value }}</option>
+                                            <option @if(collect($userController->convertArrayRoleDTO(old('roles',[])))->where('name',$role->value)->count() > 0)) selected @endif value="{{ $role->value }}">{{ $role->value }}</option>
                                         @endforeach
                                     </x-adminlte-select2>
                                 </div>

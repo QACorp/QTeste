@@ -5,8 +5,8 @@
 @section('plugins.DatatablesPlugin', true)
 @section('content_header')
     <h1 class="m-0 text-dark">Usuários
-        @can(\App\System\Enuns\PermisissionEnum::INSERIR_APLICACAO->value)
-{{--        <a class="btn btn-primary" href="{{route('aplicacoes.inserir')}}"><i class="fas fa-plus"></i> </a>--}}
+        @can(\App\System\Enuns\PermisissionEnum::INSERIR_USUARIO->value)
+        <a class="btn btn-primary" href="{{route('users.inserir')}}"><i class="fas fa-plus"></i> </a>
         @endcan
     </h1>
 
@@ -37,6 +37,9 @@
                                 <td>
                                     @can(\App\System\Enuns\PermisissionEnum::ALTERAR_USUARIO->value)
                                         <a class="btn btn-warning btn-sm" title="Editar" href="{{ route('users.editar',$user->id) }}"><i class="fas fa-edit"></i> </a>
+                                    @endcan
+                                    @can(\App\System\Enuns\PermisissionEnum::ALTERAR_SENHA_USUARIO->value)
+                                        <a class="btn btn-dark btn-sm" title="Alterar senha" href="{{ route('users.editar-senha',$user->id) }}"><i class="fas fa-key"></i> </a>
                                     @endcan
                                 </td>
                             </tr>

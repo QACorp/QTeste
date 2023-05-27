@@ -11,7 +11,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <form method="post" action="{{ route('users.atualizar',$user->id) }}">
+                    <form method="post" action="{{ route('users.atualizar-senha',$user->id) }}">
                         @csrf
                         @method('put')
                         <div class="row">
@@ -47,7 +47,7 @@
                                         fgroup-class="col-md-6"
                                     >
                                         @foreach(\App\System\Enuns\RoleEnum::cases() as $role)
-                                            <option @if(collect($userController->convertArrayRoleDTO(old('roles',$user->roles->items())))->where('name',$role->value)->count() > 0)) selected @endif value="{{ $role->value }}">{{ $role->value }}</option>
+                                            <option @if(collect($userController->convertDataCollectionRoleDTO(old('roles',$user->roles->items())))->where('name',$role->value)->count() > 0)) selected @endif value="{{ $role->value }}">{{ $role->value }}</option>
                                         @endforeach
                                     </x-adminlte-select2>
                                 </div>

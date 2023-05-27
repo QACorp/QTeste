@@ -65,6 +65,12 @@ class UserController extends Controller
 
 
     }
+
+    public function editarSenha(Request $request, int $idUsuario)
+    {
+        $user = $this->userBusiness->buscarPorId($idUsuario);
+        return view('users.alterar-senha', [...compact('user'),'userController' => $this]);
+    }
     private function converterArrayEmRoleDTO(array $roles): DataCollection
     {
         $collectionRoles = [];
@@ -73,7 +79,6 @@ class UserController extends Controller
         }
         return RoleDTO::collection($collectionRoles);
     }
-
     public function convertArrayRoleDTO(array $lista):array
     {
         $roles = [];
@@ -84,5 +89,16 @@ class UserController extends Controller
                 $roles[] = RoleDTO::from(['name' => $item]);
         }
         return $roles;
+    }
+    public function inserir(Request $request)
+    {
+
+        return view('users.inserir', ['userController' => $this]);
+    }
+
+    public function salvar(Request $request)
+    {
+        dd($request->all());
+
     }
 }

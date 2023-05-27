@@ -42,4 +42,5 @@ enum PermisissionEnum:string
         case ALTERAR_USUARIO = 'ALTERAR_USUARIO';
         case REMOVER_USUARIO = 'REMOVER_USUARIO';
         case INSERIR_USUARIO = 'INSERIR_USUARIO';
+        case ALTERAR_SENHA_USUARIO = 'ALTERAR_SENHA_USUARIO';
 }

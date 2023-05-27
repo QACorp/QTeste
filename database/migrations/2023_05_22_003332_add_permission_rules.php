@@ -22,6 +22,7 @@ return new class extends Migration
         Permission::create(['name' => 'INSERIR_USUARIO']);
         Permission::create(['name' => 'ALTERAR_USUARIO']);
         Permission::create(['name' => 'REMOVER_USUARIO']);
+        Permission::create(['name' => 'ALTERAR_SENHA_USUARIO']);
 
         $roleAdministrador = Role::findByName('ADMINISTRADOR');
         $roleAdministrador->syncPermissions(Permission::all());

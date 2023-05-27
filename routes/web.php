@@ -38,8 +38,12 @@ Route::post('password/reset', 'App\System\Http\Controllers\Auth\ResetPasswordCon
 
 Route::group(['prefix' => 'usuarios', 'middleware' => 'auth'],function(){
     Route::get('/', [UserController::class,'index'])->name('users.index');
-    Route::get('/{idUsuario}', [UserController::class,'editar'])->name('users.editar');
+    Route::get('/inserir', [UserController::class,'inserir'])->name('users.inserir');
 
+    Route::get('/{idUsuario}', [UserController::class,'editar'])->name('users.editar');
+    Route::get('/{idUsuario}/alterar-senha', [UserController::class,'editarSenha'])->name('users.editar-senha');
+
+    Route::post('/inserir', [UserController::class,'salvar'])->name('users.salvar');
     Route::put('/{idUsuario}', [UserController::class,'atualizar'])->name('users.atualizar');
 });
 
