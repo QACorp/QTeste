@@ -1,8 +1,8 @@
 @extends('adminlte::page')
 @section('plugins.Select2', true)
-@section('title', 'QAKit - Usuários | Alterar')
+@section('title', 'QAKit - Usuários | Alterar Senha')
 @section('content_header')
-    <h1 class="m-0 text-dark">Alterar usuário </h1>
+    <h1 class="m-0 text-dark"><i class="fas fa-key"></i> Alterar senha </h1>
 
 @stop
 
@@ -14,8 +14,24 @@
                     <form method="post" action="{{ route('users.atualizar-senha',$user->id) }}">
                         @csrf
                         @method('put')
+
                         <div class="row">
                             <div class="col-md-6">
+                                <div class="row">
+                                    <x-adminlte-input
+                                        value="{{ $user->email }}"
+                                        name="usuario"
+                                        label="E-mail"
+                                        readonly
+                                        fgroup-class="col-md-6"
+                                    >
+                                        <x-slot name="prependSlot">
+                                            <div class="input-group-text bg-dark">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                        </x-slot>
+                                    </x-adminlte-input>
+                                </div>
                                 <div class="row">
                                     <x-adminlte-input
                                         name="password"

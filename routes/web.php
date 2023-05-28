@@ -13,12 +13,8 @@ use App\System\Http\Controllers\UserController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
-
-Route::get('/home', [App\System\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\System\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Authentication Routes...
 Route::get('login', 'App\System\Http\Controllers\Auth\LoginController@showLoginForm')->name('login');

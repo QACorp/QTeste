@@ -15,12 +15,6 @@ class MenuConfig extends MenuConfigAbstract
             // Add some items to the menu...
             $event->menu->add('Projetos');
             $event->menu->add([
-                'key' => 'project_index',
-                'route' => 'projetos.index',
-                'icon'  => 'fas  fa-users',
-                'text' => 'Projetos',
-            ]);
-            $event->menu->add([
                 'key' => 'aplicacao_index',
                 'route' => 'aplicacoes.index',
                 'icon'  => 'fas fa-cogs',
