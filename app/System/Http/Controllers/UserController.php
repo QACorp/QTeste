@@ -63,30 +63,33 @@ class UserController extends Controller
                 ->withInput();
         }
     }
-
     public function editarSenha(Request $request, int $idUsuario)
     {
         $user = $this->userBusiness->buscarPorId($idUsuario);
-        return view('users.alterar-senha', [...compact('user'),'userController' => $this]);
+        return view('users.alterar-senha',compact('user'));
     }
-    private function converterArrayEmRoleDTO(array $roles): DataCollection
+
+    public function atualizarSenha(Request $request, int $idUsuario)
     {
-        $collectionRoles = [];
-        foreach ($roles as $role){
-            $collectionRoles[] = ['name' => $role];
+        try {
+            $userDTO = UserDTO::from([
+                ...$request->only(['password', 'password_confirmation']),
+                'id' => $idUsuario
+            ]);
+
+            $this->userBusiness->alterarSenha($userDTO);
+
+            return redirect(route('users.index'))
+                ->with([Controller::MESSAGE_KEY_SUCCESS => ['Usuário alterado com sucesso']]);
+        }catch (NotFoundException $exception){
+            return redirect(route('users.index'))
+                ->with([Controller::MESSAGE_KEY_ERROR => ['Registro não encontrado']]);
+        }catch (UnprocessableEntityException $exception){
+
+            return redirect(route('users.alterar-senha', $idUsuario))
+                ->withErrors($exception->getValidator())
+                ->withInput();
         }
-        return RoleDTO::collection($collectionRoles);
-    }
-    public function convertArrayRoleDTO(array $lista):array
-    {
-        $roles = [];
-        foreach ($lista as $item){
-            if($item instanceof RoleDTO)
-                $roles[] = $item;
-            else
-                $roles[] = RoleDTO::from(['name' => $item]);
-        }
-        return $roles;
     }
     public function inserir(Request $request)
     {
@@ -111,4 +114,24 @@ class UserController extends Controller
         }
 
     }
+    private function converterArrayEmRoleDTO(array $roles): DataCollection
+    {
+        $collectionRoles = [];
+        foreach ($roles as $role){
+            $collectionRoles[] = ['name' => $role];
+        }
+        return RoleDTO::collection($collectionRoles);
+    }
+    public function convertArrayRoleDTO(array $lista):array
+    {
+        $roles = [];
+        foreach ($lista as $item){
+            if($item instanceof RoleDTO)
+                $roles[] = $item;
+            else
+                $roles[] = RoleDTO::from(['name' => $item]);
+        }
+        return $roles;
+    }
+
 }

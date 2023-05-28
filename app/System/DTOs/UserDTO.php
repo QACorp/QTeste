@@ -14,9 +14,10 @@ class UserDTO extends DTO
 {
     public function __construct(
         public ?int $id,
-        public string $name,
-        public string $email,
+        public ?string $name,
+        public ?string $email,
         public ?string $password,
+        public ?string $password_confirmation,
         #[WithCast(CastRoles::class)]
         public ?DataCollectable $roles,
     )

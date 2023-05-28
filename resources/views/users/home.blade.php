@@ -39,7 +39,7 @@
                                         <a class="btn btn-warning btn-sm" title="Editar" href="{{ route('users.editar',$user->id) }}"><i class="fas fa-edit"></i> </a>
                                     @endcan
                                     @can(\App\System\Enuns\PermisissionEnum::ALTERAR_SENHA_USUARIO->value)
-                                        <a class="btn btn-dark btn-sm" title="Alterar senha" href="{{ route('users.editar-senha',$user->id) }}"><i class="fas fa-key"></i> </a>
+                                        <a class="btn btn-dark btn-sm" title="Alterar senha" href="{{ route('users.alterar-senha',$user->id) }}"><i class="fas fa-key"></i> </a>
                                     @endcan
                                 </td>
                             </tr>

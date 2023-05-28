@@ -23,7 +23,7 @@ Route::get('/home', [App\System\Http\Controllers\HomeController::class, 'index']
 // Authentication Routes...
 Route::get('login', 'App\System\Http\Controllers\Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'App\System\Http\Controllers\Auth\LoginController@login');
-Route::get('logout', 'App\System\Http\Controllers\Auth\LoginController@logout');
+Route::post('logout', 'App\System\Http\Controllers\Auth\LoginController@logout');
 
 // Registration Routes...
 Route::get('register', 'App\System\Http\Controllers\Auth\RegisterController@showRegistrationForm');
@@ -41,8 +41,9 @@ Route::group(['prefix' => 'usuarios', 'middleware' => 'auth'],function(){
     Route::get('/inserir', [UserController::class,'inserir'])->name('users.inserir');
 
     Route::get('/{idUsuario}', [UserController::class,'editar'])->name('users.editar');
-    Route::get('/{idUsuario}/alterar-senha', [UserController::class,'editarSenha'])->name('users.editar-senha');
+    Route::get('/{idUsuario}/alterar-senha', [UserController::class,'editarSenha'])->name('users.alterar-senha');
 
+    Route::put('/{idUsuario}/alterar-senha', [UserController::class,'atualizarSenha'])->name('users.atualizar-senha');
     Route::post('/inserir', [UserController::class,'salvar'])->name('users.salvar');
     Route::put('/{idUsuario}', [UserController::class,'atualizar'])->name('users.atualizar');
 });

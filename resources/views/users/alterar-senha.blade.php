@@ -18,39 +18,39 @@
                             <div class="col-md-6">
                                 <div class="row">
                                     <x-adminlte-input
-                                        name="name"
-                                        label="Nome"
-                                        placeholder="Nome"
+                                        name="password"
+                                        label="Senha"
+                                        placeholder="Senha"
+                                        type="password"
                                         fgroup-class="col-md-6"
-                                        value="{{ old('nome',$user->name) }}"
                                         required
-                                    />
+                                        value="{{ old('password','') }}"
+                                    >
+                                        <x-slot name="prependSlot">
+                                            <div class="input-group-text bg-dark">
+                                                <i class="fas fa-key"></i>
+                                            </div>
+                                        </x-slot>
+                                    </x-adminlte-input>
                                 </div>
                                 <div class="row">
                                     <x-adminlte-input
-                                        name="email"
-                                        label="E-mail"
-                                        placeholder="algum@email.com"
+                                        name="password_confirmation"
+                                        label="Confirmar senha"
+                                        placeholder="Digite a senha novamente"
+                                        type="password"
                                         fgroup-class="col-md-6"
-                                        value="{{ old('email',$user->email) }}"
+                                        value="{{ old('password_confirmation','') }}"
                                         required
-                                    />
-                                </div>
-                                <div class="row">
-                                    <x-adminlte-select2
-                                        id="roles"
-                                        name="roles[]"
-                                        label="Perfis"
-                                        :config="['placeholder' => 'Selecione os perfis...']"
-                                        multiple
-                                        required
-                                        fgroup-class="col-md-6"
                                     >
-                                        @foreach(\App\System\Enuns\RoleEnum::cases() as $role)
-                                            <option @if(collect($userController->convertDataCollectionRoleDTO(old('roles',$user->roles->items())))->where('name',$role->value)->count() > 0)) selected @endif value="{{ $role->value }}">{{ $role->value }}</option>
-                                        @endforeach
-                                    </x-adminlte-select2>
+                                        <x-slot name="prependSlot">
+                                            <div class="input-group-text bg-dark">
+                                                <i class="fas fa-key"></i>
+                                            </div>
+                                        </x-slot>
+                                    </x-adminlte-input>
                                 </div>
+
                                 <div class="row p-2">
                                     <x-adminlte-button
                                         label="Salvar"
