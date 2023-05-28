@@ -44,12 +44,11 @@
                                             id="status"
                                             fgroup-class="col-md-12"
                                             required
+                                            readonly
                                         >
-                                            <option value="">Status</option>
-                                            @foreach(\App\Modules\Projetos\Enums\CasoTesteEnum::cases() as $status)
-                                                <option value="{{ $status->value }}">{{ $status->value }}</option>
 
-                                            @endforeach
+                                                <option value="{{ \App\Modules\Projetos\Enums\CasoTesteEnum::CONCLUIDO }}">{{ \App\Modules\Projetos\Enums\CasoTesteEnum::CONCLUIDO }}</option>
+
                                         </x-adminlte-select>
                                     </div>
                                 </div>
