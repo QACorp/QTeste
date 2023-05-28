@@ -47,12 +47,17 @@
                                             id="status"
                                             fgroup-class="col-md-12"
                                             required
+                                            :readonly="$casoTeste->status == \App\Modules\Projetos\Enums\CasoTesteEnum::CONCLUIDO->value ? true : false"
                                         >
-                                            <option value="">Status</option>
-                                            @foreach(\App\Modules\Projetos\Enums\CasoTesteEnum::cases() as $status)
-                                                <option @if($status->value == old('status', $casoTeste->status)) selected @endif value="{{ $status->value }}">{{ $status->value }}</option>
+                                            @if($casoTeste->status != \App\Modules\Projetos\Enums\CasoTesteEnum::CONCLUIDO->value)
+                                                <option value="">Status</option>
+                                                @foreach(\App\Modules\Projetos\Enums\CasoTesteEnum::cases() as $status)
+                                                    <option @if($status->value == old('status', $casoTeste->status)) selected @endif value="{{ $status->value }}">{{ $status->value }}</option>
 
-                                            @endforeach
+                                                @endforeach
+                                            @else
+                                                <option value="{{ \App\Modules\Projetos\Enums\CasoTesteEnum::CONCLUIDO->value }}">{{ \App\Modules\Projetos\Enums\CasoTesteEnum::CONCLUIDO->value }}</option>
+                                            @endif
                                         </x-adminlte-select>
                                     </div>
                                 </div>

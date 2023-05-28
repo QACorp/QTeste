@@ -47,7 +47,7 @@
                                             readonly
                                         >
 
-                                                <option value="{{ \App\Modules\Projetos\Enums\CasoTesteEnum::CONCLUIDO }}">{{ \App\Modules\Projetos\Enums\CasoTesteEnum::CONCLUIDO }}</option>
+                                                <option value="{{ \App\Modules\Projetos\Enums\CasoTesteEnum::CONCLUIDO->value }}">{{ \App\Modules\Projetos\Enums\CasoTesteEnum::CONCLUIDO->value }}</option>
 
                                         </x-adminlte-select>
                                     </div>
