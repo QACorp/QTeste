@@ -22,8 +22,9 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &
         libzip-dev \
         supervisor \
         openssl \
+        zlib1g-dev \
         libpq-dev && \
-    docker-php-ext-install \
+     docker-php-ext-install \
         bcmath \
         calendar \
         gd \

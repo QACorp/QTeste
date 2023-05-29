@@ -19,6 +19,7 @@ class MenuConfig extends MenuConfigAbstract
                 'route' => 'aplicacoes.index',
                 'icon'  => 'fas fa-cogs',
                 'text' => 'Aplicações',
+                'can'   => 'LISTAR_APLICACAO',
                 'active' => ['projetos/aplicacoes/*', 'projetos/casos-teste/*'],
                 'submenu' => [
                     [
