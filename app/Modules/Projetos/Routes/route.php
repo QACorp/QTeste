@@ -8,6 +8,8 @@ use App\Modules\Projetos\Controllers\PlanoTesteExecucaoController;
 use Illuminate\Support\Facades\Route;
 use App\Modules\Projetos\Controllers\ProjetoController;
 use App\Modules\Projetos\Controllers\ObservacaoController;
+use App\Modules\Projetos\Controllers\UploadCasosTesteController;
+
 Route::get('/',[ProjetoController::class,'index'])->name('projetos.index');
 
 Route::group(['prefix' => 'aplicacoes'],function(){
@@ -57,6 +59,8 @@ Route::group(['prefix' => 'aplicacoes'],function(){
                 Route::post('/inserir', [CasoTesteController::class, 'inserirEVincular'])->name('aplicacoes.projetos.planos-teste.casos-teste.inserir');
                 Route::delete('/desvincular/{idCasoTeste}', [CasoTesteController::class, 'desvincular'])->name('aplicacoes.projetos.planos-teste.casos-teste.desvincular');
 
+                Route::post('/import-file', [UploadCasosTesteController::class, 'uploadArquivoExcelParaPlanoTeste'])->name('aplicacoes.planos-teste.upload-caso-teste');
+
             });
         });
 
@@ -78,5 +82,7 @@ Route::group(['prefix' => '/casos-teste'],function() {
 
 Route::group(['prefix' => '/planos-teste'],function() {
     Route::get('/', [PlanoTesteController::class, 'index'])->name('aplicacoes.planos-teste.index');
+
 });
+
 

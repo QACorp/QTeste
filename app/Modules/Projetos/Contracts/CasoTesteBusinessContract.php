@@ -6,6 +6,7 @@ use App\Modules\Projetos\DTOs\CasoTesteDTO;
 use App\Modules\Projetos\DTOs\PlanoTesteDTO;
 use App\Modules\Projetos\Requests\CasoTestePostRequest;
 use App\Modules\Projetos\Requests\CasoTestePutRequest;
+use Illuminate\Http\UploadedFile;
 use Spatie\LaravelData\DataCollection;
 
 interface CasoTesteBusinessContract
@@ -19,4 +20,5 @@ interface CasoTesteBusinessContract
     public function alterarCasoTeste(CasoTesteDTO $casoTesteDTO, CasoTestePutRequest $casoTestePutRequest = new CasoTestePutRequest()):CasoTesteDTO;
     public function buscarTodos(): DataCollection;
     public function excluir(int $idCasoTeste): bool;
+    public function importFile(UploadedFile $uploadedFile, ?int $planoTesteId):void;
 }

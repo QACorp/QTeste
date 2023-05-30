@@ -13,7 +13,6 @@ use App\System\Http\Controllers\UserController;
 |
 */
 
-
 Route::get('/', [App\System\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Authentication Routes...

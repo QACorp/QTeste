@@ -434,6 +434,16 @@ return [
     */
 
     'plugins' => [
+        'BsCustomFileInput' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/bs-custom-file-input/bs-custom-file-input.min.js',
+                ],
+            ],
+        ],
         'Datatables' => [
             'active' => false,
             'files' => [

@@ -4,6 +4,7 @@ namespace App\System\Providers;
 
 use App\System\Business\UserBusiness;
 use App\System\Component\DeleteModal;
+use App\System\Component\UploadModal;
 use App\System\Config\MenuConfig;
 use App\System\Contracts\UserBusinessContract;
 use App\System\Contracts\UserRepositoryContract;
@@ -31,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Blade::component('delete-modal', DeleteModal::class);
+        Blade::component('upload-modal', UploadModal::class);
         MenuConfig::configureMenuModule();
         $this->addDirectoryMigration();
 

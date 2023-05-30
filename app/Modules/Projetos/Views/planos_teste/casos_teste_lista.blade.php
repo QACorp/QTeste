@@ -4,6 +4,12 @@
         @can(\App\System\Enuns\PermisissionEnum::INSERIR_EXECUCAO_PLANO_TESTE->value)
         <a href="{{ route('aplicacoes.projetos.planos-teste.criar',[$idAplicacao, $idProjeto, $idPlanoTeste]) }}" class="btn btn-danger mb-2"><i class="fas fa-list"></i> Iniciar uma  nova execução</a>
         @endcan
+        <x-upload-modal
+            idModal="uploadPlanilha"
+            message="Selecione o arquivo para importar"
+            routeAction="{{ route('aplicacoes.planos-teste.upload-caso-teste', [$idAplicacao, $idProjeto, $idPlanoTeste]) }}"
+            labelBtnEnviar="Importar arquivo"
+        />
         @can(\App\System\Enuns\PermisissionEnum::EXECUTAR_CASO_TESTE->value)
             @if($existePlanoTesteExecucao)
                 <a href="{{ route('aplicacoes.projetos.planos-teste.executar',[$idAplicacao, $idProjeto, $idPlanoTeste]) }}" class="btn btn-primary mb-2"><i class="fas fa-tasks"></i> Continuar última execução</a>
