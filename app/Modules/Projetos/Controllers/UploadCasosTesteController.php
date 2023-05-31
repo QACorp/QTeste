@@ -24,12 +24,12 @@ class UploadCasosTesteController extends Controller
          }catch (NotFoundException $exception) {
              return redirect(route('aplicacoes.index'))
                  ->with([Controller::MESSAGE_KEY_ERROR => ['Plano de teste não encontrado']]);
+         }catch (UnprocessableEntityException $exception){
+             return redirect(route('aplicacoes.projetos.planos-teste.visualizar', [$idAplicacao, $idProjeto, $idPlanoTeste]))
+                 ->withErrors($exception->getValidator())
+                 ->with([Controller::MESSAGE_KEY_ERROR => ['Houve um erro ao processar o arquivo']])
+                 ->withInput();
          }
-//         }catch (UnprocessableEntityException $exception){
-//             return redirect(route('aplicacoes.editar', $id))
-//                 ->withErrors($exception->getValidator())
-//                 ->withInput();
-//         }
 
 
      }

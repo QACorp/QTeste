@@ -40,6 +40,7 @@ return new class extends Migration
         Permission::create(['name' => 'REMOVER_CASO_TESTE']);
         Permission::create(['name' => 'INSERIR_CASO_TESTE']);
         Permission::create(['name' => 'ALTERAR_CASO_TESTE']);
+        Permission::create(['name' => 'IMPORTAR_PLANILHA_CASO_TESTE']);
 
         Permission::create(['name' => 'LISTAR_EXECUCAO_PLANO_TESTE']);
         Permission::create(['name' => 'REMOVER_EXECUCAO_PLANO_TESTE']);
@@ -70,6 +71,7 @@ return new class extends Migration
             'ACESSAR_SISTEMA',
             'VINCULAR_CASO_TESTE',
             'DESVINCULAR_CASO_TESTE',
+            'IMPORTAR_PLANILHA_CASO_TESTE'
 
         ]);
 

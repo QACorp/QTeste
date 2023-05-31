@@ -59,7 +59,7 @@
                                             <div class="card">
                                                 <div class="card-header" id="headingOne">
                                                     <h2 class="mb-0">
-                                                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                        <button id="ct{{$casoTeste->id}}" class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                                             {{ $casoTeste->titulo }}
                                                         </button>
                                                     </h2>
@@ -85,7 +85,7 @@
                                                                     $planoTesteExecucao->resultado == null)
                                                                 @can(\App\System\Enuns\PermisissionEnum::EXECUTAR_CASO_TESTE->value)
                                                                 <div class="col-md-1">
-                                                                    <form method="post" action="{{ route('aplicacoes.projetos.planos-teste.executar-caso-teste', [$idAplicacao, $idProjeto, $planoTesteExecucao->plano_teste->id, $planoTesteExecucao->id, $casoTeste->id]) }}">
+                                                                    <form method="post" action="{{ route('aplicacoes.projetos.planos-teste.executar-caso-teste', [$idAplicacao, $idProjeto, $planoTesteExecucao->plano_teste->id, $planoTesteExecucao->id, $casoTeste->id]) }}#ct{{$casoTeste->id}}">
                                                                         @csrf
                                                                         <input type="hidden" name="status" value="{{ \App\Modules\Projetos\Enums\PlanoTesteExecucaoEnum::PASSOU->value }}" />
 
@@ -98,7 +98,7 @@
                                                                     </form>
                                                                 </div>
                                                                 <div class="col-md-1">
-                                                                    <form method="post" action="{{ route('aplicacoes.projetos.planos-teste.executar-caso-teste', [$idAplicacao, $idProjeto, $planoTesteExecucao->plano_teste->id, $planoTesteExecucao->id, $casoTeste->id]) }}">
+                                                                    <form method="post" action="{{ route('aplicacoes.projetos.planos-teste.executar-caso-teste', [$idAplicacao, $idProjeto, $planoTesteExecucao->plano_teste->id, $planoTesteExecucao->id, $casoTeste->id]) }}#ct{{$casoTeste->id}}">
                                                                         @csrf
                                                                         <input type="hidden" name="status" value="{{ \App\Modules\Projetos\Enums\PlanoTesteExecucaoEnum::FALHOU->value }}" />
                                                                         <x-adminlte-button

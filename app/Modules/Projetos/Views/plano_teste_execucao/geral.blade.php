@@ -19,7 +19,11 @@
                                 <td>{{ $planoTesteExecucao->created_at->format('d/m/Y \a\s H:i:s') }}</td>
                                 <td>{{ $planoTesteExecucao->user->name }}</td>
                                 <td>
-                                    <span class="badge badge-{{ $planoTesteExecucao->data_execucao == null ? 'warning' : 'success' }}">{{ $planoTesteExecucao->data_execucao == null ? 'Em execução' : $planoTesteExecucao->resultado }}</span>
+                                    <span class="badge
+                                    @if($planoTesteExecucao->data_execucao == null)  badge-warning @elseif($planoTesteExecucao->resultado == \App\Modules\Projetos\Enums\PlanoTesteExecucaoEnum::PASSOU->value) badge-success @else badge-danger @endif"
+                                    >
+                                        {{ $planoTesteExecucao->data_execucao == null ? 'Em execução' : $planoTesteExecucao->resultado }}
+                                    </span>
 
                                 </td>
                                 <td>

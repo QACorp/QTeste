@@ -10,6 +10,7 @@ use App\Modules\Projetos\Enums\CasoTesteEnum;
 use App\Modules\Projetos\Models\CasoTesteExcelModel;
 use App\Modules\Projetos\Requests\CasoTestePostRequest;
 use App\Modules\Projetos\Requests\CasoTestePutRequest;
+use App\Modules\Projetos\Requests\UploadPostRequest;
 use App\System\Enuns\PermisissionEnum;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
@@ -115,8 +116,12 @@ class CasoTesteBusiness extends BusinessAbstract implements CasoTesteBusinessCon
         return $this->casoTesteRespository->alterarCasoTeste($casoTesteDTO);
     }
 
-    public function importFile(UploadedFile $uploadedFile, ?int $planoTesteId): void
+    public function importFile(?UploadedFile $uploadedFile, ?int $planoTesteId, UploadPostRequest $uploadPostRequest = new UploadPostRequest()): void
     {
+        $validator = Validator::make(['arquivo' => $uploadedFile], $uploadPostRequest->rules());
+        if ($validator->fails()) {
+            throw new UnprocessableEntityException($validator);
+        }
         $uploadFile = Storage::put('tmp/',$uploadedFile);
         $casoTeste = Excel::toCollection(new CasoTesteExcelModel(), Storage::path('tmp/'.$uploadedFile->hashName()));
         $casoTeste->each(function($item, $key) use($planoTesteId){
