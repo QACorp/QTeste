@@ -9,6 +9,11 @@
 @stop
 
 @section('content')
+    <div class="row">
+        <div class="col-md-12 mb-2">
+            <a class="btn btn-warning" href="{{route('aplicacoes.projetos.planos-teste.visualizar',[$idAplicacao, $idProjeto, $planoTesteExecucao->plano_teste->id])}}"><i class="fas fa-undo"></i> Voltar para plano de teste</a>
+        </div>
+    </div>
     @if($planoTesteExecucao->resultado != null)
         <div class="row">
             <div class="col-12 m-0">
@@ -47,24 +52,20 @@
                             Casos de teste
                         </div>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-12 mb-2">
-                                    <a class="btn btn-warning" href="{{route('aplicacoes.projetos.planos-teste.visualizar',[$idAplicacao, $idProjeto, $planoTesteExecucao->plano_teste->id])}}"><i class="fas fa-undo"></i> Voltar para plano de teste</a>
-                                </div>
-                            </div>
+
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="accordion" id="accordionExample">
                                         @foreach($casosTeste as $casoTeste)
                                             <div class="card">
-                                                <div class="card-header" id="headingOne">
+                                                <div class="card-header" id="heading{{$casoTeste->id}}">
                                                     <h2 class="mb-0">
-                                                        <button id="ct{{$casoTeste->id}}" class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                        <button id="ct{{$casoTeste->id}}" class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse{{$casoTeste->id}}" aria-expanded="true" aria-controls="collapse{{$casoTeste->id}}">
                                                             {{ $casoTeste->titulo }}
                                                         </button>
                                                     </h2>
                                                 </div>
-                                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                                <div id="collapse{{$casoTeste->id}}" class="collapse" aria-labelledby="heading{{$casoTeste->id}}" data-parent="#accordionExample">
                                                     <div class="card-body">
                                                         <div class="row">
                                                             <strong>Cenário:</strong>

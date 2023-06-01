@@ -4,6 +4,8 @@ namespace App\Modules\Projetos\Business;
 
 use App\Modules\Projetos\Contracts\CasoTesteBusinessContract;
 use App\Modules\Projetos\Contracts\CasoTesteRespositoryContract;
+use App\Modules\Projetos\Contracts\PlanoTesteBusinessContract;
+use App\Modules\Projetos\Contracts\PlanoTesteRepositoryContract;
 use App\Modules\Projetos\DTOs\CasoTesteDTO;
 use App\Modules\Projetos\DTOs\PlanoTesteDTO;
 use App\Modules\Projetos\Enums\CasoTesteEnum;
@@ -16,6 +18,7 @@ use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Impl\BusinessAbstract;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
@@ -24,7 +27,8 @@ use Spatie\LaravelData\DataCollection;
 class CasoTesteBusiness extends BusinessAbstract implements CasoTesteBusinessContract
 {
     public function __construct(
-        private readonly CasoTesteRespositoryContract $casoTesteRespository
+        private readonly CasoTesteRespositoryContract $casoTesteRespository,
+        private readonly PlanoTesteBusinessContract $planoTesteBusiness
     )
     {
     }
@@ -118,28 +122,37 @@ class CasoTesteBusiness extends BusinessAbstract implements CasoTesteBusinessCon
 
     public function importFile(?UploadedFile $uploadedFile, ?int $planoTesteId, UploadPostRequest $uploadPostRequest = new UploadPostRequest()): void
     {
+        $this->can(PermisissionEnum::IMPORTAR_PLANILHA_CASO_TESTE->value);
         $validator = Validator::make(['arquivo' => $uploadedFile], $uploadPostRequest->rules());
         if ($validator->fails()) {
             throw new UnprocessableEntityException($validator);
         }
-        $uploadFile = Storage::put('tmp/',$uploadedFile);
+        /** @throw NotFoundException::class */
+        $this->planoTesteBusiness->buscarPlanoTestePorId($planoTesteId);
+
+        Storage::put('tmp/',$uploadedFile);
         $casoTeste = Excel::toCollection(new CasoTesteExcelModel(), Storage::path('tmp/'.$uploadedFile->hashName()));
         $casoTeste->each(function($item, $key) use($planoTesteId){
             $item->each(function ($row, $key) use($planoTesteId){
                 if($row->get(1) != null && $row->get(0) != 'Tipo'){
-                    $casoTesteDTO = CasoTesteDTO::from([
-                        'titulo' => $row->get(1),
-                        'requisito' => $row->get(1),
-                        'cenario' => $row->get(2),
-                        'teste' => $row->get(3),
-                        'resultado_esperado' =>$row->get(5),
-                        'status' => CasoTesteEnum::CONCLUIDO->value
-                    ]);
-                    $casoTesteDTO = $this->casoTesteRespository->inserirCasoTeste($casoTesteDTO);
+                    $casoTesteDTO = $this->criarCasoTestePorLinhaXLSX($row);
                     $this->casoTesteRespository->vincular($planoTesteId, $casoTesteDTO);
                 }
             });
         });
 
+    }
+    private function criarCasoTestePorLinhaXLSX(Collection $dados): CasoTesteDTO
+    {
+        $casoTesteDTO = CasoTesteDTO::from([
+            'titulo' => substr($dados->get(2),0,254),
+            'requisito' => $dados->get(1),
+            'cenario' => $dados->get(2),
+            'teste' => $dados->get(3),
+            'resultado_esperado' => $dados->get(5),
+            'status' => CasoTesteEnum::CONCLUIDO->value
+        ]);
+        $casoTesteDTO = $this->casoTesteRespository->inserirCasoTeste($casoTesteDTO);
+        return $casoTesteDTO;
     }
 }
