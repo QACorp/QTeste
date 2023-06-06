@@ -28,6 +28,30 @@ class PlanoTesteController extends Controller
     {
     }
 
+    public function index(){
+        Auth::user()->can(PermisissionEnum::LISTAR_PLANO_TESTE->value);
+        $planos_teste = $this->planoTesteBusiness->buscarTodosPlanoTeste();
+
+        $heads = [
+            ['label' => 'Id', 'width' => 5],
+            'Nome',
+            ['label' => 'Aplicação', 'width' => 15],
+            ['label' => 'Projeto', 'width' => 15],
+            ['label' => 'Data de Criação', 'width' => 10],
+            ['label' => 'Últ. Exec.', 'width' => 15],
+            ['label' => 'Ações', 'width' => 10],
+        ];
+
+        $config = [
+            ...config('adminlte.datatable_config'),
+            'columns' => [null, null, null, null, null, null, ['orderable' => false]],
+        ];
+        return view('projetos::planos_teste.geral', compact(
+            'heads',
+            'config',
+            'planos_teste'
+        ));
+    }
     public function indexPorProjeto(int $idAplicacao, int $idProjeto){
         Auth::user()->can(PermisissionEnum::LISTAR_PLANO_TESTE->value);
         $projeto = $this->projetoBusiness->buscarPorIdProjeto($idProjeto);
@@ -171,25 +195,5 @@ class PlanoTesteController extends Controller
                 ->withInput();
         }
     }
-    public function index(){
-        Auth::user()->can(PermisissionEnum::LISTAR_PLANO_TESTE->value);
-        $planos_teste = $this->planoTesteBusiness->buscarTodosPlanoTeste();
 
-        $heads = [
-            ['label' => 'Id', 'width' => 10],
-            'Nome',
-            ['label' => 'Data de Criação', 'width' => 15],
-            ['label' => 'Ações', 'width' => 20],
-        ];
-
-        $config = [
-            ...config('adminlte.datatable_config'),
-            'columns' => [null, null, null, ['orderable' => false]],
-        ];
-        return view('projetos::planos_teste.geral', compact(
-            'heads',
-            'config',
-            'planos_teste'
-        ));
-    }
 }

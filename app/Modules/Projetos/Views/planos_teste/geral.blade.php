@@ -27,16 +27,19 @@
                             <tr>
                                 <td>{{ $plano_teste->id }}</td>
                                 <td>{{ $plano_teste->titulo }}</td>
+                                <td>{{ $plano_teste->nome_aplicacao}}</td>
+                                <td>{{ $plano_teste->nome_projeto}}</td>
                                 <td>{{ $plano_teste->created_at->format('d/m/Y')}}</td>
+                                <td>{{ $plano_teste->ultima_execucao ? $plano_teste->ultima_execucao->format('d/m/Y H:i:s') : '' }}</td>
                                 <td>
                                     @can(\App\System\Enuns\PermisissionEnum::LISTAR_PLANO_TESTE->value)
-                                    <a class="btn btn-primary btn-sm" title="Visualizar" href="{{ route('aplicacoes.projetos.planos-teste.visualizar',[$plano_teste->projeto->aplicacao_id, $plano_teste->projeto->id, $plano_teste->id]) }}"><i class="fas fa-eye"></i> </a>
+                                    <a class="btn btn-primary btn-sm" title="Visualizar" href="{{ route('aplicacoes.projetos.planos-teste.visualizar',[$plano_teste->aplicacao_id, $plano_teste->projeto_id, $plano_teste->id]) }}"><i class="fas fa-eye"></i> </a>
                                     @endcan
                                     @can(\App\System\Enuns\PermisissionEnum::REMOVER_PLANO_TESTE->value)
                                     <x-delete-modal
                                         :registro="$plano_teste"
                                         message="Deseja excluir o registro {{ $plano_teste->titulo }}?"
-                                        route="{{ route('aplicacoes.projetos.planos-teste.excluir', [$plano_teste->projeto->aplicacao_id, $plano_teste->projeto->id, $plano_teste->id]) }}"
+                                        route="{{ route('aplicacoes.projetos.planos-teste.excluir', [$plano_teste->aplicacao_id, $plano_teste->projeto_id, $plano_teste->id]) }}"
                                     />
                                     @endcan
 

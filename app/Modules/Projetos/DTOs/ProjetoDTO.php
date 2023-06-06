@@ -2,6 +2,7 @@
 
 namespace App\Modules\Projetos\DTOs;
 
+use App\Modules\Projetos\Casts\CastAplicacao;
 use App\System\Casts\CastCarbonDate;
 use App\System\Utils\DTO;
 use Carbon\Carbon;
@@ -17,7 +18,9 @@ class ProjetoDTO extends DTO
         public ?Carbon $inicio,
         #[WithCast(CastCarbonDate::class)]
         public ?Carbon $termino,
-        public ?int $aplicacao_id
+        public ?int $aplicacao_id,
+        #[WithCast(CastAplicacao::class)]
+        public ?AplicacaoDTO $aplicacao
     )
     {
     }
