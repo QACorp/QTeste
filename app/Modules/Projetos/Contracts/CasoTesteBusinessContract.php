@@ -21,5 +21,6 @@ interface CasoTesteBusinessContract
     public function alterarCasoTeste(CasoTesteDTO $casoTesteDTO, CasoTestePutRequest $casoTestePutRequest = new CasoTestePutRequest()):CasoTesteDTO;
     public function buscarTodos(): DataCollection;
     public function excluir(int $idCasoTeste): bool;
-    public function importFile(?UploadedFile $uploadedFile, ?int $planoTesteId, UploadPostRequest $uploadPostRequest = new UploadPostRequest()):void;
+    public function importarArquivoParaPlanoTeste(?UploadedFile $uploadedFile, ?int $planoTesteId, UploadPostRequest $uploadPostRequest = new UploadPostRequest()):void;
+    public function importarArquivo(?UploadedFile $uploadedFile, UploadPostRequest $uploadPostRequest = new UploadPostRequest()): void;
 }

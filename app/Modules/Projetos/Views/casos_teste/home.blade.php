@@ -8,6 +8,7 @@
         @can(\App\System\Enuns\PermisissionEnum::INSERIR_CASO_TESTE->value)
         <a class="btn btn-primary" href="{{route('aplicacoes.casos-teste.inserir')}}"><i class="fas fa-plus"></i> </a>
         @endcan
+
     </h1>
 
 @stop
@@ -17,6 +18,15 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    @can(\App\System\Enuns\PermisissionEnum::IMPORTAR_PLANILHA_CASO_TESTE->value)
+                        <x-upload-modal
+                            idModal="uploadPlanilha"
+                            message="Selecione o arquivo para importar"
+                            routeAction="{{ route('aplicacoes.casos-teste.upload-caso-teste') }}"
+                            labelBtnEnviar="Importar arquivo"
+                        />
+
+                    @endcan
                     <x-adminlte-datatable
                         id="casos_teste"
                         :heads="$heads"

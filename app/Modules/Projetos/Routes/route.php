@@ -71,6 +71,8 @@ Route::group(['prefix' => '/casos-teste'],function() {
     Route::get('/', [CasoTesteController::class, 'index'])->name('aplicacoes.casos-teste.index');
     Route::get('/list',[CasoTesteController::class,'list'])->name('aplicacoes.casos-teste.list');
 
+    Route::post('/import-file', [UploadCasosTesteController::class, 'uploadArquivoExcel'])->name('aplicacoes.casos-teste.upload-caso-teste');
+
     Route::get('/inserir', [CasoTesteController::class, 'inserir'])->name('aplicacoes.casos-teste.inserir');
     Route::get('/{idCasoTeste}', [CasoTesteController::class, 'editar'])->name('aplicacoes.casos-teste.editar');
 

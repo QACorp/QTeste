@@ -68,16 +68,16 @@
                                                 <div id="collapse{{$casoTeste->id}}" class="collapse" aria-labelledby="heading{{$casoTeste->id}}" data-parent="#accordionExample">
                                                     <div class="card-body">
                                                         <div class="row">
-                                                            <strong>Cenário:</strong>
+                                                            <strong>Cenário: </strong>
                                                             {!! nl2br($casoTeste->cenario) !!}
                                                         </div>
                                                         <div class="row">
-                                                            <p class="d-block"><strong>Teste:</strong></p>
+                                                            <p class="d-block"><strong>Teste: </strong></p>
                                                             {!! nl2br($casoTeste->teste) !!}
 
                                                         </div>
                                                         <div class="row">
-                                                            <strong>Resultado esperado:</strong>
+                                                            <strong>Resultado esperado: </strong>
                                                             {!! nl2br($casoTeste->resultado_esperado) !!}
                                                         </div>
                                                         @php $casoTesteExiste = $casoTesteExecucaoBusiness->casoTesteExecutado($planoTesteExecucao->id, $casoTeste->id)  @endphp

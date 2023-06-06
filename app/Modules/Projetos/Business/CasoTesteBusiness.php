@@ -120,7 +120,7 @@ class CasoTesteBusiness extends BusinessAbstract implements CasoTesteBusinessCon
         return $this->casoTesteRespository->alterarCasoTeste($casoTesteDTO);
     }
 
-    public function importFile(?UploadedFile $uploadedFile, ?int $planoTesteId, UploadPostRequest $uploadPostRequest = new UploadPostRequest()): void
+    public function importarArquivoParaPlanoTeste(?UploadedFile $uploadedFile, ?int $planoTesteId, UploadPostRequest $uploadPostRequest = new UploadPostRequest()): void
     {
         $this->can(PermisissionEnum::IMPORTAR_PLANILHA_CASO_TESTE->value);
         $validator = Validator::make(['arquivo' => $uploadedFile], $uploadPostRequest->rules());
@@ -137,6 +137,26 @@ class CasoTesteBusiness extends BusinessAbstract implements CasoTesteBusinessCon
                 if($row->get(1) != null && $row->get(0) != 'Tipo'){
                     $casoTesteDTO = $this->criarCasoTestePorLinhaXLSX($row);
                     $this->casoTesteRespository->vincular($planoTesteId, $casoTesteDTO);
+                }
+            });
+        });
+
+    }
+
+    public function importarArquivo(?UploadedFile $uploadedFile, UploadPostRequest $uploadPostRequest = new UploadPostRequest()): void
+    {
+        $this->can(PermisissionEnum::IMPORTAR_PLANILHA_CASO_TESTE->value);
+        $validator = Validator::make(['arquivo' => $uploadedFile], $uploadPostRequest->rules());
+        if ($validator->fails()) {
+            throw new UnprocessableEntityException($validator);
+        }
+
+        Storage::put('tmp/',$uploadedFile);
+        $casoTeste = Excel::toCollection(new CasoTesteExcelModel(), Storage::path('tmp/'.$uploadedFile->hashName()));
+        $casoTeste->each(function($item, $key){
+            $item->each(function ($row, $key){
+                if($row->get(1) != null && $row->get(0) != 'Tipo'){
+                    $casoTesteDTO = $this->criarCasoTestePorLinhaXLSX($row);
                 }
             });
         });
