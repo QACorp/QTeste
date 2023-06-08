@@ -11,6 +11,7 @@ use App\Modules\Projetos\Business\PlanoTesteBusiness;
 use App\Modules\Projetos\Business\PlanoTesteExecucaoBusiness;
 use App\Modules\Projetos\Business\ProjetoBusiness;
 use App\Modules\Projetos\Components\CasoTesteDetalhes;
+use App\Modules\Projetos\Components\TestesMaisExecutados;
 use App\Modules\Projetos\Config\MenuConfig;
 use App\Modules\Projetos\Contracts\AplicacaoBusinessContract;
 use App\Modules\Projetos\Contracts\AplicacaoRepositoryContract;
@@ -74,6 +75,7 @@ class ProjetosServiceProvider extends ServiceProviderAbstract
     public function boot(): void
     {
         Blade::component('caso-teste-detalhes', CasoTesteDetalhes::class);
+        Blade::component('testes-mais-executados', TestesMaisExecutados::class);
         MenuConfig::configureMenuModule();
         parent::boot();
     }

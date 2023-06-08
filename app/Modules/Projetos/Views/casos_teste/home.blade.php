@@ -4,12 +4,7 @@
 @section('plugins.Datatables', true)
 @section('plugins.DatatablesPlugin', true)
 @section('content_header')
-    <h1 class="m-0 text-dark">Casos de teste
-        @can(\App\System\Enuns\PermisissionEnum::INSERIR_CASO_TESTE->value)
-        <a class="btn btn-primary" href="{{route('aplicacoes.casos-teste.inserir')}}"><i class="fas fa-plus"></i> </a>
-        @endcan
-
-    </h1>
+    <h1 class="m-0 text-dark">Casos de teste</h1>
 
 @stop
 
@@ -18,12 +13,15 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    @can(\App\System\Enuns\PermisissionEnum::INSERIR_CASO_TESTE->value)
+                        <a class="btn btn-primary mb-2" href="{{route('aplicacoes.casos-teste.inserir')}}"><i class="fas fa-plus"></i> </a>
+                    @endcan
                     @can(\App\System\Enuns\PermisissionEnum::IMPORTAR_PLANILHA_CASO_TESTE->value)
                         <x-upload-modal
                             idModal="uploadPlanilha"
                             message="Selecione o arquivo para importar"
                             routeAction="{{ route('aplicacoes.casos-teste.upload-caso-teste') }}"
-                            labelBtnEnviar="Importar arquivo"
+                            labelBtnEnviar="Importar casos de teste de arquivo"
                         />
 
                     @endcan
