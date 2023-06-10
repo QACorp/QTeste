@@ -9,9 +9,11 @@ use App\Modules\Projetos\Business\DocumentoBusiness;
 use App\Modules\Projetos\Business\ObservacaoBusiness;
 use App\Modules\Projetos\Business\PlanoTesteBusiness;
 use App\Modules\Projetos\Business\PlanoTesteExecucaoBusiness;
+use App\Modules\Projetos\Business\PlanoTesteMaisExecutadoBusiness;
 use App\Modules\Projetos\Business\ProjetoBusiness;
 use App\Modules\Projetos\Business\TestesMaisExecutadosBusiness;
 use App\Modules\Projetos\Components\CasoTesteDetalhes;
+use App\Modules\Projetos\Components\PlanoTesteMaisExecutados;
 use App\Modules\Projetos\Components\TestesMaisExecutados;
 use App\Modules\Projetos\Config\DashboardConfig;
 use App\Modules\Projetos\Config\MenuConfig;
@@ -28,6 +30,8 @@ use App\Modules\Projetos\Contracts\ObservacaoRepositoryContract;
 use App\Modules\Projetos\Contracts\PlanoTesteBusinessContract;
 use App\Modules\Projetos\Contracts\PlanoTesteExecucaoBusinessContract;
 use App\Modules\Projetos\Contracts\PlanoTesteExecucaoRepositoryContract;
+use App\Modules\Projetos\Contracts\PlanoTesteMaisExecutadoBusinessContract;
+use App\Modules\Projetos\Contracts\PlanoTesteMaisExecutadoRepositoryContract;
 use App\Modules\Projetos\Contracts\PlanoTesteRepositoryContract;
 use App\Modules\Projetos\Contracts\ProjetoBusinessContract;
 use App\Modules\Projetos\Contracts\ProjetoRepositoryContract;
@@ -39,6 +43,7 @@ use App\Modules\Projetos\Repositorys\CasoTesteRepository;
 use App\Modules\Projetos\Repositorys\DocumentoRepository;
 use App\Modules\Projetos\Repositorys\ObservacaoRespository;
 use App\Modules\Projetos\Repositorys\PlanoTesteExecucaoRepository;
+use App\Modules\Projetos\Repositorys\PlanoTesteMaisExecutadoRepository;
 use App\Modules\Projetos\Repositorys\PlanoTesteRepository;
 use App\Modules\Projetos\Repositorys\ProjetoRepository;
 use App\Modules\Projetos\Repositorys\TestesMaisExecutadosRepository;
@@ -70,7 +75,9 @@ class ProjetosServiceProvider extends ServiceProviderAbstract
         CasoTesteExecucaoBusinessContract::class => CasoTesteExecucaoBusiness::class,
         CasoTesteExecucaoRepositoryContract::class => CasoTesteExecucaoRepository::class,
         TestesMaisExecutadosRepositoryContract::class => TestesMaisExecutadosRepository::class,
-        TestesMaisExecutadosBusinessContract::class => TestesMaisExecutadosBusiness::class
+        TestesMaisExecutadosBusinessContract::class => TestesMaisExecutadosBusiness::class,
+        PlanoTesteMaisExecutadoBusinessContract::class => PlanoTesteMaisExecutadoBusiness::class,
+        PlanoTesteMaisExecutadoRepositoryContract::class => PlanoTesteMaisExecutadoRepository::class
     ];
     /**
      * Register services.
@@ -84,8 +91,10 @@ class ProjetosServiceProvider extends ServiceProviderAbstract
     {
         Blade::component('caso-teste-detalhes', CasoTesteDetalhes::class);
         Blade::component('testes-mais-executados', TestesMaisExecutados::class);
+        Blade::component('planos-testes-mais-executados', PlanoTesteMaisExecutados::class);
         MenuConfig::configureMenuModule();
         DashboardConfig::addDashboardWidget(new Widget('x-testes-mais-executados'));
+        DashboardConfig::addDashboardWidget(new Widget('x-planos-testes-mais-executados'));
         parent::boot();
     }
 
