@@ -2,6 +2,7 @@
 
 namespace App\System\Http\Controllers;
 
+use App\System\Config\DashboardConfig;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller

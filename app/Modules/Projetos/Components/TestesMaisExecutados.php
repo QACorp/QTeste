@@ -2,6 +2,7 @@
 
 namespace App\Modules\Projetos\Components;
 
+use App\Modules\Projetos\Contracts\TestesMaisExecutadosBusinessContract;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -11,7 +12,9 @@ class TestesMaisExecutados extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct(
+        private readonly TestesMaisExecutadosBusinessContract $testesMaisExecutadosBusiness
+    )
     {
         //
     }
@@ -21,6 +24,25 @@ class TestesMaisExecutados extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('projetos::Components.testes-mais-executados');
+        $heads = [
+            ['label' => '#', 'width' => 10],
+            'Nome',
+            ['label' => 'Exec.', 'width' => 5],
+            ['label' => 'Ações', 'width' => 10],
+        ];
+
+        $config = [
+            ...config('adminlte.datatable_config'),
+            'ordering' => false,
+            'paging' => false,
+            'searching' => false,
+
+        ];
+        $casosTeste = $this->testesMaisExecutadosBusiness->buscarTestesPorOrdemMaisExecutado(5);
+
+        return view(
+            'projetos::Components.testes-mais-executados',
+            compact('config','heads', 'casosTeste')
+        );
     }
 }

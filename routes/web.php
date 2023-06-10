@@ -43,8 +43,6 @@ Route::group(['prefix' => 'usuarios', 'middleware' => 'auth'],function(){
     Route::put('/{idUsuario}', [UserController::class,'atualizar'])->name('users.atualizar');
 });
 
-Route::get('/home', function() {
-    return view('home');
-})->name('home')->middleware(['auth']);
+Route::get('/home', [\App\System\Http\Controllers\HomeController::class,'index'])->name('home')->middleware(['auth']);
 
 

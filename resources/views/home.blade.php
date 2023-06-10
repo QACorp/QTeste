@@ -8,9 +8,11 @@
 
 @section('content')
     <div class="row">
+        @foreach(\App\System\Config\DashboardConfig::getDashboardWidget() as $widget)
         <div class="col-4">
-           <x-testes-mais-executados />
+           {!! Blade::render($widget->getComponente()) !!}
         </div>
+        @endforeach
     </div>
 
 @stop

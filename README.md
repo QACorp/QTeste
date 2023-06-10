@@ -1,6 +1,6 @@
 # QA Kit
 ## TODO
- - [ ] Caso de teste com mais execuções.
+ - [X] Caso de teste com mais execuções.
  - [ ] Plano de teste mais executado.
  - [ ] Usuário com mais execuções.
  - [ ] Caso de teste com mais falhas.

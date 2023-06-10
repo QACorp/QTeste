@@ -3,6 +3,7 @@
 namespace App\Modules\Projetos\Components;
 
 use App\Modules\Projetos\DTOs\CasoTesteDTO;
+use App\Modules\Projetos\DTOs\TestesMaisExecutadosDTO;
 use App\System\Utils\DTO;
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -14,7 +15,7 @@ class CasoTesteDetalhes extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public CasoTesteDTO $registro
+        public CasoTesteDTO|TestesMaisExecutadosDTO $registro
     )
     {
         //
