@@ -27,6 +27,6 @@ class CasoTesteDetalhes extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('projetos::Components.caso-teste-detalhes');
+        return view('projetos::Components.caso-teste-detalhes',['saltId' => md5(time())]);
     }
 }

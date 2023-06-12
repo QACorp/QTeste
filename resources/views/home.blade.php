@@ -16,7 +16,7 @@
                     @if($key > 0)
                         </div>
                     @endif
-                    <div class="col-4">
+                    <div class="col-4 px-0 mx-0">
                 @endif
                 <div class="col-12">
                    {!! Blade::render($widget->getComponente()) !!}
