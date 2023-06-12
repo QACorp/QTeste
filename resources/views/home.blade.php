@@ -7,12 +7,23 @@
 @stop
 
 @section('content')
-    <div class="row">
-        @foreach(\App\System\Config\DashboardConfig::getDashboardWidget() as $widget)
-        <div class="col-4">
-           {!! Blade::render($widget->getComponente()) !!}
+        @php
+        $totalRegistroPorColuna = ceil(count(\App\System\Config\DashboardConfig::getDashboardWidget()) / 3)
+        @endphp
+        <div class="row">
+            @foreach(\App\System\Config\DashboardConfig::getDashboardWidget() as $key => $widget)
+                @if($key % $totalRegistroPorColuna == 0 || $key == 0)
+                    @if($key > 0)
+                        </div>
+                    @endif
+                    <div class="col-4">
+                @endif
+                <div class="col-12">
+                   {!! Blade::render($widget->getComponente()) !!}
+                </div>
+            @endforeach
+            </div>
         </div>
-        @endforeach
     </div>
 
 @stop

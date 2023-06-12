@@ -12,10 +12,12 @@ use App\Modules\Projetos\Business\PlanoTesteExecucaoBusiness;
 use App\Modules\Projetos\Business\PlanoTesteMaisExecutadoBusiness;
 use App\Modules\Projetos\Business\ProjetoBusiness;
 use App\Modules\Projetos\Business\TestesMaisExecutadosBusiness;
+use App\Modules\Projetos\Business\TotaisTestesBusiness;
 use App\Modules\Projetos\Business\UsuarioComMaisExecucoesBusiness;
 use App\Modules\Projetos\Components\CasoTesteDetalhes;
 use App\Modules\Projetos\Components\PlanoTesteMaisExecutados;
 use App\Modules\Projetos\Components\TestesMaisExecutados;
+use App\Modules\Projetos\Components\TotaisTestes;
 use App\Modules\Projetos\Components\UsuarioComMaisExecucoes;
 use App\Modules\Projetos\Config\DashboardConfig;
 use App\Modules\Projetos\Config\MenuConfig;
@@ -39,6 +41,8 @@ use App\Modules\Projetos\Contracts\ProjetoBusinessContract;
 use App\Modules\Projetos\Contracts\ProjetoRepositoryContract;
 use App\Modules\Projetos\Contracts\TestesMaisExecutadosBusinessContract;
 use App\Modules\Projetos\Contracts\TestesMaisExecutadosRepositoryContract;
+use App\Modules\Projetos\Contracts\TotaisTestesBusinessContract;
+use App\Modules\Projetos\Contracts\TotaisTestesRepositoryContract;
 use App\Modules\Projetos\Contracts\UsuarioComMaisExecucoesBusinessContract;
 use App\Modules\Projetos\Contracts\UsuarioComMaisExecucoesRepositoryContract;
 use App\Modules\Projetos\Repositorys\AplicacaoRepository;
@@ -51,6 +55,7 @@ use App\Modules\Projetos\Repositorys\PlanoTesteMaisExecutadoRepository;
 use App\Modules\Projetos\Repositorys\PlanoTesteRepository;
 use App\Modules\Projetos\Repositorys\ProjetoRepository;
 use App\Modules\Projetos\Repositorys\TestesMaisExecutadosRepository;
+use App\Modules\Projetos\Repositorys\TotaisTestesRepository;
 use App\Modules\Projetos\Repositorys\UsuarioComMaisExecucoesRepository;
 use App\System\Component\DeleteModal;
 use App\System\Component\Widget;
@@ -84,7 +89,9 @@ class ProjetosServiceProvider extends ServiceProviderAbstract
         PlanoTesteMaisExecutadoBusinessContract::class => PlanoTesteMaisExecutadoBusiness::class,
         PlanoTesteMaisExecutadoRepositoryContract::class => PlanoTesteMaisExecutadoRepository::class,
         UsuarioComMaisExecucoesBusinessContract::class => UsuarioComMaisExecucoesBusiness::class,
-        UsuarioComMaisExecucoesRepositoryContract::class => UsuarioComMaisExecucoesRepository::class
+        UsuarioComMaisExecucoesRepositoryContract::class => UsuarioComMaisExecucoesRepository::class,
+        TotaisTestesBusinessContract::class => TotaisTestesBusiness::class,
+        TotaisTestesRepositoryContract::class => TotaisTestesRepository::class
     ];
     /**
      * Register services.
@@ -97,10 +104,12 @@ class ProjetosServiceProvider extends ServiceProviderAbstract
     public function boot(): void
     {
         Blade::component('caso-teste-detalhes', CasoTesteDetalhes::class);
+        Blade::component('totais-testes', TotaisTestes::class);
         Blade::component('testes-mais-executados', TestesMaisExecutados::class);
         Blade::component('planos-testes-mais-executados', PlanoTesteMaisExecutados::class);
         Blade::component('usuario-com-mais-execucoes', UsuarioComMaisExecucoes::class);
         MenuConfig::configureMenuModule();
+        DashboardConfig::addDashboardWidget(new Widget('x-totais-testes'));
         DashboardConfig::addDashboardWidget(new Widget('x-testes-mais-executados'));
         DashboardConfig::addDashboardWidget(new Widget('x-planos-testes-mais-executados'));
         DashboardConfig::addDashboardWidget(new Widget('x-usuario-com-mais-execucoes'));
