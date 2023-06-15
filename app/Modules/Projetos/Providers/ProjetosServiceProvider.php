@@ -6,6 +6,7 @@ use App\Modules\Projetos\Business\AplicacaoBusiness;
 use App\Modules\Projetos\Business\CasosTesteMaisFalhasBusiness;
 use App\Modules\Projetos\Business\CasoTesteBusiness;
 use App\Modules\Projetos\Business\CasoTesteExecucaoBusiness;
+use App\Modules\Projetos\Business\CoberturaTestesBusiness;
 use App\Modules\Projetos\Business\DocumentoBusiness;
 use App\Modules\Projetos\Business\GraficoFalhasSucessoBusiness;
 use App\Modules\Projetos\Business\ObservacaoBusiness;
@@ -18,6 +19,7 @@ use App\Modules\Projetos\Business\TotaisTestesBusiness;
 use App\Modules\Projetos\Business\UsuarioComMaisExecucoesBusiness;
 use App\Modules\Projetos\Components\CasosTesteComMaisFalhas;
 use App\Modules\Projetos\Components\CasoTesteDetalhes;
+use App\Modules\Projetos\Components\GraficoAplicacoesComMaisTestes;
 use App\Modules\Projetos\Components\GraficoFalhasSucesso;
 use App\Modules\Projetos\Components\PlanoTesteMaisExecutados;
 use App\Modules\Projetos\Components\TestesMaisExecutados;
@@ -33,6 +35,8 @@ use App\Modules\Projetos\Contracts\CasoTesteBusinessContract;
 use App\Modules\Projetos\Contracts\CasoTesteExecucaoBusinessContract;
 use App\Modules\Projetos\Contracts\CasoTesteExecucaoRepositoryContract;
 use App\Modules\Projetos\Contracts\CasoTesteRespositoryContract;
+use App\Modules\Projetos\Contracts\CoberturaTestesBusinessContract;
+use App\Modules\Projetos\Contracts\CoberturaTestesRepositoryContract;
 use App\Modules\Projetos\Contracts\DocumentoBusinessContract;
 use App\Modules\Projetos\Contracts\DocumentoRepositoryContract;
 use App\Modules\Projetos\Contracts\GraficoFalhasSucessoBusinessContract;
@@ -57,6 +61,7 @@ use App\Modules\Projetos\Repositorys\AplicacaoRepository;
 use App\Modules\Projetos\Repositorys\CasosTesteMaisFalhasRepository;
 use App\Modules\Projetos\Repositorys\CasoTesteExecucaoRepository;
 use App\Modules\Projetos\Repositorys\CasoTesteRepository;
+use App\Modules\Projetos\Repositorys\CoberturaTestesRepository;
 use App\Modules\Projetos\Repositorys\DocumentoRepository;
 use App\Modules\Projetos\Repositorys\GraficoFalhasSucessoRepository;
 use App\Modules\Projetos\Repositorys\ObservacaoRespository;
@@ -105,7 +110,9 @@ class ProjetosServiceProvider extends ServiceProviderAbstract
         CasosTesteMaisFalhasBusinessContract::class => CasosTesteMaisFalhasBusiness::class,
         CasosTesteMaisFalhasRepositoryContract::class => CasosTesteMaisFalhasRepository::class,
         GraficoFalhasSucessoBusinessContract::class => GraficoFalhasSucessoBusiness::class,
-        GraficoFalhasSucessoRepositoryContract::class => GraficoFalhasSucessoRepository::class
+        GraficoFalhasSucessoRepositoryContract::class => GraficoFalhasSucessoRepository::class,
+        CoberturaTestesBusinessContract::class => CoberturaTestesBusiness::class,
+        CoberturaTestesRepositoryContract::class => CoberturaTestesRepository::class
     ];
     /**
      * Register services.
@@ -124,9 +131,11 @@ class ProjetosServiceProvider extends ServiceProviderAbstract
         Blade::component('usuario-com-mais-execucoes', UsuarioComMaisExecucoes::class);
         Blade::component('casos-teste-mais-falhas', CasosTesteComMaisFalhas::class);
         Blade::component('grafico-falha-sucesso', GraficoFalhasSucesso::class);
+        Blade::component('grafico-aplicacoes-mais-testes', GraficoAplicacoesComMaisTestes::class);
         MenuConfig::configureMenuModule();
         DashboardConfig::addDashboardWidget(new Widget('x-totais-testes'));
         DashboardConfig::addDashboardWidget(new Widget('x-grafico-falha-sucesso'));
+        DashboardConfig::addDashboardWidget(new Widget('x-grafico-aplicacoes-mais-testes'));
         DashboardConfig::addDashboardWidget(new Widget('x-testes-mais-executados'));
         DashboardConfig::addDashboardWidget(new Widget('x-planos-testes-mais-executados'));
         DashboardConfig::addDashboardWidget(new Widget('x-usuario-com-mais-execucoes'));
