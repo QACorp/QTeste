@@ -2,11 +2,8 @@
 
 namespace App\Modules\Projetos\Repositorys;
 
-use App\Modules\Projetos\Components\PlanoTesteMaisExecutados;
-use App\Modules\Projetos\Contracts\PlanoTesteMaisExecutadoRepositoryContract;
+use App\Modules\Projetos\Contracts\Repository\PlanoTesteMaisExecutadoRepositoryContract;
 use App\Modules\Projetos\DTOs\PlanoTesteMaisExecutadoDTO;
-use App\Modules\Projetos\DTOs\TestesMaisExecutadosDTO;
-use App\Modules\Projetos\Models\CasoTeste;
 use App\Modules\Projetos\Models\PlanoTeste;
 use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\DataCollection;

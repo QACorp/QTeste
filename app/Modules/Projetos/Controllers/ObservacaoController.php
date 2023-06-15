@@ -2,7 +2,7 @@
 
 namespace App\Modules\Projetos\Controllers;
 
-use App\Modules\Projetos\Contracts\ObservacaoBusinessContract;
+use App\Modules\Projetos\Contracts\Business\ObservacaoBusinessContract;
 use App\Modules\Projetos\DTOs\ObservacaoDTO;
 use App\System\Enuns\PermisissionEnum;
 use App\System\Exceptions\NotFoundException;

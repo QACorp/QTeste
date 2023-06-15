@@ -2,7 +2,7 @@
 
 namespace App\Modules\Projetos\Repositorys;
 
-use App\Modules\Projetos\Contracts\PlanoTesteRepositoryContract;
+use App\Modules\Projetos\Contracts\Repository\PlanoTesteRepositoryContract;
 use App\Modules\Projetos\DTOs\ConsultaPlanoTesteDTO;
 use App\Modules\Projetos\DTOs\PlanoTesteDTO;
 use App\Modules\Projetos\Models\PlanoTeste;

@@ -2,9 +2,9 @@
 
 namespace App\Modules\Projetos\Business;
 
-use App\Modules\Projetos\Contracts\AplicacaoBusinessContract;
-use App\Modules\Projetos\Contracts\ProjetoBusinessContract;
-use App\Modules\Projetos\Contracts\ProjetoRepositoryContract;
+use App\Modules\Projetos\Contracts\Business\AplicacaoBusinessContract;
+use App\Modules\Projetos\Contracts\Business\ProjetoBusinessContract;
+use App\Modules\Projetos\Contracts\Repository\ProjetoRepositoryContract;
 use App\Modules\Projetos\DTOs\ProjetoDTO;
 use App\Modules\Projetos\Requests\ProjetosPostRequest;
 use App\Modules\Projetos\Requests\ProjetosPutRequest;

@@ -2,10 +2,8 @@
 
 namespace App\Modules\Projetos\Business;
 
-use App\Modules\Projetos\Contracts\CasosTesteMaisFalhasBusinessContract;
-use App\Modules\Projetos\Contracts\CasosTesteMaisFalhasRepositoryContract;
-use App\Modules\Projetos\DTOs\TotaisTestesDTO;
-use App\Modules\Projetos\Repositorys\CasosTesteMaisFalhasRepository;
+use App\Modules\Projetos\Contracts\Business\CasosTesteMaisFalhasBusinessContract;
+use App\Modules\Projetos\Contracts\Repository\CasosTesteMaisFalhasRepositoryContract;
 use App\System\Impl\BusinessAbstract;
 use Spatie\LaravelData\DataCollection;
 

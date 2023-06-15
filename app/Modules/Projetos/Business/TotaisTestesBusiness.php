@@ -2,8 +2,8 @@
 
 namespace App\Modules\Projetos\Business;
 
-use App\Modules\Projetos\Contracts\TotaisTestesBusinessContract;
-use App\Modules\Projetos\Contracts\TotaisTestesRepositoryContract;
+use App\Modules\Projetos\Contracts\Business\TotaisTestesBusinessContract;
+use App\Modules\Projetos\Contracts\Repository\TotaisTestesRepositoryContract;
 use App\Modules\Projetos\DTOs\TotaisTestesDTO;
 use App\System\Impl\BusinessAbstract;
 

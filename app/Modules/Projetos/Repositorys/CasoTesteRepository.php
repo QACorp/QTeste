@@ -2,7 +2,7 @@
 
 namespace App\Modules\Projetos\Repositorys;
 
-use App\Modules\Projetos\Contracts\CasoTesteRespositoryContract;
+use App\Modules\Projetos\Contracts\Repository\CasoTesteRespositoryContract;
 use App\Modules\Projetos\DTOs\CasoTesteDTO;
 use App\Modules\Projetos\DTOs\PlanoTesteDTO;
 use App\Modules\Projetos\Enums\CasoTesteEnum;

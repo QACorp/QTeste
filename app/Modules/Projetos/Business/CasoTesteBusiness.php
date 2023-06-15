@@ -2,10 +2,9 @@
 
 namespace App\Modules\Projetos\Business;
 
-use App\Modules\Projetos\Contracts\CasoTesteBusinessContract;
-use App\Modules\Projetos\Contracts\CasoTesteRespositoryContract;
-use App\Modules\Projetos\Contracts\PlanoTesteBusinessContract;
-use App\Modules\Projetos\Contracts\PlanoTesteRepositoryContract;
+use App\Modules\Projetos\Contracts\Business\CasoTesteBusinessContract;
+use App\Modules\Projetos\Contracts\Business\PlanoTesteBusinessContract;
+use App\Modules\Projetos\Contracts\Repository\CasoTesteRespositoryContract;
 use App\Modules\Projetos\DTOs\CasoTesteDTO;
 use App\Modules\Projetos\DTOs\PlanoTesteDTO;
 use App\Modules\Projetos\Enums\CasoTesteEnum;

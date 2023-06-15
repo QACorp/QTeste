@@ -2,9 +2,9 @@
 
 namespace App\Modules\Projetos\Business;
 
-use App\Modules\Projetos\Contracts\ObservacaoBusinessContract;
-use App\Modules\Projetos\Contracts\ObservacaoRepositoryContract;
-use App\Modules\Projetos\Contracts\ProjetoBusinessContract;
+use App\Modules\Projetos\Contracts\Business\ObservacaoBusinessContract;
+use App\Modules\Projetos\Contracts\Business\ProjetoBusinessContract;
+use App\Modules\Projetos\Contracts\Repository\ObservacaoRepositoryContract;
 use App\Modules\Projetos\DTOs\ObservacaoDTO;
 use App\Modules\Projetos\Requests\ObservacoesPostRequest;
 use App\System\DTOs\UserDTO;

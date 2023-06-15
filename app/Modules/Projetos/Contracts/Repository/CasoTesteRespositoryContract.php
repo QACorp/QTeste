@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Projetos\Contracts;
+namespace App\Modules\Projetos\Contracts\Repository;
 
 use App\Modules\Projetos\DTOs\CasoTesteDTO;
 use App\Modules\Projetos\DTOs\PlanoTesteDTO;

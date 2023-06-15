@@ -2,11 +2,8 @@
 
 namespace App\Modules\Projetos\Repositorys;
 
-use App\Modules\Projetos\Components\GraficoFalhasSucesso;
-use App\Modules\Projetos\Contracts\GraficoFalhasSucessoRepositoryContract;
-use App\Modules\Projetos\Contracts\TotaisTestesRepositoryContract;
+use App\Modules\Projetos\Contracts\Repository\GraficoFalhasSucessoRepositoryContract;
 use App\Modules\Projetos\DTOs\GraficoFalhasSucessoDTO;
-use App\Modules\Projetos\DTOs\TotaisTestesDTO;
 use Illuminate\Support\Facades\DB;
 
 class GraficoFalhasSucessoRepository implements GraficoFalhasSucessoRepositoryContract

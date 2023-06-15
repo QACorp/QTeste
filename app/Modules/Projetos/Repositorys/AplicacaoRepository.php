@@ -2,7 +2,7 @@
 
 namespace App\Modules\Projetos\Repositorys;
 
-use App\Modules\Projetos\Contracts\AplicacaoRepositoryContract;
+use App\Modules\Projetos\Contracts\Repository\AplicacaoRepositoryContract;
 use App\Modules\Projetos\DTOs\AplicacaoDTO;
 use App\Modules\Projetos\Models\Aplicacao;
 use Spatie\LaravelData\DataCollection;

@@ -2,7 +2,7 @@
 
 namespace App\Modules\Projetos\Controllers;
 
-use App\Modules\Projetos\Contracts\CasoTesteBusinessContract;
+use App\Modules\Projetos\Contracts\Business\CasoTesteBusinessContract;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Http\Controllers\Controller;

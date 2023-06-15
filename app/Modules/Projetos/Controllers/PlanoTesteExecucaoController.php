@@ -2,9 +2,9 @@
 
 namespace App\Modules\Projetos\Controllers;
 
-use App\Modules\Projetos\Contracts\CasoTesteBusinessContract;
-use App\Modules\Projetos\Contracts\CasoTesteExecucaoBusinessContract;
-use App\Modules\Projetos\Contracts\PlanoTesteExecucaoBusinessContract;
+use App\Modules\Projetos\Contracts\Business\CasoTesteBusinessContract;
+use App\Modules\Projetos\Contracts\Business\CasoTesteExecucaoBusinessContract;
+use App\Modules\Projetos\Contracts\Business\PlanoTesteExecucaoBusinessContract;
 use App\Modules\Projetos\DTOs\PlanoTesteExecucaoDTO;
 use App\System\Enuns\PermisissionEnum;
 use App\System\Exceptions\ConflictException;

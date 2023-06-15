@@ -2,7 +2,7 @@
 
 namespace App\Modules\Projetos\Components;
 
-use App\Modules\Projetos\Contracts\TestesMaisExecutadosBusinessContract;
+use App\Modules\Projetos\Contracts\Business\TestesMaisExecutadosBusinessContract;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;

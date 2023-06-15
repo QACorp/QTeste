@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Modules\Projetos\Contracts;
+namespace App\Modules\Projetos\Contracts\Business;
 
 use App\Modules\Projetos\DTOs\GraficoFalhasSucessoDTO;
-use App\Modules\Projetos\DTOs\TotaisTestesDTO;
 
 interface GraficoFalhasSucessoBusinessContract
 {

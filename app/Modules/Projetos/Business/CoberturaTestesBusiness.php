@@ -2,11 +2,8 @@
 
 namespace App\Modules\Projetos\Business;
 
-use App\Modules\Projetos\Contracts\CoberturaTestesBusinessContract;
-use App\Modules\Projetos\Contracts\CoberturaTestesRepositoryContract;
-use App\Modules\Projetos\Contracts\TotaisTestesBusinessContract;
-use App\Modules\Projetos\Contracts\TotaisTestesRepositoryContract;
-use App\Modules\Projetos\DTOs\TotaisTestesDTO;
+use App\Modules\Projetos\Contracts\Business\CoberturaTestesBusinessContract;
+use App\Modules\Projetos\Contracts\Repository\CoberturaTestesRepositoryContract;
 use App\System\Impl\BusinessAbstract;
 use Spatie\LaravelData\DataCollection;
 

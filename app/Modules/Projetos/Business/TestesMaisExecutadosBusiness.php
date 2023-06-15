@@ -2,9 +2,8 @@
 
 namespace App\Modules\Projetos\Business;
 
-use App\Modules\Projetos\Components\TestesMaisExecutados;
-use App\Modules\Projetos\Contracts\TestesMaisExecutadosBusinessContract;
-use App\Modules\Projetos\Contracts\TestesMaisExecutadosRepositoryContract;
+use App\Modules\Projetos\Contracts\Business\TestesMaisExecutadosBusinessContract;
+use App\Modules\Projetos\Contracts\Repository\TestesMaisExecutadosRepositoryContract;
 use App\System\Impl\BusinessAbstract;
 use Spatie\LaravelData\DataCollection;
 

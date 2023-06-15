@@ -2,8 +2,7 @@
 
 namespace App\Modules\Projetos\Repositorys;
 
-use App\Modules\Projetos\Contracts\CasoTesteExecucaoRepositoryContract;
-
+use App\Modules\Projetos\Contracts\Repository\CasoTesteExecucaoRepositoryContract;
 use App\Modules\Projetos\DTOs\CasoTesteExecucaoDTO;
 use App\Modules\Projetos\DTOs\PlanoTesteExecucaoDTO;
 use App\Modules\Projetos\Models\CasoTesteExecucao;

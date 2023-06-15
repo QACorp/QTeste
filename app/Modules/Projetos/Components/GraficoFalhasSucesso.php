@@ -2,7 +2,7 @@
 
 namespace App\Modules\Projetos\Components;
 
-use App\Modules\Projetos\Contracts\GraficoFalhasSucessoBusinessContract;
+use App\Modules\Projetos\Contracts\Business\GraficoFalhasSucessoBusinessContract;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;

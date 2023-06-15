@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Modules\Projetos\Contracts;
+namespace App\Modules\Projetos\Contracts\Repository;
 
 use Spatie\LaravelData\DataCollection;
 
-interface PlanoTesteMaisExecutadoBusinessContract
+interface PlanoTesteMaisExecutadoRepositoryContract
 {
     public function buscarPlanosTestePorOrdemMaisExecutado(int $limit): DataCollection;
 }

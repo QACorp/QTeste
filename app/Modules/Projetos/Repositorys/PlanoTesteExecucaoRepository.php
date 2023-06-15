@@ -2,7 +2,7 @@
 
 namespace App\Modules\Projetos\Repositorys;
 
-use App\Modules\Projetos\Contracts\PlanoTesteExecucaoRepositoryContract;
+use App\Modules\Projetos\Contracts\Repository\PlanoTesteExecucaoRepositoryContract;
 use App\Modules\Projetos\DTOs\PlanoTesteExecucaoDTO;
 use App\Modules\Projetos\Models\PlanoTesteExecucao;
 use Illuminate\Support\Carbon;

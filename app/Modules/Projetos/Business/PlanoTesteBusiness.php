@@ -2,9 +2,9 @@
 
 namespace App\Modules\Projetos\Business;
 
-use App\Modules\Projetos\Contracts\PlanoTesteBusinessContract;
-use App\Modules\Projetos\Contracts\PlanoTesteRepositoryContract;
-use App\Modules\Projetos\Contracts\ProjetoBusinessContract;
+use App\Modules\Projetos\Contracts\Business\PlanoTesteBusinessContract;
+use App\Modules\Projetos\Contracts\Business\ProjetoBusinessContract;
+use App\Modules\Projetos\Contracts\Repository\PlanoTesteRepositoryContract;
 use App\Modules\Projetos\DTOs\PlanoTesteDTO;
 use App\Modules\Projetos\Requests\PlanoTestePostRequest;
 use App\Modules\Projetos\Requests\PlanoTestePutRequest;

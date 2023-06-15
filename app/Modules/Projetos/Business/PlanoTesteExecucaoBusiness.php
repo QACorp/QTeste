@@ -2,9 +2,9 @@
 
 namespace App\Modules\Projetos\Business;
 
-use App\Modules\Projetos\Contracts\CasoTesteExecucaoBusinessContract;
-use App\Modules\Projetos\Contracts\PlanoTesteExecucaoBusinessContract;
-use App\Modules\Projetos\Contracts\PlanoTesteExecucaoRepositoryContract;
+use App\Modules\Projetos\Contracts\Business\CasoTesteExecucaoBusinessContract;
+use App\Modules\Projetos\Contracts\Business\PlanoTesteExecucaoBusinessContract;
+use App\Modules\Projetos\Contracts\Repository\PlanoTesteExecucaoRepositoryContract;
 use App\Modules\Projetos\DTOs\PlanoTesteExecucaoDTO;
 use App\Modules\Projetos\Enums\PlanoTesteExecucaoEnum;
 use App\System\Enuns\PermisissionEnum;
@@ -24,7 +24,7 @@ class PlanoTesteExecucaoBusiness extends BusinessAbstract implements PlanoTesteE
     public function buscarUltimoPlanoTesteExecucaoPorPlanoTeste(int $idPlanoTeste): ?PlanoTesteExecucaoDTO
     {
         $this->can(PermisissionEnum::LISTAR_EXECUCAO_PLANO_TESTE->value);
-        $planoTesteExecucao =  $this->planoTesteExecucaoRepository->buscarUltimoPlanoTesteExecucaoPorPlanoTeste($idPlanoTeste);    
+        $planoTesteExecucao =  $this->planoTesteExecucaoRepository->buscarUltimoPlanoTesteExecucaoPorPlanoTeste($idPlanoTeste);
         return $planoTesteExecucao;
 
     }

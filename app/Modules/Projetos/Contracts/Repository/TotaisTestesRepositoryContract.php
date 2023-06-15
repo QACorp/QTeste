@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Modules\Projetos\Contracts;
+namespace App\Modules\Projetos\Contracts\Repository;
 
 use App\Modules\Projetos\DTOs\TotaisTestesDTO;
 
-interface TotaisTestesBusinessContract
+interface TotaisTestesRepositoryContract
 {
     public function buscarTotaisTestes(): TotaisTestesDTO;
 }

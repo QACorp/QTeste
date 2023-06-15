@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Projetos\Contracts;
+namespace App\Modules\Projetos\Contracts\Repository;
 
 use Spatie\LaravelData\DataCollection;
 

@@ -2,9 +2,9 @@
 
 namespace App\Modules\Projetos\Business;
 
-use App\Modules\Projetos\Contracts\DocumentoBusinessContract;
-use App\Modules\Projetos\Contracts\DocumentoRepositoryContract;
-use App\Modules\Projetos\Contracts\ProjetoBusinessContract;
+use App\Modules\Projetos\Contracts\Business\DocumentoBusinessContract;
+use App\Modules\Projetos\Contracts\Business\ProjetoBusinessContract;
+use App\Modules\Projetos\Contracts\Repository\DocumentoRepositoryContract;
 use App\Modules\Projetos\DTOs\DocumentoDTO;
 use App\Modules\Projetos\Requests\DocumentosPostRequest;
 use App\System\Enuns\PermisissionEnum;

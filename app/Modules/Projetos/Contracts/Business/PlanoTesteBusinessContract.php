@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Modules\Projetos\Contracts;
+namespace App\Modules\Projetos\Contracts\Business;
 
 use App\Modules\Projetos\DTOs\PlanoTesteDTO;
 use App\Modules\Projetos\Requests\PlanoTestePostRequest;
 use App\Modules\Projetos\Requests\PlanoTestePutRequest;
-use App\Modules\Projetos\Requests\ProjetosPostRequest;
 use Spatie\LaravelData\DataCollection;
 
 interface PlanoTesteBusinessContract

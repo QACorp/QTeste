@@ -2,10 +2,8 @@
 
 namespace App\Modules\Projetos\Repositorys;
 
-use App\Modules\Projetos\Contracts\UsuarioComMaisExecucoesRepositoryContract;
-use App\Modules\Projetos\DTOs\TestesMaisExecutadosDTO;
+use App\Modules\Projetos\Contracts\Repository\UsuarioComMaisExecucoesRepositoryContract;
 use App\Modules\Projetos\DTOs\UsuarioComMaisExecucoesDTO;
-use App\Modules\Projetos\Models\CasoTeste;
 use App\System\Models\User;
 use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\DataCollection;

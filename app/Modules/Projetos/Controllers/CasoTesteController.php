@@ -3,7 +3,7 @@
 namespace App\Modules\Projetos\Controllers;
 
 
-use App\Modules\Projetos\Contracts\CasoTesteBusinessContract;
+use App\Modules\Projetos\Contracts\Business\CasoTesteBusinessContract;
 use App\Modules\Projetos\DTOs\CasoTesteDTO;
 use App\System\Enuns\PermisissionEnum;
 use App\System\Exceptions\NotFoundException;

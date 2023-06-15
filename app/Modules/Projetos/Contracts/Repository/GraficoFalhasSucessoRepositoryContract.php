@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Modules\Projetos\Contracts;
+namespace App\Modules\Projetos\Contracts\Repository;
 
 use App\Modules\Projetos\DTOs\GraficoFalhasSucessoDTO;
-use Spatie\LaravelData\DataCollection;
 
 interface GraficoFalhasSucessoRepositoryContract
 {

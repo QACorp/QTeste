@@ -2,7 +2,7 @@
 
 namespace App\Modules\Projetos\Repositorys;
 
-use App\Modules\Projetos\Contracts\TestesMaisExecutadosRepositoryContract;
+use App\Modules\Projetos\Contracts\Repository\TestesMaisExecutadosRepositoryContract;
 use App\Modules\Projetos\DTOs\TestesMaisExecutadosDTO;
 use App\Modules\Projetos\Models\CasoTeste;
 use Illuminate\Support\Facades\DB;

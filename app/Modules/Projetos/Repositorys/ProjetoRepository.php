@@ -2,7 +2,7 @@
 
 namespace App\Modules\Projetos\Repositorys;
 
-use App\Modules\Projetos\Contracts\ProjetoRepositoryContract;
+use App\Modules\Projetos\Contracts\Repository\ProjetoRepositoryContract;
 use App\Modules\Projetos\DTOs\ProjetoDTO;
 use App\Modules\Projetos\Models\Aplicacao;
 use App\Modules\Projetos\Models\Projeto;

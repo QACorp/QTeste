@@ -2,12 +2,9 @@
 
 namespace App\Modules\Projetos\Repositorys;
 
-use App\Modules\Projetos\Contracts\CoberturaTestesRepositoryContract;
-use App\Modules\Projetos\Contracts\TotaisTestesRepositoryContract;
+use App\Modules\Projetos\Contracts\Repository\CoberturaTestesRepositoryContract;
 use App\Modules\Projetos\DTOs\CoberturaTestesDTO;
-use App\Modules\Projetos\DTOs\TotaisTestesDTO;
 use App\Modules\Projetos\Models\Aplicacao;
-use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\DataCollection;
 
 class CoberturaTestesRepository implements CoberturaTestesRepositoryContract

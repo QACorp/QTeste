@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Modules\Projetos\Contracts;
+namespace App\Modules\Projetos\Contracts\Business;
 
 use App\Modules\Projetos\DTOs\AplicacaoDTO;
 use App\Modules\Projetos\Requests\AplicacoesPostRequest;
 use App\Modules\Projetos\Requests\AplicacoesPutRequest;
-use Spatie\LaravelData\Data;
 use Spatie\LaravelData\DataCollection;
 
 interface AplicacaoBusinessContract

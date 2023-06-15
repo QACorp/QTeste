@@ -2,7 +2,7 @@
 
 namespace App\Modules\Projetos\Controllers;
 
-use App\Modules\Projetos\Contracts\AplicacaoBusinessContract;
+use App\Modules\Projetos\Contracts\Business\AplicacaoBusinessContract;
 use App\Modules\Projetos\DTOs\AplicacaoDTO;
 use App\System\Enuns\PermisissionEnum;
 use App\System\Exceptions\NotFoundException;
@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Auth;
 
 class AplicacaoController extends Controller
 {
-    public static $HEADS_TABLE = ['name','description'];
     public function __construct(
         private readonly AplicacaoBusinessContract $aplicacaoBusiness
     )

@@ -2,8 +2,8 @@
 
 namespace App\Modules\Projetos\Business;
 
-use App\Modules\Projetos\Contracts\UsuarioComMaisExecucoesBusinessContract;
-use App\Modules\Projetos\Contracts\UsuarioComMaisExecucoesRepositoryContract;
+use App\Modules\Projetos\Contracts\Business\UsuarioComMaisExecucoesBusinessContract;
+use App\Modules\Projetos\Contracts\Repository\UsuarioComMaisExecucoesRepositoryContract;
 use App\System\Impl\BusinessAbstract;
 use Spatie\LaravelData\DataCollection;
 

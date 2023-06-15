@@ -2,9 +2,8 @@
 
 namespace App\Modules\Projetos\Repositorys;
 
-use App\Modules\Projetos\Contracts\CasosTesteMaisFalhasRepositoryContract;
+use App\Modules\Projetos\Contracts\Repository\CasosTesteMaisFalhasRepositoryContract;
 use App\Modules\Projetos\DTOs\TestesMaisFalhasDTO;
-use App\Modules\Projetos\DTOs\TotaisTestesDTO;
 use App\Modules\Projetos\Models\CasoTeste;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\DB;
