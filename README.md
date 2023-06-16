@@ -8,3 +8,4 @@
  - [X] Gráfico com a quantidade de testes aprovados e quantos reprovados.
  - [ ] Últimas atualizações de projetos.
  - [X] Aplicações com mais testes.
+ - [ ] Execuções de planos de teste por mês.

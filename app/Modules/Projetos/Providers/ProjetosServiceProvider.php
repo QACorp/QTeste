@@ -8,6 +8,7 @@ use App\Modules\Projetos\Business\CasoTesteBusiness;
 use App\Modules\Projetos\Business\CasoTesteExecucaoBusiness;
 use App\Modules\Projetos\Business\CoberturaTestesBusiness;
 use App\Modules\Projetos\Business\DocumentoBusiness;
+use App\Modules\Projetos\Business\GraficoExecucoesTestesMensaisBusiness;
 use App\Modules\Projetos\Business\GraficoFalhasSucessoBusiness;
 use App\Modules\Projetos\Business\ObservacaoBusiness;
 use App\Modules\Projetos\Business\PlanoTesteBusiness;
@@ -20,6 +21,7 @@ use App\Modules\Projetos\Business\UsuarioComMaisExecucoesBusiness;
 use App\Modules\Projetos\Components\CasosTesteComMaisFalhas;
 use App\Modules\Projetos\Components\CasoTesteDetalhes;
 use App\Modules\Projetos\Components\GraficoAplicacoesComMaisTestes;
+use App\Modules\Projetos\Components\GraficoExecucoesTestesMensais;
 use App\Modules\Projetos\Components\GraficoFalhasSucesso;
 use App\Modules\Projetos\Components\PlanoTesteMaisExecutados;
 use App\Modules\Projetos\Components\TestesMaisExecutados;
@@ -33,6 +35,7 @@ use App\Modules\Projetos\Contracts\Business\CasoTesteBusinessContract;
 use App\Modules\Projetos\Contracts\Business\CasoTesteExecucaoBusinessContract;
 use App\Modules\Projetos\Contracts\Business\CoberturaTestesBusinessContract;
 use App\Modules\Projetos\Contracts\Business\DocumentoBusinessContract;
+use App\Modules\Projetos\Contracts\Business\GraficoExecucoesTestesMensaisBusinessContract;
 use App\Modules\Projetos\Contracts\Business\GraficoFalhasSucessoBusinessContract;
 use App\Modules\Projetos\Contracts\Business\ObservacaoBusinessContract;
 use App\Modules\Projetos\Contracts\Business\PlanoTesteBusinessContract;
@@ -48,6 +51,7 @@ use App\Modules\Projetos\Contracts\Repository\CasoTesteExecucaoRepositoryContrac
 use App\Modules\Projetos\Contracts\Repository\CasoTesteRespositoryContract;
 use App\Modules\Projetos\Contracts\Repository\CoberturaTestesRepositoryContract;
 use App\Modules\Projetos\Contracts\Repository\DocumentoRepositoryContract;
+use App\Modules\Projetos\Contracts\Repository\GraficoExecucoesTestesMensaisRepositoryContract;
 use App\Modules\Projetos\Contracts\Repository\GraficoFalhasSucessoRepositoryContract;
 use App\Modules\Projetos\Contracts\Repository\ObservacaoRepositoryContract;
 use App\Modules\Projetos\Contracts\Repository\PlanoTesteExecucaoRepositoryContract;
@@ -63,6 +67,7 @@ use App\Modules\Projetos\Repositorys\CasoTesteExecucaoRepository;
 use App\Modules\Projetos\Repositorys\CasoTesteRepository;
 use App\Modules\Projetos\Repositorys\CoberturaTestesRepository;
 use App\Modules\Projetos\Repositorys\DocumentoRepository;
+use App\Modules\Projetos\Repositorys\GraficoExecucoesTestesMensaisRepository;
 use App\Modules\Projetos\Repositorys\GraficoFalhasSucessoRepository;
 use App\Modules\Projetos\Repositorys\ObservacaoRespository;
 use App\Modules\Projetos\Repositorys\PlanoTesteExecucaoRepository;
@@ -111,7 +116,9 @@ class ProjetosServiceProvider extends ServiceProviderAbstract
         GraficoFalhasSucessoBusinessContract::class => GraficoFalhasSucessoBusiness::class,
         GraficoFalhasSucessoRepositoryContract::class => GraficoFalhasSucessoRepository::class,
         CoberturaTestesBusinessContract::class => CoberturaTestesBusiness::class,
-        CoberturaTestesRepositoryContract::class => CoberturaTestesRepository::class
+        CoberturaTestesRepositoryContract::class => CoberturaTestesRepository::class,
+        GraficoExecucoesTestesMensaisRepositoryContract::class => GraficoExecucoesTestesMensaisRepository::class,
+        GraficoExecucoesTestesMensaisBusinessContract::class => GraficoExecucoesTestesMensaisBusiness::class
     ];
     /**
      * Register services.
@@ -125,6 +132,7 @@ class ProjetosServiceProvider extends ServiceProviderAbstract
     {
         Blade::component('caso-teste-detalhes', CasoTesteDetalhes::class);
         Blade::component('totais-testes', TotaisTestes::class);
+        Blade::component('grafico-execucoes-mensais', GraficoExecucoesTestesMensais::class);
         Blade::component('testes-mais-executados', TestesMaisExecutados::class);
         Blade::component('planos-testes-mais-executados', PlanoTesteMaisExecutados::class);
         Blade::component('usuario-com-mais-execucoes', UsuarioComMaisExecucoes::class);
@@ -133,12 +141,14 @@ class ProjetosServiceProvider extends ServiceProviderAbstract
         Blade::component('grafico-aplicacoes-mais-testes', GraficoAplicacoesComMaisTestes::class);
         MenuConfig::configureMenuModule();
         DashboardConfig::addDashboardWidget(new Widget('x-totais-testes'));
+        DashboardConfig::addDashboardWidget(new Widget('x-grafico-execucoes-mensais',8));
         DashboardConfig::addDashboardWidget(new Widget('x-grafico-falha-sucesso'));
         DashboardConfig::addDashboardWidget(new Widget('x-grafico-aplicacoes-mais-testes'));
-        DashboardConfig::addDashboardWidget(new Widget('x-testes-mais-executados'));
-        DashboardConfig::addDashboardWidget(new Widget('x-planos-testes-mais-executados'));
         DashboardConfig::addDashboardWidget(new Widget('x-usuario-com-mais-execucoes'));
-        DashboardConfig::addDashboardWidget(new Widget('x-casos-teste-mais-falhas'));
+        DashboardConfig::addDashboardWidget(new Widget('x-casos-teste-mais-falhas',6));
+        DashboardConfig::addDashboardWidget(new Widget('x-testes-mais-executados',6));
+        DashboardConfig::addDashboardWidget(new Widget('x-planos-testes-mais-executados',6));
+
         parent::boot();
     }
 
