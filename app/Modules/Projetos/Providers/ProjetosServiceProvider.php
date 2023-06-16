@@ -142,9 +142,11 @@ class ProjetosServiceProvider extends ServiceProviderAbstract
         MenuConfig::configureMenuModule();
         DashboardConfig::addDashboardWidget(new Widget('x-totais-testes'));
         DashboardConfig::addDashboardWidget(new Widget('x-grafico-execucoes-mensais',8));
+
         DashboardConfig::addDashboardWidget(new Widget('x-grafico-falha-sucesso'));
         DashboardConfig::addDashboardWidget(new Widget('x-grafico-aplicacoes-mais-testes'));
         DashboardConfig::addDashboardWidget(new Widget('x-usuario-com-mais-execucoes'));
+
         DashboardConfig::addDashboardWidget(new Widget('x-casos-teste-mais-falhas',6));
         DashboardConfig::addDashboardWidget(new Widget('x-testes-mais-executados',6));
         DashboardConfig::addDashboardWidget(new Widget('x-planos-testes-mais-executados',6));

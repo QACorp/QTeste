@@ -7,7 +7,7 @@
         </div>
 
         <div class="card-body">
-            <div class="w-100 h-25"><canvas id="execucoes"></canvas></div>
+            <div ><canvas id="execucoes"></canvas></div>
         </div>
     </div>
 </div>
