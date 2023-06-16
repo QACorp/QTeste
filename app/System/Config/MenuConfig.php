@@ -13,7 +13,14 @@ class MenuConfig extends MenuConfigAbstract
     {
         Event::listen(BuildingMenu::class, function (BuildingMenu $event) {
             // Add some items to the menu...
-            $event->menu->add('Usuários',[
+            $event->menu->add([
+                'key' => 'home',
+                'route' => 'home',
+                'icon'  => 'fas  fa-home',
+                'text' => 'Home',
+                'can'   => 'ACESSAR_SISTEMA'
+            ]);
+            $event->menu->add([
                 'key' => 'users_index',
                 'route' => 'users.index',
                 'icon'  => 'fas  fa-users',

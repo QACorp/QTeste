@@ -12,9 +12,7 @@ class MenuConfig extends MenuConfigAbstract
     static function configureMenuModule()
     {
         Event::listen(BuildingMenu::class, function (BuildingMenu $event) {
-            // Add some items to the menu...
-            $event->menu->add('Projetos');
-            $event->menu->add([
+            $event->menu->add('Projetos',[
                 'key' => 'aplicacao_index',
                 'route' => 'aplicacoes.index',
                 'icon'  => 'fas fa-cogs',
