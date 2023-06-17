@@ -8,4 +8,9 @@
  - [X] Gráfico com a quantidade de testes aprovados e quantos reprovados.
  - [ ] Últimas atualizações de projetos.
  - [X] Aplicações com mais testes.
- - [ ] Execuções de planos de teste por mês.
+ - [X] Execuções de planos de teste por mês.
+ - [ ] Cadastro de equipe do usuário.
+ - [ ] Vincular usuário à equipe.
+ - [ ] Vincular aplicação à equipe.
+ - [ ] Vincular casos de teste à equipe.
+ - [ ] Alterar consultas para trazer tudo com base na equipe do usuário.

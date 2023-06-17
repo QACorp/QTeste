@@ -32,7 +32,13 @@ class PlanoTesteExecucaoController extends Controller
             $planoTesteExecucao = $this->planoTesteExecucaoBusiness->buscarUltimoPlanoTesteExecucaoPorPlanoTeste($idPlanoTeste);
             if($planoTesteExecucao == null) throw new NotFoundException();
             $casosTeste = $this->casoTesteBusiness->buscarCasoTestePorPlanoTeste($idPlanoTeste);
-            return $this->exibirViewExecucao($request, $planoTesteExecucao, $casosTeste, $idAplicacao, $idProjeto);
+            return $this->exibirViewExecucao(
+                $request,
+                $planoTesteExecucao,
+                $casosTeste,
+                $idAplicacao,
+                $idProjeto
+            );
         }catch (NotFoundException $exception){
             return redirect(route('aplicacoes.projetos.planos-teste.visualizar',[$idAplicacao, $idProjeto, $idPlanoTeste]))
                 ->with([Controller::MESSAGE_KEY_ERROR => ['Não existe execução para o plano de teste #'.$idPlanoTeste]]);
@@ -48,8 +54,9 @@ class PlanoTesteExecucaoController extends Controller
                 'planoTesteExecucao',
                 'casosTeste',
                 'idAplicacao',
-                'idProjeto'
-            ),'casoTesteExecucaoBusiness' => $this->casoTesteExecucaoBusiness]
+                'idProjeto',
+
+            ),'casoTesteExecucaoBusiness' => $this->casoTesteExecucaoBusiness, 'ct' => $request->get('ct')]
         );
     }
 
@@ -72,7 +79,14 @@ class PlanoTesteExecucaoController extends Controller
         Auth::user()->can(PermisissionEnum::EXECUTAR_CASO_TESTE->value);
         try{
             $this->casoTesteExecucaoBusiness->executarCasoTeste($idPlanoTesteExecucao, $idCasoTeste, $request->status);
-            return redirect(route('aplicacoes.projetos.planos-teste.executar',[$idAplicacao, $idProjeto, $idPlanoTeste]))
+            return redirect(route('aplicacoes.projetos.planos-teste.executar',
+                [
+                    $idAplicacao,
+                    $idProjeto,
+                    $idPlanoTeste,
+                    'ct' => $idCasoTeste
+                ]
+            ))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Caso de teste executado com sucesso']]);
         }catch (ConflictException $exception){
             return redirect(route('aplicacoes.projetos.planos-teste.executar',[$idAplicacao, $idProjeto, $idPlanoTeste]))

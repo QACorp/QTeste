@@ -99,6 +99,7 @@
             </div>
         </div>
         <div class="col-6">
+            @include('projetos::projetos.lista_plano_teste')
             <div class="card">
                 <div class="card-header">
                     Observações

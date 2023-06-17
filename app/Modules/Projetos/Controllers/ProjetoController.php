@@ -4,6 +4,7 @@ namespace App\Modules\Projetos\Controllers;
 
 use App\Modules\Projetos\Contracts\Business\DocumentoBusinessContract;
 use App\Modules\Projetos\Contracts\Business\ObservacaoBusinessContract;
+use App\Modules\Projetos\Contracts\Business\PlanoTesteBusinessContract;
 use App\Modules\Projetos\Contracts\Business\ProjetoBusinessContract;
 use App\Modules\Projetos\DTOs\ProjetoDTO;
 use App\System\Enuns\PermisissionEnum;
@@ -18,7 +19,8 @@ class ProjetoController extends Controller
     public function __construct(
         private readonly ProjetoBusinessContract $projetoBusiness,
         private readonly ObservacaoBusinessContract $observacaoBusiness,
-        private readonly DocumentoBusinessContract $documentoBusiness
+        private readonly DocumentoBusinessContract $documentoBusiness,
+        private readonly PlanoTesteBusinessContract $planoTesteBusiness
     )
     {
     }
@@ -40,7 +42,10 @@ class ProjetoController extends Controller
                 'columns' => [null, null, null, ['orderable' => false]],
             ];
 
-            return view('projetos::projetos.home',compact('idAplicacao','projetos', 'heads', 'config'));
+            return view(
+                'projetos::projetos.home',
+                compact('idAplicacao','projetos', 'heads', 'config')
+            );
         }catch (NotFoundException $exception){
             return redirect(route('aplicacoes.index'))
                 ->with([Controller::MESSAGE_KEY_ERROR => ['Aplicação não encontrada']]);
@@ -71,10 +76,31 @@ class ProjetoController extends Controller
     {
         Auth::user()->can(PermisissionEnum::ALTERAR_PROJETO->value);
         try{
+            $planosTeste = $this->planoTesteBusiness->buscarPlanosTestePorProjeto($idProjeto);
+            $headsPlanoTeste = [
+                ['label' => 'Id', 'width' => 10],
+                'Título',
+                ['label' => 'Ações', 'width' => 20],
+            ];
+
+            $configPlanoTeste = [
+                ...config('adminlte.datatable_config'),
+                'searching' => false,
+                'columns' => [null, null, null, ['orderable' => false]],
+            ];
             $documentos = $this->documentoBusiness->buscarTodosPorProjeto($idProjeto);
             $observacoes = $this->observacaoBusiness->buscarPorProjeto($idProjeto);
             $projeto = $this->projetoBusiness->buscarPorAplicacaoEProjeto($idAplicacao, $idProjeto);
-            return view('projetos::projetos.alterar',compact('projeto','observacoes', 'documentos'));
+            return view(
+                'projetos::projetos.alterar',
+                compact(
+                    'projeto',
+                    'observacoes',
+                    'documentos',
+                    'planosTeste',
+                    'configPlanoTeste',
+                    'headsPlanoTeste'
+                ));
         }catch (NotFoundException $exception){
             return redirect(route('aplicacoes.projetos.index',$idAplicacao))
                 ->with([Controller::MESSAGE_KEY_ERROR => ['Projeto não encontrado']]);

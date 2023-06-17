@@ -56,6 +56,10 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="accordion" id="accordionExample">
+                                        @if(isset(session()->idCasoTeste))
+                                            {{ $idCasoTeste }}
+                                        @endif
+
                                         @foreach($casosTeste as $casoTeste)
                                             <div class="card">
                                                 <div class="card-header" id="heading{{$casoTeste->id}}">
@@ -65,19 +69,19 @@
                                                         </button>
                                                     </h2>
                                                 </div>
-                                                <div id="collapse{{$casoTeste->id}}" class="collapse" aria-labelledby="heading{{$casoTeste->id}}" data-parent="#accordionExample">
+                                                <div id="collapse{{$casoTeste->id}}" class="@if($ct != $casoTeste->id) collapse @endif" aria-labelledby="heading{{$casoTeste->id}}" data-parent="#accordionExample">
                                                     <div class="card-body">
                                                         <div class="row">
-                                                            <strong>Cenário: </strong>
+                                                            <strong>Cenário: &nbsp;</strong>
                                                             {!! nl2br($casoTeste->cenario) !!}
                                                         </div>
                                                         <div class="row">
-                                                            <p class="d-block"><strong>Teste: </strong></p>
+                                                            <p class="d-block"><strong>Teste: &nbsp;</strong></p>
                                                             {!! nl2br($casoTeste->teste) !!}
 
                                                         </div>
                                                         <div class="row">
-                                                            <strong>Resultado esperado: </strong>
+                                                            <strong>Resultado esperado:&nbsp; </strong>
                                                             {!! nl2br($casoTeste->resultado_esperado) !!}
                                                         </div>
                                                         @php $casoTesteExiste = $casoTesteExecucaoBusiness->casoTesteExecutado($planoTesteExecucao->id, $casoTeste->id)  @endphp
@@ -148,3 +152,4 @@
     </div>
 
 @stop
+
