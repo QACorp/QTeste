@@ -7,7 +7,7 @@ use App\Modules\Projetos\Contracts\Business\PlanoTesteBusinessContract;
 use App\Modules\Projetos\Contracts\Business\PlanoTesteExecucaoBusinessContract;
 use App\Modules\Projetos\Contracts\Business\ProjetoBusinessContract;
 use App\Modules\Projetos\DTOs\PlanoTesteDTO;
-use App\System\Enuns\PermisissionEnum;
+use App\Modules\Projetos\Enums\PermissionEnum;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Http\Controllers\Controller;
@@ -26,7 +26,7 @@ class PlanoTesteController extends Controller
     }
 
     public function index(){
-        Auth::user()->can(PermisissionEnum::LISTAR_PLANO_TESTE->value);
+        Auth::user()->can(PermissionEnum::LISTAR_PLANO_TESTE->value);
         $planos_teste = $this->planoTesteBusiness->buscarTodosPlanoTeste();
 
         $heads = [
@@ -50,7 +50,7 @@ class PlanoTesteController extends Controller
         ));
     }
     public function indexPorProjeto(int $idAplicacao, int $idProjeto){
-        Auth::user()->can(PermisissionEnum::LISTAR_PLANO_TESTE->value);
+        Auth::user()->can(PermissionEnum::LISTAR_PLANO_TESTE->value);
         $projeto = $this->projetoBusiness->buscarPorIdProjeto($idProjeto);
         $heads = [
             ['label' => 'Id', 'width' => 10],
@@ -75,13 +75,13 @@ class PlanoTesteController extends Controller
     }
     public function inserir(int $idAplicacao, int $idProjeto)
     {
-        Auth::user()->can(PermisissionEnum::INSERIR_PLANO_TESTE->value);
+        Auth::user()->can(PermissionEnum::INSERIR_PLANO_TESTE->value);
         return view('projetos::planos_teste.inserir',compact('idProjeto','idAplicacao'));
     }
 
     public function salvar(Request $request, int $idAplicacao, int $idProjeto)
     {
-        Auth::user()->can(PermisissionEnum::INSERIR_PLANO_TESTE->value);
+        Auth::user()->can(PermissionEnum::INSERIR_PLANO_TESTE->value);
         try {
             $planoTesteDto = PlanoTesteDTO::from($request->all());
             $planoTesteDto->user_id = Auth::user()->id;
@@ -102,7 +102,7 @@ class PlanoTesteController extends Controller
 
     public function excluir(int $idAplicacao, int $idProjeto, int $idPlanoTeste)
     {
-        Auth::user()->can(PermisissionEnum::REMOVER_PLANO_TESTE->value);
+        Auth::user()->can(PermissionEnum::REMOVER_PLANO_TESTE->value);
         try {
             $this->planoTesteBusiness->excluirPlanoTeste($idPlanoTeste);
             return redirect(route('aplicacoes.projetos.planos-teste.index',[$idAplicacao, $idProjeto]))
@@ -114,7 +114,7 @@ class PlanoTesteController extends Controller
     }
     public function visualizar(int $idAplicacao, int $idProjeto, int $idPlanoTeste)
     {
-        Auth::user()->can(PermisissionEnum::LISTAR_PLANO_TESTE->value);
+        Auth::user()->can(PermissionEnum::LISTAR_PLANO_TESTE->value);
         try{
             $planoTeste = $this->planoTesteBusiness->buscarPlanoTestePorId($idPlanoTeste);
             $heads = [
@@ -173,7 +173,7 @@ class PlanoTesteController extends Controller
     }
     public function alterar(Request $request, int $idAplicacao, int $idProjeto, int $idPlanoTeste)
     {
-        Auth::user()->can(PermisissionEnum::ALTERAR_PLANO_TESTE->value);
+        Auth::user()->can(PermissionEnum::ALTERAR_PLANO_TESTE->value);
         try {
 
             $planoTesteDto = PlanoTesteDTO::from($request->all());

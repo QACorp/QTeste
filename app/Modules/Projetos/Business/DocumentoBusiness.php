@@ -7,7 +7,7 @@ use App\Modules\Projetos\Contracts\Business\ProjetoBusinessContract;
 use App\Modules\Projetos\Contracts\Repository\DocumentoRepositoryContract;
 use App\Modules\Projetos\DTOs\DocumentoDTO;
 use App\Modules\Projetos\Requests\DocumentosPostRequest;
-use App\System\Enuns\PermisissionEnum;
+use App\Modules\Projetos\Enums\PermissionEnum;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Impl\BusinessAbstract;
@@ -34,7 +34,7 @@ class DocumentoBusiness extends BusinessAbstract implements DocumentoBusinessCon
 
     public function salvar(DocumentoDTO $documentoDTO, DocumentosPostRequest $documentosPostRequest = new DocumentosPostRequest()): DocumentoDTO
     {
-        $this->can(PermisissionEnum::ADICIONAR_DOCUMENTO_PROJETO->value);
+        $this->can(PermissionEnum::ADICIONAR_DOCUMENTO_PROJETO->value);
         $projeto = $this->projetoBusiness->buscarPorIdProjeto($documentoDTO->projeto_id);
         if($projeto == null)
             throw new NotFoundException();
@@ -50,7 +50,7 @@ class DocumentoBusiness extends BusinessAbstract implements DocumentoBusinessCon
 
     public function excluir(int $idProjeto, int $idDocumento): bool
     {
-        $this->can(PermisissionEnum::REMOVER_DOCUMENTO_PROJETO->value);
+        $this->can(PermissionEnum::REMOVER_DOCUMENTO_PROJETO->value);
         $projeto = $this->projetoBusiness->buscarPorIdProjeto($idProjeto);
         if($projeto == null)
             throw new NotFoundException();

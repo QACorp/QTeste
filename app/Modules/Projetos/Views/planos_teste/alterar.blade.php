@@ -20,7 +20,8 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <form method="post" action="{{ route('aplicacoes.projetos.planos-teste.alterar',[$idAplicacao, $idProjeto, $idPlanoTeste]) }}">
+                                    <form method="post"
+                                          action="{{ route('aplicacoes.projetos.planos-teste.alterar',[$idAplicacao, $idProjeto, $idPlanoTeste]) }}">
                                         @csrf
                                         @method('put')
                                         <div class="row">
@@ -72,8 +73,8 @@
                             Casos de teste
                         </div>
                         <div class="card-body">
-                            @can(\App\System\Enuns\PermisissionEnum::LISTAR_CASO_TESTE->value)
-                            @include('projetos::planos_teste.casos_teste_lista')
+                            @can(\App\Modules\Projetos\Enums\PermissionEnum::LISTAR_CASO_TESTE->value)
+                                @include('projetos::planos_teste.casos_teste_lista')
                             @endcan
                         </div>
                     </div>
@@ -86,14 +87,14 @@
                             Execuções
                         </div>
                         <div class="card-body">
-                            @can(\App\System\Enuns\PermisissionEnum::LISTAR_EXECUCAO_PLANO_TESTE->value)
-                            @include('projetos::plano_teste_execucao.geral')
+                            @can(\App\Modules\Projetos\Enums\PermissionEnum::LISTAR_EXECUCAO_PLANO_TESTE->value)
+                                @include('projetos::plano_teste_execucao.geral')
                             @endcan
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-</div>
+    </div>
 
 @stop

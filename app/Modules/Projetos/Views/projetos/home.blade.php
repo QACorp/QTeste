@@ -4,8 +4,9 @@
 
 @section('content_header')
     <h1 class="m-0 text-dark">Projetos
-        @can(\App\System\Enuns\PermisissionEnum::INSERIR_PROJETO->value)
-        <a title="Inserir projeto" class="btn btn-primary" href="{{route('aplicacoes.projetos.inserir', $idAplicacao)}}"><i class="fas fa-plus"></i> </a>
+        @can(\App\Modules\Projetos\Enums\PermissionEnum::INSERIR_PROJETO->value)
+            <a title="Inserir projeto" class="btn btn-primary"
+               href="{{route('aplicacoes.projetos.inserir', $idAplicacao)}}"><i class="fas fa-plus"></i> </a>
         @endcan
     </h1>
 @stop
@@ -29,18 +30,22 @@
                                 <td>{{ $projeto->nome }}</td>
                                 <td>{{ $projeto->descricao }}</td>
                                 <td>
-                                    @can(\App\System\Enuns\PermisissionEnum::ALTERAR_APLICACAO->value)
-                                    <a class="btn btn-warning btn-sm" title="Editar" href="{{ route('aplicacoes.projetos.editar',[$projeto->aplicacao_id ,$projeto->id]) }}"><i class="fas fa-edit"></i> </a>
+                                    @can(\App\Modules\Projetos\Enums\PermissionEnum::ALTERAR_APLICACAO->value)
+                                        <a class="btn btn-warning btn-sm" title="Editar"
+                                           href="{{ route('aplicacoes.projetos.editar',[$projeto->aplicacao_id ,$projeto->id]) }}"><i
+                                                class="fas fa-edit"></i> </a>
                                     @endcan
-                                    @can(\App\System\Enuns\PermisissionEnum::LISTAR_PLANO_TESTE->value)
-                                        <a class="btn btn-primary btn-sm" title="Planos de teste" href="{{ route('aplicacoes.projetos.planos-teste.index',[$projeto->aplicacao_id ,$projeto->id]) }}"><i class="fas fa-file-alt"></i> </a>
+                                    @can(\App\Modules\Projetos\Enums\PermissionEnum::LISTAR_PLANO_TESTE->value)
+                                        <a class="btn btn-primary btn-sm" title="Planos de teste"
+                                           href="{{ route('aplicacoes.projetos.planos-teste.index',[$projeto->aplicacao_id ,$projeto->id]) }}"><i
+                                                class="fas fa-file-alt"></i> </a>
                                     @endcan
-                                    @can(\App\System\Enuns\PermisissionEnum::REMOVER_PROJETO->value)
-                                    <x-delete-modal
-                                        :registro="$projeto"
-                                        message="Deseja excluir o registro {{ $projeto->nome }}?"
-                                        route="{{ route('aplicacoes.projetos.excluir', [ $projeto->aplicacao_id , $projeto->id]) }}"
-                                    />
+                                    @can(\App\Modules\Projetos\Enums\PermissionEnum::REMOVER_PROJETO->value)
+                                        <x-delete-modal
+                                            :registro="$projeto"
+                                            message="Deseja excluir o registro {{ $projeto->nome }}?"
+                                            route="{{ route('aplicacoes.projetos.excluir', [ $projeto->aplicacao_id , $projeto->id]) }}"
+                                        />
                                     @endcan
 
                                 </td>

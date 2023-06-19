@@ -21,11 +21,24 @@ class MenuConfig extends MenuConfigAbstract
                 'can'   => 'ACESSAR_SISTEMA'
             ]);
             $event->menu->add([
-                'key' => 'users_index',
-                'route' => 'users.index',
-                'icon'  => 'fas  fa-users',
-                'text' => 'Usuários',
-                'can'   => 'LISTAR_USUARIO'
+                'text' => 'Sistema',
+                'icon'  => 'fas  fa-cog',
+                'submenu' => [
+                    [
+                        'key' => 'users_index',
+                        'route' => 'users.index',
+                        'icon'  => 'fas  fa-user',
+                        'text' => 'Usuários',
+                        'can'   => 'LISTAR_USUARIO',
+                    ],
+                    [
+                        'key' => 'equipes_index',
+                        'text' => 'Equipes',
+                        'route'  => 'aplicacoes.index',
+                        'icon'  => 'fas fa-users',
+                        'can'   => 'LISTAR_EQUIPE'
+                    ]
+                ]
             ]);
 
         });

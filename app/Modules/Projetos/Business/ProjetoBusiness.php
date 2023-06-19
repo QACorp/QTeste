@@ -8,7 +8,7 @@ use App\Modules\Projetos\Contracts\Repository\ProjetoRepositoryContract;
 use App\Modules\Projetos\DTOs\ProjetoDTO;
 use App\Modules\Projetos\Requests\ProjetosPostRequest;
 use App\Modules\Projetos\Requests\ProjetosPutRequest;
-use App\System\Enuns\PermisissionEnum;
+use App\Modules\Projetos\Enums\PermissionEnum;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Impl\BusinessAbstract;
@@ -26,7 +26,7 @@ class ProjetoBusiness extends BusinessAbstract implements ProjetoBusinessContrac
 
     public function buscarTodosPorAplicacao(int $aplicacaoId): DataCollection
     {
-        $this->can(PermisissionEnum::LISTAR_PROJETO->value);
+        $this->can(PermissionEnum::LISTAR_PROJETO->value);
         try {
             $this->aplicacaoBusiness->buscarPorId($aplicacaoId);
             return $this->projetoRepository->buscarTodosPorAplicacao($aplicacaoId);
@@ -38,7 +38,7 @@ class ProjetoBusiness extends BusinessAbstract implements ProjetoBusinessContrac
 
     public function buscarPorAplicacaoEProjeto(int $idAplicacao, int $idProjeto): ProjetoDTO
     {
-        $this->can(PermisissionEnum::LISTAR_PROJETO->value);
+        $this->can(PermissionEnum::LISTAR_PROJETO->value);
         $projeto = $this->projetoRepository->buscarPorId($idProjeto);
 
         if($projeto == null || $projeto->aplicacao_id != $idAplicacao)
@@ -49,7 +49,7 @@ class ProjetoBusiness extends BusinessAbstract implements ProjetoBusinessContrac
 
     public function atualizar(ProjetoDTO $projetoDTO, ProjetosPutRequest $projetosPutRequest = new ProjetosPutRequest()): ProjetoDTO
     {
-        $this->can(PermisissionEnum::ALTERAR_PROJETO->value);
+        $this->can(PermissionEnum::ALTERAR_PROJETO->value);
         if(!$this->projetoExists($projetoDTO->aplicacao_id, $projetoDTO->id))
             throw new NotFoundException();
 
@@ -63,7 +63,7 @@ class ProjetoBusiness extends BusinessAbstract implements ProjetoBusinessContrac
 
     public function excluir(int $idAplicacao, int $idProjeto): bool
     {
-        $this->can(PermisissionEnum::REMOVER_PROJETO->value);
+        $this->can(PermissionEnum::REMOVER_PROJETO->value);
         if(!$this->projetoExists($idAplicacao, $idProjeto))
             throw new NotFoundException();
 
@@ -92,7 +92,7 @@ class ProjetoBusiness extends BusinessAbstract implements ProjetoBusinessContrac
 
     public function buscarPorIdProjeto(int $idProjeto): ?ProjetoDTO
     {
-        $this->can(PermisissionEnum::LISTAR_PROJETO->value);
+        $this->can(PermissionEnum::LISTAR_PROJETO->value);
         return $this->projetoRepository->buscarPorId($idProjeto);
     }
 }

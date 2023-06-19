@@ -4,7 +4,7 @@ namespace App\Modules\Projetos\Controllers;
 
 use App\Modules\Projetos\Contracts\Business\DocumentoBusinessContract;
 use App\Modules\Projetos\DTOs\DocumentoDTO;
-use App\System\Enuns\PermisissionEnum;
+use App\Modules\Projetos\Enums\PermissionEnum;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Http\Controllers\Controller;
@@ -20,7 +20,7 @@ class DocumentoController
     }
     public function salvar(Request $request, int $idAplicacao, int $idProjeto)
     {
-        Auth::user()->can(PermisissionEnum::ADICIONAR_DOCUMENTO_PROJETO->value);
+        Auth::user()->can(PermissionEnum::ADICIONAR_DOCUMENTO_PROJETO->value);
         try{
             $documentoDTO = DocumentoDTO::from($request->toArray());
             $documentoDTO->projeto_id = $idProjeto;
@@ -40,7 +40,7 @@ class DocumentoController
 
     public function excluir(Request $request, int $idAplicacao, int $idProjeto, int $idDocumento)
     {
-        Auth::user()->can(PermisissionEnum::REMOVER_CASO_TESTE->value);
+        Auth::user()->can(PermissionEnum::REMOVER_CASO_TESTE->value);
         try{
             $this->documentoBusiness->excluir($idProjeto, $idDocumento);
             return redirect(route('aplicacoes.projetos.editar',[$idAplicacao, $idProjeto]))

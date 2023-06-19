@@ -8,7 +8,7 @@ use App\Modules\Projetos\Contracts\Repository\ObservacaoRepositoryContract;
 use App\Modules\Projetos\DTOs\ObservacaoDTO;
 use App\Modules\Projetos\Requests\ObservacoesPostRequest;
 use App\System\DTOs\UserDTO;
-use App\System\Enuns\PermisissionEnum;
+use App\Modules\Projetos\Enums\PermissionEnum;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Impl\BusinessAbstract;
@@ -32,7 +32,7 @@ class ObservacaoBusiness extends BusinessAbstract implements ObservacaoBusinessC
 
     public function salvar(ObservacaoDTO $observacaoDTO, ObservacoesPostRequest $observacoesPostRequest = new ObservacoesPostRequest()): ObservacaoDTO
     {
-        $this->can(PermisissionEnum::ADICIONAR_COMENTARIO_PROJETO->value);
+        $this->can(PermissionEnum::ADICIONAR_COMENTARIO_PROJETO->value);
         $projeto = $this->projetoBusiness->buscarPorIdProjeto($observacaoDTO->projeto_id);
         if(!$this->projetoBusiness->projetoExists($projeto->aplicacao_id, $projeto->id)){
             throw new NotFoundException();

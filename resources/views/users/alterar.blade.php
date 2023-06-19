@@ -18,45 +18,47 @@
                             <div class="col-md-6">
                                 <div class="row">
                                     <x-adminlte-input
-                                        name="name"
-                                        label="Nome"
-                                        placeholder="Nome"
-                                        fgroup-class="col-md-6"
-                                        value="{{ old('nome',$user->name) }}"
-                                        required
+                                            name="name"
+                                            label="Nome"
+                                            placeholder="Nome"
+                                            fgroup-class="col-md-6"
+                                            value="{{ old('nome',$user->name) }}"
+                                            required
                                     />
                                 </div>
                                 <div class="row">
                                     <x-adminlte-input
-                                        name="email"
-                                        label="E-mail"
-                                        placeholder="algum@email.com"
-                                        fgroup-class="col-md-6"
-                                        value="{{ old('email',$user->email) }}"
-                                        required
+                                            name="email"
+                                            label="E-mail"
+                                            placeholder="algum@email.com"
+                                            fgroup-class="col-md-6"
+                                            value="{{ old('email',$user->email) }}"
+                                            required
                                     />
                                 </div>
                                 <div class="row">
                                     <x-adminlte-select2
-                                        id="roles"
-                                        name="roles[]"
-                                        label="Perfis"
-                                        :config="['placeholder' => 'Selecione os perfis...']"
-                                        multiple
-                                        required
-                                        fgroup-class="col-md-6"
+                                            id="roles"
+                                            name="roles[]"
+                                            label="Perfis"
+                                            :config="['placeholder' => 'Selecione os perfis...']"
+                                            multiple
+                                            required
+                                            fgroup-class="col-md-6"
                                     >
-                                        @foreach(\App\System\Enuns\RoleEnum::cases() as $role)
-                                            <option @if(collect($userController->convertArrayRoleDTO(old('roles',$user->roles->items())))->where('name',$role->value)->count() > 0)) selected @endif value="{{ $role->value }}">{{ $role->value }}</option>
+                                        @foreach(\App\System\Enums\RoleEnum::cases() as $role)
+                                            <option @if(collect($userController->convertArrayRoleDTO(old('roles',$user->roles->items())))->where('name',$role->value)->count() > 0))
+                                                    selected
+                                                    @endif value="{{ $role->value }}">{{ $role->value }}</option>
                                         @endforeach
                                     </x-adminlte-select2>
                                 </div>
                                 <div class="row p-2">
                                     <x-adminlte-button
-                                        label="Salvar"
-                                        theme="success"
-                                        icon="fas fa-save"
-                                        type="submit"
+                                            label="Salvar"
+                                            theme="success"
+                                            icon="fas fa-save"
+                                            type="submit"
                                     />
                                     <a href="{{ route('users.index') }}"
                                        class="btn btn-primary ml-1"

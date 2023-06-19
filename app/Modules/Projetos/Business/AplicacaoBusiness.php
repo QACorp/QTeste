@@ -7,7 +7,7 @@ use App\Modules\Projetos\Contracts\Repository\AplicacaoRepositoryContract;
 use App\Modules\Projetos\DTOs\AplicacaoDTO;
 use App\Modules\Projetos\Requests\AplicacoesPostRequest;
 use App\Modules\Projetos\Requests\AplicacoesPutRequest;
-use App\System\Enuns\PermisissionEnum;
+use App\Modules\Projetos\Enums\PermissionEnum;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Impl\BusinessAbstract;
@@ -25,13 +25,13 @@ class AplicacaoBusiness extends BusinessAbstract implements AplicacaoBusinessCon
     public function buscarTodos(): DataCollection
     {
 
-        $this->can(PermisissionEnum::LISTAR_APLICACAO->value);
+        $this->can(PermissionEnum::LISTAR_APLICACAO->value);
         return  $this->aplicacaoRepository->buscarTodos();
     }
 
     public function salvar(AplicacaoDTO $aplicacaoDTO, AplicacoesPostRequest $aplicacoesPostRequest = new AplicacoesPostRequest()): AplicacaoDTO
     {
-        $this->can(PermisissionEnum::INSERIR_APLICACAO->value);
+        $this->can(PermissionEnum::INSERIR_APLICACAO->value);
         $validator = Validator::make($aplicacaoDTO->toArray(), $aplicacoesPostRequest->rules());
         if ($validator->fails()) {
             throw new UnprocessableEntityException($validator);
@@ -41,13 +41,13 @@ class AplicacaoBusiness extends BusinessAbstract implements AplicacaoBusinessCon
 
     public function buscarPorId(int $id): AplicacaoDTO
     {
-        $this->can(PermisissionEnum::LISTAR_APLICACAO->value);
+        $this->can(PermissionEnum::LISTAR_APLICACAO->value);
         return $this->aplicacaoRepository->buscarPorId($id) ?? throw new NotFoundException();
     }
 
     public function alterar(AplicacaoDTO $aplicacaoDTO, AplicacoesPutRequest $aplicacoesPutRequest = new AplicacoesPutRequest()): AplicacaoDTO
     {
-        $this->can(PermisissionEnum::ALTERAR_APLICACAO->value);
+        $this->can(PermissionEnum::ALTERAR_APLICACAO->value);
         if($this->buscarPorId($aplicacaoDTO->id) == null){
             throw new NotFoundException();
         }
@@ -62,7 +62,7 @@ class AplicacaoBusiness extends BusinessAbstract implements AplicacaoBusinessCon
 
     public function excluir(int $id): bool
     {
-        $this->can(PermisissionEnum::REMOVER_APLICACAO->value);
+        $this->can(PermissionEnum::REMOVER_APLICACAO->value);
         if($this->buscarPorId($id) == null){
             throw new NotFoundException();
         }

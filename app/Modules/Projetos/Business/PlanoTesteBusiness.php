@@ -8,7 +8,7 @@ use App\Modules\Projetos\Contracts\Repository\PlanoTesteRepositoryContract;
 use App\Modules\Projetos\DTOs\PlanoTesteDTO;
 use App\Modules\Projetos\Requests\PlanoTestePostRequest;
 use App\Modules\Projetos\Requests\PlanoTestePutRequest;
-use App\System\Enuns\PermisissionEnum;
+use App\Modules\Projetos\Enums\PermissionEnum;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Impl\BusinessAbstract;
@@ -26,13 +26,13 @@ class PlanoTesteBusiness extends BusinessAbstract implements PlanoTesteBusinessC
 
     public function buscarPlanosTestePorProjeto(int $idProjeto): DataCollection
     {
-        $this->can(PermisissionEnum::LISTAR_PLANO_TESTE->value);
+        $this->can(PermissionEnum::LISTAR_PLANO_TESTE->value);
         return $this->planoTesteRepository->buscarPlanosTestePorProjeto($idProjeto);
     }
 
     public function salvarPlanoTeste(PlanoTesteDTO $planoTesteDTO, PlanoTestePostRequest $planoTestePostRequest = new PlanoTestePostRequest()): PlanoTesteDTO
     {
-        $this->can(PermisissionEnum::INSERIR_PLANO_TESTE->value);
+        $this->can(PermissionEnum::INSERIR_PLANO_TESTE->value);
         if($this->projetoBusiness->buscarPorIdProjeto($planoTesteDTO->projeto_id) == null)
             throw new NotFoundException();
 
@@ -46,7 +46,7 @@ class PlanoTesteBusiness extends BusinessAbstract implements PlanoTesteBusinessC
 
     public function excluirPlanoTeste(int $idPlanoTeste): bool
     {
-        $this->can(PermisissionEnum::REMOVER_PLANO_TESTE->value);
+        $this->can(PermissionEnum::REMOVER_PLANO_TESTE->value);
         if($this->planoTesteRepository->buscarPlanoTestePorId($idPlanoTeste) == null)
             throw new NotFoundException();
         return $this->planoTesteRepository->excluirPlanoTeste($idPlanoTeste);
@@ -54,7 +54,7 @@ class PlanoTesteBusiness extends BusinessAbstract implements PlanoTesteBusinessC
 
     public function buscarPlanoTestePorId(int $idPlanoTeste): ?PlanoTesteDTO
     {
-        $this->can(PermisissionEnum::LISTAR_PLANO_TESTE->value);
+        $this->can(PermissionEnum::LISTAR_PLANO_TESTE->value);
         $planoTeste = $this->planoTesteRepository->buscarPlanoTestePorId($idPlanoTeste);
         if(!$planoTeste)
             throw new NotFoundException();
@@ -63,7 +63,7 @@ class PlanoTesteBusiness extends BusinessAbstract implements PlanoTesteBusinessC
 
     public function alterarPlanoTeste(PlanoTesteDTO $planoTesteDTO, PlanoTestePutRequest $planoTestePutRequest = new PlanoTestePutRequest()): PlanoTesteDTO
     {
-        $this->can(PermisissionEnum::ALTERAR_PLANO_TESTE->value);
+        $this->can(PermissionEnum::ALTERAR_PLANO_TESTE->value);
         if($this->buscarPlanoTestePorId($planoTesteDTO->id) == null)
             throw new NotFoundException();
 
@@ -77,7 +77,7 @@ class PlanoTesteBusiness extends BusinessAbstract implements PlanoTesteBusinessC
 
     public function buscarTodosPlanoTeste(): DataCollection
     {
-        $this->can(PermisissionEnum::LISTAR_PLANO_TESTE->value);
+        $this->can(PermissionEnum::LISTAR_PLANO_TESTE->value);
         return $this->planoTesteRepository->buscarTodosPlanoTeste();
     }
 }

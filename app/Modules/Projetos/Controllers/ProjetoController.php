@@ -7,7 +7,7 @@ use App\Modules\Projetos\Contracts\Business\ObservacaoBusinessContract;
 use App\Modules\Projetos\Contracts\Business\PlanoTesteBusinessContract;
 use App\Modules\Projetos\Contracts\Business\ProjetoBusinessContract;
 use App\Modules\Projetos\DTOs\ProjetoDTO;
-use App\System\Enuns\PermisissionEnum;
+use App\Modules\Projetos\Enums\PermissionEnum;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Http\Controllers\Controller;
@@ -27,7 +27,7 @@ class ProjetoController extends Controller
 
     public function index(int $idAplicacao)
     {
-        Auth::user()->can(PermisissionEnum::LISTAR_PROJETO->value);
+        Auth::user()->can(PermissionEnum::LISTAR_PROJETO->value);
         try{
             $projetos = $this->projetoBusiness->buscarTodosPorAplicacao($idAplicacao);
             $heads = [
@@ -53,13 +53,13 @@ class ProjetoController extends Controller
     }
 
     public function inserir(int $idAplicacao){
-        Auth::user()->can(PermisissionEnum::INSERIR_PROJETO->value);
+        Auth::user()->can(PermissionEnum::INSERIR_PROJETO->value);
         return view('projetos::projetos.inserir',compact('idAplicacao'));
     }
 
     public function salvar(Request $request, int $idAplicacao){
         try{
-            Auth::user()->can(PermisissionEnum::INSERIR_PROJETO->value);
+            Auth::user()->can(PermissionEnum::INSERIR_PROJETO->value);
             $projetoDTO = ProjetoDTO::from($request->all());
             $projetoDTO->aplicacao_id = $idAplicacao;
             $this->projetoBusiness->inserir($projetoDTO);
@@ -74,7 +74,7 @@ class ProjetoController extends Controller
     }
     public function editar(Request $request,int $idAplicacao, int $idProjeto)
     {
-        Auth::user()->can(PermisissionEnum::ALTERAR_PROJETO->value);
+        Auth::user()->can(PermissionEnum::ALTERAR_PROJETO->value);
         try{
             $planosTeste = $this->planoTesteBusiness->buscarPlanosTestePorProjeto($idProjeto);
             $headsPlanoTeste = [
@@ -109,7 +109,7 @@ class ProjetoController extends Controller
     }
     public function atualizar(Request $request,int $idAplicacao, int $idProjeto)
     {
-        Auth::user()->can(PermisissionEnum::ALTERAR_PROJETO->value);
+        Auth::user()->can(PermissionEnum::ALTERAR_PROJETO->value);
         try{
             $projetoDTO = ProjetoDTO::from($request->toArray());
             $projetoDTO->aplicacao_id = $idAplicacao;
@@ -128,7 +128,7 @@ class ProjetoController extends Controller
 
     }
     public function excluir(Request $request,int $idAplicacao, int $idProjeto){
-        Auth::user()->can(PermisissionEnum::REMOVER_PROJETO->value);
+        Auth::user()->can(PermissionEnum::REMOVER_PROJETO->value);
         try{
             $this->projetoBusiness->excluir($idAplicacao, $idProjeto);
             return redirect(route('aplicacoes.projetos.index',$idAplicacao))

@@ -5,11 +5,10 @@
 @section('plugins.DatatablesPlugin', true)
 @section('content_header')
     <h1 class="m-0 text-dark">Usuários
-        @can(\App\System\Enuns\PermisissionEnum::INSERIR_USUARIO->value)
-        <a class="btn btn-primary" href="{{route('users.inserir')}}"><i class="fas fa-plus"></i> </a>
+        @can(\App\System\Enums\PermissionEnum::INSERIR_USUARIO->value)
+            <a class="btn btn-primary" href="{{route('users.inserir')}}"><i class="fas fa-plus"></i> </a>
         @endcan
     </h1>
-
 
 @stop
 
@@ -35,11 +34,14 @@
                                 <td>{{ $user->email }}</td>
                                 <td>{{   StringUtils::array2String($user->roles->toArray(), 'name') }}</td>
                                 <td>
-                                    @can(\App\System\Enuns\PermisissionEnum::ALTERAR_USUARIO->value)
-                                        <a class="btn btn-warning btn-sm" title="Editar" href="{{ route('users.editar',$user->id) }}"><i class="fas fa-edit"></i> </a>
+                                    @can(\App\System\Enums\PermissionEnum::ALTERAR_USUARIO->value)
+                                        <a class="btn btn-warning btn-sm" title="Editar"
+                                           href="{{ route('users.editar',$user->id) }}"><i class="fas fa-edit"></i> </a>
                                     @endcan
-                                    @can(\App\System\Enuns\PermisissionEnum::ALTERAR_SENHA_USUARIO->value)
-                                        <a class="btn btn-dark btn-sm" title="Alterar senha" href="{{ route('users.alterar-senha',$user->id) }}"><i class="fas fa-key"></i> </a>
+                                    @can(\App\System\Enums\PermissionEnum::ALTERAR_SENHA_USUARIO->value)
+                                        <a class="btn btn-dark btn-sm" title="Alterar senha"
+                                           href="{{ route('users.alterar-senha',$user->id) }}"><i
+                                                class="fas fa-key"></i> </a>
                                     @endcan
                                 </td>
                             </tr>

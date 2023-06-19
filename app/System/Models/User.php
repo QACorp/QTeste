@@ -51,4 +51,10 @@ class User extends Authenticatable implements Cast
     {
         return UserDTO::from($value);
     }
+
+    public function equipes(): BelongsToMany
+    {
+        return $this->belongsToMany(Equipe::class, 'users_equipes');
+    }
+
 }

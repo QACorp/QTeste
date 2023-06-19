@@ -6,7 +6,7 @@ use App\Modules\Projetos\Contracts\Business\CasoTesteBusinessContract;
 use App\Modules\Projetos\Contracts\Business\CasoTesteExecucaoBusinessContract;
 use App\Modules\Projetos\Contracts\Business\PlanoTesteExecucaoBusinessContract;
 use App\Modules\Projetos\DTOs\PlanoTesteExecucaoDTO;
-use App\System\Enuns\PermisissionEnum;
+use App\Modules\Projetos\Enums\PermissionEnum;
 use App\System\Exceptions\ConflictException;
 use App\System\Exceptions\NotFoundException;
 use App\System\Http\Controllers\Controller;
@@ -62,7 +62,7 @@ class PlanoTesteExecucaoController extends Controller
 
     public function criar(int $idAplicacao, int $idProjeto, int $idPlanoTeste)
     {
-        Auth::user()->can(PermisissionEnum::INSERIR_EXECUCAO_PLANO_TESTE->value);
+        Auth::user()->can(PermissionEnum::INSERIR_EXECUCAO_PLANO_TESTE->value);
         $this->planoTesteExecucaoBusiness->criarExecucaoTeste($idPlanoTeste);
         return redirect(route('aplicacoes.projetos.planos-teste.executar',[$idAplicacao, $idProjeto, $idPlanoTeste]))
             ->with([Controller::MESSAGE_KEY_SUCCESS => ['Execução criada com sucesso'],]);
@@ -76,7 +76,7 @@ class PlanoTesteExecucaoController extends Controller
                                       int $idPlanoTesteExecucao,
                                       int $idCasoTeste)
     {
-        Auth::user()->can(PermisissionEnum::EXECUTAR_CASO_TESTE->value);
+        Auth::user()->can(PermissionEnum::EXECUTAR_CASO_TESTE->value);
         try{
             $this->casoTesteExecucaoBusiness->executarCasoTeste($idPlanoTesteExecucao, $idCasoTeste, $request->status);
             return redirect(route('aplicacoes.projetos.planos-teste.executar',
@@ -101,7 +101,7 @@ class PlanoTesteExecucaoController extends Controller
                                       int $idPlanoTesteExecucao
     )
     {
-        Auth::user()->can(PermisissionEnum::FINALIZAR_PLANO_TESTE->value);
+        Auth::user()->can(PermissionEnum::FINALIZAR_PLANO_TESTE->value);
         try {
             $this->planoTesteExecucaoBusiness->finalizarPlanoTesteExecucao($idPlanoTesteExecucao);
             return redirect(route('aplicacoes.projetos.planos-teste.executar',[$idAplicacao, $idProjeto, $idPlanoTeste]))
