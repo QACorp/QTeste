@@ -2,12 +2,16 @@
 
 namespace App\System\Providers;
 
+use App\System\Business\EquipeBusiness;
 use App\System\Business\UserBusiness;
 use App\System\Component\DeleteModal;
 use App\System\Component\UploadModal;
 use App\System\Config\MenuConfig;
-use App\System\Contracts\UserBusinessContract;
-use App\System\Contracts\UserRepositoryContract;
+use App\System\Contracts\Business\EquipeBusinessContract;
+use App\System\Contracts\Business\UserBusinessContract;
+use App\System\Contracts\Repository\EquipeRepositoryContract;
+use App\System\Contracts\Repository\UserRepositoryContract;
+use App\System\Repositorys\EquipeRepository;
 use App\System\Repositorys\UserRepository;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -16,7 +20,9 @@ class AppServiceProvider extends ServiceProvider
 {
     public $bindings = [
         UserBusinessContract::class => UserBusiness::class,
-        UserRepositoryContract::class => UserRepository::class
+        UserRepositoryContract::class => UserRepository::class,
+        EquipeBusinessContract::class => EquipeBusiness::class,
+        EquipeRepositoryContract::class => EquipeRepository::class
     ];
     /**
      * Register any application services.

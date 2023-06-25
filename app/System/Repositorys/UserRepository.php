@@ -2,7 +2,7 @@
 
 namespace App\System\Repositorys;
 
-use App\System\Contracts\UserRepositoryContract;
+use App\System\Contracts\Repository\UserRepositoryContract;
 use App\System\DTOs\UserDTO;
 use App\System\Models\User;
 use Spatie\LaravelData\DataCollection;

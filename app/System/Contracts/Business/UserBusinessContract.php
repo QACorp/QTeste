@@ -1,6 +1,6 @@
 <?php
 
-namespace App\System\Contracts;
+namespace App\System\Contracts\Business;
 
 use App\System\DTOs\UserDTO;
 use App\System\Requests\PasswordPutRequest;

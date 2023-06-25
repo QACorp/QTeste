@@ -2,14 +2,12 @@
 
 namespace App\System\Http\Controllers;
 
-use App\System\Contracts\UserBusinessContract;
+use App\System\Contracts\Business\UserBusinessContract;
 use App\System\DTOs\RoleDTO;
 use App\System\DTOs\UserDTO;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
-use App\System\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Spatie\LaravelData\DataCollection;
 
 class UserController extends Controller

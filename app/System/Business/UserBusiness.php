@@ -2,8 +2,9 @@
 
 namespace App\System\Business;
 
-use App\System\Contracts\UserBusinessContract;
-use App\System\Contracts\UserRepositoryContract;
+
+use App\System\Contracts\Business\UserBusinessContract;
+use App\System\Contracts\Repository\UserRepositoryContract;
 use App\System\DTOs\UserDTO;
 use App\System\Enums\PermissionEnum;
 use App\System\Exceptions\NotFoundException;

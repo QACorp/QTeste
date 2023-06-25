@@ -1,6 +1,6 @@
 <?php
 
-namespace App\System\Contracts;
+namespace App\System\Contracts\Repository;
 
 use App\System\DTOs\UserDTO;
 use Spatie\LaravelData\DataCollection;

@@ -34,7 +34,7 @@ class MenuConfig extends MenuConfigAbstract
                     [
                         'key' => 'equipes_index',
                         'text' => 'Equipes',
-                        'route'  => 'aplicacoes.index',
+                        'route'  => 'equipes.index',
                         'icon'  => 'fas fa-users',
                         'can'   => 'LISTAR_EQUIPE'
                     ]

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('nome',255);
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('users_equipes', function (Blueprint $table) {
             $table->bigInteger('user_id');
