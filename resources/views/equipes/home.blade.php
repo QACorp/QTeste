@@ -34,7 +34,7 @@
                                 <td>
                                     @can(\App\System\Enums\PermissionEnum::ALTERAR_EQUIPE->value)
                                         <a class="btn btn-warning btn-sm" title="Editar"
-                                           href="{{ route('users.editar',$equipe->id) }}"><i class="fas fa-edit"></i> </a>
+                                           href="{{ route('equipes.editar',$equipe->id) }}"><i class="fas fa-edit"></i> </a>
                                     @endcan
 {{--                                    @can(\App\System\Enums\PermissionEnum::VINCULAR_EQUIPE->value)--}}
 {{--                                        <a class="btn btn-dark btn-sm" title="Vincular usuário a equipe"--}}

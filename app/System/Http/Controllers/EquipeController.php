@@ -6,8 +6,10 @@ use App\System\Contracts\Business\EquipeBusinessContract;
 use App\System\Contracts\Business\UserBusinessContract;
 use App\System\DTOs\EquipeDTO;
 use App\System\DTOs\UserDTO;
+use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use Illuminate\Http\Request;
+use Spatie\LaravelData\DataCollection;
 
 class EquipeController extends Controller
 {
@@ -58,6 +60,39 @@ class EquipeController extends Controller
 
     }
 
+    public function editar(int $idEquipe)
+    {
+        $users = $this->userBusiness->buscarTodos();
+        $equipe = $this->equipeBusiness->buscarEquipePorId($idEquipe);
+        $idUsers = $this->convertUserDTOToArray($equipe->users);
+        return view(
+            'equipes.alterar',
+            compact('users', 'equipe', 'idEquipe', 'idUsers')
+        );
+    }
+
+    public function atualizar(Request $request, int $idEquipe)
+    {
+        try {
+            $equipeDTO = EquipeDTO::from([
+                'id' => $idEquipe,
+                ...$request->only(['nome']),
+                'users' => UserDTO::collection($this->convertUserToDTO($request->only(['users'])))
+            ]);
+            $this->equipeBusiness->alterar($equipeDTO);
+            return redirect(route('equipes.index'))
+                ->with([Controller::MESSAGE_KEY_SUCCESS => ['Equipe alterada com sucesso']]);
+        }catch (UnprocessableEntityException $exception){
+            return redirect(route('equipes.editar'))
+                ->withErrors($exception->getValidator())
+                ->withInput();
+        }catch (NotFoundException $exception){
+            return redirect(route('equipes.index'))
+                ->with([Controller::MESSAGE_KEY_ERROR => ['Equipe não encontrada']]);
+        }
+
+    }
+
     public function convertUserToDTO(array $users):array
     {
         $arrUserDTO = [];
@@ -65,6 +100,14 @@ class EquipeController extends Controller
             $arrUserDTO[] = UserDTO::from(['id' => $user[0]]);
         }
         return $arrUserDTO;
+    }
+    public function convertUserDTOToArray(DataCollection $users):array
+    {
+        $arrUser = [];
+        foreach ($users as $user) {
+            $arrUser[] = $user->id;
+        }
+        return $arrUser;
     }
 
 }

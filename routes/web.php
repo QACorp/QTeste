@@ -48,12 +48,12 @@ Route::group(['prefix' => 'equipes', 'middleware' => 'auth'],function(){
     Route::get('/', [EquipeController::class,'index'])->name('equipes.index');
     Route::get('/inserir', [EquipeController::class,'inserir'])->name('equipes.inserir');
 //
-//    Route::get('/{idUsuario}', [UserController::class,'editar'])->name('users.editar');
+    Route::get('/{idEquipe}', [EquipeController::class,'editar'])->name('equipes.editar');
 //    Route::get('/{idUsuario}/alterar-senha', [UserController::class,'editarSenha'])->name('users.alterar-senha');
 //
 //    Route::put('/{idUsuario}/alterar-senha', [UserController::class,'atualizarSenha'])->name('users.atualizar-senha');
     Route::post('/inserir', [EquipeController::class,'salvar'])->name('equipes.salvar');
-//    Route::put('/{idUsuario}', [UserController::class,'atualizar'])->name('users.atualizar');
+    Route::put('/{idUsuario}', [EquipeController::class,'atualizar'])->name('equipes.atualizar');
 });
 
 Route::get('/home', [\App\System\Http\Controllers\HomeController::class,'index'])->name('home')->middleware(['auth']);

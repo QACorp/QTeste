@@ -9,5 +9,11 @@ use Spatie\LaravelData\DataCollection;
 interface EquipeBusinessContract
 {
     public function buscarTodos():DataCollection;
-    public function inserir(EquipeDTO $equipe, EquipePostRequest $equipePostRequest = new EquipePostRequest()):EquipeDTO;
+    public function buscarEquipePorId(int $idEquipe):EquipeDTO;
+    public function inserir(
+        EquipeDTO $equipe,
+        EquipePostRequest $equipePostRequest = new EquipePostRequest()):EquipeDTO;
+    public function alterar(
+        EquipeDTO $equipe,
+        EquipePostRequest $equipePostRequest = new EquipePostRequest()):EquipeDTO;
 }

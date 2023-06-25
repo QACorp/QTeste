@@ -9,7 +9,7 @@
  - [ ] Últimas atualizações de projetos.
  - [X] Aplicações com mais testes.
  - [X] Execuções de planos de teste por mês.
- - [ ] Cadastro de equipe do usuário.
+ - [X] Cadastro de equipe do usuário.
  - [ ] Vincular usuário à equipe.
  - [ ] Vincular aplicação à equipe.
  - [ ] Vincular casos de teste à equipe.
