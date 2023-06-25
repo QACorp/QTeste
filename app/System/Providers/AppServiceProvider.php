@@ -4,6 +4,7 @@ namespace App\System\Providers;
 
 use App\System\Business\EquipeBusiness;
 use App\System\Business\UserBusiness;
+use App\System\Component\ComboEquipes;
 use App\System\Component\DeleteModal;
 use App\System\Component\UploadModal;
 use App\System\Config\MenuConfig;
@@ -38,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Blade::component('delete-modal', DeleteModal::class);
+        Blade::component('combo-equipes', ComboEquipes::class);
         Blade::component('upload-modal', UploadModal::class);
         MenuConfig::configureMenuModule();
         $this->addDirectoryMigration();
