@@ -10,8 +10,8 @@
  - [X] Aplicações com mais testes.
  - [X] Execuções de planos de teste por mês.
  - [X] Cadastro de equipe do usuário.
- - [ ] Vincular usuário à equipe.
- - [ ] Vincular aplicação à equipe.
+ - [X] Vincular usuário à equipe.
+ - [X] Vincular aplicação à equipe.
  - [ ] Vincular casos de teste à equipe.
  - [ ] Alterar consultas para trazer tudo com base na equipe do usuário.
  - [ ] Ranking de casos de teste por equipes.

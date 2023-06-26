@@ -5,11 +5,13 @@ namespace App\Modules\Projetos\Controllers;
 use App\Modules\Projetos\Contracts\Business\AplicacaoBusinessContract;
 use App\Modules\Projetos\DTOs\AplicacaoDTO;
 use App\Modules\Projetos\Enums\PermissionEnum;
+use App\System\DTOs\EquipeDTO;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 
 
 class AplicacaoController extends Controller
@@ -50,7 +52,9 @@ class AplicacaoController extends Controller
     {
         Auth::user()->can(PermissionEnum::INSERIR_APLICACAO->value);
         try {
-            $this->aplicacaoBusiness->salvar(AplicacaoDTO::from($request->all()));
+            $aplicacaoDTO = AplicacaoDTO::from($request->all());
+            $aplicacaoDTO->equipes = EquipeDTO::collection([['id' => Cookie::get('equipe')]]);
+            $this->aplicacaoBusiness->salvar($aplicacaoDTO);
             return redirect(route('aplicacoes.index'))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Aplicação inserida com sucesso']]);
         }catch (UnprocessableEntityException $exception){

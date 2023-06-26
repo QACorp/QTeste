@@ -5,21 +5,39 @@ namespace App\Modules\Projetos\Repositorys;
 use App\Modules\Projetos\Contracts\Repository\AplicacaoRepositoryContract;
 use App\Modules\Projetos\DTOs\AplicacaoDTO;
 use App\Modules\Projetos\Models\Aplicacao;
+use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\DataCollection;
 
 class AplicacaoRepository implements AplicacaoRepositoryContract
 {
 
-    public function buscarTodos(): DataCollection
+    public function buscarTodos(int $idEquipe): DataCollection
     {
-        return AplicacaoDTO::collection(Aplicacao::all());
+        return AplicacaoDTO::collection(
+            Aplicacao::join('projetos.aplicacoes_equipes','aplicacoes_equipes.aplicacao_id','=','aplicacoes.id')
+                ->where('aplicacoes_equipes.equipe_id',$idEquipe)
+                ->get()
+        );
     }
 
     public function salvar(AplicacaoDTO $aplicacaoDTO): AplicacaoDTO
     {
-        $aplicacao = new Aplicacao($aplicacaoDTO->only('nome','descricao')->toArray());
-        $aplicacao->save();
-        return AplicacaoDTO::from($aplicacao);
+        DB::beginTransaction();
+        try{
+            $aplicacao = new Aplicacao($aplicacaoDTO->only('nome','descricao')->toArray());
+            $aplicacao->save();
+            $idsEquipe = [];
+            $aplicacaoDTO->equipes->each(function ($item, $key) use ($aplicacao, &$idsEquipe){
+                $idsEquipe[] = $item->id;
+            });
+            $aplicacao->equipes()->sync($idsEquipe);
+            DB::commit();
+            return AplicacaoDTO::from($aplicacao);
+        }catch(\Exception $e){
+            DB::rollBack();
+            throw $e;
+        }
+
     }
 
     public function buscarPorId(int $id): ?AplicacaoDTO

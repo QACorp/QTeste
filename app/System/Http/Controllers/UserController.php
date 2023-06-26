@@ -6,13 +6,16 @@ use App\System\Contracts\Business\UserBusinessContract;
 use App\System\DTOs\RoleDTO;
 use App\System\DTOs\UserDTO;
 use App\System\Exceptions\NotFoundException;
+use App\System\Exceptions\UnauthorizedException;
 use App\System\Exceptions\UnprocessableEntityException;
+use App\System\Traits\Authverification;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Http\Request;
 use Spatie\LaravelData\DataCollection;
 
 class UserController extends Controller
 {
+    use Authverification;
     public function __construct(
         private readonly UserBusinessContract $userBusiness
     )
@@ -134,6 +137,9 @@ class UserController extends Controller
     }
     public function alterarEquipeCookie(Request $request, int $idEquipe)
     {
+        if(!$this->userMembroEquipe($idEquipe)){
+            throw new UnauthorizedException(403);
+        }
         Cookie::queue('equipe', $idEquipe, (60*60*60));
         return redirect('home');
     }
