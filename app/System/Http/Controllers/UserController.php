@@ -7,6 +7,7 @@ use App\System\DTOs\RoleDTO;
 use App\System\DTOs\UserDTO;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Http\Request;
 use Spatie\LaravelData\DataCollection;
 
@@ -131,5 +132,9 @@ class UserController extends Controller
         }
         return $roles;
     }
-
+    public function alterarEquipeCookie(Request $request, int $idEquipe)
+    {
+        Cookie::queue('equipe', $idEquipe, (60*60*60));
+        return redirect('home');
+    }
 }

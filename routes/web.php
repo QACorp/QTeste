@@ -51,7 +51,7 @@ Route::group(['prefix' => 'equipes', 'middleware' => 'auth'],function(){
     Route::get('/{idEquipe}', [EquipeController::class,'editar'])->name('equipes.editar');
 //    Route::get('/{idUsuario}/alterar-senha', [UserController::class,'editarSenha'])->name('users.alterar-senha');
 //
-//    Route::put('/{idUsuario}/alterar-senha', [UserController::class,'atualizarSenha'])->name('users.atualizar-senha');
+    Route::get('/selecionar-equipe/{idEquipe}', [UserController::class,'alterarEquipeCookie'])->name('users.atualizar-equipe');
     Route::post('/inserir', [EquipeController::class,'salvar'])->name('equipes.salvar');
     Route::put('/{idUsuario}', [EquipeController::class,'atualizar'])->name('equipes.atualizar');
 });
