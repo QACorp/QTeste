@@ -8,7 +8,7 @@ use Spatie\LaravelData\DataCollection;
 interface AplicacaoRepositoryContract
 {
     public function buscarTodos(int $idEquipe):DataCollection;
-    public function buscarPorId(int $id):?AplicacaoDTO;
+    public function buscarPorId(int $id, int $idEquipe):?AplicacaoDTO;
     public function salvar(AplicacaoDTO $aplicacaoDTO):AplicacaoDTO;
 
     public function alterar(AplicacaoDTO $aplicacaoDTO):AplicacaoDTO;
