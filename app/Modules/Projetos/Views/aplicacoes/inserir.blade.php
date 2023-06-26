@@ -15,13 +15,13 @@
                     <form method="post" action="{{ route('aplicacoes.salvar') }}">
                         @csrf
                         <div class="row">
-                            <div class="col-md-9">
+                            <div class="col-md-6">
                                 <div class="row">
                                     <x-adminlte-input
                                         label="Nome"
                                         name="nome"
                                         placeholder="Nome"
-                                        fgroup-class="col-md-6"
+                                        fgroup-class="col-md-12"
                                         value="{{ old('nome','') }}"
                                     />
                                 </div>
@@ -30,7 +30,7 @@
                                         label="Descrição"
                                         name="descricao"
                                         placeholder="Inserir uma descrição"
-                                        fgroup-class="col-md-6"
+                                        fgroup-class="col-md-12"
                                     >
                                     {{ old('descricao','') }}
                                     </x-adminlte-textarea>
@@ -47,8 +47,13 @@
                                     ><i class="fas fa-undo"></i> Cancelar</a>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <x-combo-equipes
+                                        :idsEquipe="old('equipes',[])"
+                                    >
+                                    </x-combo-equipes>
+                                </div>
                             </div>
                         </div>
                     </form>

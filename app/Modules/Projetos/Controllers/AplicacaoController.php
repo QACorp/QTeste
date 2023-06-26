@@ -12,6 +12,7 @@ use App\System\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Spatie\LaravelData\DataCollection;
 
 
 class AplicacaoController extends Controller
@@ -52,8 +53,8 @@ class AplicacaoController extends Controller
     {
         Auth::user()->can(PermissionEnum::INSERIR_APLICACAO->value);
         try {
-            $aplicacaoDTO = AplicacaoDTO::from($request->all());
-            $aplicacaoDTO->equipes = EquipeDTO::collection([['id' => Cookie::get('equipe')]]);
+            $aplicacaoDTO = AplicacaoDTO::from($request->except('equipes'));
+            $aplicacaoDTO->equipes = $this->convertArrayInDTO($request->only('equipes'));
             $this->aplicacaoBusiness->salvar($aplicacaoDTO);
             return redirect(route('aplicacoes.index'))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Aplicação inserida com sucesso']]);
@@ -106,5 +107,13 @@ class AplicacaoController extends Controller
             return redirect(route('aplicacoes.index'))
                 ->with([Controller::MESSAGE_KEY_ERROR => ['Registro não encontrado']]);
         }
+    }
+    public function convertArrayInDTO(array $equipes): DataCollection
+    {
+        $ids = [];
+        foreach ($equipes['equipes'] as $equipe) {
+            $ids[] = ['id' => $equipe];
+        }
+        return EquipeDTO::collection($ids);
     }
 }
