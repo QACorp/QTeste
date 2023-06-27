@@ -140,7 +140,7 @@ class UserController extends Controller
         if(!$this->userMembroEquipe($idEquipe)){
             throw new UnauthorizedException(403);
         }
-        Cookie::queue('equipe', $idEquipe, (60*60*60));
+        Cookie::queue(config('app.cookie_equipe_nome'), $idEquipe, (60*60*60));
         return redirect('home');
     }
 }

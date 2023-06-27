@@ -26,7 +26,7 @@ class AplicacaoController extends Controller
     public function index()
     {
         Auth::user()->can(PermissionEnum::LISTAR_APLICACAO->value);
-        $aplicacoes = $this->aplicacaoBusiness->buscarTodos(Cookie::get('equipe'));
+        $aplicacoes = $this->aplicacaoBusiness->buscarTodos(Cookie::get(config('app.cookie_equipe_nome')));
 
         $heads = [
             ['label' => 'Id', 'width' => 10],
@@ -69,7 +69,7 @@ class AplicacaoController extends Controller
     {
         try{
             Auth::user()->can(PermissionEnum::ALTERAR_APLICACAO->value);
-            $aplicacao = $this->aplicacaoBusiness->buscarPorId($id, Cookie::get('equipe'));
+            $aplicacao = $this->aplicacaoBusiness->buscarPorId($id, Cookie::get(config('app.cookie_equipe_nome')));
             return view('projetos::aplicacoes.alterar',compact('aplicacao'));
         }catch (NotFoundException $exception){
             return redirect(route('aplicacoes.index'))
@@ -84,7 +84,7 @@ class AplicacaoController extends Controller
         try{
             $aplicacaoDTO = AplicacaoDTO::from($request->all());
             $aplicacaoDTO->id = $id;
-            $this->aplicacaoBusiness->alterar($aplicacaoDTO, Cookie::get('equipe'));
+            $this->aplicacaoBusiness->alterar($aplicacaoDTO, Cookie::get(config('app.cookie_equipe_nome')));
             return redirect(route('aplicacoes.index'))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Aplicação alterada com sucesso']]);
         }catch (NotFoundException $exception){
@@ -100,7 +100,7 @@ class AplicacaoController extends Controller
     {
         try{
             Auth::user()->can(PermissionEnum::REMOVER_APLICACAO->value);
-            $this->aplicacaoBusiness->excluir($id, Cookie::get('equipe'));
+            $this->aplicacaoBusiness->excluir($id, Cookie::get(config('app.cookie_equipe_nome')));
             return redirect(route('aplicacoes.index'))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Aplicação removida com sucesso']]);
         }catch (NotFoundException $exception){

@@ -16,7 +16,7 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
-
+    'cookie_equipe_nome' => env('APP_COOKIE_EQUIPE_NOME', 'equipe'),
     /*
     |--------------------------------------------------------------------------
     | Application Environment

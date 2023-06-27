@@ -18,7 +18,7 @@ class MenuConfig extends MenuConfigAbstract
         Event::listen(BuildingMenu::class, function (BuildingMenu $event) {
             // Add some items to the menu...
             $request = App::make(Request::class);
-            //Cookie::queue('equipe', 8, (60*60*60));
+            //Cookie::queue(config('app.cookie_equipe_nome'), 8, (60*60*60));
             Auth::user()->equipes()->each(function ($item, $key) use(&$event, $request) {
                 $event->menu->add(
                     [
@@ -26,7 +26,7 @@ class MenuConfig extends MenuConfigAbstract
                         //'topnav_user' => true,
                         'topnav' => true,
                         'url' => route('users.atualizar-equipe',$item->id),
-                        'icon'  => Cookie::get('equipe') == $item->id ? 'fas fa-check': 'fas fa-users',
+                        'icon'  => Cookie::get(config('app.cookie_equipe_nome')) == $item->id ? 'fas fa-check': 'fas fa-users',
                         'text' => $item->nome,
                         'can'   => 'ACESSAR_SISTEMA'
                     ]

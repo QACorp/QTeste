@@ -13,6 +13,7 @@ use Spatie\LaravelData\DataCollection;
 
 class EquipeController extends Controller
 {
+
     public function __construct(
         private readonly EquipeBusinessContract $equipeBusiness,
         private readonly UserBusinessContract $userBusiness

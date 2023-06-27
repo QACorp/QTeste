@@ -17,8 +17,8 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        if(!Cookie::get('equipe')){
-            Cookie::queue('equipe', Auth::user()->equipes()->first()->id, (60*60*60));
+        if(!Cookie::get(config('app.cookie_equipe_nome'))){
+            Cookie::queue(config('app.cookie_equipe_nome'), Auth::user()->equipes()->first()->id, (60*60*60));
         }
     }
 
