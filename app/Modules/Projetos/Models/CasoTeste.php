@@ -2,6 +2,7 @@
 
 namespace App\Modules\Projetos\Models;
 
+use App\System\Models\Equipe;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -29,5 +30,10 @@ class CasoTeste extends Model
     {
         return $this->hasMany(CasoTesteExecucao::class);
 
+    }
+
+    public function equipes(): BelongsToMany
+    {
+        return $this->belongsToMany(Equipe::class, 'projetos.casos_teste_equipes');
     }
 }

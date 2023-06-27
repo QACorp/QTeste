@@ -28,7 +28,7 @@
                                             value="{{ old('titulo','') }}"
                                         />
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-5">
                                         <x-adminlte-input
                                             label="Requisito"
                                             name="requisito"
@@ -37,7 +37,7 @@
                                             value="{{ old('requisito','') }}"
                                         />
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <x-adminlte-select
                                             label="Status"
                                             name="status"
@@ -50,6 +50,14 @@
 
                                             @endforeach
                                         </x-adminlte-select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <x-combo-equipes
+                                            :idsEquipe="old('equipes',[])"
+                                        >
+                                        </x-combo-equipes>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -103,6 +111,7 @@
                                 </div>
                             </div>
                             <div class="col-md-3">
+
                             </div>
                         </div>
 

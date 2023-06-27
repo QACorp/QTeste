@@ -2,7 +2,9 @@
 
 namespace App\Modules\Projetos\DTOs;
 
+use App\System\Casts\CastEquipes;
 use App\System\Utils\DTO;
+use Spatie\LaravelData\Contracts\DataCollectable;
 
 class CasoTesteDTO extends DTO
 {
@@ -13,7 +15,9 @@ class CasoTesteDTO extends DTO
         public ?string $cenario,
         public ?string $teste,
         public ?string $resultado_esperado,
-        public ?string $status
+        public ?string $status,
+        #[WithCast(CastEquipes::class)]
+        public ?DataCollectable $equipes
     )
     {
     }
