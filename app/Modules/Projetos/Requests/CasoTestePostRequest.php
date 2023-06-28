@@ -26,6 +26,7 @@ class CasoTestePostRequest extends FormRequest
     {
         return [
             'titulo'                => 'required',
+            'equipes'               => 'required',
             'teste'                 => 'required',
             'requisito'             => 'required',
             'cenario'               => 'required',

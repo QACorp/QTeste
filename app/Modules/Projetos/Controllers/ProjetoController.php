@@ -13,6 +13,7 @@ use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 
 class ProjetoController extends Controller
 {
@@ -29,7 +30,7 @@ class ProjetoController extends Controller
     {
         Auth::user()->can(PermissionEnum::LISTAR_PROJETO->value);
         try{
-            $projetos = $this->projetoBusiness->buscarTodosPorAplicacao($idAplicacao);
+            $projetos = $this->projetoBusiness->buscarTodosPorAplicacao($idAplicacao, Cookie::get(config('app.cookie_equipe_nome')));
             $heads = [
                 ['label' => 'Id', 'width' => 10],
                 'Nome',

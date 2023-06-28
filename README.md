@@ -15,3 +15,4 @@
  - [ ] Vincular casos de teste à equipe.
  - [ ] Alterar consultas para trazer tudo com base na equipe do usuário.
  - [ ] Ranking de casos de teste por equipes.
+ - [ ] Alterar equipe da aplicação

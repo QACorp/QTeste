@@ -9,11 +9,14 @@ use App\Modules\Projetos\Enums\PermissionEnum;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Http\Controllers\Controller;
+use App\System\Traits\EquipeTools;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 
 class CasoTesteController extends Controller
 {
+    use EquipeTools;
     public function __construct(
         private readonly CasoTesteBusinessContract $casoTesteBusiness
     )
@@ -22,7 +25,26 @@ class CasoTesteController extends Controller
 
     public function list(Request $request){
         Auth::user()->can(PermissionEnum::LISTAR_CASO_TESTE->value);
-        return response($this->casoTesteBusiness->buscarCasoTestePorString($request->term)->toJson());
+        return response($this->casoTesteBusiness->buscarCasoTestePorString($request->term, Cookie::get(config('app.cookie_equipe_nome')))->toJson());
+    }
+    public function index(){
+        Auth::user()->can(PermissionEnum::LISTAR_CASO_TESTE->value);
+        $heads = [
+            ['label' => 'Id', 'width' => 10],
+            ['label' => 'Requisito', 'width' => 25],
+            'Título',
+            ['label' => 'Status', 'width' => 15],
+            ['label' => 'Ações', 'width' => 20],
+        ];
+
+        $config = [
+            ...config('adminlte.datatable_config'),
+            'columns' => [null, null, null, null, ['orderable' => false]],
+        ];
+
+        $casosTeste = $this->casoTesteBusiness->buscarTodos(Cookie::get(config('app.cookie_equipe_nome')));
+        return view('projetos::casos_teste.home',
+            compact('heads', 'config', 'casosTeste'));
     }
 
     public function vincular(Request $request, $idAplicacao, $idProjeto, $idPlanoTeste)
@@ -31,7 +53,11 @@ class CasoTesteController extends Controller
         $casoTesteDTO = CasoTesteDTO::from($request->all());
         $casoTesteDTO->id = $request->post('caso_teste_id');
         try{
-            $this->casoTesteBusiness->vincular($idPlanoTeste, $casoTesteDTO);
+            $this->casoTesteBusiness->vincular(
+                $idPlanoTeste,
+                Cookie::get(config('app.cookie_equipe_nome')),
+                $casoTesteDTO
+            );
 
             return redirect(route('aplicacoes.projetos.planos-teste.visualizar', [$idAplicacao, $idProjeto, $idPlanoTeste]))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Caso de teste vinculado com sucesso']]);
@@ -49,7 +75,11 @@ class CasoTesteController extends Controller
     {
         try{
             Auth::user()->can(PermissionEnum::DESVINCULAR_CASO_TESTE->value);
-            $this->casoTesteBusiness->desvincular($idPlanoTeste, $idCasoTeste);
+            $this->casoTesteBusiness->desvincular(
+                $idPlanoTeste,
+                Cookie::get(config('app.cookie_equipe_nome')),
+                $idCasoTeste
+            );
 
             return redirect(route('aplicacoes.projetos.planos-teste.visualizar', [$idAplicacao, $idProjeto, $idPlanoTeste]))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Caso de teste desvinculado com sucesso']]);
@@ -67,8 +97,8 @@ class CasoTesteController extends Controller
 
         $casoTesteDTO = CasoTesteDTO::from($request);
         try{
-            $casoTeste = $this->casoTesteBusiness->inserirCasoTeste($casoTesteDTO);
-            $this->casoTesteBusiness->vincular($idPlanoTeste, $casoTeste);
+            $casoTeste = $this->casoTesteBusiness->inserirCasoTeste($casoTesteDTO, Cookie::get(config('app.cookie_equipe_nome')));
+            $this->casoTesteBusiness->vincular($idPlanoTeste, Cookie::get(config('app.cookie_equipe_nome')), $casoTeste);
             return redirect(route('aplicacoes.projetos.planos-teste.visualizar', [$idAplicacao, $idProjeto, $idPlanoTeste]))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Caso de teste criado com sucesso', 'Caso de teste vinculado com sucesso']]);
 
@@ -78,31 +108,13 @@ class CasoTesteController extends Controller
         }
     }
 
-    public function index(){
-        Auth::user()->can(PermissionEnum::LISTAR_CASO_TESTE->value);
-        $heads = [
-            ['label' => 'Id', 'width' => 10],
-            ['label' => 'Requisito', 'width' => 25],
-            'Título',
-            ['label' => 'Status', 'width' => 15],
-            ['label' => 'Ações', 'width' => 20],
-        ];
 
-        $config = [
-            ...config('adminlte.datatable_config'),
-            'columns' => [null, null, null, null, ['orderable' => false]],
-        ];
-
-        $casosTeste = $this->casoTesteBusiness->buscarTodos();
-        return view('projetos::casos_teste.home',
-            compact('heads', 'config', 'casosTeste'));
-    }
 
     public function excluir(Request $request, int $idCasoTeste)
     {
         Auth::user()->can(PermissionEnum::REMOVER_CASO_TESTE->value);
         try{
-            $this->casoTesteBusiness->excluir($idCasoTeste);
+            $this->casoTesteBusiness->excluir($idCasoTeste, Cookie::get(config('app.cookie_equipe_nome')));
             return redirect(route('aplicacoes.casos-teste.index'))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Caso de teste removido com sucesso']]);
         }catch (NotFoundException $e){
@@ -115,8 +127,19 @@ class CasoTesteController extends Controller
     {
         Auth::user()->can(PermissionEnum::ALTERAR_CASO_TESTE->value);
         try{
-            $casoTeste = $this->casoTesteBusiness->buscarCasoTestePorId($idCasoTeste);
-            return view('projetos::casos_teste.alterar',compact('casoTeste'));
+            $casoTeste = $this->casoTesteBusiness->buscarCasoTestePorId(
+                $idCasoTeste,
+                Cookie::get(config('app.cookie_equipe_nome'))
+            );
+            $idsEquipe = [];
+            $casoTeste->equipes->each(function($item, $key) use(&$idsEquipe){
+                $idsEquipe[] = $item->id;
+            });
+            return view('projetos::casos_teste.alterar',compact(
+                'casoTeste',
+                'idsEquipe'
+                )
+            );
         }catch (NotFoundException $exception){
             return redirect(route('aplicacoes.casos-teste.index'))
                 ->with([Controller::MESSAGE_KEY_ERROR => ['Registro não encontrado']]);
@@ -127,9 +150,13 @@ class CasoTesteController extends Controller
     {
         Auth::user()->can(PermissionEnum::ALTERAR_CASO_TESTE->value);
         try{
-            $casoTesteDTO = CasoTesteDTO::from($request->all());
+            $casoTesteDTO = CasoTesteDTO::from($request->except('equipes'));
+            $casoTesteDTO->equipes = $this->convertArrayEquipeInDTO($request->only('equipes'));
             $casoTesteDTO->id = $idCasoTeste;
-            $this->casoTesteBusiness->alterarCasoTeste($casoTesteDTO);
+            $this->casoTesteBusiness->alterarCasoTeste(
+                $casoTesteDTO,
+                Cookie::get(config('app.cookie_equipe_nome'))
+            );
             return redirect(route('aplicacoes.casos-teste.index'))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Caso de Teste alterado com sucesso']]);
         }catch (UnprocessableEntityException $exception) {
@@ -152,8 +179,12 @@ class CasoTesteController extends Controller
     {
         Auth::user()->can(PermissionEnum::INSERIR_CASO_TESTE->value);
         try{
-            $casoTesteDTO = CasoTesteDTO::from($request->all());
-            $this->casoTesteBusiness->inserirCasoTeste($casoTesteDTO);
+            $casoTesteDTO = CasoTesteDTO::from($request->except('equipes'));
+            $casoTesteDTO->equipes = $this->convertArrayEquipeInDTO($request->only('equipes'));
+            $this->casoTesteBusiness->inserirCasoTeste(
+                $casoTesteDTO,
+                Cookie::get(config('app.cookie_equipe_nome'))
+            );
             return redirect(route('aplicacoes.casos-teste.index'))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Caso de Teste inserido com sucesso']]);
         }catch (UnprocessableEntityException $exception) {

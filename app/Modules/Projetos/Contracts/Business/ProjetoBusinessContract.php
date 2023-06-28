@@ -9,7 +9,7 @@ use Spatie\LaravelData\DataCollection;
 
 interface ProjetoBusinessContract
 {
-    public function buscarTodosPorAplicacao(int $aplicacaoId):DataCollection;
+    public function buscarTodosPorAplicacao(int $aplicacaoId, int $idEquipe):DataCollection;
     public function buscarPorAplicacaoEProjeto(int $idAplicacao, int $idProjeto):ProjetoDTO;
     public function buscarPorIdProjeto(int $idProjeto):?ProjetoDTO;
     public function atualizar(ProjetoDTO $projetoDTO, ProjetosPutRequest $projetosPutRequest = new ProjetosPutRequest()): ProjetoDTO;

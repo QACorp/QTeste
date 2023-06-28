@@ -62,6 +62,14 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="col-md-6">
+                                        <x-combo-equipes
+                                            :idsEquipe="old('equipes',$idsEquipe)"
+                                        >
+                                        </x-combo-equipes>
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-md-12">
                                         <x-adminlte-textarea
                                             label="Cenário"

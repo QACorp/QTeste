@@ -7,6 +7,7 @@ use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 
 class UploadCasosTesteController extends Controller
 {
@@ -37,7 +38,7 @@ class UploadCasosTesteController extends Controller
     public function uploadArquivoExcel(Request $request)
     {
         try {
-            $this->casoTesteBusiness->importarArquivo($request->file('arquivo'));
+            $this->casoTesteBusiness->importarArquivo($request->file('arquivo'),Cookie::get(config('app.cookie_equipe_nome')));
             return redirect(route('aplicacoes.casos-teste.index'))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Arquivo importado com sucesso']]);
         }catch (UnprocessableEntityException $exception){

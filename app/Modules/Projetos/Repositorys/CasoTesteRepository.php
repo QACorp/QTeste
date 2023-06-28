@@ -8,12 +8,15 @@ use App\Modules\Projetos\DTOs\PlanoTesteDTO;
 use App\Modules\Projetos\Enums\CasoTesteEnum;
 use App\Modules\Projetos\Models\CasoTeste;
 use App\Modules\Projetos\Models\PlanoTeste;
+use App\System\DTOs\EquipeDTO;
+use Exception;
+use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\DataCollection;
 
 class CasoTesteRepository implements CasoTesteRespositoryContract
 {
 
-    public function buscarCasoTestePorPlanoTeste(int $idPlanoTeste): ?DataCollection
+    public function buscarCasoTestePorPlanoTeste(int $idPlanoTeste, int $idEquipe): ?DataCollection
     {
         return CasoTesteDTO::collection(
             PlanoTeste::find($idPlanoTeste)
@@ -23,7 +26,7 @@ class CasoTesteRepository implements CasoTesteRespositoryContract
         );
     }
 
-    public function buscarCasoTestePorString(string $term): ?DataCollection
+    public function buscarCasoTestePorString(string $term, int $idEquipe): ?DataCollection
     {
         return CasoTesteDTO::collection(
             CasoTeste::where('titulo','ILIKE','%'.$term.'%')
@@ -33,7 +36,7 @@ class CasoTesteRepository implements CasoTesteRespositoryContract
         );
     }
 
-    public function vincular(int $idPlanoTeste, CasoTesteDTO $casoTesteDTO): PlanoTesteDTO
+    public function vincular(int $idPlanoTeste, int $idEquipe, CasoTesteDTO $casoTesteDTO): PlanoTesteDTO
     {
 
         $planoTeste = PlanoTeste::find($idPlanoTeste);
@@ -42,7 +45,7 @@ class CasoTesteRepository implements CasoTesteRespositoryContract
         $planoTeste->save();
         return PlanoTesteDTO::from($planoTeste);
     }
-    public function desvincular(int $idPlanoTeste, int $idCasoTeste): PlanoTesteDTO
+    public function desvincular(int $idPlanoTeste, int $idEquipe, int $idCasoTeste): PlanoTesteDTO
     {
 
         $planoTeste = PlanoTeste::find($idPlanoTeste);
@@ -50,7 +53,7 @@ class CasoTesteRepository implements CasoTesteRespositoryContract
         $planoTeste->save();
         return PlanoTesteDTO::from($planoTeste);
     }
-    public function existeVinculo(int $idPlanoTeste, int $idCasoTeste): bool
+    public function existeVinculo(int $idPlanoTeste, int $idCasoTeste, int $idEquipe): bool
     {
         $planoTeste = PlanoTeste::find($idPlanoTeste);
         $existe = $planoTeste->casos_teste()->where('caso_teste_id', $idCasoTeste)->count();
@@ -58,36 +61,74 @@ class CasoTesteRepository implements CasoTesteRespositoryContract
         return $existe > 0;
     }
 
-    public function existeCasoTeste(int $idCasoTeste): bool
+    public function existeCasoTeste(int $idCasoTeste, int $idEquipe): bool
     {
-        return CasoTeste::find($idCasoTeste) != null;
+        return  CasoTeste::join('projetos.casos_teste_equipes','casos_teste_equipes.caso_teste_id','=','casos_teste.id')
+                ->where('casos_teste_equipes.equipe_id',$idEquipe)
+                ->first() != null;
     }
     public function inserirCasoTeste(CasoTesteDTO $casoTesteDTO): CasoTesteDTO
     {
-        $casoTeste = new CasoTeste($casoTesteDTO->toArray());
-        $casoTeste->save();
-        return CasoTesteDTO::from($casoTeste);
+        DB::beginTransaction();
+        try {
+            $casoTeste = new CasoTeste($casoTesteDTO->toArray());
+            $casoTeste->save();
+            $casoTeste = $this->atualizarCasoTesteEquipe($casoTesteDTO, $casoTeste);
+            DB::commit();
+            return CasoTesteDTO::from($casoTeste);
+        }catch (Exception $exception){
+            DB::rollBack();
+            throw $exception;
+        }
     }
-    public function buscarTodos(): DataCollection
+    private function atualizarCasoTesteEquipe(CasoTesteDTO $casoTesteDTO, CasoTeste $casoTeste):CasoTeste
     {
-        return CasoTesteDTO::collection(CasoTeste::all());
+        $casoTesteDTO->equipes->each(function ($item, $key) use ($casoTeste, &$idsEquipe) {
+            $idsEquipe[] = $item->id;
+        });
+        $casoTeste->equipes()->sync($idsEquipe);
+        return $casoTeste;
+    }
+    public function buscarTodos(int $idEquipe): DataCollection
+    {
+        return CasoTesteDTO::collection(
+            CasoTeste::join('projetos.casos_teste_equipes','casos_teste_equipes.caso_teste_id','=','casos_teste.id')
+                ->where('casos_teste_equipes.equipe_id',$idEquipe)
+                ->get()
+        );
     }
     public function excluir(int $idCasoTeste): bool
     {
         return CasoTeste::find($idCasoTeste)->delete();
     }
 
-    public function buscarCasoTestePorId(int $idCasoTeste): ?CasoTesteDTO
+    public function buscarCasoTestePorId(int $idCasoTeste, int $idEquipe): ?CasoTesteDTO
     {
-        $casoTeste = CasoTeste::find($idCasoTeste);
-        return $casoTeste ? CasoTesteDTO::from($casoTeste) : null;
+        $casoTeste = CasoTeste::join('projetos.casos_teste_equipes','casos_teste_equipes.caso_teste_id','=','casos_teste.id')
+            ->where('casos_teste_equipes.equipe_id',$idEquipe)
+            ->where('id', $idCasoTeste)
+            ->first();
+        if($casoTeste != null){
+            $casoTesteDTO = CasoTesteDTO::from($casoTeste);
+            $casoTesteDTO->equipes = EquipeDTO::collection($casoTeste->equipes);
+            return $casoTesteDTO;
+        }
+        return null;
     }
 
     public function alterarCasoTeste(CasoTesteDTO $casoTesteDTO): CasoTesteDTO
     {
-        $casoTeste = CasoTeste::find($casoTesteDTO->id);
-        $casoTeste->fill($casoTesteDTO->toArray());
-        $casoTeste->save();
-        return CasoTesteDTO::from($casoTeste);
+        try {
+            $casoTeste = CasoTeste::find($casoTesteDTO->id);
+            $casoTeste->fill($casoTesteDTO->toArray());
+            $casoTeste->update();
+            $casoTeste = $this->atualizarCasoTesteEquipe($casoTesteDTO, $casoTeste);
+            DB::commit();
+            return CasoTesteDTO::from($casoTeste);
+        }catch (Exception $exception){
+            DB::rollBack();
+            throw $exception;
+        }
+
     }
 }

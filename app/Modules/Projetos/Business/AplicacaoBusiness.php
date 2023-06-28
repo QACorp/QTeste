@@ -14,6 +14,7 @@ use App\System\Exceptions\UnauthorizedException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Impl\BusinessAbstract;
 use App\System\Traits\Authverification;
+use App\System\Traits\Validation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Validator;
@@ -21,7 +22,7 @@ use Spatie\LaravelData\DataCollection;
 
 class AplicacaoBusiness extends BusinessAbstract implements AplicacaoBusinessContract
 {
-    use Authverification;
+    use Authverification, Validation;
     public function __construct(
         private readonly AplicacaoRepositoryContract $aplicacaoRepository
     )
@@ -40,10 +41,8 @@ class AplicacaoBusiness extends BusinessAbstract implements AplicacaoBusinessCon
     public function salvar(AplicacaoDTO $aplicacaoDTO, AplicacoesPostRequest $aplicacoesPostRequest = new AplicacoesPostRequest()): AplicacaoDTO
     {
         $this->can(PermissionEnum::INSERIR_APLICACAO->value);
-        $validator = Validator::make($aplicacaoDTO->toArray(), $aplicacoesPostRequest->rules());
-        if ($validator->fails()) {
-            throw new UnprocessableEntityException($validator);
-        }
+        $this->validation($aplicacaoDTO->toArray(), $aplicacoesPostRequest);
+
         return $this->aplicacaoRepository->salvar($aplicacaoDTO);
     }
 
@@ -63,10 +62,7 @@ class AplicacaoBusiness extends BusinessAbstract implements AplicacaoBusinessCon
             throw new NotFoundException();
         }
 
-        $validator = Validator::make($aplicacaoDTO->toArray(), $aplicacoesPutRequest->rules());
-        if ($validator->fails()) {
-            throw new UnprocessableEntityException($validator);
-        }
+        $this->validation($aplicacaoDTO->toArray(), $aplicacoesPutRequest);
 
         return $this->aplicacaoRepository->alterar($aplicacaoDTO);
     }

@@ -9,6 +9,7 @@ use App\System\DTOs\EquipeDTO;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Http\Controllers\Controller;
+use App\System\Traits\EquipeTools;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
@@ -17,6 +18,7 @@ use Spatie\LaravelData\DataCollection;
 
 class AplicacaoController extends Controller
 {
+    use EquipeTools;
     public function __construct(
         private readonly AplicacaoBusinessContract $aplicacaoBusiness
     )
@@ -54,7 +56,7 @@ class AplicacaoController extends Controller
         Auth::user()->can(PermissionEnum::INSERIR_APLICACAO->value);
         try {
             $aplicacaoDTO = AplicacaoDTO::from($request->except('equipes'));
-            $aplicacaoDTO->equipes = $this->convertArrayInDTO($request->only('equipes'));
+            $aplicacaoDTO->equipes = $this->convertArrayEquipeInDTO($request->only('equipes'));
             $this->aplicacaoBusiness->salvar($aplicacaoDTO);
             return redirect(route('aplicacoes.index'))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Aplicação inserida com sucesso']]);
@@ -70,6 +72,8 @@ class AplicacaoController extends Controller
         try{
             Auth::user()->can(PermissionEnum::ALTERAR_APLICACAO->value);
             $aplicacao = $this->aplicacaoBusiness->buscarPorId($id, Cookie::get(config('app.cookie_equipe_nome')));
+            $idsEquipe = [];
+
             return view('projetos::aplicacoes.alterar',compact('aplicacao'));
         }catch (NotFoundException $exception){
             return redirect(route('aplicacoes.index'))
@@ -108,12 +112,5 @@ class AplicacaoController extends Controller
                 ->with([Controller::MESSAGE_KEY_ERROR => ['Registro não encontrado']]);
         }
     }
-    public function convertArrayInDTO(array $equipes): DataCollection
-    {
-        $ids = [];
-        foreach ($equipes['equipes'] as $equipe) {
-            $ids[] = ['id' => $equipe];
-        }
-        return EquipeDTO::collection($ids);
-    }
+
 }

@@ -10,7 +10,6 @@ class CastEquipes implements Cast
 {
     public function cast(DataProperty $property, mixed $value, array $context): mixed
     {
-
        return  EquipeDTO::collection($value);
     }
 }

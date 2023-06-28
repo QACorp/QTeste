@@ -24,11 +24,11 @@ class ProjetoBusiness extends BusinessAbstract implements ProjetoBusinessContrac
     {
     }
 
-    public function buscarTodosPorAplicacao(int $aplicacaoId): DataCollection
+    public function buscarTodosPorAplicacao(int $aplicacaoId, int $idEquipe): DataCollection
     {
         $this->can(PermissionEnum::LISTAR_PROJETO->value);
         try {
-            $this->aplicacaoBusiness->buscarPorId($aplicacaoId);
+            $this->aplicacaoBusiness->buscarPorId($aplicacaoId, $idEquipe);
             return $this->projetoRepository->buscarTodosPorAplicacao($aplicacaoId);
         }catch (NotFoundException $exception){
             throw $exception;

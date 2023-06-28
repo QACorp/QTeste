@@ -12,15 +12,15 @@ use Spatie\LaravelData\DataCollection;
 
 interface CasoTesteBusinessContract
 {
-    public function buscarCasoTestePorPlanoTeste(int $idPlanoTeste): ?DataCollection;
-    public function buscarCasoTestePorString(string $term): ?DataCollection;
-    public function buscarCasoTestePorId(int $idCasoTeste): ?CasoTesteDTO;
-    public function vincular(int $idPlanoTeste, CasoTesteDTO $casoTesteDTO): PlanoTesteDTO;
-    public function desvincular(int $idPlanoTeste, int $idCasoTeste): PlanoTesteDTO;
-    public function inserirCasoTeste(CasoTesteDTO $casoTesteDTO, CasoTestePostRequest $casoTestePostRequest = new CasoTestePostRequest()):CasoTesteDTO;
-    public function alterarCasoTeste(CasoTesteDTO $casoTesteDTO, CasoTestePutRequest $casoTestePutRequest = new CasoTestePutRequest()):CasoTesteDTO;
-    public function buscarTodos(): DataCollection;
-    public function excluir(int $idCasoTeste): bool;
-    public function importarArquivoParaPlanoTeste(?UploadedFile $uploadedFile, ?int $planoTesteId, UploadPostRequest $uploadPostRequest = new UploadPostRequest()):void;
-    public function importarArquivo(?UploadedFile $uploadedFile, UploadPostRequest $uploadPostRequest = new UploadPostRequest()): void;
+    public function buscarCasoTestePorPlanoTeste(int $idPlanoTeste, int $idEquipe): ?DataCollection;
+    public function buscarCasoTestePorString(string $term, int $idEquipe): ?DataCollection;
+    public function buscarCasoTestePorId(int $idCasoTeste, int $idEquipe): ?CasoTesteDTO;
+    public function vincular(int $idPlanoTeste, int $idEquipe, CasoTesteDTO $casoTesteDTO): PlanoTesteDTO;
+    public function desvincular(int $idPlanoTeste, int $idEquipe, int $idCasoTeste): PlanoTesteDTO;
+    public function inserirCasoTeste(CasoTesteDTO $casoTesteDTO, int $idEquipe, CasoTestePostRequest $casoTestePostRequest = new CasoTestePostRequest()):CasoTesteDTO;
+    public function alterarCasoTeste(CasoTesteDTO $casoTesteDTO,int $idEquipe,  CasoTestePutRequest $casoTestePutRequest = new CasoTestePutRequest()):CasoTesteDTO;
+    public function buscarTodos(int $idEquipe): DataCollection;
+    public function excluir(int $idCasoTeste, int $idEquipe): bool;
+    public function importarArquivoParaPlanoTeste(?UploadedFile $uploadedFile, ?int $planoTesteId, int $idEquipe, UploadPostRequest $uploadPostRequest = new UploadPostRequest()):void;
+    public function importarArquivo(?UploadedFile $uploadedFile, int $idEquipe, UploadPostRequest $uploadPostRequest = new UploadPostRequest()): void;
 }

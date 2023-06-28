@@ -42,13 +42,11 @@ class AplicacaoRepository implements AplicacaoRepositoryContract
 
     public function buscarPorId(int $id, int $idEquipe): ?AplicacaoDTO
     {
-        $aplicacao = Aplicacao::find($id);
-        return ($aplicacao != null ?  AplicacaoDTO::from(
-            Aplicacao::join('projetos.aplicacoes_equipes','aplicacoes_equipes.aplicacao_id','=','aplicacoes.id')
+        $aplicacao = Aplicacao::join('projetos.aplicacoes_equipes','aplicacoes_equipes.aplicacao_id','=','aplicacoes.id')
             ->where('aplicacoes_equipes.equipe_id',$idEquipe)
             ->where('id',$id)
-            ->first()
-        ) : null);
+            ->first();
+        return ($aplicacao != null ?  AplicacaoDTO::from($aplicacao) : null);
     }
 
     public function alterar(AplicacaoDTO $aplicacaoDTO): AplicacaoDTO
