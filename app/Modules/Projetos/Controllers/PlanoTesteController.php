@@ -13,6 +13,7 @@ use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 
 class PlanoTesteController extends Controller
 {
@@ -27,7 +28,7 @@ class PlanoTesteController extends Controller
 
     public function index(){
         Auth::user()->can(PermissionEnum::LISTAR_PLANO_TESTE->value);
-        $planos_teste = $this->planoTesteBusiness->buscarTodosPlanoTeste();
+        $planos_teste = $this->planoTesteBusiness->buscarTodosPlanoTeste(Cookie::get(config('app.cookie_equipe_nome')));
 
         $heads = [
             ['label' => 'Id', 'width' => 5],
@@ -63,7 +64,7 @@ class PlanoTesteController extends Controller
             ...config('adminlte.datatable_config'),
             'columns' => [null, null, null, ['orderable' => false]],
         ];
-        $planos_teste = $this->planoTesteBusiness->buscarPlanosTestePorProjeto($idProjeto);
+        $planos_teste = $this->planoTesteBusiness->buscarPlanosTestePorProjeto($idProjeto, Cookie::get(config('app.cookie_equipe_nome')));
         return view('projetos::planos_teste.home', compact(
             'heads',
             'config',
@@ -116,7 +117,7 @@ class PlanoTesteController extends Controller
     {
         Auth::user()->can(PermissionEnum::LISTAR_PLANO_TESTE->value);
         try{
-            $planoTeste = $this->planoTesteBusiness->buscarPlanoTestePorId($idPlanoTeste);
+            $planoTeste = $this->planoTesteBusiness->buscarPlanoTestePorId($idPlanoTeste, Cookie::get(config('app.cookie_equipe_nome')));
             $heads = [
                 ['label' => 'Id', 'width' => 10],
                 ['label' => 'Requisito', 'width' => 25],
@@ -131,7 +132,7 @@ class PlanoTesteController extends Controller
             ];
             $existePlanoTesteExecucao =
                 $this->planoTesteExecucaoBusiness->buscarUltimoPlanoTesteExecucaoPorPlanoTeste($idPlanoTeste) != null;
-            $casosTeste = $this->casoTesteBusiness->buscarCasoTestePorPlanoTeste($idPlanoTeste);
+            $casosTeste = $this->casoTesteBusiness->buscarCasoTestePorPlanoTeste($idPlanoTeste, Cookie::get(config('app.cookie_equipe_nome')));
 
             $planoTesteExecucoes = $this->planoTesteExecucaoBusiness->buscarPlanosTesteExecucaoPorPlanoTeste($idPlanoTeste);
             $headsPlanoTesteExecucao = [
@@ -179,7 +180,7 @@ class PlanoTesteController extends Controller
             $planoTesteDto = PlanoTesteDTO::from($request->all());
             $planoTesteDto->id = $idPlanoTeste;
 
-            $this->planoTesteBusiness->alterarPlanoTeste($planoTesteDto);
+            $this->planoTesteBusiness->alterarPlanoTeste($planoTesteDto, Cookie::get(config('app.cookie_equipe_nome')));
 
             return redirect(route('aplicacoes.projetos.planos-teste.visualizar', [$idAplicacao, $idProjeto, $idPlanoTeste]))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Plano de teste alterado com sucesso']]);

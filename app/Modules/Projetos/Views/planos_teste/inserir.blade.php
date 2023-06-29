@@ -11,7 +11,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <form method="post" action="{{ route('aplicacoes.projetos.planos-teste.salvar', [$idProjeto, $idAplicacao]) }}">
+                    <form method="post" action="{{ route('aplicacoes.projetos.planos-teste.salvar', [$idAplicacao, $idProjeto]) }}">
                         @csrf
                         <div class="row">
                             <div class="col-md-9">

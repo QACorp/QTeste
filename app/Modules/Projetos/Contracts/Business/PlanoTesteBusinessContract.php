@@ -9,10 +9,10 @@ use Spatie\LaravelData\DataCollection;
 
 interface PlanoTesteBusinessContract
 {
-    public function buscarPlanosTestePorProjeto(int $idProjeto):DataCollection;
+    public function buscarPlanosTestePorProjeto(int $idProjeto, int $idEquipe):DataCollection;
     public function salvarPlanoTeste(PlanoTesteDTO $planoTesteDTO, PlanoTestePostRequest $planoTestePostRequest = new PlanoTestePostRequest()):PlanoTesteDTO;
-    public function alterarPlanoTeste(PlanoTesteDTO $planoTesteDTO, PlanoTestePutRequest $planoTestePutRequest = new PlanoTestePutRequest()):PlanoTesteDTO;
+    public function alterarPlanoTeste(PlanoTesteDTO $planoTesteDTO, int $idEquipe, PlanoTestePutRequest $planoTestePutRequest = new PlanoTestePutRequest()):PlanoTesteDTO;
     public function excluirPlanoTeste(int $idPlanoTeste):bool;
-    public function buscarPlanoTestePorId(int $idPlanoTeste): ?PlanoTesteDTO;
-    public function buscarTodosPlanoTeste(): DataCollection;
+    public function buscarPlanoTestePorId(int $idPlanoTeste, int $idEquipe): ?PlanoTesteDTO;
+    public function buscarTodosPlanoTeste(int $idEquipe): DataCollection;
 }

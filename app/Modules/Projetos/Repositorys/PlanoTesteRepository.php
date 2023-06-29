@@ -12,10 +12,15 @@ use Spatie\LaravelData\DataCollection;
 class PlanoTesteRepository implements PlanoTesteRepositoryContract
 {
 
-    public function buscarPlanosTestePorProjeto(int $idProjeto): DataCollection
+    public function buscarPlanosTestePorProjeto(int $idProjeto, int $idEquipe): DataCollection
     {
         return PlanoTesteDTO::collection(
-            PlanoTeste::where('projeto_id',$idProjeto)->get()
+            PlanoTeste::join('projetos.projetos','projetos.id','=','planos_teste.projeto_id')
+                ->join('projetos.aplicacoes','aplicacoes.id','=','projetos.aplicacao_id')
+                ->join('projetos.aplicacoes_equipes','aplicacoes.id','=','aplicacoes_equipes.aplicacao_id')
+                ->where('equipe_id',$idEquipe)
+                ->where('projeto_id',$idProjeto)
+                ->get()
         );
     }
 
@@ -32,9 +37,15 @@ class PlanoTesteRepository implements PlanoTesteRepositoryContract
         return $planoTeste->delete();
     }
 
-    public function buscarPlanoTestePorId(int $idPlanoTeste): ?PlanoTesteDTO
+    public function buscarPlanoTestePorId(int $idPlanoTeste, int $idEquipe): ?PlanoTesteDTO
     {
-        $planoTeste = PlanoTeste::where('id',$idPlanoTeste)->with('casos_teste')->first();
+        $planoTeste = PlanoTeste::where('planos_teste.id',$idPlanoTeste)
+                        ->join('projetos.projetos','projetos.id','=','planos_teste.projeto_id')
+                        ->join('projetos.aplicacoes','aplicacoes.id','=','projetos.aplicacao_id')
+                        ->join('projetos.aplicacoes_equipes','aplicacoes.id','=','aplicacoes_equipes.aplicacao_id')
+                        ->where('equipe_id',$idEquipe)
+                        ->with('casos_teste')
+                        ->first();
         return $planoTeste == null ? null : PlanoTesteDTO::from($planoTeste);
     }
 
@@ -47,7 +58,7 @@ class PlanoTesteRepository implements PlanoTesteRepositoryContract
         return PlanoTesteDTO::from($planoTeste);
     }
 
-    public function buscarTodosPlanoTeste(): DataCollection
+    public function buscarTodosPlanoTeste(int $idEquipe): DataCollection
     {
         return ConsultaPlanoTesteDTO::collection(
             PlanoTeste::select(DB::raw(
