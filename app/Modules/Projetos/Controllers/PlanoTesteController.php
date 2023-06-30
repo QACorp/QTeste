@@ -52,7 +52,12 @@ class PlanoTesteController extends Controller
     }
     public function indexPorProjeto(int $idAplicacao, int $idProjeto){
         Auth::user()->can(PermissionEnum::LISTAR_PLANO_TESTE->value);
-        $projeto = $this->projetoBusiness->buscarPorIdProjeto($idProjeto);
+        try {
+            $projeto = $this->projetoBusiness->buscarPorIdProjeto($idProjeto, Cookie::get(config('app.cookie_equipe_nome')));
+        }catch (NotFoundException $exception){
+            return redirect(route('aplicacoes.projetos.index', $idAplicacao))
+                ->with([Controller::MESSAGE_KEY_ERROR => ['Registro não encontrado']]);
+        }
         $heads = [
             ['label' => 'Id', 'width' => 10],
             'Nome',
@@ -76,6 +81,12 @@ class PlanoTesteController extends Controller
     }
     public function inserir(int $idAplicacao, int $idProjeto)
     {
+        try {
+            $this->projetoBusiness->buscarPorIdProjeto($idProjeto, Cookie::get(config('app.cookie_equipe_nome')));
+        }catch (NotFoundException $exception) {
+            return redirect(route('aplicacoes.index'))
+                ->with([Controller::MESSAGE_KEY_ERROR => ['Registro não encontrado']]);
+        }
         Auth::user()->can(PermissionEnum::INSERIR_PLANO_TESTE->value);
         return view('projetos::planos_teste.inserir',compact('idProjeto','idAplicacao'));
     }
@@ -87,7 +98,7 @@ class PlanoTesteController extends Controller
             $planoTesteDto = PlanoTesteDTO::from($request->all());
             $planoTesteDto->user_id = Auth::user()->id;
             $planoTesteDto->projeto_id = $idProjeto;
-            $this->planoTesteBusiness->salvarPlanoTeste($planoTesteDto);
+            $this->planoTesteBusiness->salvarPlanoTeste($planoTesteDto, Cookie::get(config('app.cookie_equipe_nome')));
 
             return redirect(route('aplicacoes.projetos.planos-teste.index',[$idAplicacao, $idProjeto]))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Plano de teste inserido com sucesso']]);

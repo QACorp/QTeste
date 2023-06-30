@@ -11,17 +11,29 @@ use Spatie\LaravelData\DataCollection;
 class ProjetoRepository implements ProjetoRepositoryContract
 {
 
-    public function buscarTodosPorAplicacao(int $aplicacaoId): DataCollection
+    public function buscarTodosPorAplicacao(int $aplicacaoId, int $idEquipe): DataCollection
     {
         return ProjetoDTO::collection(
-            Aplicacao::find($aplicacaoId)->projetos()->get()
+            Aplicacao::find($aplicacaoId)
+                ->projetos()
+                ->select('projetos.*')
+                ->join('projetos.aplicacoes','aplicacoes.id','=','projetos.aplicacao_id')
+                ->join('projetos.aplicacoes_equipes','aplicacoes.id','=','aplicacoes_equipes.aplicacao_id')
+                ->where('equipe_id',$idEquipe)
+                ->get()
         );
     }
 
-    public function buscarPorId(int $idProjeto): ?ProjetoDTO
+    public function buscarPorId(int $idProjeto, int $idEquipe): ?ProjetoDTO
     {
-        $projeto = Projeto::find($idProjeto);
-        return $projeto != null ? ProjetoDTO::from($projeto) : null;
+        $projeto = Projeto::select('projetos.*')
+                            ->join('projetos.aplicacoes','aplicacoes.id','=','projetos.aplicacao_id')
+                            ->join('projetos.aplicacoes_equipes','aplicacoes.id','=','aplicacoes_equipes.aplicacao_id')
+                            ->where('equipe_id',$idEquipe)
+                            ->where('projetos.id', $idProjeto)
+                            ->get();
+
+        return $projeto->count() > 0 ? ProjetoDTO::from($projeto) : null;
     }
 
     public function atualizar(ProjetoDTO $projetoDTO): ProjetoDTO

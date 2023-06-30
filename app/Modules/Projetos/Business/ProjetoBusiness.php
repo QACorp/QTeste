@@ -29,14 +29,14 @@ class ProjetoBusiness extends BusinessAbstract implements ProjetoBusinessContrac
         $this->can(PermissionEnum::LISTAR_PROJETO->value);
         try {
             $this->aplicacaoBusiness->buscarPorId($aplicacaoId, $idEquipe);
-            return $this->projetoRepository->buscarTodosPorAplicacao($aplicacaoId);
+            return $this->projetoRepository->buscarTodosPorAplicacao($aplicacaoId, $idEquipe);
         }catch (NotFoundException $exception){
             throw $exception;
         }
 
     }
 
-    public function buscarPorAplicacaoEProjeto(int $idAplicacao, int $idProjeto): ProjetoDTO
+    public function buscarPorAplicacaoEProjeto(int $idAplicacao, int $idProjeto, int $idEquipe): ProjetoDTO
     {
         $this->can(PermissionEnum::LISTAR_PROJETO->value);
         $projeto = $this->projetoRepository->buscarPorId($idProjeto);
@@ -70,9 +70,9 @@ class ProjetoBusiness extends BusinessAbstract implements ProjetoBusinessContrac
         return $this->projetoRepository->excluir($idProjeto);
     }
 
-    public function projetoExists(int $idAplicacao, int $idProjeto):bool
+    public function projetoExists(int $idAplicacao, int $idProjeto, int $idEquipe):bool
     {
-        $projeto = $this->projetoRepository->buscarPorId($idProjeto);
+        $projeto = $this->projetoRepository->buscarPorId($idProjeto, $idEquipe);
         if($projeto == null || $projeto->aplicacao_id != $idAplicacao){
             return false;
         }
@@ -90,9 +90,13 @@ class ProjetoBusiness extends BusinessAbstract implements ProjetoBusinessContrac
         return $this->projetoRepository->inserir($projetoDTO);
     }
 
-    public function buscarPorIdProjeto(int $idProjeto): ?ProjetoDTO
+    public function buscarPorIdProjeto(int $idProjeto, int $idEquipe): ?ProjetoDTO
     {
         $this->can(PermissionEnum::LISTAR_PROJETO->value);
-        return $this->projetoRepository->buscarPorId($idProjeto);
+        $projeto = $this->projetoRepository->buscarPorId($idProjeto, $idEquipe);
+        if($projeto == null)
+            throw new NotFoundException();
+
+        return $projeto;
     }
 }

@@ -29,13 +29,16 @@ class PlanoTesteBusiness extends BusinessAbstract implements PlanoTesteBusinessC
     public function buscarPlanosTestePorProjeto(int $idProjeto, int $idEquipe): DataCollection
     {
         $this->can(PermissionEnum::LISTAR_PLANO_TESTE->value);
+
+        if($this->projetoBusiness->buscarPorIdProjeto($idProjeto, $idEquipe) == null)
+            throw new NotFoundException();
         return $this->planoTesteRepository->buscarPlanosTestePorProjeto($idProjeto, $idEquipe);
     }
 
-    public function salvarPlanoTeste(PlanoTesteDTO $planoTesteDTO, PlanoTestePostRequest $planoTestePostRequest = new PlanoTestePostRequest()): PlanoTesteDTO
+    public function salvarPlanoTeste(PlanoTesteDTO $planoTesteDTO, int $idEquipe, PlanoTestePostRequest $planoTestePostRequest = new PlanoTestePostRequest()): PlanoTesteDTO
     {
         $this->can(PermissionEnum::INSERIR_PLANO_TESTE->value);
-        if($this->projetoBusiness->buscarPorIdProjeto($planoTesteDTO->projeto_id) == null)
+        if($this->projetoBusiness->buscarPorIdProjeto($planoTesteDTO->projeto_id, $idEquipe) == null)
             throw new NotFoundException();
 
         $this->validation($planoTesteDTO->toArray(), $planoTestePostRequest);

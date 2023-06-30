@@ -1,7 +1,8 @@
 @extends('adminlte::page')
 
 @section('title', 'QAKit - Projetos')
-
+@section('plugins.Datatables', true)
+@section('plugins.DatatablesPlugin', true)
 @section('content_header')
     <h1 class="m-0 text-dark">Projetos
         @can(\App\Modules\Projetos\Enums\PermissionEnum::INSERIR_PROJETO->value)
