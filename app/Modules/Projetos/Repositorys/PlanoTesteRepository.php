@@ -15,7 +15,8 @@ class PlanoTesteRepository implements PlanoTesteRepositoryContract
     public function buscarPlanosTestePorProjeto(int $idProjeto, int $idEquipe): DataCollection
     {
         return PlanoTesteDTO::collection(
-            PlanoTeste::join('projetos.projetos','projetos.id','=','planos_teste.projeto_id')
+            PlanoTeste::select('planos_teste.*')
+                ->join('projetos.projetos','projetos.id','=','planos_teste.projeto_id')
                 ->join('projetos.aplicacoes','aplicacoes.id','=','projetos.aplicacao_id')
                 ->join('projetos.aplicacoes_equipes','aplicacoes.id','=','aplicacoes_equipes.aplicacao_id')
                 ->where('equipe_id',$idEquipe)
@@ -39,13 +40,15 @@ class PlanoTesteRepository implements PlanoTesteRepositoryContract
 
     public function buscarPlanoTestePorId(int $idPlanoTeste, int $idEquipe): ?PlanoTesteDTO
     {
-        $planoTeste = PlanoTeste::where('planos_teste.id',$idPlanoTeste)
+        $planoTeste = PlanoTeste::select('planos_teste.*')
+                        ->where('planos_teste.id',$idPlanoTeste)
                         ->join('projetos.projetos','projetos.id','=','planos_teste.projeto_id')
                         ->join('projetos.aplicacoes','aplicacoes.id','=','projetos.aplicacao_id')
                         ->join('projetos.aplicacoes_equipes','aplicacoes.id','=','aplicacoes_equipes.aplicacao_id')
                         ->where('equipe_id',$idEquipe)
                         ->with('casos_teste')
                         ->first();
+
         return $planoTeste == null ? null : PlanoTesteDTO::from($planoTeste);
     }
 

@@ -50,14 +50,14 @@ class CasoTesteBusiness extends BusinessAbstract implements CasoTesteBusinessCon
     public function vincular(int $idPlanoTeste, int $idEquipe, CasoTesteDTO $casoTesteDTO): PlanoTesteDTO
     {
         $this->can(PermissionEnum::VINCULAR_CASO_TESTE->value);
-        if($this->casoTesteRespository->existeVinculo($idPlanoTeste, $casoTesteDTO->id)){
+        if($this->casoTesteRespository->existeVinculo($idPlanoTeste, $casoTesteDTO->id, $idEquipe)){
             throw new UnprocessableEntityException();
         }
 
-        if(!$this->casoTesteRespository->existeCasoTeste($casoTesteDTO->id)){
+        if(!$this->casoTesteRespository->existeCasoTeste($casoTesteDTO->id, $idEquipe)){
             throw new NotFoundException();
         }
-        return $this->casoTesteRespository->vincular($idPlanoTeste, $casoTesteDTO);
+        return $this->casoTesteRespository->vincular($idPlanoTeste, $idEquipe, $casoTesteDTO);
     }
 
     public function inserirCasoTeste(CasoTesteDTO $casoTesteDTO, int $idEquipe, CasoTestePostRequest $casoTestePostRequest = new CasoTestePostRequest()): CasoTesteDTO
@@ -73,14 +73,14 @@ class CasoTesteBusiness extends BusinessAbstract implements CasoTesteBusinessCon
     public function desvincular(int $idPlanoTeste, int $idEquipe, int $idCasoTeste): PlanoTesteDTO
     {
         $this->can(PermissionEnum::DESVINCULAR_CASO_TESTE->value);
-        if(!$this->casoTesteRespository->existeVinculo($idPlanoTeste, $idCasoTeste)){
+        if(!$this->casoTesteRespository->existeVinculo($idPlanoTeste, $idCasoTeste, $idEquipe)){
             throw new UnprocessableEntityException();
         }
 
-        if(!$this->casoTesteRespository->existeCasoTeste($idCasoTeste)){
+        if(!$this->casoTesteRespository->existeCasoTeste($idCasoTeste, $idEquipe)){
             throw new NotFoundException();
         }
-        return $this->casoTesteRespository->desvincular($idPlanoTeste, $idCasoTeste);
+        return $this->casoTesteRespository->desvincular($idPlanoTeste, $idEquipe, $idCasoTeste);
     }
 
     public function buscarTodos(int $idEquipe): DataCollection

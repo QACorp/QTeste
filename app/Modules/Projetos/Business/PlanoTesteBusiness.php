@@ -68,7 +68,7 @@ class PlanoTesteBusiness extends BusinessAbstract implements PlanoTesteBusinessC
         $this->can(PermissionEnum::ALTERAR_PLANO_TESTE->value);
         if($this->buscarPlanoTestePorId($planoTesteDTO->id, $idEquipe) == null)
             throw new NotFoundException();
-        $this->validation($planoTesteDTO->toArray(), $planoTestePutRequest->rules());
+        $this->validation($planoTesteDTO->toArray(), $planoTestePutRequest);
 
 
         return $this->planoTesteRepository->alterarPlanoTeste($planoTesteDTO);

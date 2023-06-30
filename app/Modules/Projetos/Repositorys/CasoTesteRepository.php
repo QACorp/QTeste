@@ -28,10 +28,16 @@ class CasoTesteRepository implements CasoTesteRespositoryContract
 
     public function buscarCasoTestePorString(string $term, int $idEquipe): ?DataCollection
     {
+
         return CasoTesteDTO::collection(
-            CasoTeste::where('titulo','ILIKE','%'.$term.'%')
-                ->orWhere('requisito','ILIKE','%'.$term.'%')
+            CasoTeste::select('casos_teste.*')
+                ->join('projetos.casos_teste_equipes','casos_teste_equipes.caso_teste_id','=','casos_teste.id')
                 ->where('status', CasoTesteEnum::CONCLUIDO->value)
+                ->where('equipe_id', $idEquipe)
+                ->where(function($query) use($term){
+                    $query->where('titulo','ILIKE','%'.$term.'%')
+                        ->orWhere('requisito','ILIKE','%'.$term.'%');
+                })
                 ->get()
         );
     }
@@ -56,15 +62,21 @@ class CasoTesteRepository implements CasoTesteRespositoryContract
     public function existeVinculo(int $idPlanoTeste, int $idCasoTeste, int $idEquipe): bool
     {
         $planoTeste = PlanoTeste::find($idPlanoTeste);
-        $existe = $planoTeste->casos_teste()->where('caso_teste_id', $idCasoTeste)->count();
+        $existe = $planoTeste->casos_teste()
+                            ->join('projetos.casos_teste_equipes','casos_teste_equipes.caso_teste_id','=','casos_teste.id')
+                            ->where('equipe_id', $idEquipe)
+                            ->where('id', $idCasoTeste)
+                            ->count();
 
         return $existe > 0;
     }
 
     public function existeCasoTeste(int $idCasoTeste, int $idEquipe): bool
     {
-        return  CasoTeste::join('projetos.casos_teste_equipes','casos_teste_equipes.caso_teste_id','=','casos_teste.id')
-                ->where('casos_teste_equipes.equipe_id',$idEquipe)
+        return  CasoTeste::select('casos_teste.*')
+                ->join('projetos.casos_teste_equipes','casos_teste_equipes.caso_teste_id','=','casos_teste.id')
+                ->where('equipe_id',$idEquipe)
+                ->where('id', $idCasoTeste)
                 ->first() != null;
     }
     public function inserirCasoTeste(CasoTesteDTO $casoTesteDTO): CasoTesteDTO

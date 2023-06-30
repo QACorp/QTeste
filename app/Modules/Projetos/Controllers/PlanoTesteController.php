@@ -127,6 +127,7 @@ class PlanoTesteController extends Controller
     public function visualizar(int $idAplicacao, int $idProjeto, int $idPlanoTeste)
     {
         Auth::user()->can(PermissionEnum::LISTAR_PLANO_TESTE->value);
+
         try{
             $planoTeste = $this->planoTesteBusiness->buscarPlanoTestePorId($idPlanoTeste, Cookie::get(config('app.cookie_equipe_nome')));
             $heads = [
