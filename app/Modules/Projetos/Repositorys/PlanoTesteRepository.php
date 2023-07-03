@@ -80,6 +80,8 @@ class PlanoTesteRepository implements PlanoTesteRepositoryContract
             )
                 ->join('projetos.projetos as p', 'planos_teste.projeto_id','=','p.id')
                 ->join('projetos.aplicacoes as a', 'p.aplicacao_id','=','a.id')
+                ->join('projetos.aplicacoes_equipes as ae','a.id','=','ae.aplicacao_id')
+                ->where('equipe_id',$idEquipe)
                 ->get()
         );
     }
