@@ -131,6 +131,7 @@ class CasoTesteRepository implements CasoTesteRespositoryContract
     public function alterarCasoTeste(CasoTesteDTO $casoTesteDTO): CasoTesteDTO
     {
         try {
+            DB::beginTransaction();
             $casoTeste = CasoTeste::find($casoTesteDTO->id);
             $casoTeste->fill($casoTesteDTO->toArray());
             $casoTeste->update();

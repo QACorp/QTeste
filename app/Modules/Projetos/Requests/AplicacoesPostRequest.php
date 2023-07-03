@@ -23,7 +23,8 @@ class AplicacoesPostRequest extends FormRequest
     {
         return [
             'nome'=> 'required',
-            'descricao' => 'required'
+            'descricao' => 'required',
+            'equipes'   => 'required'
         ];
     }
 }

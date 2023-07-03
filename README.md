@@ -15,4 +15,5 @@
  - [X] Vincular casos de teste à equipe.
  - [X] Alterar consultas para trazer tudo com base na equipe do usuário.
  - [ ] Ranking de casos de teste por equipes.
- - [ ] Alterar equipe da aplicação
+ - [X] Alterar equipe da aplicação
+ - [ ] Tela de edição de casos de testes antes de importar

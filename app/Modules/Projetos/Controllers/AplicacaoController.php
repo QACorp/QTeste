@@ -73,8 +73,10 @@ class AplicacaoController extends Controller
             Auth::user()->can(PermissionEnum::ALTERAR_APLICACAO->value);
             $aplicacao = $this->aplicacaoBusiness->buscarPorId($id, Cookie::get(config('app.cookie_equipe_nome')));
             $idsEquipe = [];
-
-            return view('projetos::aplicacoes.alterar',compact('aplicacao'));
+            $aplicacao->equipes->each(function($item, $key) use(&$idsEquipe){
+                $idsEquipe[] = $item->id;
+            });
+            return view('projetos::aplicacoes.alterar',compact('aplicacao', 'idsEquipe'));
         }catch (NotFoundException $exception){
             return redirect(route('aplicacoes.index'))
                 ->with([Controller::MESSAGE_KEY_ERROR => ['Registro não encontrado']]);
@@ -86,8 +88,10 @@ class AplicacaoController extends Controller
     {
         Auth::user()->can(PermissionEnum::ALTERAR_APLICACAO->value);
         try{
-            $aplicacaoDTO = AplicacaoDTO::from($request->all());
+            $aplicacaoDTO = AplicacaoDTO::from($request->except('equipes'));
             $aplicacaoDTO->id = $id;
+            $aplicacaoDTO->equipes = EquipeDTO::collection($this->convertArrayEquipeInDTO($request->only('equipes')));
+
             $this->aplicacaoBusiness->alterar($aplicacaoDTO, Cookie::get(config('app.cookie_equipe_nome')));
             return redirect(route('aplicacoes.index'))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Aplicação alterada com sucesso']]);

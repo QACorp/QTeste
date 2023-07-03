@@ -5,6 +5,7 @@ namespace App\Modules\Projetos\Repositorys;
 use App\Modules\Projetos\Contracts\Repository\AplicacaoRepositoryContract;
 use App\Modules\Projetos\DTOs\AplicacaoDTO;
 use App\Modules\Projetos\Models\Aplicacao;
+use App\System\DTOs\EquipeDTO;
 use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\DataCollection;
 
@@ -27,10 +28,7 @@ class AplicacaoRepository implements AplicacaoRepositoryContract
             $aplicacao = new Aplicacao($aplicacaoDTO->only('nome','descricao')->toArray());
             $aplicacao->save();
             $idsEquipe = [];
-            $aplicacaoDTO->equipes->each(function ($item, $key) use ($aplicacao, &$idsEquipe){
-                $idsEquipe[] = $item->id;
-            });
-            $aplicacao->equipes()->sync($idsEquipe);
+            $aplicacao = $this->atualizarEquipe($aplicacaoDTO, $aplicacao);
             DB::commit();
             return AplicacaoDTO::from($aplicacao);
         }catch(\Exception $e){
@@ -46,17 +44,38 @@ class AplicacaoRepository implements AplicacaoRepositoryContract
             ->where('aplicacoes_equipes.equipe_id',$idEquipe)
             ->where('id',$id)
             ->first();
-        return ($aplicacao != null ?  AplicacaoDTO::from($aplicacao) : null);
+        if($aplicacao != null){
+            $aplicacaoDTO = AplicacaoDTO::from($aplicacao);
+            $aplicacaoDTO->equipes = EquipeDTO::collection($aplicacao->equipes);
+            return $aplicacaoDTO;
+        }
+        return null;
     }
 
     public function alterar(AplicacaoDTO $aplicacaoDTO): AplicacaoDTO
     {
-        $aplicacao = Aplicacao::find($aplicacaoDTO->id);
-        $aplicacao->fill($aplicacaoDTO->toArray());
-        $aplicacao->update();
-        return AplicacaoDTO::from($aplicacao);
+        DB::beginTransaction();
+        try {
+            $aplicacao = Aplicacao::find($aplicacaoDTO->id);
+            $aplicacao->fill($aplicacaoDTO->toArray());
+            $aplicacao->update();
+            $aplicacao = $this->atualizarEquipe($aplicacaoDTO, $aplicacao);
+            DB::commit();
+            return AplicacaoDTO::from($aplicacao);
+        }catch (Exception $exception){
+            DB::rollBack();
+            throw $exception;
+        }
     }
-
+    private function atualizarEquipe(AplicacaoDTO $aplicacaoDTO, Aplicacao $aplicacao):Aplicacao
+    {
+        $idsEquipe = [];
+        $aplicacaoDTO->equipes->each(function ($item, $key) use ($aplicacao, &$idsEquipe) {
+            $idsEquipe[] = $item->id;
+        });
+        $aplicacao->equipes()->sync($idsEquipe);
+        return $aplicacao;
+    }
     public function excluir(int $id): bool
     {
         $aplicacao = Aplicacao::find($id);
