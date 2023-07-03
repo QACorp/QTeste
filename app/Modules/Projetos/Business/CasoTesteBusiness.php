@@ -122,20 +122,18 @@ class CasoTesteBusiness extends BusinessAbstract implements CasoTesteBusinessCon
     public function importarArquivoParaPlanoTeste(?UploadedFile $uploadedFile, ?int $planoTesteId, int $idEquipe ,UploadPostRequest $uploadPostRequest = new UploadPostRequest()): void
     {
         $this->can(PermissionEnum::IMPORTAR_PLANILHA_CASO_TESTE->value);
-        $validator = Validator::make(['arquivo' => $uploadedFile], $uploadPostRequest->rules());
-        if ($validator->fails()) {
-            throw new UnprocessableEntityException($validator);
-        }
+
+        $this->validation(['arquivo' => $uploadedFile], $uploadPostRequest);
         /** @throw NotFoundException::class */
-        $this->planoTesteBusiness->buscarPlanoTestePorId($planoTesteId);
+        $this->planoTesteBusiness->buscarPlanoTestePorId($planoTesteId, $idEquipe);
 
         Storage::put('tmp/',$uploadedFile);
         $casoTeste = Excel::toCollection(new CasoTesteExcelModel(), Storage::path('tmp/'.$uploadedFile->hashName()));
-        $casoTeste->each(function($item, $key) use($planoTesteId){
-            $item->each(function ($row, $key) use($planoTesteId){
+        $casoTeste->each(function($item, $key) use($planoTesteId, $idEquipe){
+            $item->each(function ($row, $key) use($planoTesteId, $idEquipe){
                 if($row->get(1) != null && $row->get(0) != 'Tipo'){
-                    $casoTesteDTO = $this->criarCasoTestePorLinhaXLSX($row);
-                    $this->casoTesteRespository->vincular($planoTesteId, $casoTesteDTO);
+                    $casoTesteDTO = $this->criarCasoTestePorLinhaXLSX($row, $idEquipe);
+                    $this->casoTesteRespository->vincular($planoTesteId, $idEquipe, $casoTesteDTO);
                 }
             });
         });
