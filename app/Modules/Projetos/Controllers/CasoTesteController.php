@@ -6,13 +6,16 @@ namespace App\Modules\Projetos\Controllers;
 use App\Modules\Projetos\Contracts\Business\CasoTesteBusinessContract;
 use App\Modules\Projetos\DTOs\CasoTesteDTO;
 use App\Modules\Projetos\Enums\PermissionEnum;
+use App\System\DTOs\EquipeDTO;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Http\Controllers\Controller;
 use App\System\Traits\EquipeTools;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Spatie\LaravelData\DataCollection;
 
 class CasoTesteController extends Controller
 {
@@ -96,12 +99,22 @@ class CasoTesteController extends Controller
         Auth::user()->can([PermissionEnum::INSERIR_CASO_TESTE->value,PermissionEnum::VINCULAR_CASO_TESTE->value]);
 
         $casoTesteDTO = CasoTesteDTO::from($request);
+        $casoTesteDTO->equipes = EquipeDTO::collection(
+            [
+                ['id' => Cookie::get(config('app.cookie_equipe_nome'))]
+            ]
+        );
         try{
             $casoTeste = $this->casoTesteBusiness->inserirCasoTeste($casoTesteDTO, Cookie::get(config('app.cookie_equipe_nome')));
             $this->casoTesteBusiness->vincular($idPlanoTeste, Cookie::get(config('app.cookie_equipe_nome')), $casoTeste);
             return redirect(route('aplicacoes.projetos.planos-teste.visualizar', [$idAplicacao, $idProjeto, $idPlanoTeste]))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Caso de teste criado com sucesso', 'Caso de teste vinculado com sucesso']]);
 
+        }catch (UnprocessableEntityException $exception) {
+            dd($exception);
+            return redirect(route('aplicacoes.projetos.planos-teste.visualizar', [$idAplicacao, $idProjeto, $idPlanoTeste]))
+                ->withErrors($exception->getValidator())
+                ->withInput();
         }catch (NotFoundException $exception){
             return redirect(route('aplicacoes.projetos.planos-teste.visualizar', [$idAplicacao, $idProjeto, $idPlanoTeste]))
                 ->with([Controller::MESSAGE_KEY_ERROR => ['Caso de teste não existe']]);

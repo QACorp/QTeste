@@ -12,6 +12,7 @@ use App\System\Exceptions\NotFoundException;
 use App\System\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Spatie\LaravelData\DataCollection;
 
 class PlanoTesteExecucaoController extends Controller
@@ -31,7 +32,7 @@ class PlanoTesteExecucaoController extends Controller
 
             $planoTesteExecucao = $this->planoTesteExecucaoBusiness->buscarUltimoPlanoTesteExecucaoPorPlanoTeste($idPlanoTeste);
             if($planoTesteExecucao == null) throw new NotFoundException();
-            $casosTeste = $this->casoTesteBusiness->buscarCasoTestePorPlanoTeste($idPlanoTeste);
+            $casosTeste = $this->casoTesteBusiness->buscarCasoTestePorPlanoTeste($idPlanoTeste, Cookie::get(config('app.cookie_equipe_nome')));
             return $this->exibirViewExecucao(
                 $request,
                 $planoTesteExecucao,
@@ -121,7 +122,7 @@ class PlanoTesteExecucaoController extends Controller
     ){
         try{
             $planoTesteExecucao = $this->planoTesteExecucaoBusiness->buscarPlanoTesteExecucaoPorId($idPlanoTesteExecucao);
-            $casosTeste = $this->casoTesteBusiness->buscarCasoTestePorPlanoTeste($planoTesteExecucao->plano_teste->id);
+            $casosTeste = $this->casoTesteBusiness->buscarCasoTestePorPlanoTeste($planoTesteExecucao->plano_teste->id, Cookie::get(config('app.cookie_equipe_nome')));
             return $this->exibirViewExecucao($request, $planoTesteExecucao, $casosTeste, $idAplicacao, $idProjeto);
         }catch (NotFoundException $exception){
             return redirect(route('aplicacoes.projetos.planos-teste-execucao.index'))

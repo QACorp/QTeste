@@ -103,7 +103,7 @@
                                                             class="row mt-2 bg-gray-light rounded-bottom rounded-top p-3">
                                                             @if(!$casoTesteExiste &&
                                                                     $planoTesteExecucao->resultado == null)
-                                                                @can(\App\System\Enums\PermissionEnum::EXECUTAR_CASO_TESTE->value)
+                                                                @can(\App\Modules\Projetos\Enums\PermissionEnum::EXECUTAR_CASO_TESTE->value)
                                                                     <div class="col-md-1">
                                                                         <form method="post"
                                                                               action="{{ route('aplicacoes.projetos.planos-teste.executar-caso-teste', [$idAplicacao, $idProjeto, $planoTesteExecucao->plano_teste->id, $planoTesteExecucao->id, $casoTeste->id]) }}#ct{{$casoTeste->id}}">
