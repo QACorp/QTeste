@@ -13,12 +13,14 @@ use App\System\Impl\BusinessAbstract;
 use App\System\Requests\PasswordPutRequest;
 use App\System\Requests\UserPostRequest;
 use App\System\Requests\UserPutRequest;
+use App\System\Traits\Validation;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Spatie\LaravelData\DataCollection;
 
 class UserBusiness extends BusinessAbstract implements UserBusinessContract
 {
+    use Validation;
     public function __construct(
         private readonly UserRepositoryContract $userRepository
     )
@@ -43,10 +45,8 @@ class UserBusiness extends BusinessAbstract implements UserBusinessContract
         if($this->buscarPorId($userDTO->id) == null){
             throw new NotFoundException();
         }
-        $validator = Validator::make($userDTO->toArray(), $userPutRequest->rules($userDTO->id));
-        if ($validator->fails()) {
-            throw new UnprocessableEntityException($validator);
-        }
+
+        $this->validation($userDTO->toArray(), $userPutRequest);
         $user = $this->userRepository->alterar($userDTO);
         $this->userRepository->vincularPerfil($userDTO->roles->toArray(), $user->id);
         return $user;
@@ -55,10 +55,8 @@ class UserBusiness extends BusinessAbstract implements UserBusinessContract
     public function salvar(UserDTO $userDTO, UserPostRequest $userPostRequest = new UserPostRequest()): UserDTO
     {
         $this->can(PermissionEnum::INSERIR_USUARIO->value);
-        $validator = Validator::make($userDTO->toArray(), $userPostRequest->rules());
-        if ($validator->fails()) {
-            throw new UnprocessableEntityException($validator);
-        }
+
+        $this->validation($userDTO->toArray(), $userPostRequest);
         $user = $this->userRepository->salvar($userDTO);
         $this->userRepository->vincularPerfil($userDTO->roles->toArray(), $user->id);
         return $user;
