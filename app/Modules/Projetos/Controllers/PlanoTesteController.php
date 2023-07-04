@@ -11,6 +11,7 @@ use App\Modules\Projetos\Enums\PermissionEnum;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Http\Controllers\Controller;
+use App\System\Utils\EquipeUtils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
@@ -28,7 +29,7 @@ class PlanoTesteController extends Controller
 
     public function index(){
         Auth::user()->can(PermissionEnum::LISTAR_PLANO_TESTE->value);
-        $planos_teste = $this->planoTesteBusiness->buscarTodosPlanoTeste(Cookie::get(config('app.cookie_equipe_nome')));
+        $planos_teste = $this->planoTesteBusiness->buscarTodosPlanoTeste(EquipeUtils::equipeUsuarioLogado());
 
         $heads = [
             ['label' => 'Id', 'width' => 5],
@@ -53,7 +54,7 @@ class PlanoTesteController extends Controller
     public function indexPorProjeto(int $idAplicacao, int $idProjeto){
         Auth::user()->can(PermissionEnum::LISTAR_PLANO_TESTE->value);
         try {
-            $projeto = $this->projetoBusiness->buscarPorIdProjeto($idProjeto, Cookie::get(config('app.cookie_equipe_nome')));
+            $projeto = $this->projetoBusiness->buscarPorIdProjeto($idProjeto, EquipeUtils::equipeUsuarioLogado());
         }catch (NotFoundException $exception){
             return redirect(route('aplicacoes.projetos.index', $idAplicacao))
                 ->with([Controller::MESSAGE_KEY_ERROR => ['Registro não encontrado']]);
@@ -69,7 +70,7 @@ class PlanoTesteController extends Controller
             ...config('adminlte.datatable_config'),
             'columns' => [null, null, null, ['orderable' => false]],
         ];
-        $planos_teste = $this->planoTesteBusiness->buscarPlanosTestePorProjeto($idProjeto, Cookie::get(config('app.cookie_equipe_nome')));
+        $planos_teste = $this->planoTesteBusiness->buscarPlanosTestePorProjeto($idProjeto, EquipeUtils::equipeUsuarioLogado());
         return view('projetos::planos_teste.home', compact(
             'heads',
             'config',
@@ -82,7 +83,7 @@ class PlanoTesteController extends Controller
     public function inserir(int $idAplicacao, int $idProjeto)
     {
         try {
-            $this->projetoBusiness->buscarPorIdProjeto($idProjeto, Cookie::get(config('app.cookie_equipe_nome')));
+            $this->projetoBusiness->buscarPorIdProjeto($idProjeto, EquipeUtils::equipeUsuarioLogado());
         }catch (NotFoundException $exception) {
             return redirect(route('aplicacoes.index'))
                 ->with([Controller::MESSAGE_KEY_ERROR => ['Registro não encontrado']]);
@@ -98,7 +99,7 @@ class PlanoTesteController extends Controller
             $planoTesteDto = PlanoTesteDTO::from($request->all());
             $planoTesteDto->user_id = Auth::user()->id;
             $planoTesteDto->projeto_id = $idProjeto;
-            $this->planoTesteBusiness->salvarPlanoTeste($planoTesteDto, Cookie::get(config('app.cookie_equipe_nome')));
+            $this->planoTesteBusiness->salvarPlanoTeste($planoTesteDto, EquipeUtils::equipeUsuarioLogado());
 
             return redirect(route('aplicacoes.projetos.planos-teste.index',[$idAplicacao, $idProjeto]))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Plano de teste inserido com sucesso']]);
@@ -129,7 +130,7 @@ class PlanoTesteController extends Controller
         Auth::user()->can(PermissionEnum::LISTAR_PLANO_TESTE->value);
 
         try{
-            $planoTeste = $this->planoTesteBusiness->buscarPlanoTestePorId($idPlanoTeste, Cookie::get(config('app.cookie_equipe_nome')));
+            $planoTeste = $this->planoTesteBusiness->buscarPlanoTestePorId($idPlanoTeste, EquipeUtils::equipeUsuarioLogado());
             $heads = [
                 ['label' => 'Id', 'width' => 10],
                 ['label' => 'Requisito', 'width' => 25],
@@ -144,7 +145,7 @@ class PlanoTesteController extends Controller
             ];
             $existePlanoTesteExecucao =
                 $this->planoTesteExecucaoBusiness->buscarUltimoPlanoTesteExecucaoPorPlanoTeste($idPlanoTeste) != null;
-            $casosTeste = $this->casoTesteBusiness->buscarCasoTestePorPlanoTeste($idPlanoTeste, Cookie::get(config('app.cookie_equipe_nome')));
+            $casosTeste = $this->casoTesteBusiness->buscarCasoTestePorPlanoTeste($idPlanoTeste, EquipeUtils::equipeUsuarioLogado());
 
             $planoTesteExecucoes = $this->planoTesteExecucaoBusiness->buscarPlanosTesteExecucaoPorPlanoTeste($idPlanoTeste);
             $headsPlanoTesteExecucao = [
@@ -192,7 +193,7 @@ class PlanoTesteController extends Controller
             $planoTesteDto = PlanoTesteDTO::from($request->all());
             $planoTesteDto->id = $idPlanoTeste;
 
-            $this->planoTesteBusiness->alterarPlanoTeste($planoTesteDto, Cookie::get(config('app.cookie_equipe_nome')));
+            $this->planoTesteBusiness->alterarPlanoTeste($planoTesteDto, EquipeUtils::equipeUsuarioLogado());
 
             return redirect(route('aplicacoes.projetos.planos-teste.visualizar', [$idAplicacao, $idProjeto, $idPlanoTeste]))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Plano de teste alterado com sucesso']]);

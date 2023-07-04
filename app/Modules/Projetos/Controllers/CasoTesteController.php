@@ -11,6 +11,7 @@ use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Http\Controllers\Controller;
 use App\System\Traits\EquipeTools;
+use App\System\Utils\EquipeUtils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +29,7 @@ class CasoTesteController extends Controller
 
     public function list(Request $request){
         Auth::user()->can(PermissionEnum::LISTAR_CASO_TESTE->value);
-        return response($this->casoTesteBusiness->buscarCasoTestePorString($request->term, Cookie::get(config('app.cookie_equipe_nome')))->toJson());
+        return response($this->casoTesteBusiness->buscarCasoTestePorString($request->term, EquipeUtils::equipeUsuarioLogado())->toJson());
     }
     public function index(){
         Auth::user()->can(PermissionEnum::LISTAR_CASO_TESTE->value);
@@ -45,7 +46,7 @@ class CasoTesteController extends Controller
             'columns' => [null, null, null, null, ['orderable' => false]],
         ];
 
-        $casosTeste = $this->casoTesteBusiness->buscarTodos(Cookie::get(config('app.cookie_equipe_nome')));
+        $casosTeste = $this->casoTesteBusiness->buscarTodos(EquipeUtils::equipeUsuarioLogado());
         return view('projetos::casos_teste.home',
             compact('heads', 'config', 'casosTeste'));
     }
@@ -58,7 +59,7 @@ class CasoTesteController extends Controller
         try{
             $this->casoTesteBusiness->vincular(
                 $idPlanoTeste,
-                Cookie::get(config('app.cookie_equipe_nome')),
+                EquipeUtils::equipeUsuarioLogado(),
                 $casoTesteDTO
             );
 
@@ -80,7 +81,7 @@ class CasoTesteController extends Controller
             Auth::user()->can(PermissionEnum::DESVINCULAR_CASO_TESTE->value);
             $this->casoTesteBusiness->desvincular(
                 $idPlanoTeste,
-                Cookie::get(config('app.cookie_equipe_nome')),
+                EquipeUtils::equipeUsuarioLogado(),
                 $idCasoTeste
             );
 
@@ -101,12 +102,12 @@ class CasoTesteController extends Controller
         $casoTesteDTO = CasoTesteDTO::from($request);
         $casoTesteDTO->equipes = EquipeDTO::collection(
             [
-                ['id' => Cookie::get(config('app.cookie_equipe_nome'))]
+                ['id' => EquipeUtils::equipeUsuarioLogado()]
             ]
         );
         try{
-            $casoTeste = $this->casoTesteBusiness->inserirCasoTeste($casoTesteDTO, Cookie::get(config('app.cookie_equipe_nome')));
-            $this->casoTesteBusiness->vincular($idPlanoTeste, Cookie::get(config('app.cookie_equipe_nome')), $casoTeste);
+            $casoTeste = $this->casoTesteBusiness->inserirCasoTeste($casoTesteDTO, EquipeUtils::equipeUsuarioLogado());
+            $this->casoTesteBusiness->vincular($idPlanoTeste, EquipeUtils::equipeUsuarioLogado(), $casoTeste);
             return redirect(route('aplicacoes.projetos.planos-teste.visualizar', [$idAplicacao, $idProjeto, $idPlanoTeste]))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Caso de teste criado com sucesso', 'Caso de teste vinculado com sucesso']]);
 
@@ -127,7 +128,7 @@ class CasoTesteController extends Controller
     {
         Auth::user()->can(PermissionEnum::REMOVER_CASO_TESTE->value);
         try{
-            $this->casoTesteBusiness->excluir($idCasoTeste, Cookie::get(config('app.cookie_equipe_nome')));
+            $this->casoTesteBusiness->excluir($idCasoTeste, EquipeUtils::equipeUsuarioLogado());
             return redirect(route('aplicacoes.casos-teste.index'))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Caso de teste removido com sucesso']]);
         }catch (NotFoundException $e){
@@ -142,7 +143,7 @@ class CasoTesteController extends Controller
         try{
             $casoTeste = $this->casoTesteBusiness->buscarCasoTestePorId(
                 $idCasoTeste,
-                Cookie::get(config('app.cookie_equipe_nome'))
+                EquipeUtils::equipeUsuarioLogado()
             );
             $idsEquipe = [];
             $casoTeste->equipes->each(function($item, $key) use(&$idsEquipe){
@@ -168,7 +169,7 @@ class CasoTesteController extends Controller
             $casoTesteDTO->id = $idCasoTeste;
             $this->casoTesteBusiness->alterarCasoTeste(
                 $casoTesteDTO,
-                Cookie::get(config('app.cookie_equipe_nome'))
+                EquipeUtils::equipeUsuarioLogado()
             );
             return redirect(route('aplicacoes.casos-teste.index'))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Caso de Teste alterado com sucesso']]);
@@ -196,7 +197,7 @@ class CasoTesteController extends Controller
             $casoTesteDTO->equipes = $this->convertArrayEquipeInDTO($request->only('equipes'));
             $this->casoTesteBusiness->inserirCasoTeste(
                 $casoTesteDTO,
-                Cookie::get(config('app.cookie_equipe_nome'))
+                EquipeUtils::equipeUsuarioLogado()
             );
             return redirect(route('aplicacoes.casos-teste.index'))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Caso de Teste inserido com sucesso']]);

@@ -10,6 +10,7 @@ use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Http\Controllers\Controller;
 use App\System\Traits\EquipeTools;
+use App\System\Utils\EquipeUtils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
@@ -28,7 +29,7 @@ class AplicacaoController extends Controller
     public function index()
     {
         Auth::user()->can(PermissionEnum::LISTAR_APLICACAO->value);
-        $aplicacoes = $this->aplicacaoBusiness->buscarTodos(Cookie::get(config('app.cookie_equipe_nome')));
+        $aplicacoes = $this->aplicacaoBusiness->buscarTodos(EquipeUtils::equipeUsuarioLogado());
 
         $heads = [
             ['label' => 'Id', 'width' => 10],
@@ -71,7 +72,7 @@ class AplicacaoController extends Controller
     {
         try{
             Auth::user()->can(PermissionEnum::ALTERAR_APLICACAO->value);
-            $aplicacao = $this->aplicacaoBusiness->buscarPorId($id, Cookie::get(config('app.cookie_equipe_nome')));
+            $aplicacao = $this->aplicacaoBusiness->buscarPorId($id, EquipeUtils::equipeUsuarioLogado());
             $idsEquipe = [];
             $aplicacao->equipes->each(function($item, $key) use(&$idsEquipe){
                 $idsEquipe[] = $item->id;
@@ -92,7 +93,7 @@ class AplicacaoController extends Controller
             $aplicacaoDTO->id = $id;
             $aplicacaoDTO->equipes = EquipeDTO::collection($this->convertArrayEquipeInDTO($request->only('equipes')));
 
-            $this->aplicacaoBusiness->alterar($aplicacaoDTO, Cookie::get(config('app.cookie_equipe_nome')));
+            $this->aplicacaoBusiness->alterar($aplicacaoDTO, EquipeUtils::equipeUsuarioLogado());
             return redirect(route('aplicacoes.index'))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Aplicação alterada com sucesso']]);
         }catch (NotFoundException $exception){
@@ -108,7 +109,7 @@ class AplicacaoController extends Controller
     {
         try{
             Auth::user()->can(PermissionEnum::REMOVER_APLICACAO->value);
-            $this->aplicacaoBusiness->excluir($id, Cookie::get(config('app.cookie_equipe_nome')));
+            $this->aplicacaoBusiness->excluir($id, EquipeUtils::equipeUsuarioLogado());
             return redirect(route('aplicacoes.index'))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Aplicação removida com sucesso']]);
         }catch (NotFoundException $exception){

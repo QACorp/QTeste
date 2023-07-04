@@ -11,6 +11,7 @@ use App\Modules\Projetos\Enums\PermissionEnum;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Http\Controllers\Controller;
+use App\System\Utils\EquipeUtils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
@@ -30,7 +31,7 @@ class ProjetoController extends Controller
     {
         Auth::user()->can(PermissionEnum::LISTAR_PROJETO->value);
         try{
-            $projetos = $this->projetoBusiness->buscarTodosPorAplicacao($idAplicacao, Cookie::get(config('app.cookie_equipe_nome')));
+            $projetos = $this->projetoBusiness->buscarTodosPorAplicacao($idAplicacao, EquipeUtils::equipeUsuarioLogado());
             $heads = [
                 ['label' => 'Id', 'width' => 10],
                 'Nome',

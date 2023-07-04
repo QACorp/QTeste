@@ -3,6 +3,7 @@
 namespace App\System\Config;
 
 use App\System\Impl\MenuConfigAbstract;
+use App\System\Utils\EquipeUtils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +27,7 @@ class MenuConfig extends MenuConfigAbstract
                         //'topnav_user' => true,
                         'topnav' => true,
                         'url' => route('users.atualizar-equipe',$item->id),
-                        'icon'  => Cookie::get(config('app.cookie_equipe_nome')) == $item->id ? 'fas fa-check': 'fas fa-users',
+                        'icon'  => EquipeUtils::equipeUsuarioLogado() == $item->id ? 'fas fa-check': 'fas fa-users',
                         'text' => $item->nome,
                         'can'   => 'ACESSAR_SISTEMA'
                     ]
@@ -65,7 +66,8 @@ class MenuConfig extends MenuConfigAbstract
                         'text' => 'Equipes',
                         'route'  => 'equipes.index',
                         'icon'  => 'fas fa-users',
-                        'can'   => 'LISTAR_EQUIPE'
+                        'can'   => 'LISTAR_EQUIPE',
+                        'active' => ['equipes/*']
                     ]
                 ]
             ]);

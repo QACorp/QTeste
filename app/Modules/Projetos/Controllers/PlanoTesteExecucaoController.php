@@ -10,6 +10,7 @@ use App\Modules\Projetos\Enums\PermissionEnum;
 use App\System\Exceptions\ConflictException;
 use App\System\Exceptions\NotFoundException;
 use App\System\Http\Controllers\Controller;
+use App\System\Utils\EquipeUtils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
@@ -32,7 +33,7 @@ class PlanoTesteExecucaoController extends Controller
 
             $planoTesteExecucao = $this->planoTesteExecucaoBusiness->buscarUltimoPlanoTesteExecucaoPorPlanoTeste($idPlanoTeste);
             if($planoTesteExecucao == null) throw new NotFoundException();
-            $casosTeste = $this->casoTesteBusiness->buscarCasoTestePorPlanoTeste($idPlanoTeste, Cookie::get(config('app.cookie_equipe_nome')));
+            $casosTeste = $this->casoTesteBusiness->buscarCasoTestePorPlanoTeste($idPlanoTeste, EquipeUtils::equipeUsuarioLogado());
             return $this->exibirViewExecucao(
                 $request,
                 $planoTesteExecucao,
@@ -122,7 +123,7 @@ class PlanoTesteExecucaoController extends Controller
     ){
         try{
             $planoTesteExecucao = $this->planoTesteExecucaoBusiness->buscarPlanoTesteExecucaoPorId($idPlanoTesteExecucao);
-            $casosTeste = $this->casoTesteBusiness->buscarCasoTestePorPlanoTeste($planoTesteExecucao->plano_teste->id, Cookie::get(config('app.cookie_equipe_nome')));
+            $casosTeste = $this->casoTesteBusiness->buscarCasoTestePorPlanoTeste($planoTesteExecucao->plano_teste->id, EquipeUtils::equipeUsuarioLogado());
             return $this->exibirViewExecucao($request, $planoTesteExecucao, $casosTeste, $idAplicacao, $idProjeto);
         }catch (NotFoundException $exception){
             return redirect(route('aplicacoes.projetos.planos-teste-execucao.index'))
