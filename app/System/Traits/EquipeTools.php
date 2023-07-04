@@ -15,4 +15,5 @@ trait EquipeTools
         }
         return EquipeDTO::collection($ids);
     }
+
 }

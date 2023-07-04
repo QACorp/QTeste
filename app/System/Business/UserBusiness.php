@@ -13,6 +13,7 @@ use App\System\Impl\BusinessAbstract;
 use App\System\Requests\PasswordPutRequest;
 use App\System\Requests\UserPostRequest;
 use App\System\Requests\UserPutRequest;
+use App\System\Traits\EquipeTools;
 use App\System\Traits\Validation;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -69,13 +70,15 @@ class UserBusiness extends BusinessAbstract implements UserBusinessContract
         if($user == null){
             throw new NotFoundException();
         }
-
-        $validator = Validator::make($userDTO->toArray(), $passwordPutRequest->rules());
-        if ($validator->fails()) {
-            throw new UnprocessableEntityException($validator);
-        }
+        $this->validation($userDTO->toArray(), $passwordPutRequest);
         $userDTO = UserDTO::from([...$user->except('password')->toArray(), 'password' => Hash::make($userDTO->password)]);
         $user = $this->userRepository->alterar($userDTO);
         return $user;
+    }
+
+    public function alterarEquipeSelecionada(int $idUsuario, int $idEquipe): bool
+    {
+
+        return $this->userRepository->alterarEquipeSelecionada($idUsuario, $idEquipe);
     }
 }

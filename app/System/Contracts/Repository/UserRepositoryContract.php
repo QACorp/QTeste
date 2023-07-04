@@ -12,4 +12,6 @@ interface UserRepositoryContract
     public function alterar(UserDTO $userDTO): UserDTO;
     public function salvar(UserDTO $userDTO): UserDTO;
     public function vincularPerfil(array $perfil, int $userId):UserDTO;
+
+    public function alterarEquipeSelecionada(int $idUsuario, int $idEquipe):bool;
 }

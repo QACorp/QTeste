@@ -52,4 +52,11 @@ class UserRepository implements UserRepositoryContract
         $user->save();
         return UserDTO::from($user);
     }
+
+    public function alterarEquipeSelecionada(int $idUsuario, int $idEquipe): bool
+    {
+        $user = User::find($idUsuario);
+        $user->selected_equipe_id = $idEquipe;
+        return $user->save();
+    }
 }

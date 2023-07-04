@@ -11,4 +11,5 @@ interface EquipeRepositoryContract
     public function buscarEquipePorId(int $idEquipe):?EquipeDTO;
     public function inserir(EquipeDTO $equipe):EquipeDTO;
     public function alterar(EquipeDTO $equipe):EquipeDTO;
+
 }

@@ -9,6 +9,7 @@ use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnauthorizedException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Traits\Authverification;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Http\Request;
 use Spatie\LaravelData\DataCollection;
@@ -140,7 +141,7 @@ class UserController extends Controller
         if(!$this->userMembroEquipe($idEquipe)){
             throw new UnauthorizedException(403);
         }
-        Cookie::queue(config('app.cookie_equipe_nome'), $idEquipe, (60*60*60));
+        $this->userBusiness->alterarEquipeSelecionada(Auth::user()->id, $idEquipe);
         return redirect()->back();
     }
 }

@@ -3,6 +3,7 @@
 namespace App\System\Http\Controllers;
 
 use App\System\Config\DashboardConfig;
+use App\System\Contracts\Business\UserBusinessContract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
@@ -14,12 +15,11 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(
+        private readonly UserBusinessContract $userBusiness
+    )
     {
         $this->middleware('auth');
-        if(!EquipeUtils::equipeUsuarioLogado()){
-            Cookie::queue(config('app.cookie_equipe_nome'), Auth::user()->equipes()->first()->id, (60*60*60));
-        }
     }
 
     /**
