@@ -47,7 +47,7 @@ class UserBusiness extends BusinessAbstract implements UserBusinessContract
             throw new NotFoundException();
         }
 
-        $this->validation($userDTO->toArray(), $userPutRequest);
+        $this->validationWithoutRequest($userDTO->toArray(), $userPutRequest->rules($userDTO->id));
         $user = $this->userRepository->alterar($userDTO);
         $this->userRepository->vincularPerfil($userDTO->roles->toArray(), $user->id);
         return $user;

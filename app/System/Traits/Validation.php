@@ -14,4 +14,11 @@ trait Validation
             throw new UnprocessableEntityException($validator);
         }
     }
+
+    public function validationWithoutRequest(array $arrayValidation, array $rules){
+        $validator = Validator::make($arrayValidation, $rules);
+        if ($validator->fails()) {
+            throw new UnprocessableEntityException($validator);
+        }
+    }
 }

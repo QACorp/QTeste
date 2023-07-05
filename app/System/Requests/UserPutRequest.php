@@ -28,9 +28,7 @@ class UserPutRequest extends FormRequest
             'email' => [
                 Rule::unique('users','email')->ignore($userId),
                 'email:rfc,dns'
-            ],
-            'password' => 'confirmed|same:password_confirmation',
-            'password_confirmation' => 'required_unless:password,null'
+            ]
         ];
     }
 }

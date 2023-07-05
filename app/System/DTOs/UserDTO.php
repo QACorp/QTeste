@@ -3,6 +3,7 @@
 namespace App\System\DTOs;
 
 use App\Modules\Projetos\Casts\CastCasosTesteCollection;
+use App\System\Casts\CastEquipes;
 use App\System\Casts\CastRoles;
 use App\System\Utils\DTO;
 use Illuminate\Support\Facades\Hash;
@@ -20,6 +21,8 @@ class UserDTO extends DTO
         public ?string $password_confirmation,
         #[WithCast(CastRoles::class)]
         public ?DataCollectable $roles,
+        #[WithCast(CastEquipes::class)]
+        public ?DataCollectable $equipes
     )
     {
         if($this->password == null)

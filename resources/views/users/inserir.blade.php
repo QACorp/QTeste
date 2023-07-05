@@ -20,8 +20,8 @@
                                             name="name"
                                             label="Nome"
                                             placeholder="Nome"
-                                            fgroup-class="col-md-6"
-                                            value="{{ old('nome','') }}"
+                                            fgroup-class="col-md-12"
+                                            value="{{ old('name','') }}"
                                             required
                                     />
                                 </div>
@@ -30,28 +30,12 @@
                                             name="email"
                                             label="E-mail"
                                             placeholder="algum@email.com"
-                                            fgroup-class="col-md-6"
+                                            fgroup-class="col-md-12"
                                             value="{{ old('email','') }}"
                                             required
                                     />
                                 </div>
-                                <div class="row">
-                                    <x-adminlte-select2
-                                            id="roles"
-                                            name="roles[]"
-                                            label="Perfis"
-                                            :config="['placeholder' => 'Selecione os perfis...']"
-                                            multiple
-                                            required
-                                            fgroup-class="col-md-6"
-                                    >
-                                        @foreach(\App\System\Enums\RoleEnum::cases() as $role)
-                                            <option @if(collect($userController->convertArrayRoleDTO(old('roles',[])))->where('name',$role->value)->count() > 0))
-                                                    selected
-                                                    @endif value="{{ $role->value }}">{{ $role->value }}</option>
-                                        @endforeach
-                                    </x-adminlte-select2>
-                                </div>
+
                                 <div class="row p-2">
                                     <x-adminlte-button
                                             label="Salvar"
@@ -65,7 +49,31 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <x-combo-equipes
+                                            :idsEquipe="old('equipes',[])"
+                                        >
+                                        </x-combo-equipes>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <x-adminlte-select2
+                                        id="roles"
+                                        name="roles[]"
+                                        label="Perfis"
+                                        :config="['placeholder' => 'Selecione os perfis...']"
+                                        multiple
+                                        required
+                                        fgroup-class="col-md-12"
+                                    >
+                                        @foreach(\App\System\Enums\RoleEnum::cases() as $role)
+                                            <option @if(collect($userController->convertArrayRoleDTO(old('roles',[])))->where('name',$role->value)->count() > 0))
+                                                    selected
+                                                    @endif value="{{ $role->value }}">{{ $role->value }}</option>
+                                        @endforeach
+                                    </x-adminlte-select2>
+                                </div>
                             </div>
                         </div>
                     </form>

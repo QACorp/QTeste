@@ -9,6 +9,7 @@ use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnauthorizedException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Traits\Authverification;
+use App\System\Traits\EquipeTools;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ use Spatie\LaravelData\DataCollection;
 
 class UserController extends Controller
 {
-    use Authverification;
+    use Authverification, EquipeTools;
     public function __construct(
         private readonly UserBusinessContract $userBusiness
     )
@@ -44,7 +45,10 @@ class UserController extends Controller
     public function editar(Request $request, int $idUsuario)
     {
         $user = $this->userBusiness->buscarPorId($idUsuario);
-        return view('users.alterar', [...compact('user'),'userController' => $this]);
+        $user->equipes->each(function($item, $key) use(&$idsEquipe){
+            $idsEquipe[] = $item->id;
+        });
+        return view('users.alterar', [...compact('user', 'idsEquipe'),'userController' => $this]);
     }
     public function atualizar(Request $request, int $idUsuario)
     {
@@ -54,6 +58,7 @@ class UserController extends Controller
                 'id' => $idUsuario,
                 'roles' => $this->converterArrayEmRoleDTO($request->roles)
             ]);
+            $userDTO->equipes = $this->convertArrayEquipeInDTO($request->only('equipes'));
             $this->userBusiness->alterar($userDTO);
             return redirect(route('users.index'))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Usuário alterado com sucesso']]);
@@ -107,6 +112,7 @@ class UserController extends Controller
                 ...$request->only(['name', 'email']),
                 'roles' => $this->converterArrayEmRoleDTO($request->roles)
             ]);
+            $userDTO->equipes = $this->convertArrayEquipeInDTO($request->only('equipes'));
             $this->userBusiness->salvar($userDTO);
             return redirect(route('users.index'))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Usuário inserido com sucesso']]);
