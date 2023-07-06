@@ -78,7 +78,7 @@ class ProjetoController extends Controller
     {
         Auth::user()->can(PermissionEnum::ALTERAR_PROJETO->value);
         try{
-            $planosTeste = $this->planoTesteBusiness->buscarPlanosTestePorProjeto($idProjeto);
+            $planosTeste = $this->planoTesteBusiness->buscarPlanosTestePorProjeto($idProjeto,EquipeUtils::equipeUsuarioLogado() );
             $headsPlanoTeste = [
                 ['label' => 'Id', 'width' => 10],
                 'Título',
@@ -92,7 +92,7 @@ class ProjetoController extends Controller
             ];
             $documentos = $this->documentoBusiness->buscarTodosPorProjeto($idProjeto);
             $observacoes = $this->observacaoBusiness->buscarPorProjeto($idProjeto);
-            $projeto = $this->projetoBusiness->buscarPorAplicacaoEProjeto($idAplicacao, $idProjeto);
+            $projeto = $this->projetoBusiness->buscarPorAplicacaoEProjeto($idAplicacao, $idProjeto, EquipeUtils::equipeUsuarioLogado());
             return view(
                 'projetos::projetos.alterar',
                 compact(

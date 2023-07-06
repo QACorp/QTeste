@@ -4,11 +4,14 @@
 @section('plugins.Datatables', true)
 @section('plugins.DatatablesPlugin', true)
 @section('content_header')
-    <h1 class="m-0 text-dark">Equipes
-        @can(\App\System\Enums\PermissionEnum::INSERIR_EQUIPE->value)
-            <a class="btn btn-primary" href="{{route('equipes.inserir')}}"><i class="fas fa-plus"></i> </a>
-        @endcan
-    </h1>
+    <div class="row">
+        <h1 class="m-0 text-dark col-md-8">Equipes</h1>
+        <div class="text-right col-md-4">
+            @can(\App\System\Enums\PermissionEnum::INSERIR_EQUIPE->value)
+                <a class="btn btn-primary" href="{{route('equipes.inserir')}}"><i class="fas fa-plus"></i> Inserir equipe</a>
+            @endcan
+        </div>
+    </div>
 
 @stop
 

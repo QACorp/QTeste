@@ -4,11 +4,14 @@
 @section('plugins.Datatables', true)
 @section('plugins.DatatablesPlugin', true)
 @section('content_header')
-    <h1 class="m-0 text-dark">Aplicações
+    <div class="row">
+        <h1 class="m-0 text-dark col-md-10">Aplicações</h1>
+        <div class="text-right col-md-2">
         @can(\App\Modules\Projetos\Enums\PermissionEnum::INSERIR_APLICACAO->value)
-            <a class="btn btn-primary" href="{{route('aplicacoes.inserir')}}"><i class="fas fa-plus"></i> </a>
+            <a class="btn btn-primary " href="{{route('aplicacoes.inserir')}}"><i class="fas fa-plus"></i> Inserir aplicação</a>
         @endcan
-    </h1>
+        </div>
+    </div>
 
 @stop
 

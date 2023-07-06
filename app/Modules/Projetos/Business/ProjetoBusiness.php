@@ -39,7 +39,7 @@ class ProjetoBusiness extends BusinessAbstract implements ProjetoBusinessContrac
     public function buscarPorAplicacaoEProjeto(int $idAplicacao, int $idProjeto, int $idEquipe): ProjetoDTO
     {
         $this->can(PermissionEnum::LISTAR_PROJETO->value);
-        $projeto = $this->projetoRepository->buscarPorId($idProjeto);
+        $projeto = $this->projetoRepository->buscarPorId($idProjeto, $idEquipe);
 
         if($projeto == null || $projeto->aplicacao_id != $idAplicacao)
             throw new NotFoundException();

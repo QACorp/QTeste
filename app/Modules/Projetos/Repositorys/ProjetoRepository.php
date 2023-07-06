@@ -31,9 +31,9 @@ class ProjetoRepository implements ProjetoRepositoryContract
                             ->join('projetos.aplicacoes_equipes','aplicacoes.id','=','aplicacoes_equipes.aplicacao_id')
                             ->where('equipe_id',$idEquipe)
                             ->where('projetos.id', $idProjeto)
-                            ->get();
+                            ->first();
 
-        return $projeto->count() > 0 ? ProjetoDTO::from($projeto) : null;
+        return $projeto != null ? ProjetoDTO::from($projeto) : null;
     }
 
     public function atualizar(ProjetoDTO $projetoDTO): ProjetoDTO

@@ -1,10 +1,18 @@
-@extends('adminlte::page')
+    @extends('adminlte::page')
 
 @section('title', 'QAKit - Casos de teste')
 @section('plugins.Datatables', true)
 @section('plugins.DatatablesPlugin', true)
 @section('content_header')
-    <h1 class="m-0 text-dark">Casos de teste</h1>
+    <div class="row">
+        <h1 class="m-0 text-dark col-md-9">Casos de teste</h1>
+        <div class="text-right col-md-3">
+            @can(\App\Modules\Projetos\Enums\PermissionEnum::INSERIR_CASO_TESTE->value)
+                <a class="btn btn-primary mb-2" href="{{route('aplicacoes.casos-teste.inserir')}}"><i
+                        class="fas fa-plus"></i> Inserir caso de teste</a>
+            @endcan
+        </div>
+    </div>
 
 @stop
 
@@ -13,10 +21,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    @can(\App\Modules\Projetos\Enums\PermissionEnum::INSERIR_CASO_TESTE->value)
-                        <a class="btn btn-primary mb-2" href="{{route('aplicacoes.casos-teste.inserir')}}"><i
-                                class="fas fa-plus"></i> </a>
-                    @endcan
+
                     @can(\App\Modules\Projetos\Enums\PermissionEnum::IMPORTAR_PLANILHA_CASO_TESTE->value)
                         <x-upload-modal
                             idModal="uploadPlanilha"

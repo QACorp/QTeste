@@ -4,17 +4,20 @@
 @section('plugins.Datatables', true)
 @section('plugins.DatatablesPlugin', true)
 @section('content_header')
-    <h1 class="m-0 text-dark">Planos de teste de <strong>{{ $projeto->nome }}</strong></h1>
-    @can(\App\Modules\Projetos\Enums\PermissionEnum::LISTAR_PROJETO->value)
-        <a class="btn btn-warning" href="{{route('aplicacoes.projetos.index',$idAplicacao)}}"><i
-                class="fas fa-undo"></i> Lista de projetos</a>
-    @endcan
-    @can(\App\Modules\Projetos\Enums\PermissionEnum::INSERIR_PLANO_TESTE->value)
-        <a class="btn btn-primary"
-           href="{{route('aplicacoes.projetos.planos-teste.inserir',[$idAplicacao, $idProjeto])}}"><i
-                class="fas fa-plus"></i> Inserir plano de teste</a>
-    @endcan
-
+    <div class="row">
+        <h1 class="m-0 text-dark col-md-8">Planos de teste de <strong>{{ $projeto->nome }}</strong></h1>
+        <div class="text-right col-md-4">
+            @can(\App\Modules\Projetos\Enums\PermissionEnum::INSERIR_PLANO_TESTE->value)
+                <a class="btn btn-primary"
+                   href="{{route('aplicacoes.projetos.planos-teste.inserir',[$idAplicacao, $idProjeto])}}"><i
+                        class="fas fa-plus"></i> Inserir plano de teste</a>
+            @endcan
+            @can(\App\Modules\Projetos\Enums\PermissionEnum::LISTAR_PROJETO->value)
+                <a class="btn btn-warning" href="{{route('aplicacoes.projetos.index',$idAplicacao)}}"><i
+                        class="fas fa-undo"></i> Lista de projetos</a>
+            @endcan
+        </div>
+    </div>
 @stop
 
 @section('content')

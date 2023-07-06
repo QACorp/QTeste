@@ -55,6 +55,7 @@ class PlanoTesteController extends Controller
         Auth::user()->can(PermissionEnum::LISTAR_PLANO_TESTE->value);
         try {
             $projeto = $this->projetoBusiness->buscarPorIdProjeto($idProjeto, EquipeUtils::equipeUsuarioLogado());
+
         }catch (NotFoundException $exception){
             return redirect(route('aplicacoes.projetos.index', $idAplicacao))
                 ->with([Controller::MESSAGE_KEY_ERROR => ['Registro não encontrado']]);

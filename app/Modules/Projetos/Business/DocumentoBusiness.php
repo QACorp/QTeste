@@ -11,6 +11,7 @@ use App\Modules\Projetos\Enums\PermissionEnum;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Impl\BusinessAbstract;
+use App\System\Utils\EquipeUtils;
 use Illuminate\Support\Facades\Validator;
 use Spatie\LaravelData\DataCollection;
 
@@ -25,7 +26,7 @@ class DocumentoBusiness extends BusinessAbstract implements DocumentoBusinessCon
 
     public function buscarTodosPorProjeto(int $idProjeto): DataCollection
     {
-        $projeto = $this->projetoBusiness->buscarPorIdProjeto($idProjeto);
+        $projeto = $this->projetoBusiness->buscarPorIdProjeto($idProjeto, EquipeUtils::equipeUsuarioLogado());
         if($projeto == null)
             throw new NotFoundException();
 
