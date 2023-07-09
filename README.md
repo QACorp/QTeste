@@ -16,4 +16,5 @@
  - [X] Alterar consultas para trazer tudo com base na equipe do usuário.
  - [ ] Ranking de casos de teste por equipes.
  - [X] Alterar equipe da aplicação
- - [ ] Tela de edição de casos de testes antes de importar
+ - [ ] Tela de edição de casos de testes antes de importar.
+ - [ ] Melhorar registros dos gráficos do dashboard para não trazer dados em que usuário não possui acesso.

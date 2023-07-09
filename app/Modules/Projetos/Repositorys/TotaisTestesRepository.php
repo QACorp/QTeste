@@ -9,36 +9,47 @@ use Illuminate\Support\Facades\DB;
 class TotaisTestesRepository implements TotaisTestesRepositoryContract
 {
 
-    public function buscarTotaisTestes(): TotaisTestesDTO
+    public function buscarTotaisTestes(int $idEquipe): TotaisTestesDTO
     {
 
        return TotaisTestesDTO::from(
             DB::select('SELECT
                 (SELECT
-                     COUNT(id)
+                     COUNT(aplicacoes.id)
                  FROM projetos.aplicacoes
+                    JOIN projetos.aplicacoes_equipes ON aplicacoes.id = aplicacoes_equipes.aplicacao_id
                  WHERE
-                     deleted_at is null
+                     aplicacoes.deleted_at is null AND
+                     equipe_id = :idEquipe
                  ) as total_aplicacoes,
                 (SELECT
-                     COUNT(id)
+                     COUNT(planos_teste.id)
                  FROM projetos.planos_teste
+                    JOIN projetos.projetos ON projetos.id = planos_teste.projeto_id
+                    JOIN projetos.aplicacoes ON aplicacoes.id = projetos.aplicacao_id
+                    JOIN projetos.aplicacoes_equipes ON aplicacoes_equipes.aplicacao_id = aplicacoes.id
                  WHERE
-                     deleted_at is null
+                     planos_teste.deleted_at is null AND
+                     equipe_id = :idEquipe
                 ) as total_planos_teste,
                 (SELECT
-                     COUNT(id)
+                     COUNT(casos_teste.id)
                  FROM projetos.casos_teste
+                    JOIN projetos.casos_teste_equipes ON casos_teste_equipes.caso_teste_id = casos_teste.id
                  WHERE
-                     deleted_at is null
+                     casos_teste.deleted_at is null AND
+                     equipe_id = :idEquipe
                 ) as total_casos_teste,
                 (SELECT
-                     COUNT(id)
+                     COUNT(projetos.id)
                  FROM projetos.projetos
+                    JOIN projetos.aplicacoes ON aplicacoes.id = projetos.aplicacao_id
+                    JOIN projetos.aplicacoes_equipes ON aplicacoes_equipes.aplicacao_id = aplicacoes.id
                  WHERE
-                     deleted_at is null
+                     projetos.deleted_at is null AND
+                     equipe_id = :idEquipe
                 ) as total_projetos
-            ')[0]
+            ',['idEquipe' => $idEquipe])[0]
         );
     }
 }

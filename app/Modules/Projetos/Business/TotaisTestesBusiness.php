@@ -15,8 +15,8 @@ class TotaisTestesBusiness extends BusinessAbstract implements TotaisTestesBusin
     {
     }
 
-    public function buscarTotaisTestes(): TotaisTestesDTO
+    public function buscarTotaisTestes(int $idEquipe): TotaisTestesDTO
     {
-        return $this->totaisTestesRepository->buscarTotaisTestes();
+        return $this->totaisTestesRepository->buscarTotaisTestes($idEquipe);
     }
 }

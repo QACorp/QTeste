@@ -6,5 +6,5 @@ use App\Modules\Projetos\DTOs\TotaisTestesDTO;
 
 interface TotaisTestesBusinessContract
 {
-    public function buscarTotaisTestes(): TotaisTestesDTO;
+    public function buscarTotaisTestes(int $idEquipe): TotaisTestesDTO;
 }
