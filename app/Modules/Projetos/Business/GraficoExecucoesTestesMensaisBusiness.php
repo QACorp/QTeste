@@ -17,8 +17,8 @@ class GraficoExecucoesTestesMensaisBusiness extends BusinessAbstract implements 
     {
     }
 
-    public function buscarTotaisExecucoes(): DataCollection
+    public function buscarTotaisExecucoes(int $idEquipe): DataCollection
     {
-        return $this->graficoExecucoesTestesMensaisRepository->buscarTotaisExecucoes();
+        return $this->graficoExecucoesTestesMensaisRepository->buscarTotaisExecucoes($idEquipe);
     }
 }

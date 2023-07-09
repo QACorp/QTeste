@@ -7,5 +7,5 @@ use Spatie\LaravelData\DataCollection;
 
 interface GraficoExecucoesTestesMensaisBusinessContract
 {
-    public function buscarTotaisExecucoes(): DataCollection;
+    public function buscarTotaisExecucoes(int $idEquipe): DataCollection;
 }

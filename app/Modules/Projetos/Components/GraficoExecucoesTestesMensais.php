@@ -3,6 +3,7 @@
 namespace App\Modules\Projetos\Components;
 
 use App\Modules\Projetos\Contracts\Business\GraficoExecucoesTestesMensaisBusinessContract;
+use App\System\Utils\EquipeUtils;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -31,7 +32,7 @@ class GraficoExecucoesTestesMensais extends Component
             $mes++;
         }
 
-        $dados = $this->graficoExecucoesTestesMensaisBusiness->buscarTotaisExecucoes();
+        $dados = $this->graficoExecucoesTestesMensaisBusiness->buscarTotaisExecucoes(EquipeUtils::equipeUsuarioLogado());
 
         return view(
             'projetos::Components.grafico-execucoes-testes-mensais',
