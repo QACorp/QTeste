@@ -6,5 +6,5 @@ use Spatie\LaravelData\DataCollection;
 
 interface PlanoTesteMaisExecutadoRepositoryContract
 {
-    public function buscarPlanosTestePorOrdemMaisExecutado(int $limit): DataCollection;
+    public function buscarPlanosTestePorOrdemMaisExecutado(int $limit, int $idEquipe): DataCollection;
 }

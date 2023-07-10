@@ -15,8 +15,8 @@ class PlanoTesteMaisExecutadoBusiness extends BusinessAbstract implements PlanoT
     {
     }
 
-    public function buscarPlanosTestePorOrdemMaisExecutado(int $limit): DataCollection
+    public function buscarPlanosTestePorOrdemMaisExecutado(int $limit, int $idEquipe): DataCollection
     {
-        return $this->planoTesteMaisExecutadoRepository->buscarPlanosTestePorOrdemMaisExecutado($limit);
+        return $this->planoTesteMaisExecutadoRepository->buscarPlanosTestePorOrdemMaisExecutado($limit, $idEquipe);
     }
 }

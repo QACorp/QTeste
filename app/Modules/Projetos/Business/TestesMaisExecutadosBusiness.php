@@ -15,8 +15,8 @@ class TestesMaisExecutadosBusiness extends BusinessAbstract implements TestesMai
     {
     }
 
-    public function buscarTestesPorOrdemMaisExecutado(int $limit): DataCollection
+    public function buscarTestesPorOrdemMaisExecutado(int $limit, int $idEquipe): DataCollection
     {
-        return $this->testesMaisExecutadosRepository->buscarTestesPorOrdemMaisExecutado($limit);
+        return $this->testesMaisExecutadosRepository->buscarTestesPorOrdemMaisExecutado($limit, $idEquipe);
     }
 }

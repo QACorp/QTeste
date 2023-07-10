@@ -6,5 +6,5 @@ use Spatie\LaravelData\DataCollection;
 
 interface TestesMaisExecutadosBusinessContract
 {
-    public function buscarTestesPorOrdemMaisExecutado(int $limit): DataCollection;
+    public function buscarTestesPorOrdemMaisExecutado(int $limit, int $idEquipe): DataCollection;
 }

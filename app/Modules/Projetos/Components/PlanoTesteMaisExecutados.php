@@ -3,6 +3,7 @@
 namespace App\Modules\Projetos\Components;
 
 use App\Modules\Projetos\Contracts\Business\PlanoTesteMaisExecutadoBusinessContract;
+use App\System\Utils\EquipeUtils;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -38,7 +39,7 @@ class PlanoTesteMaisExecutados extends Component
             'searching' => false,
 
         ];
-        $planos_teste = $this->planoTesteMaisExecutadoBusiness->buscarPlanosTestePorOrdemMaisExecutado(5);
+        $planos_teste = $this->planoTesteMaisExecutadoBusiness->buscarPlanosTestePorOrdemMaisExecutado(5, EquipeUtils::equipeUsuarioLogado());
         return view('projetos::Components.plano-teste-mais-executados',
             compact(
                 'heads',
