@@ -19,24 +19,24 @@ class CasoTesteExecucaoBusiness extends BusinessAbstract implements CasoTesteExe
     }
 
 
-    public function executarCasoTeste(int $idPlanoTesteExecucao, int $idCasoTeste, string $status): bool
+    public function executarCasoTeste(int $idPlanoTesteExecucao, int $idCasoTeste, string $status, int $idEquipe): bool
     {
         $this->can(PermissionEnum::EXECUTAR_CASO_TESTE->value);
-        if($this->casoTesteExecucaoRepository->buscarCasoTesteExecucao($idPlanoTesteExecucao, $idCasoTeste))
+        if($this->casoTesteExecucaoRepository->buscarCasoTesteExecucao($idPlanoTesteExecucao, $idCasoTeste, $idEquipe))
             throw new ConflictException();
-        return $this->casoTesteExecucaoRepository->executarCasoTeste($idPlanoTesteExecucao, $idCasoTeste, $status);
+        return $this->casoTesteExecucaoRepository->executarCasoTeste($idPlanoTesteExecucao, $idCasoTeste, $status, $idEquipe);
     }
 
-    public function casoTesteExecutado(int $idPlanoTesteExecucao, int $idCasoTeste): ?CasoTesteExecucaoDTO
+    public function casoTesteExecutado(int $idPlanoTesteExecucao, int $idCasoTeste, int $idEquipe): ?CasoTesteExecucaoDTO
     {
         $this->can(PermissionEnum::LISTAR_EXECUCAO_PLANO_TESTE->value);
-        return $this->casoTesteExecucaoRepository->buscarCasoTesteExecucao($idPlanoTesteExecucao, $idCasoTeste);
+        return $this->casoTesteExecucaoRepository->buscarCasoTesteExecucao($idPlanoTesteExecucao, $idCasoTeste, $idEquipe);
 
     }
 
-    public function buscarTodosCasosTesteExecucaoPorPlanoTesteExecucao(int $idPlanoTesteExecucao): DataCollection
+    public function buscarTodosCasosTesteExecucaoPorPlanoTesteExecucao(int $idPlanoTesteExecucao, int $idEquipe): DataCollection
     {
         $this->can(PermissionEnum::LISTAR_EXECUCAO_PLANO_TESTE->value);
-        return  $this->casoTesteExecucaoRepository->buscarTodosCasosTesteExecucaoPorPlanoTesteExecucao($idPlanoTesteExecucao);
+        return  $this->casoTesteExecucaoRepository->buscarTodosCasosTesteExecucaoPorPlanoTesteExecucao($idPlanoTesteExecucao, $idEquipe);
     }
 }

@@ -2,9 +2,11 @@
 
 namespace App\Modules\Projetos\Models;
 
+use App\System\Models\Equipe;
 use App\System\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PlanoTesteExecucao extends Model
@@ -20,7 +22,8 @@ class PlanoTesteExecucao extends Model
         'user_id',
         'data_execucao',
         'plano_teste_id',
-        'caso_teste_id'
+        'caso_teste_id',
+        'equipe_id'
     ];
     public function caso_teste_execucao()
     {
@@ -36,5 +39,9 @@ class PlanoTesteExecucao extends Model
     {
         return $this->belongsTo(PlanoTeste::class);
 
+    }
+    public function equipe(): BelongsTo
+    {
+        return $this->belongsTo(Equipe::class);
     }
 }

@@ -98,7 +98,7 @@
                                                             <strong>Resultado esperado:&nbsp; </strong>
                                                             {!! nl2br($casoTeste->resultado_esperado) !!}
                                                         </div>
-                                                        @php $casoTesteExiste = $casoTesteExecucaoBusiness->casoTesteExecutado($planoTesteExecucao->id, $casoTeste->id)  @endphp
+                                                        @php $casoTesteExiste = $casoTesteExecucaoBusiness->casoTesteExecutado($planoTesteExecucao->id, $casoTeste->id, \App\System\Utils\EquipeUtils::equipeUsuarioLogado())  @endphp
                                                         <div
                                                             class="row mt-2 bg-gray-light rounded-bottom rounded-top p-3">
                                                             @if(!$casoTesteExiste &&
@@ -139,7 +139,7 @@
 
                                                                     @if( $casoTesteExiste && $casoTesteExiste->resultado == \App\Modules\Projetos\Enums\PlanoTesteExecucaoEnum::PASSOU->value)
                                                                         <p><i class="fas fa-check"></i> Passou</p>
-                                                                    @elseif($casoTesteExiste && $casoTesteExecucaoBusiness->casoTesteExecutado($planoTesteExecucao->id, $casoTeste->id)->resultado == \App\Modules\Projetos\Enums\PlanoTesteExecucaoEnum::FALHOU->value)
+                                                                    @elseif($casoTesteExiste && $casoTesteExecucaoBusiness->casoTesteExecutado($planoTesteExecucao->id, $casoTeste->id, \App\System\Utils\EquipeUtils::equipeUsuarioLogado())->resultado == \App\Modules\Projetos\Enums\PlanoTesteExecucaoEnum::FALHOU->value)
 
                                                                         <p><i class="fas fa-bug"></i> Falhou</p>
                                                                     @else

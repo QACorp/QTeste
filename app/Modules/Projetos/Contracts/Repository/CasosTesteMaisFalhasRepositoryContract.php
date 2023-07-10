@@ -6,5 +6,5 @@ use Spatie\LaravelData\DataCollection;
 
 interface CasosTesteMaisFalhasRepositoryContract
 {
-    public function buscarTotaisTestes($limite): DataCollection;
+    public function buscarTotaisTestes(int $limit, int $idEquipe): DataCollection;
 }

@@ -145,10 +145,10 @@ class PlanoTesteController extends Controller
                 'columns' => [null, null, null, null, ['orderable' => false]],
             ];
             $existePlanoTesteExecucao =
-                $this->planoTesteExecucaoBusiness->buscarUltimoPlanoTesteExecucaoPorPlanoTeste($idPlanoTeste) != null;
+                $this->planoTesteExecucaoBusiness->buscarUltimoPlanoTesteExecucaoPorPlanoTeste($idPlanoTeste, EquipeUtils::equipeUsuarioLogado()) != null;
             $casosTeste = $this->casoTesteBusiness->buscarCasoTestePorPlanoTeste($idPlanoTeste, EquipeUtils::equipeUsuarioLogado());
 
-            $planoTesteExecucoes = $this->planoTesteExecucaoBusiness->buscarPlanosTesteExecucaoPorPlanoTeste($idPlanoTeste);
+            $planoTesteExecucoes = $this->planoTesteExecucaoBusiness->buscarPlanosTesteExecucaoPorPlanoTeste($idPlanoTeste, EquipeUtils::equipeUsuarioLogado());
             $headsPlanoTesteExecucao = [
                 ['label' => 'Id', 'width' => 10],
                 ['label' => 'Data Criação', 'width' => 25],

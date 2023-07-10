@@ -31,7 +31,7 @@ class PlanoTesteExecucaoController extends Controller
     {
         try{
 
-            $planoTesteExecucao = $this->planoTesteExecucaoBusiness->buscarUltimoPlanoTesteExecucaoPorPlanoTeste($idPlanoTeste);
+            $planoTesteExecucao = $this->planoTesteExecucaoBusiness->buscarUltimoPlanoTesteExecucaoPorPlanoTeste($idPlanoTeste, EquipeUtils::equipeUsuarioLogado());
             if($planoTesteExecucao == null) throw new NotFoundException();
             $casosTeste = $this->casoTesteBusiness->buscarCasoTestePorPlanoTeste($idPlanoTeste, EquipeUtils::equipeUsuarioLogado());
             return $this->exibirViewExecucao(
@@ -64,8 +64,9 @@ class PlanoTesteExecucaoController extends Controller
 
     public function criar(int $idAplicacao, int $idProjeto, int $idPlanoTeste)
     {
+
         Auth::user()->can(PermissionEnum::INSERIR_EXECUCAO_PLANO_TESTE->value);
-        $this->planoTesteExecucaoBusiness->criarExecucaoTeste($idPlanoTeste);
+        $this->planoTesteExecucaoBusiness->criarExecucaoTeste($idPlanoTeste, EquipeUtils::equipeUsuarioLogado());
         return redirect(route('aplicacoes.projetos.planos-teste.executar',[$idAplicacao, $idProjeto, $idPlanoTeste]))
             ->with([Controller::MESSAGE_KEY_SUCCESS => ['Execução criada com sucesso'],]);
 
@@ -80,7 +81,7 @@ class PlanoTesteExecucaoController extends Controller
     {
         Auth::user()->can(PermissionEnum::EXECUTAR_CASO_TESTE->value);
         try{
-            $this->casoTesteExecucaoBusiness->executarCasoTeste($idPlanoTesteExecucao, $idCasoTeste, $request->status);
+            $this->casoTesteExecucaoBusiness->executarCasoTeste($idPlanoTesteExecucao, $idCasoTeste, $request->status, EquipeUtils::equipeUsuarioLogado());
             return redirect(route('aplicacoes.projetos.planos-teste.executar',
                 [
                     $idAplicacao,
@@ -105,7 +106,7 @@ class PlanoTesteExecucaoController extends Controller
     {
         Auth::user()->can(PermissionEnum::FINALIZAR_PLANO_TESTE->value);
         try {
-            $this->planoTesteExecucaoBusiness->finalizarPlanoTesteExecucao($idPlanoTesteExecucao);
+            $this->planoTesteExecucaoBusiness->finalizarPlanoTesteExecucao($idPlanoTesteExecucao, EquipeUtils::equipeUsuarioLogado());
             return redirect(route('aplicacoes.projetos.planos-teste.executar',[$idAplicacao, $idProjeto, $idPlanoTeste]))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Plano de teste finalizado com sucesso']]);
         }catch (ConflictException $exception){
@@ -122,7 +123,7 @@ class PlanoTesteExecucaoController extends Controller
                                   int $idPlanoTesteExecucao
     ){
         try{
-            $planoTesteExecucao = $this->planoTesteExecucaoBusiness->buscarPlanoTesteExecucaoPorId($idPlanoTesteExecucao);
+            $planoTesteExecucao = $this->planoTesteExecucaoBusiness->buscarPlanoTesteExecucaoPorId($idPlanoTesteExecucao, EquipeUtils::equipeUsuarioLogado());
             $casosTeste = $this->casoTesteBusiness->buscarCasoTestePorPlanoTeste($planoTesteExecucao->plano_teste->id, EquipeUtils::equipeUsuarioLogado());
             return $this->exibirViewExecucao($request, $planoTesteExecucao, $casosTeste, $idAplicacao, $idProjeto);
         }catch (NotFoundException $exception){

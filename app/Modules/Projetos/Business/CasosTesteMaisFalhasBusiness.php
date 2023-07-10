@@ -15,8 +15,8 @@ class CasosTesteMaisFalhasBusiness extends BusinessAbstract implements CasosTest
     {
     }
 
-    public function buscarTotaisTestes($limit): DataCollection
+    public function buscarTotaisTestes(int $limit, int $idEquipe): DataCollection
     {
-        return $this->casosTesteMaisFalhasRepository->buscarTotaisTestes($limit);
+        return $this->casosTesteMaisFalhasRepository->buscarTotaisTestes($limit, $idEquipe);
     }
 }

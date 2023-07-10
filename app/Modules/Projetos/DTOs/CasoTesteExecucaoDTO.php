@@ -6,6 +6,8 @@ use App\Modules\Projetos\Casts\CastCasosTesteCollection;
 use App\Modules\Projetos\Casts\CastPlanoTeste;
 use App\Modules\Projetos\Casts\CastProjeto;
 use App\System\Casts\CastCarbonDateTime;
+use App\System\Casts\CastEquipe;
+use App\System\DTOs\EquipeDTO;
 use App\System\Utils\DTO;
 use Carbon\Carbon;
 use Spatie\LaravelData\Attributes\WithCast;
@@ -21,7 +23,9 @@ class CasoTesteExecucaoDTO extends DTO
         public ?string $resultado,
         #[WithCast(CastCarbonDateTime::class)]
         public ?Carbon $data_execucao,
-        public ?int $user_id
+        public ?int $user_id,
+        #[WithCast(CastEquipe::class)]
+        public ?EquipeDTO $equipe
     )
     {
     }

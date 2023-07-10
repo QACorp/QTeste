@@ -3,6 +3,7 @@
 namespace App\Modules\Projetos\Components;
 
 use App\Modules\Projetos\Contracts\Business\CasosTesteMaisFalhasBusinessContract;
+use App\System\Utils\EquipeUtils;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -38,7 +39,7 @@ class CasosTesteComMaisFalhas extends Component
             'searching' => false,
 
         ];
-        $casosTesteFalha = $this->casosTesteMaisFalhasBusiness->buscarTotaisTestes(5);
+        $casosTesteFalha = $this->casosTesteMaisFalhasBusiness->buscarTotaisTestes(5, EquipeUtils::equipeUsuarioLogado());
 
         return view(
             'projetos::Components.casos-teste-com-mais-falhas',

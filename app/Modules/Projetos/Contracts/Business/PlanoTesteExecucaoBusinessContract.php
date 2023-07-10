@@ -7,10 +7,10 @@ use Spatie\LaravelData\DataCollection;
 
 interface PlanoTesteExecucaoBusinessContract
 {
-    public function buscarUltimoPlanoTesteExecucaoPorPlanoTeste(int $idPlanoTeste): ?PlanoTesteExecucaoDTO;
-    public function criarExecucaoTeste(int $idPlanoTeste):PlanoTesteExecucaoDTO;
-    public function buscarTodosPlanoTesteExecucao():DataCollection;
-    public function finalizarPlanoTesteExecucao(int $idPlanoTesteExecucao):bool;
-    public function buscarPlanoTesteExecucaoPorId(int $idPlanoTesteExecucao):?PlanoTesteExecucaoDTO;
-    public function buscarPlanosTesteExecucaoPorPlanoTeste(int $idPlanoTeste): DataCollection;
+    public function buscarUltimoPlanoTesteExecucaoPorPlanoTeste(int $idPlanoTeste, int $idEquipe): ?PlanoTesteExecucaoDTO;
+    public function criarExecucaoTeste(int $idPlanoTeste, int $idEquipe):PlanoTesteExecucaoDTO;
+    public function buscarTodosPlanoTesteExecucao(int $idEquipe):DataCollection;
+    public function finalizarPlanoTesteExecucao(int $idPlanoTesteExecucao, int $idEquipe):bool;
+    public function buscarPlanoTesteExecucaoPorId(int $idPlanoTesteExecucao, int $idEquipe):?PlanoTesteExecucaoDTO;
+    public function buscarPlanosTesteExecucaoPorPlanoTeste(int $idPlanoTeste, int $idEquipe): DataCollection;
 }

@@ -21,6 +21,8 @@ class CasoTesteRepository implements CasoTesteRespositoryContract
         return CasoTesteDTO::collection(
             PlanoTeste::find($idPlanoTeste)
                 ->casos_teste()
+                ->join('projetos.casos_teste_equipes','casos_teste_equipes.caso_teste_id','=','casos_teste.id')
+                ->where('equipe_id',$idEquipe)
                 ->where('projetos.caso_teste_plano_teste.deleted_at', null)
                 ->get()
         );

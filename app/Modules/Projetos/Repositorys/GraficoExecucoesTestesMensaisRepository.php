@@ -27,7 +27,7 @@ class GraficoExecucoesTestesMensaisRepository implements GraficoExecucoesTestesM
                                     JOIN projetos.aplicacoes_equipes ON aplicacoes_equipes.aplicacao_id = aplicacoes.id
                                   WHERE
                                     data_execucao IS NOT NULL AND
-                                    equipe_id = :idEquipe
+                                    plano_teste_execucoes.equipe_id = :idEquipe
                                   GROUP BY data_execucao) as execucoes
                             GROUP BY data",['idEquipe' => $idEquipe])
         );

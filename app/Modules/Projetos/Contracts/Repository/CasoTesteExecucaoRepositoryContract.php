@@ -7,7 +7,7 @@ use Spatie\LaravelData\DataCollection;
 
 interface CasoTesteExecucaoRepositoryContract
 {
-    public function executarCasoTeste(int $idPlanoTesteExecucao, int $idCasoTeste, string $status):bool;
-    public function buscarCasoTesteExecucao(int $idPlanoTesteExecucao, int $idCasoTeste):?CasoTesteExecucaoDTO;
-    public function buscarTodosCasosTesteExecucaoPorPlanoTesteExecucao(int $idPlanoTesteExecucao): DataCollection;
+    public function executarCasoTeste(int $idPlanoTesteExecucao, int $idCasoTeste, string $status, int $idEquipe):bool;
+    public function buscarCasoTesteExecucao(int $idPlanoTesteExecucao, int $idCasoTeste, int $idEquipe):?CasoTesteExecucaoDTO;
+    public function buscarTodosCasosTesteExecucaoPorPlanoTesteExecucao(int $idPlanoTesteExecucao, int $idEquipe): DataCollection;
 }

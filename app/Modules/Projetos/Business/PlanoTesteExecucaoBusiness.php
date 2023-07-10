@@ -21,27 +21,27 @@ class PlanoTesteExecucaoBusiness extends BusinessAbstract implements PlanoTesteE
     {
     }
 
-    public function buscarUltimoPlanoTesteExecucaoPorPlanoTeste(int $idPlanoTeste): ?PlanoTesteExecucaoDTO
+    public function buscarUltimoPlanoTesteExecucaoPorPlanoTeste(int $idPlanoTeste, int $idEquipe): ?PlanoTesteExecucaoDTO
     {
         $this->can(PermissionEnum::LISTAR_EXECUCAO_PLANO_TESTE->value);
-        $planoTesteExecucao =  $this->planoTesteExecucaoRepository->buscarUltimoPlanoTesteExecucaoPorPlanoTeste($idPlanoTeste);
+        $planoTesteExecucao =  $this->planoTesteExecucaoRepository->buscarUltimoPlanoTesteExecucaoPorPlanoTeste($idPlanoTeste, $idEquipe);
         return $planoTesteExecucao;
 
     }
 
-    public function criarExecucaoTeste(int $idPlanoTeste): PlanoTesteExecucaoDTO
+    public function criarExecucaoTeste(int $idPlanoTeste, int $idEquipe): PlanoTesteExecucaoDTO
     {
         $this->can(PermissionEnum::INSERIR_EXECUCAO_PLANO_TESTE->value);
-        return $this->planoTesteExecucaoRepository->criarExecucaoTeste($idPlanoTeste);
+        return $this->planoTesteExecucaoRepository->criarExecucaoTeste($idPlanoTeste, $idEquipe);
     }
 
-    public function finalizarPlanoTesteExecucao(int $idPlanoTesteExecucao): bool
+    public function finalizarPlanoTesteExecucao(int $idPlanoTesteExecucao, int $idEquipe): bool
     {
         $this->can(PermissionEnum::FINALIZAR_PLANO_TESTE->value);
-        if(!$this->planoTesteExecucaoRepository->buscarPlanoTesteExecucaoPorId($idPlanoTesteExecucao))
+        if(!$this->planoTesteExecucaoRepository->buscarPlanoTesteExecucaoPorId($idPlanoTesteExecucao, $idEquipe))
             throw new NotFoundException();
 
-        $casosTeste = $this->casoTesteExecucaoBusiness->buscarTodosCasosTesteExecucaoPorPlanoTesteExecucao($idPlanoTesteExecucao);
+        $casosTeste = $this->casoTesteExecucaoBusiness->buscarTodosCasosTesteExecucaoPorPlanoTesteExecucao($idPlanoTesteExecucao, $idEquipe);
         $status = PlanoTesteExecucaoEnum::PASSOU->value;
         if($casosTeste->count() == 0){
             $status = PlanoTesteExecucaoEnum::ABANDONADO->value;
@@ -53,29 +53,29 @@ class PlanoTesteExecucaoBusiness extends BusinessAbstract implements PlanoTesteE
                 $status = PlanoTesteExecucaoEnum::FALHOU->value;
             }
         });
-        return $this->planoTesteExecucaoRepository->finalizarPlanoTesteExecucao($idPlanoTesteExecucao, $status);
+        return $this->planoTesteExecucaoRepository->finalizarPlanoTesteExecucao($idPlanoTesteExecucao, $status, $idEquipe);
 
     }
 
-    public function buscarTodosPlanoTesteExecucao(): DataCollection
+    public function buscarTodosPlanoTesteExecucao(int $idEquipe): DataCollection
     {
         $this->can(PermissionEnum::LISTAR_EXECUCAO_PLANO_TESTE->value);
-        return $this->planoTesteExecucaoRepository->buscarTodosPlanoTesteExecucao();
+        return $this->planoTesteExecucaoRepository->buscarTodosPlanoTesteExecucao($idEquipe);
     }
 
-    public function buscarPlanoTesteExecucaoPorId(int $idPlanoTesteExecucao): ?PlanoTesteExecucaoDTO
+    public function buscarPlanoTesteExecucaoPorId(int $idPlanoTesteExecucao, int $idEquipe): ?PlanoTesteExecucaoDTO
     {
         $this->can(PermissionEnum::LISTAR_EXECUCAO_PLANO_TESTE->value);
-        $planoTesteExecucao = $this->planoTesteExecucaoRepository->buscarPlanoTesteExecucaoPorId($idPlanoTesteExecucao);
+        $planoTesteExecucao = $this->planoTesteExecucaoRepository->buscarPlanoTesteExecucaoPorId($idPlanoTesteExecucao, $idEquipe);
         if(!$planoTesteExecucao)
             throw new NotFoundException();
 
         return $planoTesteExecucao;
     }
 
-    public function buscarPlanosTesteExecucaoPorPlanoTeste(int $idPlanoTeste): DataCollection
+    public function buscarPlanosTesteExecucaoPorPlanoTeste(int $idPlanoTeste, int $idEquipe): DataCollection
     {
         $this->can(PermissionEnum::LISTAR_EXECUCAO_PLANO_TESTE->value);
-        return $this->planoTesteExecucaoRepository->buscarPlanosTesteExecucaoPorPlanoTeste($idPlanoTeste);
+        return $this->planoTesteExecucaoRepository->buscarPlanosTesteExecucaoPorPlanoTeste($idPlanoTeste, $idEquipe);
     }
 }
