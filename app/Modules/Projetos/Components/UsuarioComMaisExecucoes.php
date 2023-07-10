@@ -3,6 +3,7 @@
 namespace App\Modules\Projetos\Components;
 
 use App\Modules\Projetos\Contracts\Business\UsuarioComMaisExecucoesBusinessContract;
+use App\System\Utils\EquipeUtils;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -37,7 +38,7 @@ class UsuarioComMaisExecucoes extends Component
             'searching' => false,
 
         ];
-        $users = $this->usuarioComMaisExecucoesBusiness->buscarUsuarioPorOrdemExecucao(5);
+        $users = $this->usuarioComMaisExecucoesBusiness->buscarUsuarioPorOrdemExecucao(5, EquipeUtils::equipeUsuarioLogado());
         return view(
             'projetos::Components.usuario-com-mais-execucoes',
             compact('users', 'heads', 'config')

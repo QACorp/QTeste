@@ -15,8 +15,8 @@ class UsuarioComMaisExecucoesBusiness extends BusinessAbstract implements Usuari
     {
     }
 
-    public function buscarUsuarioPorOrdemExecucao(int $limit): DataCollection
+    public function buscarUsuarioPorOrdemExecucao(int $limit, int $idEquipe): DataCollection
     {
-        return $this->usuarioComMaisExecucoesRepository->buscarUsuarioPorOrdemExecucao($limit);
+        return $this->usuarioComMaisExecucoesRepository->buscarUsuarioPorOrdemExecucao($limit, $idEquipe);
     }
 }

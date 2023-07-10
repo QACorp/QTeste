@@ -6,5 +6,5 @@ use Spatie\LaravelData\DataCollection;
 
 interface UsuarioComMaisExecucoesBusinessContract
 {
-    public function buscarUsuarioPorOrdemExecucao(int $limit): DataCollection;
+    public function buscarUsuarioPorOrdemExecucao(int $limit, int $idEquipe): DataCollection;
 }
