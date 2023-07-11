@@ -16,7 +16,7 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
-
+    'cookie_equipe_nome' => env('APP_COOKIE_EQUIPE_NOME', 'equipe'),
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -181,6 +181,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -189,12 +190,14 @@ return [
         /*
          * Application Service Providers...
          */
-        \App\Application\Providers\AppServiceProvider::class,
-        \App\Application\Providers\AuthServiceProvider::class,
+        App\System\Providers\AppServiceProvider::class,
+        App\System\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
-        \App\Application\Providers\EventServiceProvider::class,
-        \App\Application\Providers\RouteServiceProvider::class,
-        \App\Domain\Auth\Provider\AuthServiceProvider::class,
+        App\System\Providers\EventServiceProvider::class,
+        App\System\Providers\RouteServiceProvider::class,
+        App\Modules\Projetos\Providers\ProjetosServiceProvider::class,
+
+
     ],
 
     /*
@@ -209,7 +212,8 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // 'ExampleClass' => App\Example\ExampleClass::class,
+         'StringUtils' => \App\System\Helpers\StringUtils::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ])->toArray(),
 
 ];
