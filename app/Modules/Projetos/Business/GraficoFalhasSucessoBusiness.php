@@ -16,8 +16,8 @@ class GraficoFalhasSucessoBusiness extends BusinessAbstract implements GraficoFa
     }
 
 
-    public function buscarTotaisFalhasSucesso(): GraficoFalhasSucessoDTO
+    public function buscarTotaisFalhasSucesso(int $idEquipe): GraficoFalhasSucessoDTO
     {
-        return $this->graficoFalhasSucessoRepository->buscarTotaisFalhasSucesso();
+        return $this->graficoFalhasSucessoRepository->buscarTotaisFalhasSucesso($idEquipe);
     }
 }

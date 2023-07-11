@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class GraficoFalhasSucessoRepository implements GraficoFalhasSucessoRepositoryContract
 {
 
-    public function buscarTotaisFalhasSucesso(): GraficoFalhasSucessoDTO
+    public function buscarTotaisFalhasSucesso(int $idEquipe): GraficoFalhasSucessoDTO
     {
 
        return GraficoFalhasSucessoDTO::from(
@@ -19,16 +19,19 @@ class GraficoFalhasSucessoRepository implements GraficoFalhasSucessoRepositoryCo
                              FROM projetos.caso_teste_execucoes
                              WHERE
                                  deleted_at is null AND
-                                 resultado = 'Passou'
+                                 resultado = 'Passou' AND
+                                 equipe_id = :idEquipe
                             ) as passou,
                             (SELECT
                                  COUNT(id)
                              FROM projetos.caso_teste_execucoes
                              WHERE
                                  deleted_at is null AND
-                                     resultado = 'Falhou'
+                                     resultado = 'Falhou' AND
+                                 equipe_id = :idEquipe
+
                             ) as falhou
-                        ")[0]
+                        ",[$idEquipe])[0]
         );
     }
 }

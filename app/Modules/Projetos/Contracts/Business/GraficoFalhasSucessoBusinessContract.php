@@ -6,5 +6,5 @@ use App\Modules\Projetos\DTOs\GraficoFalhasSucessoDTO;
 
 interface GraficoFalhasSucessoBusinessContract
 {
-    public function buscarTotaisFalhasSucesso(): GraficoFalhasSucessoDTO;
+    public function buscarTotaisFalhasSucesso(int $idEquipe): GraficoFalhasSucessoDTO;
 }
