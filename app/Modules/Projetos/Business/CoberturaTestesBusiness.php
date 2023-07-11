@@ -16,8 +16,8 @@ class CoberturaTestesBusiness extends BusinessAbstract implements CoberturaTeste
     }
 
 
-    public function buscarCoberturaTestes(): DataCollection
+    public function buscarCoberturaTestes(int $idEquipe): DataCollection
     {
-        return $this->coberturaTestesRepository->buscarCoberturaTestes();
+        return $this->coberturaTestesRepository->buscarCoberturaTestes($idEquipe);
     }
 }

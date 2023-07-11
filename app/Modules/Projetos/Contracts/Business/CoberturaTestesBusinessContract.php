@@ -6,5 +6,5 @@ use Spatie\LaravelData\DataCollection;
 
 interface CoberturaTestesBusinessContract
 {
-    public function buscarCoberturaTestes(): DataCollection;
+    public function buscarCoberturaTestes(int $idEquipe): DataCollection;
 }
