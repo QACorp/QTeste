@@ -17,4 +17,4 @@
  - [ ] Ranking de casos de teste por equipes.
  - [X] Alterar equipe da aplicação
  - [ ] Tela de edição de casos de testes antes de importar.
- - [ ] Melhorar registros dos gráficos do dashboard para não trazer dados em que usuário não possui acesso.
+ - [X] Melhorar registros dos gráficos do dashboard para não trazer dados em que usuário não possui acesso.
