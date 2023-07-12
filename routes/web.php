@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\System\Http\Controllers\UserController;
 use App\System\Http\Controllers\EquipeController;
+use App\System\Http\Controllers\UploadUsersController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,6 +36,7 @@ Route::post('logout', 'App\System\Http\Controllers\Auth\LoginController@logout')
 Route::group(['prefix' => 'usuarios', 'middleware' => 'auth'],function(){
     Route::get('/', [UserController::class,'index'])->name('users.index');
     Route::get('/inserir', [UserController::class,'inserir'])->name('users.inserir');
+    Route::post('/inserir/importar', [UploadUsersController::class,'uploadArquivoExcelParaUsers'])->name('users.upload');
 
     Route::get('/{idUsuario}', [UserController::class,'editar'])->name('users.editar');
     Route::get('/{idUsuario}/alterar-senha', [UserController::class,'editarSenha'])->name('users.alterar-senha');
