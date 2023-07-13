@@ -53,6 +53,7 @@ class MenuConfig extends MenuConfigAbstract
             $event->menu->add([
                 'text' => 'Sistema',
                 'icon'  => 'fas  fa-cog',
+                'can'   => ['LISTAR_USUARIO','LISTAR_EQUIPE'],
                 'submenu' => [
                     [
                         'key' => 'users_index',
@@ -60,6 +61,7 @@ class MenuConfig extends MenuConfigAbstract
                         'icon'  => 'fas  fa-user',
                         'text' => 'Usuários',
                         'can'   => 'LISTAR_USUARIO',
+                        'active' => ['usuarios/*']
                     ],
                     [
                         'key' => 'equipes_index',

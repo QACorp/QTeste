@@ -5,10 +5,11 @@ namespace App\Modules\Projetos\Repositorys;
 use App\Modules\Projetos\Contracts\Repository\PlanoTesteMaisExecutadoRepositoryContract;
 use App\Modules\Projetos\DTOs\PlanoTesteMaisExecutadoDTO;
 use App\Modules\Projetos\Models\PlanoTeste;
+use App\System\Impl\BaseRepository;
 use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\DataCollection;
 
-class PlanoTesteMaisExecutadoRepository implements PlanoTesteMaisExecutadoRepositoryContract
+class PlanoTesteMaisExecutadoRepository extends BaseRepository  implements PlanoTesteMaisExecutadoRepositoryContract
 {
 
     public function buscarPlanosTestePorOrdemMaisExecutado(int $limit, int $idEquipe): DataCollection

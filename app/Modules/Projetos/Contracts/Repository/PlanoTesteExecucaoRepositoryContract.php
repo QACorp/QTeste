@@ -3,9 +3,10 @@
 namespace App\Modules\Projetos\Contracts\Repository;
 
 use App\Modules\Projetos\DTOs\PlanoTesteExecucaoDTO;
+use App\System\Impl\BaseRepositoryContract;
 use Spatie\LaravelData\DataCollection;
 
-interface PlanoTesteExecucaoRepositoryContract
+interface PlanoTesteExecucaoRepositoryContract extends BaseRepositoryContract
 {
     public function buscarUltimoPlanoTesteExecucaoPorPlanoTeste(int $idPlanoTeste, int $idEquipe): ?PlanoTesteExecucaoDTO;
     public function buscarPlanosTesteExecucaoPorPlanoTeste(int $idPlanoTeste, int $idEquipe): DataCollection;

@@ -4,11 +4,12 @@ namespace App\System\Repositorys;
 
 use App\System\Contracts\Repository\EquipeRepositoryContract;
 use App\System\DTOs\EquipeDTO;
+use App\System\Impl\BaseRepository;
 use App\System\Models\Equipe;
 use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\DataCollection;
 
-class EquipeRepository implements EquipeRepositoryContract
+class EquipeRepository extends BaseRepository  implements EquipeRepositoryContract
 {
 
     public function buscarTodos(): DataCollection

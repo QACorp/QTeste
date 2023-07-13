@@ -6,7 +6,7 @@ use App\Modules\Projetos\DTOs\CasoTesteDTO;
 use App\Modules\Projetos\DTOs\PlanoTesteDTO;
 use App\Modules\Projetos\Requests\CasoTestePostRequest;
 use App\Modules\Projetos\Requests\CasoTestePutRequest;
-use App\Modules\Projetos\Requests\UploadPostRequest;
+use App\System\Requests\UploadPostRequest;
 use Illuminate\Http\UploadedFile;
 use Spatie\LaravelData\DataCollection;
 

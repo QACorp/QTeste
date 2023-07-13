@@ -4,9 +4,10 @@ namespace App\Modules\Projetos\Repositorys;
 
 use App\Modules\Projetos\Contracts\Repository\GraficoFalhasSucessoRepositoryContract;
 use App\Modules\Projetos\DTOs\GraficoFalhasSucessoDTO;
+use App\System\Impl\BaseRepository;
 use Illuminate\Support\Facades\DB;
 
-class GraficoFalhasSucessoRepository implements GraficoFalhasSucessoRepositoryContract
+class GraficoFalhasSucessoRepository extends BaseRepository  implements GraficoFalhasSucessoRepositoryContract
 {
 
     public function buscarTotaisFalhasSucesso(int $idEquipe): GraficoFalhasSucessoDTO

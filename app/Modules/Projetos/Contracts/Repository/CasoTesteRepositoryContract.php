@@ -4,9 +4,10 @@ namespace App\Modules\Projetos\Contracts\Repository;
 
 use App\Modules\Projetos\DTOs\CasoTesteDTO;
 use App\Modules\Projetos\DTOs\PlanoTesteDTO;
+use App\System\Impl\BaseRepositoryContract;
 use Spatie\LaravelData\DataCollection;
 
-interface CasoTesteRespositoryContract
+interface CasoTesteRepositoryContract extends BaseRepositoryContract
 {
     public function buscarCasoTestePorPlanoTeste(int $idPlanoTeste, int $idEquipe): ?DataCollection;
     public function buscarCasoTestePorString(string $term, int $idEquipe): ?DataCollection;

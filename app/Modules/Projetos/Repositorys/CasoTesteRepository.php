@@ -2,18 +2,19 @@
 
 namespace App\Modules\Projetos\Repositorys;
 
-use App\Modules\Projetos\Contracts\Repository\CasoTesteRespositoryContract;
+use App\Modules\Projetos\Contracts\Repository\CasoTesteRepositoryContract;
 use App\Modules\Projetos\DTOs\CasoTesteDTO;
 use App\Modules\Projetos\DTOs\PlanoTesteDTO;
 use App\Modules\Projetos\Enums\CasoTesteEnum;
 use App\Modules\Projetos\Models\CasoTeste;
 use App\Modules\Projetos\Models\PlanoTeste;
 use App\System\DTOs\EquipeDTO;
+use App\System\Impl\BaseRepository;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\DataCollection;
 
-class CasoTesteRepository implements CasoTesteRespositoryContract
+class CasoTesteRepository extends BaseRepository  implements CasoTesteRepositoryContract
 {
 
     public function buscarCasoTestePorPlanoTeste(int $idPlanoTeste, int $idEquipe): ?DataCollection

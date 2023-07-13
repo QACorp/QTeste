@@ -48,7 +48,7 @@ use App\Modules\Projetos\Contracts\Business\UsuarioComMaisExecucoesBusinessContr
 use App\Modules\Projetos\Contracts\Repository\AplicacaoRepositoryContract;
 use App\Modules\Projetos\Contracts\Repository\CasosTesteMaisFalhasRepositoryContract;
 use App\Modules\Projetos\Contracts\Repository\CasoTesteExecucaoRepositoryContract;
-use App\Modules\Projetos\Contracts\Repository\CasoTesteRespositoryContract;
+use App\Modules\Projetos\Contracts\Repository\CasoTesteRepositoryContract;
 use App\Modules\Projetos\Contracts\Repository\CoberturaTestesRepositoryContract;
 use App\Modules\Projetos\Contracts\Repository\DocumentoRepositoryContract;
 use App\Modules\Projetos\Contracts\Repository\GraficoExecucoesTestesMensaisRepositoryContract;
@@ -69,7 +69,7 @@ use App\Modules\Projetos\Repositorys\CoberturaTestesRepository;
 use App\Modules\Projetos\Repositorys\DocumentoRepository;
 use App\Modules\Projetos\Repositorys\GraficoExecucoesTestesMensaisRepository;
 use App\Modules\Projetos\Repositorys\GraficoFalhasSucessoRepository;
-use App\Modules\Projetos\Repositorys\ObservacaoRespository;
+use App\Modules\Projetos\Repositorys\ObservacaoRepository;
 use App\Modules\Projetos\Repositorys\PlanoTesteExecucaoRepository;
 use App\Modules\Projetos\Repositorys\PlanoTesteMaisExecutadoRepository;
 use App\Modules\Projetos\Repositorys\PlanoTesteRepository;
@@ -92,13 +92,13 @@ class ProjetosServiceProvider extends ServiceProviderAbstract
         ProjetoRepositoryContract::class => ProjetoRepository::class,
         ProjetoBusinessContract::class => ProjetoBusiness::class,
         ObservacaoBusinessContract::class => ObservacaoBusiness::class,
-        ObservacaoRepositoryContract::class => ObservacaoRespository::class,
+        ObservacaoRepositoryContract::class => ObservacaoRepository::class,
         DocumentoBusinessContract::class => DocumentoBusiness::class,
         DocumentoRepositoryContract::class => DocumentoRepository::class,
         PlanoTesteBusinessContract::class => PlanoTesteBusiness::class,
         PlanoTesteRepositoryContract::class => PlanoTesteRepository::class,
         CasoTesteBusinessContract::class => CasoTesteBusiness::class,
-        CasoTesteRespositoryContract::class => CasoTesteRepository::class,
+        CasoTesteRepositoryContract::class => CasoTesteRepository::class,
         PlanoTesteExecucaoBusinessContract::class => PlanoTesteExecucaoBusiness::class,
         PlanoTesteExecucaoRepositoryContract::class => PlanoTesteExecucaoRepository::class,
         CasoTesteExecucaoBusinessContract::class => CasoTesteExecucaoBusiness::class,

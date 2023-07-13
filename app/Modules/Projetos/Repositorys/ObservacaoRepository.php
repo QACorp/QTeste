@@ -6,9 +6,10 @@ use App\Modules\Projetos\Contracts\Repository\ObservacaoRepositoryContract;
 use App\Modules\Projetos\DTOs\ObservacaoDTO;
 use App\Modules\Projetos\Models\Observacao;
 use App\Modules\Projetos\Models\Projeto;
+use App\System\Impl\BaseRepository;
 use Spatie\LaravelData\DataCollection;
 
-class ObservacaoRespository implements ObservacaoRepositoryContract
+class ObservacaoRepository extends BaseRepository implements ObservacaoRepositoryContract
 {
 
     public function buscarPorProjeto(int $projetoId): DataCollection
