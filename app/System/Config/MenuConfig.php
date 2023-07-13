@@ -61,6 +61,7 @@ class MenuConfig extends MenuConfigAbstract
                         'icon'  => 'fas  fa-user',
                         'text' => 'Usuários',
                         'can'   => 'LISTAR_USUARIO',
+                        'active' => ['usuarios/*']
                     ],
                     [
                         'key' => 'equipes_index',

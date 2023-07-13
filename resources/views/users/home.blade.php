@@ -27,7 +27,16 @@
                             message="Selecione o arquivo para importar"
                             routeAction="{{ route('users.upload') }}"
                             labelBtnEnviar="Importar usuários"
-                        />
+                        >
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <x-combo-equipes
+                                        :idsEquipe="old('equipes',[])"
+                                    >
+                                    </x-combo-equipes>
+                                </div>
+                            </div>
+                        </x-upload-modal>
                     @endcan
                     <x-adminlte-datatable
                         id="users"

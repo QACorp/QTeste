@@ -5,9 +5,10 @@ namespace App\Modules\Projetos\Repositorys;
 use App\Modules\Projetos\Contracts\Repository\CoberturaTestesRepositoryContract;
 use App\Modules\Projetos\DTOs\CoberturaTestesDTO;
 use App\Modules\Projetos\Models\Aplicacao;
+use App\System\Impl\BaseRepository;
 use Spatie\LaravelData\DataCollection;
 
-class CoberturaTestesRepository implements CoberturaTestesRepositoryContract
+class CoberturaTestesRepository extends BaseRepository  implements CoberturaTestesRepositoryContract
 {
 
     public function buscarCoberturaTestes(int $idEquipe): DataCollection

@@ -3,9 +3,10 @@
 namespace App\System\Contracts\Repository;
 
 use App\System\DTOs\UserDTO;
+use App\System\Impl\BaseRepositoryContract;
 use Spatie\LaravelData\DataCollection;
 
-interface UserRepositoryContract
+interface UserRepositoryContract extends BaseRepositoryContract
 {
     public function buscarTodos():DataCollection;
     public function buscarPorId(int $userId): ?UserDTO;

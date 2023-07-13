@@ -4,7 +4,6 @@ namespace App\System\Business;
 
 
 use App\Modules\Projetos\Models\CasoTesteExcelModel;
-use App\Modules\Projetos\Requests\UploadPostRequest;
 use App\System\Contracts\Business\UserBusinessContract;
 use App\System\Contracts\Repository\UserRepositoryContract;
 use App\System\DTOs\EquipeDTO;
@@ -12,26 +11,24 @@ use App\System\DTOs\RoleDTO;
 use App\System\DTOs\UserDTO;
 use App\System\Enums\PermissionEnum;
 use App\System\Exceptions\NotFoundException;
-use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Impl\BusinessAbstract;
 use App\System\Requests\PasswordPutRequest;
+use App\System\Requests\UploadPostRequest;
 use App\System\Requests\UserPostRequest;
 use App\System\Requests\UserPutRequest;
 use App\System\Traits\EquipeTools;
 use App\System\Traits\Validation;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use Spatie\LaravelData\DataCollection;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class UserBusiness extends BusinessAbstract implements UserBusinessContract
 {
-    use Validation;
+    use Validation, EquipeTools;
     const COLUNA_NAME = 0;
     const COLUNA_EMAIL = 1;
     const COLUNA_REGRA = 2;
@@ -95,28 +92,29 @@ class UserBusiness extends BusinessAbstract implements UserBusinessContract
         return $this->userRepository->alterarEquipeSelecionada($idUsuario, $idEquipe);
     }
 
-    public function importarArquivoParaUser(?UploadedFile $uploadedFile,UploadPostRequest $uploadPostRequest = new UploadPostRequest()): void
+    public function importarArquivoParaUser(?UploadedFile $uploadedFile,array $equipes, UploadPostRequest $uploadPostRequest = new UploadPostRequest()): void
     {
         $this->can(PermissionEnum::INSERIR_USUARIO->value);
 
-        $this->validation(['arquivo' => $uploadedFile], $uploadPostRequest);
+        $this->validation(['arquivo' => $uploadedFile, ...$equipes], $uploadPostRequest);
 
         Storage::put('tmp/',$uploadedFile);
         $casoTeste = Excel::toCollection(new CasoTesteExcelModel(), Storage::path('tmp/'.$uploadedFile->hashName()));
-        DB::beginTransaction();
+        $this->userRepository->beginTransaction();
         try{
-            $casoTeste->each(function($item, $key){
-                $item->each(function ($row, $key){
+            $casoTeste->each(function($item, $key) use($equipes){
+                $item->each(function ($row, $key) use($equipes){
                     $this->validarPrimeiraLinha($row, $key);
                     if($key > 0){
                         $userDTO = $this->criarUserPorLinhaXLSX($row);
+                        $userDTO->equipes = $this->convertArrayEquipeInDTO($equipes);
                         $this->salvar($userDTO);
                     }
                 });
             });
-            DB::commit();
+            $this->userRepository->commit();
         }catch (FileException $e){
-            DB::rollBack();
+            $this->userRepository->rollBack();
             throw $e;
         }
     }

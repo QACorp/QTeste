@@ -5,12 +5,13 @@ namespace App\System\Repositorys;
 use App\System\Contracts\Repository\UserRepositoryContract;
 use App\System\DTOs\EquipeDTO;
 use App\System\DTOs\UserDTO;
+use App\System\Impl\BaseRepository;
 use App\System\Models\User;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\DataCollection;
 
-class UserRepository implements UserRepositoryContract
+class UserRepository extends BaseRepository implements UserRepositoryContract
 {
 
     public function buscarTodos(): DataCollection

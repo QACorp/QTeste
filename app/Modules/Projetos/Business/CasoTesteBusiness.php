@@ -4,19 +4,19 @@ namespace App\Modules\Projetos\Business;
 
 use App\Modules\Projetos\Contracts\Business\CasoTesteBusinessContract;
 use App\Modules\Projetos\Contracts\Business\PlanoTesteBusinessContract;
-use App\Modules\Projetos\Contracts\Repository\CasoTesteRespositoryContract;
+use App\Modules\Projetos\Contracts\Repository\CasoTesteRepositoryContract;
 use App\Modules\Projetos\DTOs\CasoTesteDTO;
 use App\Modules\Projetos\DTOs\PlanoTesteDTO;
 use App\Modules\Projetos\Enums\CasoTesteEnum;
+use App\Modules\Projetos\Enums\PermissionEnum;
 use App\Modules\Projetos\Models\CasoTesteExcelModel;
 use App\Modules\Projetos\Requests\CasoTestePostRequest;
 use App\Modules\Projetos\Requests\CasoTestePutRequest;
-use App\Modules\Projetos\Requests\UploadPostRequest;
-use App\Modules\Projetos\Enums\PermissionEnum;
 use App\System\DTOs\EquipeDTO;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Impl\BusinessAbstract;
+use App\System\Requests\UploadPostRequest;
 use App\System\Traits\Validation;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
@@ -29,8 +29,8 @@ class CasoTesteBusiness extends BusinessAbstract implements CasoTesteBusinessCon
 {
     use Validation;
     public function __construct(
-        private readonly CasoTesteRespositoryContract $casoTesteRespository,
-        private readonly PlanoTesteBusinessContract $planoTesteBusiness
+        private readonly CasoTesteRepositoryContract $casoTesteRespository,
+        private readonly PlanoTesteBusinessContract  $planoTesteBusiness
     )
     {
     }

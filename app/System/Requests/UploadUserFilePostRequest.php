@@ -1,28 +1,29 @@
 <?php
 
-namespace App\Modules\Projetos\Requests;
+namespace App\System\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UploadPostRequest extends FormRequest
+class UploadUserFilePostRequest extends UploadPostRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            'arquivo'=> 'required|mimes:xlsx'
+            ...parent::rules(),
+            'equipes' => 'required'
         ];
     }
 }

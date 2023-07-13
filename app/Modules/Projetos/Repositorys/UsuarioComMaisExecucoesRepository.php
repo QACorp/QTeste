@@ -4,11 +4,12 @@ namespace App\Modules\Projetos\Repositorys;
 
 use App\Modules\Projetos\Contracts\Repository\UsuarioComMaisExecucoesRepositoryContract;
 use App\Modules\Projetos\DTOs\UsuarioComMaisExecucoesDTO;
+use App\System\Impl\BaseRepository;
 use App\System\Models\User;
 use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\DataCollection;
 
-class UsuarioComMaisExecucoesRepository implements UsuarioComMaisExecucoesRepositoryContract
+class UsuarioComMaisExecucoesRepository extends BaseRepository  implements UsuarioComMaisExecucoesRepositoryContract extends BaseRepositoryContract
 {
 
     public function buscarUsuarioPorOrdemExecucao(int $limit, int $idEquipe): DataCollection

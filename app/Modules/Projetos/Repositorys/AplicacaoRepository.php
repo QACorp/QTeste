@@ -6,10 +6,11 @@ use App\Modules\Projetos\Contracts\Repository\AplicacaoRepositoryContract;
 use App\Modules\Projetos\DTOs\AplicacaoDTO;
 use App\Modules\Projetos\Models\Aplicacao;
 use App\System\DTOs\EquipeDTO;
+use App\System\Impl\BaseRepository;
 use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\DataCollection;
 
-class AplicacaoRepository implements AplicacaoRepositoryContract
+class AplicacaoRepository extends BaseRepository  implements AplicacaoRepositoryContract
 {
 
     public function buscarTodos(int $idEquipe): DataCollection

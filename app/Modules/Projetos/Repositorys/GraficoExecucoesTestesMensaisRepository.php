@@ -6,10 +6,11 @@ use App\Modules\Projetos\Contracts\Repository\GraficoExecucoesTestesMensaisRepos
 use App\Modules\Projetos\Contracts\Repository\TotaisTestesRepositoryContract;
 use App\Modules\Projetos\DTOs\ExecucoesTestesMensaisDTO;
 use App\Modules\Projetos\DTOs\TotaisTestesDTO;
+use App\System\Impl\BaseRepository;
 use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\DataCollection;
 
-class GraficoExecucoesTestesMensaisRepository implements GraficoExecucoesTestesMensaisRepositoryContract
+class GraficoExecucoesTestesMensaisRepository extends BaseRepository  implements GraficoExecucoesTestesMensaisRepositoryContract
 {
 
     public function buscarTotaisExecucoes(int $idEquipe): DataCollection

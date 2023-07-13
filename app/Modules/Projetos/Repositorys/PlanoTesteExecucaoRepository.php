@@ -5,11 +5,12 @@ namespace App\Modules\Projetos\Repositorys;
 use App\Modules\Projetos\Contracts\Repository\PlanoTesteExecucaoRepositoryContract;
 use App\Modules\Projetos\DTOs\PlanoTesteExecucaoDTO;
 use App\Modules\Projetos\Models\PlanoTesteExecucao;
+use App\System\Impl\BaseRepository;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Spatie\LaravelData\DataCollection;
 
-class PlanoTesteExecucaoRepository implements PlanoTesteExecucaoRepositoryContract
+class PlanoTesteExecucaoRepository extends BaseRepository  implements PlanoTesteExecucaoRepositoryContract
 {
 
     public function buscarUltimoPlanoTesteExecucaoPorPlanoTeste(int $idPlanoTeste, int $idEquipe):?PlanoTesteExecucaoDTO

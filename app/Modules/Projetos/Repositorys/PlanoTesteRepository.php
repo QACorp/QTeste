@@ -6,10 +6,11 @@ use App\Modules\Projetos\Contracts\Repository\PlanoTesteRepositoryContract;
 use App\Modules\Projetos\DTOs\ConsultaPlanoTesteDTO;
 use App\Modules\Projetos\DTOs\PlanoTesteDTO;
 use App\Modules\Projetos\Models\PlanoTeste;
+use App\System\Impl\BaseRepository;
 use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\DataCollection;
 
-class PlanoTesteRepository implements PlanoTesteRepositoryContract
+class PlanoTesteRepository extends BaseRepository  implements PlanoTesteRepositoryContract
 {
 
     public function buscarPlanosTestePorProjeto(int $idProjeto, int $idEquipe): DataCollection

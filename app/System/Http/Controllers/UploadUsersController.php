@@ -22,7 +22,7 @@ class UploadUsersController extends Controller
      public function uploadArquivoExcelParaUsers(Request $request)
      {
          try {
-             $this->userBusiness->importarArquivoParaUser($request->file('arquivo'));
+             $this->userBusiness->importarArquivoParaUser($request->file('arquivo'), $request->only('equipes'));
              return redirect(route('users.index'))
                  ->with([Controller::MESSAGE_KEY_SUCCESS => ['Arquivo importado com sucesso']]);
          }catch (FileException $exception) {

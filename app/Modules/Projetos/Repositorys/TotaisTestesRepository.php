@@ -4,9 +4,10 @@ namespace App\Modules\Projetos\Repositorys;
 
 use App\Modules\Projetos\Contracts\Repository\TotaisTestesRepositoryContract;
 use App\Modules\Projetos\DTOs\TotaisTestesDTO;
+use App\System\Impl\BaseRepository;
 use Illuminate\Support\Facades\DB;
 
-class TotaisTestesRepository implements TotaisTestesRepositoryContract
+class TotaisTestesRepository extends BaseRepository  implements TotaisTestesRepositoryContract
 {
 
     public function buscarTotaisTestes(int $idEquipe): TotaisTestesDTO

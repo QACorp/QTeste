@@ -5,11 +5,12 @@ namespace App\Modules\Projetos\Repositorys;
 use App\Modules\Projetos\Contracts\Repository\CasosTesteMaisFalhasRepositoryContract;
 use App\Modules\Projetos\DTOs\TestesMaisFalhasDTO;
 use App\Modules\Projetos\Models\CasoTeste;
+use App\System\Impl\BaseRepository;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\DataCollection;
 
-class CasosTesteMaisFalhasRepository implements CasosTesteMaisFalhasRepositoryContract
+class CasosTesteMaisFalhasRepository extends BaseRepository  implements CasosTesteMaisFalhasRepositoryContract
 {
 
     public function buscarTotaisTestes(int $limit, int $idEquipe): DataCollection
