@@ -17,7 +17,8 @@
         "spatie/laravel-data": "^3.2",
         "spatie/laravel-permission": "^5.10",
         "dompdf/dompdf": "^1",
-        "maatwebsite/excel": "^3.1"
+        "maatwebsite/excel": "^3.1",
+        "ext-http": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

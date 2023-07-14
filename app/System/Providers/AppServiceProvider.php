@@ -44,6 +44,11 @@ class AppServiceProvider extends ServiceProvider
         MenuConfig::configureMenuModule();
         $this->addDirectoryMigration();
 
+        if ($this->app->environment('production')) {
+            $this->app['request']->server->set('HTTPS','on');
+
+        }
+
     }
 
     private function addDirectoryMigration(){
