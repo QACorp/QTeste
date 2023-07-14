@@ -9,7 +9,7 @@ use App\System\Models\User;
 use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\DataCollection;
 
-class UsuarioComMaisExecucoesRepository extends BaseRepository  implements UsuarioComMaisExecucoesRepositoryContract extends BaseRepositoryContract
+class UsuarioComMaisExecucoesRepository extends BaseRepository  implements UsuarioComMaisExecucoesRepositoryContract
 {
 
     public function buscarUsuarioPorOrdemExecucao(int $limit, int $idEquipe): DataCollection
