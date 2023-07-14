@@ -19,7 +19,7 @@ class ComboEquipes extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public array $idsEquipe,
+        public ?array $idsEquipe = [],
         private EquipeBusinessContract $equipeBusiness
     )
     {
