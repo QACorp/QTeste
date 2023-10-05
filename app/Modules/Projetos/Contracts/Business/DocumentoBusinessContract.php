@@ -8,7 +8,7 @@ use Spatie\LaravelData\DataCollection;
 
 interface DocumentoBusinessContract
 {
-    public function buscarTodosPorProjeto(int $idProjeto, int $idEquipe):DataCollection;
+    public function buscarTodosPorProjeto(int $idProjeto):DataCollection;
     public function salvar(DocumentoDTO $documentoDTO, int $idEquipe, DocumentosPostRequest $documentosPostRequest = new DocumentosPostRequest()):DocumentoDTO;
 
     public function excluir(int $idProjeto,  int $idDocumento, int $idEquipe,):bool;
