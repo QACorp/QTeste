@@ -46,10 +46,10 @@ class PlanoTesteBusiness extends BusinessAbstract implements PlanoTesteBusinessC
         return $this->planoTesteRepository->salvarPlanoTeste($planoTesteDTO);
     }
 
-    public function excluirPlanoTeste(int $idPlanoTeste): bool
+    public function excluirPlanoTeste(int $idPlanoTeste, int $idEquipe): bool
     {
         $this->can(PermissionEnum::REMOVER_PLANO_TESTE->value);
-        if($this->planoTesteRepository->buscarPlanoTestePorId($idPlanoTeste) == null)
+        if($this->planoTesteRepository->buscarPlanoTestePorId($idPlanoTeste, $idEquipe) == null)
             throw new NotFoundException();
         return $this->planoTesteRepository->excluirPlanoTeste($idPlanoTeste);
     }

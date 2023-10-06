@@ -118,7 +118,7 @@ class PlanoTesteController extends Controller
     {
         Auth::user()->can(PermissionEnum::REMOVER_PLANO_TESTE->value);
         try {
-            $this->planoTesteBusiness->excluirPlanoTeste($idPlanoTeste);
+            $this->planoTesteBusiness->excluirPlanoTeste($idPlanoTeste, EquipeUtils::equipeUsuarioLogado());
             return redirect(route('aplicacoes.projetos.planos-teste.index',[$idAplicacao, $idProjeto]))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Plano de teste excluído com sucesso']]);
         }catch (NotFoundException $exception) {
