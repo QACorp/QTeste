@@ -26,7 +26,7 @@ class MenuConfig extends MenuConfigAbstract
                         'route'  => 'retrabalhos.index',
                         'icon'  => 'fas fa-list',
                         'active' => ['retrabalhos/*'],
-                        'can'   => PermissionEnum::VER_GANTT
+                        'can'   => [PermissionEnum::LISTAR_RETRABALHO->value, PermissionEnum::VER_TODOS_RETRABALHOS->value]
                     ]
                 ]
             ]);

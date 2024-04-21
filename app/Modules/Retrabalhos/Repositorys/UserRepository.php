@@ -2,11 +2,12 @@
 
 namespace App\Modules\Retrabalhos\Repositorys;
 
+use App\Modules\Retrabalhos\DTOs\UserDTO;
+use App\Modules\Retrabalhos\Models\User;
 use App\System\Contracts\Repository\UserRepositoryContract;
 use App\System\DTOs\EquipeDTO;
-use App\Modules\GestaoProjetos\DTOs\UserDTO;
 use App\System\Repositorys\UserRepository as BaseRepository;
-use App\Modules\GestaoProjetos\Models\User;
+
 
 class UserRepository extends BaseRepository implements UserRepositoryContract
 {
