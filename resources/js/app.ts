@@ -6,7 +6,15 @@
 
 import './bootstrap';
 import {createApp} from 'vue';
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
 
+const vuetify = createVuetify({
+    components,
+    directives,
+})
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
  * registering components with the application instance so they are ready
@@ -14,6 +22,7 @@ import {createApp} from 'vue';
  */
 
 const app = createApp({});
+app.use(vuetify);
 //
 //  import ExampleComponent from './../../app/Modules/GestaoProjetos/Views/Vue/components/SprintSelect.vue';
 //  app.component('SprintSelect', ExampleComponent);

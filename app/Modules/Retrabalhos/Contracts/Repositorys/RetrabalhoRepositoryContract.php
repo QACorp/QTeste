@@ -2,7 +2,7 @@
 
 namespace App\Modules\Retrabalhos\Contracts\Repositorys;
 
-interface RetrabalhoRepositoryInterface
+interface RetrabalhoRepositoryContract
 {
 
 }

@@ -2,9 +2,9 @@
 
 namespace App\Modules\Retrabalhos\Repositorys;
 
-use App\Modules\Retrabalhos\Contracts\Repositorys\RetrabalhoRepositoryInterface;
+use App\Modules\Retrabalhos\Contracts\Repositorys\RetrabalhoRepositoryContract;
 
-class RetrabalhoRepository implements RetrabalhoRepositoryInterface
+class RetrabalhoRepository implements RetrabalhoRepositoryContract
 {
 
 }

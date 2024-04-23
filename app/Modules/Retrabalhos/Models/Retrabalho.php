@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Retrabalho extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $table = 'retrabalhos.retrabalhos';
+    protected $table = 'projetos.retrabalhos';
     protected $primaryKey = 'id';
     protected $fillable = [
         'descricao',
