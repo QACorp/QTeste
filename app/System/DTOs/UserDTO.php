@@ -25,7 +25,7 @@ class UserDTO extends DTO
         public ?DataCollectable $equipes
     )
     {
-        if($this->password == null)
+        if($this->password == null && $id == null)
             $this->password = Hash::make(md5(uniqid('_')));
     }
 
