@@ -173,4 +173,5 @@ class CasoTesteBusiness extends BusinessAbstract implements CasoTesteBusinessCon
         $casoTesteDTO = $this->casoTesteRespository->inserirCasoTeste($casoTesteDTO, $idEquipe);
         return $casoTesteDTO;
     }
+
 }

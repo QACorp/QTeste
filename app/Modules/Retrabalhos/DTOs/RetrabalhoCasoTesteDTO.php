@@ -25,6 +25,11 @@ class RetrabalhoCasoTesteDTO extends DTO
     public ?int $id_caso_teste;
 
     public ?string $titulo_caso_teste;
+    public ?string $requisito_caso_teste;
+    public ?string $cenario_caso_teste;
+    public ?string $teste_caso_teste;
+    public ?string $resultado_esperado_caso_teste;
+
     public static function rules(ValidationContext $context): array
     {
         return [

@@ -1,4 +1,5 @@
 export interface CasoTesteInterface {
+    id: number | null,
     id_caso_teste:number,
     titulo_caso_teste: string,
     requisito_caso_teste: string

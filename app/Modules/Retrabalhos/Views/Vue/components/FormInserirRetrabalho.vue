@@ -9,6 +9,8 @@ import {UsuarioInterface} from "../Interfaces/Usuario.interface";
 import moment from "moment";
 import {getError, hasError} from "../../../../../../resources/js/ErrorHelper";
 import FormInserirCasoTeste from "./FormInserirCasoTeste.vue";
+import {CasoTesteInterface} from "../Interfaces/CasoTeste.interface";
+import {TipoRetrabalhoEnum} from "../Enums/TipoRetrabalho.enum";
 
 const props = defineProps({
     actionForm: {
@@ -35,14 +37,17 @@ const listaTiposRetrabalho = ref<TipoRetrabalhoInterface[]>([]);
 const listaAplicacoes = ref<AplicacaoInterface[]>([]);
 const listaProjetos = ref<ProjetoInterface[]>([]);
 const listaUsuarios = ref<UsuarioInterface[]>([]);
+const listaCasosTeste = ref<CasoTesteInterface[]>([]);
 
 const retrabalho = ref<RetrabalhoInterface>(props.retrabalho);
 retrabalho.value.tipo_retrabalho = null;
 retrabalho.value.aplicacao = null;
 retrabalho.value.projeto = null;
 retrabalho.value.usuario = null;
+//retrabalho.value.caso_teste = retrabalho.value.caso_teste.id_caso_teste === '' ? null : retrabalho.value.caso_teste
 retrabalho.value.data = retrabalho.value.data ? retrabalho.value.data : moment().format('YYYY-MM-DD');
 
+const caso_teste = ref<CasoTesteInterface>(props.retrabalho.caso_teste?.id_caso_teste ? props.retrabalho.caso_teste : null);
 const shouldShowError = (field) => {
     return hasError(field, props.errors);
 }
@@ -90,15 +95,69 @@ const populaProjetos = async (idAplicacao:number) => {
     })
 }
 
-onMounted( () => {
+const populaCasosTeste = async (term:string) => {
+    await axios.get(`../projetos/consultas/casos-testes?term=${term}`).then((res) => {
+        listaCasosTeste.value = res.data;
+        listaCasosTeste.value = listaCasosTeste.value.map((item: any) => {
+            return {
+                id_caso_teste: item.id,
+                titulo_caso_teste: item.titulo,
+                cenario_caso_teste: item.cenario,
+                requisito_caso_teste: item.requisito,
+                teste_caso_teste: item.teste,
+                resultado_esperado_caso_teste: item.resultado_esperado,
+                id: item.id
+            }
+        })
+        if (retrabalho.value.caso_teste.id_caso_teste) {
+            retrabalho.value.caso_teste =
+                listaCasosTeste.value.find((item: CasoTesteInterface) => item.id_caso_teste == retrabalho.value.caso_teste.id_caso_teste);
+        }
+    })
+}
+const populaCasosTestePorId = async (idCasoTeste:number) => {
+    await axios.get(`../projetos/consultas/casos-testes/${idCasoTeste}`).then((res) => {
+        listaCasosTeste.value = [res.data];
+
+        listaCasosTeste.value = listaCasosTeste.value.map((item: any) => {
+            return {
+                id_caso_teste: item.id,
+                titulo_caso_teste: item.titulo,
+                cenario_caso_teste: item.cenario,
+                requisito_caso_teste: item.requisito,
+                teste_caso_teste: item.teste,
+                resultado_esperado_caso_teste: item.resultado_esperado,
+                id: item.id
+            }
+        })
+        if (retrabalho.value.caso_teste.id_caso_teste) {
+            retrabalho.value.caso_teste =
+                listaCasosTeste.value.find((item: CasoTesteInterface) => {
+                    return item.id_caso_teste === retrabalho.value.caso_teste.id_caso_teste;
+                });
+        }
+    })
+}
+
+onMounted( async () => {
     populaTiposRetrabalho();
     populaAplicacoes();
     populaUsuarios();
+    if (retrabalho.value.caso_teste?.id_caso_teste) {
+        await populaCasosTestePorId(retrabalho.value.caso_teste.id_caso_teste);
+        caso_teste.value = retrabalho.value.caso_teste;
+    }
+
 });
 watchEffect(()  => {
+
     if(retrabalho.value.aplicacao?.id){
         populaProjetos(retrabalho.value.aplicacao.id);
     }
+    if(caso_teste.value  && caso_teste.value.id){
+        retrabalho.value.caso_teste.id_caso_teste = caso_teste.value.id_caso_teste;
+    }
+
 })
 
 </script>
@@ -219,6 +278,31 @@ watchEffect(()  => {
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
+                            <input type="hidden" :value="retrabalho.caso_teste?.id_caso_teste" name="id_caso_teste" />
+                            <v-autocomplete
+                                v-model="caso_teste"
+                                label="Caso de teste"
+                                :items="listaCasosTeste"
+                                variant="solo"
+                                :return-object="true"
+                                item-title="titulo_caso_teste"
+                                item-value="id_caso_teste"
+                                :clearable="true"
+                                id="caso_teste"
+                                name="caso_teste"
+                                @click:clear="retrabalho.caso_teste.id_caso_teste = null"
+                                @update:search="populaCasosTeste"
+                                v-if="retrabalho.tipo_retrabalho?.tipo === TipoRetrabalhoEnum.FUNCIONAL"
+                                :error="shouldShowError('id_caso_teste')"
+                                :error-messages="getShowError('id_caso_teste')"
+                            >
+                            </v-autocomplete>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
                             <v-textarea
                                 v-model="retrabalho.descricao"
                                 label="Descrição"
@@ -230,15 +314,17 @@ watchEffect(()  => {
                         </div>
                     </div>
                 </div>
-
-
             </div>
             <div class="col-md-6">
                 <form-inserir-caso-teste
+                    v-if="!retrabalho.caso_teste?.id_caso_teste && retrabalho.tipo_retrabalho?.tipo === TipoRetrabalhoEnum.FUNCIONAL"
                     :casoTeste="retrabalho.caso_teste"
                     :errors="props.errors"
                 />
-
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 <div class="row m-1">
                     <v-btn
                         color="primary"

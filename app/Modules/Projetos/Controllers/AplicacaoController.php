@@ -26,7 +26,6 @@ class AplicacaoController extends Controller
     }
     public function index()
     {
-        Auth::user()->can(PermissionEnum::LISTAR_APLICACAO->value);
         $aplicacoes = $this->aplicacaoBusiness->buscarTodos(EquipeUtils::equipeUsuarioLogado());
 
         $heads = [
