@@ -7,7 +7,7 @@ use App\Modules\Projetos\Contracts\Business\ProjetoBusinessContract;
 use App\Modules\Projetos\DTOs\AplicacaoDTO;
 use App\Modules\Projetos\Enums\PermissionEnum;
 use App\Modules\Retrabalhos\Contracts\Business\RetrabalhoBusinessContract;
-use App\Modules\Retrabalhos\DTOs\RetrabalhoDTO;
+use App\Modules\Retrabalhos\DTOs\RetrabalhoCasoTesteDTO;
 use App\System\DTOs\EquipeDTO;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
@@ -39,9 +39,9 @@ class RetrabalhosController extends Controller
         return view('retrabalhos::inserir');
     }
 
-    public function salvar(RetrabalhoDTO $retrabalhoDTO)
+    public function salvar(RetrabalhoCasoTesteDTO $retrabalhoDTO)
     {
-        //dd($retrabalhoDTO);
+        dd($retrabalhoDTO);
         return view('retrabalhos::inserir');
     }
 

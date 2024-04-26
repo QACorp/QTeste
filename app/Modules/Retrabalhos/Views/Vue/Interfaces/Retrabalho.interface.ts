@@ -2,6 +2,7 @@ import {TipoRetrabalhoInterface} from "./TipoRetrabalho.interface";
 import {AplicacaoInterface} from "./Aplicacao.interface";
 import {ProjetoInterface} from "./Projeto.interface";
 import {UsuarioInterface} from "./Usuario.interface";
+import {CasoTesteInterface} from "./CasoTeste.interface";
 
 export interface RetrabalhoInterface {
     id:number,
@@ -18,6 +19,7 @@ export interface RetrabalhoInterface {
     tipo_retrabalho: TipoRetrabalhoInterface | null,
     aplicacao: AplicacaoInterface | null,
     projeto: ProjetoInterface | null,
-    usuario: UsuarioInterface | null
+    usuario: UsuarioInterface | null,
+    caso_teste: CasoTesteInterface | null
 
 }

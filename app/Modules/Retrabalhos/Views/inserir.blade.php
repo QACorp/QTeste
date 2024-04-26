@@ -26,6 +26,13 @@
                             id_aplicacao: '{{old('id_aplicacao', '')}}',
                             id_caso_teste: '{{old('id_caso_teste', '')}}',
                             numero_tarefa: '{{old('numero_tarefa', '')}}',
+                            caso_teste: {
+                                titulo_caso_teste: '{{old('titulo_caso_teste', '')}}',
+                                resultado_esperado_caso_teste: '{{old('resultado_esperado_caso_teste', '')}}',
+                                requisito_caso_teste: '{{old('requisito_caso_teste', '')}}',
+                                cenario_caso_teste: '{{old('cenario_caso_teste', '')}}',
+                                teste_caso_teste: '{{old('teste_caso_teste', '')}}'
+                            }
 
                         }"
                         action-form="{{route('retrabalhos.salvar')}}"

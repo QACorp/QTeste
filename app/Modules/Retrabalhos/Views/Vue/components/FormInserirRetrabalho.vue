@@ -7,6 +7,8 @@ import {AplicacaoInterface} from "../Interfaces/Aplicacao.interface";
 import {ProjetoInterface} from "../Interfaces/Projeto.interface";
 import {UsuarioInterface} from "../Interfaces/Usuario.interface";
 import moment from "moment";
+import {getError, hasError} from "../../../../../../resources/js/ErrorHelper";
+import FormInserirCasoTeste from "./FormInserirCasoTeste.vue";
 
 const props = defineProps({
     actionForm: {
@@ -40,11 +42,12 @@ retrabalho.value.aplicacao = null;
 retrabalho.value.projeto = null;
 retrabalho.value.usuario = null;
 retrabalho.value.data = retrabalho.value.data ? retrabalho.value.data : moment().format('YYYY-MM-DD');
-const hasError = (field) => {
-    return props.errors && props.errors[field] ? true : false;
+
+const shouldShowError = (field) => {
+    return hasError(field, props.errors);
 }
-const getError = (field) => {
-    return props.errors && props.errors[field] ? props.errors[field][0] : [];
+const getShowError = (field) => {
+    return getError(field, props.errors);
 }
 const populaTiposRetrabalho = async () => {
     await axios.get('consultas/tipos').then((res) => {
@@ -103,9 +106,8 @@ watchEffect(()  => {
 <template>
     <form id="form-rework" :action="actionForm" method="POST" autocomplete="off">
         <input type="hidden" name="_token" :value="csrf">
-
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 border-e-sm">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -120,8 +122,8 @@ watchEffect(()  => {
                                 item-value="id"
                                 id="tipo_retrabalho"
                                 name="tipo_retrabalho"
-                                :error="hasError('id_tipo_retrabalho')"
-                                :error-messages="getError('id_tipo_retrabalho')"
+                                :error="shouldShowError('id_tipo_retrabalho')"
+                                :error-messages="getShowError('id_tipo_retrabalho')"
                             >
                             </v-combobox>
                         </div>
@@ -139,8 +141,8 @@ watchEffect(()  => {
                                 item-value="id"
                                 id="usuario"
                                 name="usuario"
-                                :error="hasError('id_usuario')"
-                                :error-messages="getError('id_usuario')"
+                                :error="shouldShowError('id_usuario')"
+                                :error-messages="getShowError('id_usuario')"
                             >
                             </v-combobox>
                         </div>
@@ -160,8 +162,8 @@ watchEffect(()  => {
                                 item-value="id"
                                 id="aplicacao"
                                 name="aplicacao"
-                                :error="hasError('id_aplicacao')"
-                                :error-messages="getError('id_aplicacao')"
+                                :error="shouldShowError('id_aplicacao')"
+                                :error-messages="getShowError('id_aplicacao')"
                             >
                             </v-combobox>
                         </div>
@@ -180,8 +182,8 @@ watchEffect(()  => {
                                 id="projeto"
                                 name="projeto"
                                 :disabled="retrabalho.aplicacao === null"
-                                :error="hasError('id_projeto')"
-                                :error-messages="getError('id_projeto')"
+                                :error="shouldShowError('id_projeto')"
+                                :error-messages="getShowError('id_projeto')"
                             >
                             </v-combobox>
                         </div>
@@ -196,8 +198,8 @@ watchEffect(()  => {
                                 name="data"
                                 id="data"
                                 type="date"
-                                :error="hasError('data')"
-                                :error-messages="getError('data')"
+                                :error="shouldShowError('data')"
+                                :error-messages="getShowError('data')"
                             />
                         </div>
                     </div>
@@ -208,8 +210,8 @@ watchEffect(()  => {
                                 label="Tarefa"
                                 name="numero_tarefa"
                                 id="numero_tarefa"
-                                :error="hasError('numero_tarefa')"
-                                :error-messages="getError('numero_tarefa')"
+                                :error="shouldShowError('numero_tarefa')"
+                                :error-messages="getShowError('numero_tarefa')"
                             ></v-text-field>
                         </div>
                     </div>
@@ -222,8 +224,8 @@ watchEffect(()  => {
                                 label="Descrição"
                                 name="descricao"
                                 id="descricao"
-                                :error="hasError('descricao')"
-                                :error-messages="getError('descricao')"
+                                :error="shouldShowError('descricao')"
+                                :error-messages="getShowError('descricao')"
                             ></v-textarea>
                         </div>
                     </div>
@@ -232,8 +234,12 @@ watchEffect(()  => {
 
             </div>
             <div class="col-md-6">
+                <form-inserir-caso-teste
+                    :casoTeste="retrabalho.caso_teste"
+                    :errors="props.errors"
+                />
 
-                <div class="row">
+                <div class="row m-1">
                     <v-btn
                         color="primary"
                         type="submit"
@@ -249,5 +255,7 @@ watchEffect(()  => {
 </template>
 
 <style scoped>
-
+.border-right{
+    border-right: 1px solid #000;
+}
 </style>
