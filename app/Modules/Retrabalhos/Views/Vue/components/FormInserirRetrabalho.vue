@@ -317,7 +317,8 @@ watchEffect(()  => {
             </div>
             <div class="col-md-6">
                 <form-inserir-caso-teste
-                    v-if="!retrabalho.caso_teste?.id_caso_teste && retrabalho.tipo_retrabalho?.tipo === TipoRetrabalhoEnum.FUNCIONAL"
+                    v-model="retrabalho.caso_teste"
+                    v-if="retrabalho.tipo_retrabalho?.tipo === TipoRetrabalhoEnum.FUNCIONAL"
                     :casoTeste="retrabalho.caso_teste"
                     :errors="props.errors"
                 />

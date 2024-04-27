@@ -13,7 +13,11 @@ const props = defineProps({
         required: true,
     },
 });
-const casoTeste = ref<CasoTesteInterface>(props.casoTeste);
+const casoTeste = defineModel<CasoTesteInterface>()
+//const casoTeste = ref<CasoTesteInterface>(props.casoTeste);
+const isDisable = () => {
+    return casoTeste.value.id_caso_teste !== null;
+}
 </script>
 
 <template>
@@ -22,6 +26,7 @@ const casoTeste = ref<CasoTesteInterface>(props.casoTeste);
         <div class="col-md-12">
             <div class="form-group">
                 <v-text-field
+                    :disabled="isDisable()"
                     v-model="casoTeste.titulo_caso_teste"
                     label="Título"
                     name="titulo_caso_teste"
@@ -35,14 +40,15 @@ const casoTeste = ref<CasoTesteInterface>(props.casoTeste);
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
-                <v-textarea
+                <v-text-field
                     v-model="casoTeste.requisito_caso_teste"
+                    :disabled="isDisable()"
                     label="Requisito"
                     name="requisito_caso_teste"
                     id="requisito_caso_teste"
                     :error="hasError('requisito_caso_teste', errors)"
                     :error-messages="getError('requisito_caso_teste', errors)"
-                ></v-textarea>
+                ></v-text-field>
             </div>
         </div>
     </div>
@@ -51,6 +57,7 @@ const casoTeste = ref<CasoTesteInterface>(props.casoTeste);
             <div class="form-group">
                 <v-textarea
                     v-model="casoTeste.cenario_caso_teste"
+                    :disabled="isDisable()"
                     label="Cenário"
                     name="cenario_caso_teste"
                     id="cenario_caso_teste"
@@ -66,6 +73,7 @@ const casoTeste = ref<CasoTesteInterface>(props.casoTeste);
                 <v-textarea
                     v-model="casoTeste.teste_caso_teste"
                     label="Teste"
+                    :disabled="isDisable()"
                     name="teste_caso_teste"
                     id="teste_caso_teste"
                     :error="hasError('teste_caso_teste', errors)"
@@ -79,6 +87,7 @@ const casoTeste = ref<CasoTesteInterface>(props.casoTeste);
             <div class="form-group">
                 <v-textarea
                     v-model="casoTeste.resultado_esperado_caso_teste"
+                    :disabled="isDisable()"
                     label="Resultado esperado"
                     name="resultado_esperado_caso_teste"
                     id="resultado_esperado_caso_teste"
