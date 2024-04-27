@@ -27,6 +27,23 @@ class Retrabalho extends Model
         'id_aplicacao',
         'id_caso_teste'
     ];
+    protected $visible = [
+        'id',
+        'descricao',
+        'data',
+        'motivo_exclusao',
+        'numero_tarefa',
+        'id_tipo_retrabalho',
+        'id_usuario_criador',
+        'id_usuario',
+        'id_projeto',
+        'id_aplicacao',
+        'id_caso_teste',
+        'usuario',
+        'projeto',
+        'aplicacao',
+        'caso_teste'
+    ];
     // Criar chaves estrangeiras
     public function tipo_retrabalho()
     {

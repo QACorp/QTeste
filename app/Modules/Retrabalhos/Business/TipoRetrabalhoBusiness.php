@@ -20,7 +20,7 @@ class TipoRetrabalhoBusiness extends BusinessAbstract implements TipoRetrabalhoB
         return $this->tipoRetrabalhoRepository->listaTipoRetrabalho();
     }
 
-    public function getTipoRetrabalhoPorId(int $id): TipoRetrabalhoDTO
+    public function getTipoRetrabalhoPorId(int $id): ?TipoRetrabalhoDTO
     {
         return $this->tipoRetrabalhoRepository->getTipoRetrabalhoPorId($id);
     }

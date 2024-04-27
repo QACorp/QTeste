@@ -8,5 +8,5 @@ use Spatie\LaravelData\DataCollection;
 interface TipoRetrabalhoBusinessContract
 {
     public function listaTipoRetrabalho():DataCollection;
-    public function getTipoRetrabalhoPorId(int $id):TipoRetrabalhoDTO;
+    public function getTipoRetrabalhoPorId(int $id): ?TipoRetrabalhoDTO;
 }

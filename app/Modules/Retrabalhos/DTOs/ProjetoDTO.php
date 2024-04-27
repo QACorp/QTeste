@@ -14,26 +14,7 @@ use Spatie\LaravelData\Contracts\DataCollectable;
 
 class ProjetoDTO extends ProjetoBaseDTO
 {
-    public function __construct(
-        public ?int $id,
-        public ?string $nome,
-        public ?string $descricao,
-        #[WithCast(CastCarbonDate::class)]
-        public ?Carbon $inicio,
-        #[WithCast(CastCarbonDate::class)]
-        public ?Carbon $termino,
-        public ?int $aplicacao_id,
-        #[WithCast(CastAplicacao::class)]
-        public ?AplicacaoDTO $aplicacao,
-        public ?float $andamento,
-        #[WithCast(CastSprints::class)]
-        public ?DataCollectable $sprints,
-        #[WithCast(CastTarefas::class)]
-        public ?DataCollectable $tarefas,
-        public ?IntegracaoProjetoDTO $integracao
-    )
-    {
 
-    }
+    public ?DataCollectable $retrabalhos;
 
 }

@@ -24,21 +24,30 @@ class IdCasoTesteOuCasoTesteRule implements ValidationRule, DataAwareRule
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $tipoRetrabalho = $this->tipoRetrabalhoBusiness->getTipoRetrabalhoPorId($this->data['id_tipo_retrabalho']);
-        if ($tipoRetrabalho->tipo != TipoRetrabalhoEnum::FUNCIONAL) {
-            return;
-        }
-        if(!empty($this->data['id_caso_teste']) || $this->casoTestePreenchido()) {
+        if($this->validateCasoTeste()){
             return;
         }
 
         $fail("O tipo de retrabalho deve ter um caso de teste.");
     }
-    private function casoTestePreenchido(): bool
+    public function validateCasoTeste():bool
+    {
+        $tipoRetrabalho = $this->tipoRetrabalhoBusiness->getTipoRetrabalhoPorId($this->data['id_tipo_retrabalho']);
+        if ($tipoRetrabalho->tipo != TipoRetrabalhoEnum::FUNCIONAL) {
+            return true;
+        }
+        if(!empty($this->data['id_caso_teste']) || $this->casoTestePreenchido()) {
+            return true;
+        }
+        return false;
+
+    }
+
+    public function casoTestePreenchido(): bool
     {
         return
             (
-                !empty($this->data['caso_teste_titulo']) &&
+                !empty($this->data['titulo_caso_teste']) &&
                 !empty($this->data['requisito_caso_teste']) &&
                 !empty($this->data['cenario_caso_teste']) &&
                 !empty($this->data['teste_caso_teste']) &&

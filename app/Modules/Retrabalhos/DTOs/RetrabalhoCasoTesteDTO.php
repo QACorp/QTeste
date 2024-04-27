@@ -2,7 +2,13 @@
 
 namespace App\Modules\Retrabalhos\DTOs;
 
+use App\Modules\Projetos\DTOs\AplicacaoDTO;
+use App\Modules\Projetos\DTOs\CasoTesteDTO;
+use App\Modules\Projetos\Models\Aplicacao;
+use App\Modules\Projetos\Models\CasoTeste;
 use App\Modules\Retrabalhos\Contracts\Business\TipoRetrabalhoBusinessContract;
+use App\Modules\Retrabalhos\Models\Projeto;
+use App\Modules\Retrabalhos\Models\User;
 use App\Modules\Retrabalhos\Rules\IdCasoTesteOuCasoTesteRule;
 use App\System\Casts\CastCarbonDate;
 use App\System\Utils\DTO;
@@ -11,9 +17,9 @@ use Illuminate\Support\Facades\App;
 use Spatie\LaravelData\Attributes\Validation\Required;
 use Spatie\LaravelData\Attributes\Validation\RequiredIf;
 use Spatie\LaravelData\Attributes\WithCast;
+use Spatie\LaravelData\Attributes\WithoutValidation;
+use Spatie\LaravelData\Optional;
 use Spatie\LaravelData\Support\Validation\ValidationContext;
-
-
 class RetrabalhoCasoTesteDTO extends DTO
 {
     public ?int $id;
@@ -30,10 +36,23 @@ class RetrabalhoCasoTesteDTO extends DTO
     #[Required]
     public ?int $id_usuario;
     public ?int $id_projeto;
+
     #[Required]
     public ?int $id_aplicacao;
-
     public ?int $id_caso_teste;
+
+    #[WithoutValidation]
+    #[WithCast(CasoTeste::class)]
+    public ?CasoTesteDTO $caso_teste;
+    #[WithoutValidation]
+    #[WithCast(Aplicacao::class)]
+    public ?AplicacaoDTO $aplicacao;
+    #[WithoutValidation]
+    #[WithCast(Projeto::class)]
+    public ?ProjetoDTO $projeto;
+    #[WithoutValidation]
+    #[WithCast(User::class)]
+    public ?UserDTO $usuario;
 
     public ?string $titulo_caso_teste;
     public ?string $requisito_caso_teste;
