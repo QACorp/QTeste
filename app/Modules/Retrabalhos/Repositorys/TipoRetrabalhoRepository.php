@@ -14,4 +14,9 @@ class TipoRetrabalhoRepository implements TipoRetrabalhoRepositoryContract
     {
         return TipoRetrabalhoDTO::collection(TipoRetrabalho::all());
     }
+
+    public function getTipoRetrabalhoPorId(int $id): TipoRetrabalhoDTO
+    {
+        return TipoRetrabalhoDTO::from(TipoRetrabalho::findOrFail($id));
+    }
 }
