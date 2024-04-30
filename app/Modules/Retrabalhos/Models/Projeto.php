@@ -11,7 +11,7 @@ class Projeto extends BaseModel implements Cast
 {
     public function retrabalhos()
     {
-        return $this->hasMany(Retrabalho::class, 'id_projeto');
+        return $this->hasMany(Retrabalho::class, 'projeto_id');
     }
 
     public function cast(DataProperty $property, mixed $value, array $context): mixed

@@ -24,12 +24,12 @@ return new class extends Migration
             $table->date('data');
             $table->text('motivo_exclusao')->nullable();
             $table->string('numero_tarefa')->nullable();
-            $table->foreignId('id_tipo_retrabalho')->constrained('projetos.tipos_retrabalhos');
-            $table->foreignId('id_usuario_criador')->constrained('users');
-            $table->foreignId('id_usuario')->constrained('users');
-            $table->foreignId('id_projeto')->nullable()->constrained('projetos.projetos');
-            $table->foreignId('id_aplicacao')->constrained('projetos.aplicacoes');
-            $table->foreignId('id_caso_teste')->nullable()->constrained('projetos.casos_teste');
+            $table->foreignId('tipo_retrabalho_id')->constrained('projetos.tipos_retrabalhos');
+            $table->foreignId('usuario_criador_id')->constrained('users');
+            $table->foreignId('usuario_id')->constrained('users');
+            $table->foreignId('projeto_id')->nullable()->constrained('projetos.projetos');
+            $table->foreignId('aplicacao_id')->constrained('projetos.aplicacoes');
+            $table->foreignId('caso_teste_id')->nullable()->constrained('projetos.casos_teste');
             $table->timestamps();
             $table->softDeletes();
         });

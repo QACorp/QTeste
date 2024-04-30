@@ -5,6 +5,7 @@ namespace App\Modules\Retrabalhos\Repositorys;
 use App\Modules\Retrabalhos\Contracts\Repositorys\RetrabalhoRepositoryContract;
 use App\Modules\Retrabalhos\DTOs\RetrabalhoCasoTesteDTO;
 use App\Modules\Retrabalhos\Models\Retrabalho;
+use Spatie\LaravelData\DataCollection;
 
 class RetrabalhoRepository implements RetrabalhoRepositoryContract
 {
@@ -23,5 +24,15 @@ class RetrabalhoRepository implements RetrabalhoRepositoryContract
     {
         $retrabalho = Retrabalho::with(['caso_teste', 'aplicacao', 'tipo_retrabalho', 'projeto', 'usuario'])->find($idRetrabalho);
         return $retrabalho ? RetrabalhoCasoTesteDTO::from($retrabalho) : null;
+    }
+
+    public function buscarTodosPorEquipe(int $idEquipe): DataCollection
+    {
+        $retrabalhos = Retrabalho::with(['caso_teste', 'aplicacao', 'tipo_retrabalho', 'projeto', 'usuario'])
+            ->join('projetos.aplicacoes', 'retrabalhos.aplicacao_id', '=', 'aplicacoes.id')
+            ->join('projetos.aplicacoes_equipes','aplicacoes_equipes.aplicacao_id','=','aplicacoes.id')
+            ->where('aplicacoes_equipes.equipe_id',$idEquipe)
+            ->get();
+        dd($retrabalhos);
     }
 }

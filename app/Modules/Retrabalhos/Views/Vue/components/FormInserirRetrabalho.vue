@@ -57,18 +57,18 @@ const getShowError = (field) => {
 const populaTiposRetrabalho = async () => {
     await axios.get('consultas/tipos').then((res) => {
         listaTiposRetrabalho.value = res.data;
-        if (retrabalho.value.id_tipo_retrabalho) {
+        if (retrabalho.value.tipo_retrabalho_id) {
             retrabalho.value.tipo_retrabalho =
-                listaTiposRetrabalho.value.find((item: TipoRetrabalhoInterface) => item.id == retrabalho.value.id_tipo_retrabalho);
+                listaTiposRetrabalho.value.find((item: TipoRetrabalhoInterface) => item.id == retrabalho.value.tipo_retrabalho_id);
         }
     })
 }
 const populaUsuarios = async () => {
     await axios.get('consultas/usuarios').then((res) => {
         listaUsuarios.value = res.data;
-        if (retrabalho.value.id_usuario) {
+        if (retrabalho.value.usuario_id) {
             retrabalho.value.usuario =
-                listaUsuarios.value.find((item: UsuarioInterface) => item.id == retrabalho.value.id_usuario);
+                listaUsuarios.value.find((item: UsuarioInterface) => item.id == retrabalho.value.usuario_id);
         }
     })
 }
@@ -77,9 +77,9 @@ const populaAplicacoes = async () => {
     await axios.get('../projetos/consultas/aplicacoes').then((res) => {
         listaAplicacoes.value = res.data;
 
-        if (retrabalho.value.id_aplicacao) {
+        if (retrabalho.value.aplicacao_id) {
             retrabalho.value.aplicacao =
-                listaAplicacoes.value.find((item: AplicacaoInterface) => item.id == retrabalho.value.id_aplicacao);
+                listaAplicacoes.value.find((item: AplicacaoInterface) => item.id == retrabalho.value.aplicacao_id);
         }
 
     })
@@ -88,9 +88,9 @@ const populaAplicacoes = async () => {
 const populaProjetos = async (idAplicacao:number) => {
     await axios.get(`../projetos/consultas/aplicacoes/${idAplicacao}/projetos`).then((res) => {
         listaProjetos.value = res.data;
-        if (retrabalho.value.id_projeto) {
+        if (retrabalho.value.projeto_id) {
             retrabalho.value.projeto =
-                listaProjetos.value.find((item: ProjetoInterface) => item.id == retrabalho.value.id_projeto);
+                listaProjetos.value.find((item: ProjetoInterface) => item.id == retrabalho.value.projeto_id);
         }
     })
 }
@@ -100,7 +100,7 @@ const populaCasosTeste = async (term:string) => {
         listaCasosTeste.value = res.data;
         listaCasosTeste.value = listaCasosTeste.value.map((item: any) => {
             return {
-                id_caso_teste: item.id,
+                caso_teste_id: item.id,
                 titulo_caso_teste: item.titulo,
                 cenario_caso_teste: item.cenario,
                 requisito_caso_teste: item.requisito,
@@ -111,7 +111,7 @@ const populaCasosTeste = async (term:string) => {
         })
         if (retrabalho.value.caso_teste.id_caso_teste) {
             retrabalho.value.caso_teste =
-                listaCasosTeste.value.find((item: CasoTesteInterface) => item.id_caso_teste == retrabalho.value.caso_teste.id_caso_teste);
+                listaCasosTeste.value.find((item: CasoTesteInterface) => item.caso_teste_id == retrabalho.value.caso_teste.id_caso_teste);
         }
     })
 }
@@ -121,7 +121,7 @@ const populaCasosTestePorId = async (idCasoTeste:number) => {
 
         listaCasosTeste.value = listaCasosTeste.value.map((item: any) => {
             return {
-                id_caso_teste: item.id,
+                caso_teste_id: item.id,
                 titulo_caso_teste: item.titulo,
                 cenario_caso_teste: item.cenario,
                 requisito_caso_teste: item.requisito,
@@ -133,7 +133,7 @@ const populaCasosTestePorId = async (idCasoTeste:number) => {
         if (retrabalho.value.caso_teste.id_caso_teste) {
             retrabalho.value.caso_teste =
                 listaCasosTeste.value.find((item: CasoTesteInterface) => {
-                    return item.id_caso_teste === retrabalho.value.caso_teste.id_caso_teste;
+                    return item.caso_teste_id === retrabalho.value.caso_teste.caso_teste_id;
                 });
         }
     })
@@ -144,7 +144,7 @@ onMounted( async () => {
     populaAplicacoes();
     populaUsuarios();
     if (retrabalho.value.caso_teste?.id_caso_teste) {
-        await populaCasosTestePorId(retrabalho.value.caso_teste.id_caso_teste);
+        await populaCasosTestePorId(retrabalho.value.caso_teste.caso_teste_id);
         caso_teste.value = retrabalho.value.caso_teste;
     }
 
@@ -155,7 +155,7 @@ watchEffect(()  => {
         populaProjetos(retrabalho.value.aplicacao.id);
     }
     if(caso_teste.value  && caso_teste.value.id){
-        retrabalho.value.caso_teste.id_caso_teste = caso_teste.value.id_caso_teste;
+        retrabalho.value.caso_teste.caso_teste_id = caso_teste.value.caso_teste_id;
     }
 
 })
@@ -170,7 +170,7 @@ watchEffect(()  => {
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <input type="hidden" :value="retrabalho.tipo_retrabalho?.id" name="id_tipo_retrabalho" />
+                            <input type="hidden" :value="retrabalho.tipo_retrabalho?.id" name="tipo_retrabalho_id" />
                             <v-combobox
                                 v-model="retrabalho.tipo_retrabalho"
                                 label="Tipo de retrabalho"
@@ -181,15 +181,15 @@ watchEffect(()  => {
                                 item-value="id"
                                 id="tipo_retrabalho"
                                 name="tipo_retrabalho"
-                                :error="shouldShowError('id_tipo_retrabalho')"
-                                :error-messages="getShowError('id_tipo_retrabalho')"
+                                :error="shouldShowError('tipo_retrabalho_id')"
+                                :error-messages="getShowError('tipo_retrabalho_id')"
                             >
                             </v-combobox>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <input type="hidden" :value="retrabalho.usuario?.id" name="id_usuario" />
+                            <input type="hidden" :value="retrabalho.usuario?.id" name="usuario_id" />
                             <v-combobox
                                 v-model="retrabalho.usuario"
                                 label="Desenvolvedor"
@@ -200,8 +200,8 @@ watchEffect(()  => {
                                 item-value="id"
                                 id="_usuario"
                                 name="_usuario"
-                                :error="shouldShowError('id_usuario')"
-                                :error-messages="getShowError('id_usuario')"
+                                :error="shouldShowError('usuario_id')"
+                                :error-messages="getShowError('usuario_id')"
                             >
                             </v-combobox>
                         </div>
@@ -210,7 +210,7 @@ watchEffect(()  => {
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <input type="hidden" :value="retrabalho.aplicacao?.id" name="id_aplicacao" />
+                            <input type="hidden" :value="retrabalho.aplicacao?.id" name="aplicacao_id" />
                             <v-combobox
                                 v-model="retrabalho.aplicacao"
                                 label="Aplicação"
@@ -221,15 +221,15 @@ watchEffect(()  => {
                                 item-value="id"
                                 id="_aplicacao"
                                 name="_aplicacao"
-                                :error="shouldShowError('id_aplicacao')"
-                                :error-messages="getShowError('id_aplicacao')"
+                                :error="shouldShowError('aplicacao_id')"
+                                :error-messages="getShowError('aplicacao_id')"
                             >
                             </v-combobox>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <input type="hidden" :value="retrabalho.projeto?.id" name="id_projeto" />
+                            <input type="hidden" :value="retrabalho.projeto?.id" name="projeto_id" />
                             <v-combobox
                                 v-model="retrabalho.projeto"
                                 label="Projeto"
@@ -241,8 +241,8 @@ watchEffect(()  => {
                                 id="_projeto"
                                 name="_projeto"
                                 :disabled="retrabalho.aplicacao === null"
-                                :error="shouldShowError('id_projeto')"
-                                :error-messages="getShowError('id_projeto')"
+                                :error="shouldShowError('projeto_id')"
+                                :error-messages="getShowError('projeto_id')"
                             >
                             </v-combobox>
                         </div>
@@ -278,7 +278,7 @@ watchEffect(()  => {
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <input type="hidden" :value="retrabalho.caso_teste?.id_caso_teste" name="id_caso_teste" />
+                            <input type="hidden" :value="retrabalho.caso_teste?.id_caso_teste" name="caso_teste_id" />
                             <v-autocomplete
                                 v-model="caso_teste"
                                 label="Caso de teste"
@@ -293,8 +293,8 @@ watchEffect(()  => {
                                 @click:clear="retrabalho.caso_teste.id_caso_teste = null"
                                 @update:search="populaCasosTeste"
                                 v-if="retrabalho.tipo_retrabalho?.tipo === TipoRetrabalhoEnum.FUNCIONAL"
-                                :error="shouldShowError('id_caso_teste')"
-                                :error-messages="getShowError('id_caso_teste')"
+                                :error="shouldShowError('caso_teste_id')"
+                                :error-messages="getShowError('caso_teste_id')"
                             >
                             </v-autocomplete>
                         </div>

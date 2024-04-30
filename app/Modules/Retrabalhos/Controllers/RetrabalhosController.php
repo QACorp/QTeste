@@ -28,7 +28,21 @@ class RetrabalhosController extends Controller
     }
     public function index()
     {
-        return view('retrabalhos::index');
+
+        $retrabalhos = $this->retrabalhoBusiness->buscarRetrabalho(EquipeUtils::equipeUsuarioLogado(), Auth::user()->getAuthIdentifier());
+
+        $heads = [
+            ['label' => 'Id', 'width' => 10],
+            'Nome',
+            'Descrição',
+            ['label' => 'Ações', 'width' => 20],
+        ];
+
+        $config = [
+            ...config('adminlte.datatable_config'),
+            'columns' => [null, null, null, ['orderable' => false]],
+        ];
+        return view('retrabalhos::index', compact('heads', 'config', 'retrabalhos'));
     }
 
     public function inserir()
@@ -41,7 +55,7 @@ class RetrabalhosController extends Controller
     {
         Auth::user()->can(PermissionEnum::INSERIR_RETRABALHO->value);
         try{
-            $retrabalhoDTO->id_usuario_criador = Auth::id();
+            $retrabalhoDTO->usuario_criador_id = Auth::id();
             $retrabalho = $this->retrabalhoBusiness->salvar($retrabalhoDTO, EquipeUtils::equipeUsuarioLogado());
             return redirect()->route('retrabalhos.providencia.index', $retrabalho->id)
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Retrabalho inserido com sucesso']]);

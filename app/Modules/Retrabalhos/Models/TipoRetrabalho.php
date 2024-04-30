@@ -22,6 +22,6 @@ class TipoRetrabalho extends Model
     ];
     public function retrabalhos()
     {
-        return $this->hasMany(Retrabalho::class, 'id_tipo_retrabalho');
+        return $this->hasMany(Retrabalho::class, 'tipo_retrabalho_id');
     }
 }

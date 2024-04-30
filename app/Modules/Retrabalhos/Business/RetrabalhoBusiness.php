@@ -17,6 +17,7 @@ use App\System\Impl\BusinessAbstract;
 use App\System\Traits\TransactionDatabase;
 use App\System\Traits\Validation;
 use Illuminate\Support\Facades\App;
+use Spatie\LaravelData\DataCollection;
 
 class RetrabalhoBusiness extends BusinessAbstract implements RetrabalhoBusinessContract
 {
@@ -32,12 +33,12 @@ class RetrabalhoBusiness extends BusinessAbstract implements RetrabalhoBusinessC
     public function salvar(RetrabalhoCasoTesteDTO $retrabalhoCasoTesteDTO, int $idEquipe): RetrabalhoCasoTesteDTO
     {
         $this->can(PermissionEnum::INSERIR_RETRABALHO->value);
-        $tipoRetrabalho = $this->tipoRetrabalhoBusiness->getTipoRetrabalhoPorId($retrabalhoCasoTesteDTO->id_tipo_retrabalho);
+        $tipoRetrabalho = $this->tipoRetrabalhoBusiness->getTipoRetrabalhoPorId($retrabalhoCasoTesteDTO->tipo_retrabalho_id);
         if(!$tipoRetrabalho){
             throw new NotFoundException("Tipo de retrabalho não encontrado.");
         }
         $this->startTransaction();
-        if(!$retrabalhoCasoTesteDTO->id_caso_teste){
+        if(!$retrabalhoCasoTesteDTO->caso_teste_id){
             $casoTesteDTO = CasoTesteDTO::from([
                 'titulo' => $retrabalhoCasoTesteDTO->titulo_caso_teste,
                 'requisito' => $retrabalhoCasoTesteDTO->requisito_caso_teste,
@@ -49,9 +50,9 @@ class RetrabalhoBusiness extends BusinessAbstract implements RetrabalhoBusinessC
 
             ]);
             $casoTesteDTO = $this->casoTesteBusiness->inserirCasoTeste($casoTesteDTO, $idEquipe);
-            $retrabalhoCasoTesteDTO->id_caso_teste = $casoTesteDTO->id;
+            $retrabalhoCasoTesteDTO->caso_teste_id = $casoTesteDTO->id;
         }else{
-            $casoTeste = $this->casoTesteBusiness->buscarCasoTestePorId($retrabalhoCasoTesteDTO->id_caso_teste, $idEquipe);
+            $casoTeste = $this->casoTesteBusiness->buscarCasoTestePorId($retrabalhoCasoTesteDTO->caso_teste_id, $idEquipe);
             if(!$casoTeste){
                 throw new NotFoundException("Caso de teste não encontrado.");
             }
@@ -73,13 +74,34 @@ class RetrabalhoBusiness extends BusinessAbstract implements RetrabalhoBusinessC
         }
 
         if(!$this->canDo(PermissionEnum::VER_TODOS_RETRABALHOS->value) &&
-            $retrabalho->id_usuario != $idUsuario &&
-            $retrabalho->id_usuario_criador != $idUsuario)
+            $retrabalho->usuario_id != $idUsuario &&
+            $retrabalho->usuario_criador_id != $idUsuario)
         {
             throw new NotFoundException("Retrabalho não encontrado.");
         }
         return $retrabalho;
 
 
+    }
+
+    public function buscarTodosPorEquipe(int $idEquipe): DataCollection
+    {
+        $this->can(PermissionEnum::VER_TODOS_RETRABALHOS->value);
+        return $this->retrabalhoRepository->buscarTodosPorEquipe($idEquipe);
+    }
+
+    public function buscarTodosPorUsuario(int $idUsuario): DataCollection
+    {
+        // TODO: Implement buscarTodosPorUsuario() method.
+    }
+
+    public function buscarRetrabalho(int $idEquipe, int $idUsuario): DataCollection
+    {
+
+        if($this->canDo(PermissionEnum::VER_TODOS_RETRABALHOS->value)){
+            return $this->buscarTodosPorEquipe($idEquipe);
+        }
+        $this->can(PermissionEnum::LISTAR_RETRABALHO->value);
+        return $this->buscarTodosPorUsuario($idUsuario);
     }
 }

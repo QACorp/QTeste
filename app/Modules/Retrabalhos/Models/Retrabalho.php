@@ -20,12 +20,12 @@ class Retrabalho extends Model
         'data',
         'motivo_exclusao',
         'numero_tarefa',
-        'id_tipo_retrabalho',
-        'id_usuario_criador',
-        'id_usuario',
-        'id_projeto',
-        'id_aplicacao',
-        'id_caso_teste'
+        'tipo_retrabalho_id',
+        'usuario_criador_id',
+        'usuario_id',
+        'projeto_id',
+        'aplicacao_id',
+        'caso_teste_id'
     ];
     protected $visible = [
         'id',
@@ -33,12 +33,12 @@ class Retrabalho extends Model
         'data',
         'motivo_exclusao',
         'numero_tarefa',
-        'id_tipo_retrabalho',
-        'id_usuario_criador',
-        'id_usuario',
-        'id_projeto',
-        'id_aplicacao',
-        'id_caso_teste',
+        'tipo_retrabalho_id',
+        'usuario_criador_id',
+        'usuario_id',
+        'projeto_id',
+        'aplicacao_id',
+        'caso_teste_id',
         'usuario',
         'projeto',
         'aplicacao',
@@ -47,26 +47,26 @@ class Retrabalho extends Model
     // Criar chaves estrangeiras
     public function tipo_retrabalho()
     {
-        return $this->belongsTo(TipoRetrabalho::class, 'id_tipo_retrabalho');
+        return $this->belongsTo(TipoRetrabalho::class, 'tipo_retrabalho_id');
     }
     public function usuario_criador()
     {
-        return $this->belongsTo(User::class, 'id_usuario_criador');
+        return $this->belongsTo(User::class, 'usuario_criador_id');
     }
     public function usuario()
     {
-        return $this->belongsTo(User::class, 'id_usuario');
+        return $this->belongsTo(User::class, 'usuario_id');
     }
     public function projeto()
     {
-        return $this->belongsTo(Projeto::class, 'id_projeto');
+        return $this->belongsTo(Projeto::class, 'projeto_id');
     }
     public function aplicacao()
     {
-        return $this->belongsTo(Aplicacao::class, 'id_aplicacao');
+        return $this->belongsTo(Aplicacao::class, 'aplicacao_id');
     }
     public function caso_teste()
     {
-        return $this->belongsTo(CasoTeste::class, 'id_caso_teste');
+        return $this->belongsTo(CasoTeste::class, 'caso_teste_id');
     }
 }

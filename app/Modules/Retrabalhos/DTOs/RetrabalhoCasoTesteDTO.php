@@ -30,16 +30,16 @@ class RetrabalhoCasoTesteDTO extends DTO
     #[Required]
     public ?int $numero_tarefa;
     #[Required]
-    public ?int $id_tipo_retrabalho;
+    public ?int $tipo_retrabalho_id;
 
-    public ?int $id_usuario_criador;
+    public ?int $usuario_criador_id;
     #[Required]
-    public ?int $id_usuario;
-    public ?int $id_projeto;
+    public ?int $usuario_id;
+    public ?int $projeto_id;
 
     #[Required]
-    public ?int $id_aplicacao;
-    public ?int $id_caso_teste;
+    public ?int $aplicacao_id;
+    public ?int $caso_teste_id;
 
     #[WithoutValidation]
     #[WithCast(CasoTeste::class)]

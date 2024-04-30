@@ -10,11 +10,11 @@ class User extends BaseModel  implements Cast
 {
     public function retrabalhos()
     {
-        return $this->hasMany(Retrabalho::class, 'id_usuario');
+        return $this->hasMany(Retrabalho::class, 'usuario_id');
     }
     public function retrabalhosCriador()
     {
-        return $this->hasMany(Retrabalho::class, 'id_usuario_criador');
+        return $this->hasMany(Retrabalho::class, 'usuario_criador_id');
     }
     public function cast(DataProperty $property, mixed $value, array $context): mixed
     {
