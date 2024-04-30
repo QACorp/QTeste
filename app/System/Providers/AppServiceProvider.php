@@ -4,6 +4,7 @@ namespace App\System\Providers;
 
 use App\System\Business\EquipeBusiness;
 use App\System\Business\UserBusiness;
+use App\System\Component\Assinatura;
 use App\System\Component\ComboEquipes;
 use App\System\Component\DeleteModal;
 use App\System\Component\GenericModal;
@@ -43,6 +44,7 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('combo-equipes', ComboEquipes::class);
         Blade::component('upload-modal', UploadModal::class);
         Blade::component('generic-modal', GenericModal::class);
+        Blade::component('assinatura', Assinatura::class);
         MenuConfig::configureMenuModule();
         $this->addDirectoryMigration();
 
