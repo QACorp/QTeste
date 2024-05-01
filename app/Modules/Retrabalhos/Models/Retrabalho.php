@@ -42,7 +42,8 @@ class Retrabalho extends Model
         'usuario',
         'projeto',
         'aplicacao',
-        'caso_teste'
+        'caso_teste',
+        'usuario_criador'
     ];
     // Criar chaves estrangeiras
     public function tipo_retrabalho()

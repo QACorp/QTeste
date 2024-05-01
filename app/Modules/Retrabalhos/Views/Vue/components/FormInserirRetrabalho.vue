@@ -30,6 +30,11 @@ const props = defineProps({
         type: Object as PropType<RetrabalhoInterface>,
         required: true
 
+    },
+    method:{
+        type: String,
+        required: true,
+        default: 'POST'
     }
 });
 const loading = ref(false);
@@ -44,10 +49,10 @@ retrabalho.value.tipo_retrabalho = null;
 retrabalho.value.aplicacao = null;
 retrabalho.value.projeto = null;
 retrabalho.value.usuario = null;
-//retrabalho.value.caso_teste = retrabalho.value.caso_teste.id_caso_teste === '' ? null : retrabalho.value.caso_teste
+retrabalho.value.caso_teste = retrabalho.value.caso_teste.caso_teste_id ? retrabalho.value.caso_teste : {} as CasoTesteInterface;
 retrabalho.value.data = retrabalho.value.data ? retrabalho.value.data : moment().format('YYYY-MM-DD');
 
-const caso_teste = ref<CasoTesteInterface>(props.retrabalho.caso_teste?.id_caso_teste ? props.retrabalho.caso_teste : null);
+const caso_teste = ref<CasoTesteInterface>(props.retrabalho.caso_teste?.caso_teste_id ? props.retrabalho.caso_teste : null);
 const shouldShowError = (field) => {
     return hasError(field, props.errors);
 }
@@ -55,7 +60,7 @@ const getShowError = (field) => {
     return getError(field, props.errors);
 }
 const populaTiposRetrabalho = async () => {
-    await axios.get('consultas/tipos').then((res) => {
+    await axios.get(import.meta.env.VITE_APP_URL+'/retrabalhos/consultas/tipos').then((res) => {
         listaTiposRetrabalho.value = res.data;
         if (retrabalho.value.tipo_retrabalho_id) {
             retrabalho.value.tipo_retrabalho =
@@ -64,7 +69,7 @@ const populaTiposRetrabalho = async () => {
     })
 }
 const populaUsuarios = async () => {
-    await axios.get('consultas/usuarios').then((res) => {
+    await axios.get(import.meta.env.VITE_APP_URL+'/retrabalhos/consultas/usuarios').then((res) => {
         listaUsuarios.value = res.data;
         if (retrabalho.value.usuario_id) {
             retrabalho.value.usuario =
@@ -74,7 +79,7 @@ const populaUsuarios = async () => {
 }
 
 const populaAplicacoes = async () => {
-    await axios.get('../projetos/consultas/aplicacoes').then((res) => {
+    await axios.get(import.meta.env.VITE_APP_URL+'/projetos/consultas/aplicacoes').then((res) => {
         listaAplicacoes.value = res.data;
 
         if (retrabalho.value.aplicacao_id) {
@@ -86,7 +91,7 @@ const populaAplicacoes = async () => {
 }
 
 const populaProjetos = async (idAplicacao:number) => {
-    await axios.get(`../projetos/consultas/aplicacoes/${idAplicacao}/projetos`).then((res) => {
+    await axios.get(import.meta.env.VITE_APP_URL+`/projetos/consultas/aplicacoes/${idAplicacao}/projetos`).then((res) => {
         listaProjetos.value = res.data;
         if (retrabalho.value.projeto_id) {
             retrabalho.value.projeto =
@@ -96,7 +101,7 @@ const populaProjetos = async (idAplicacao:number) => {
 }
 
 const populaCasosTeste = async (term:string) => {
-    await axios.get(`../projetos/consultas/casos-testes?term=${term}`).then((res) => {
+    await axios.get(import.meta.env.VITE_APP_URL+`/projetos/consultas/casos-testes?term=${term}`).then((res) => {
         listaCasosTeste.value = res.data;
         listaCasosTeste.value = listaCasosTeste.value.map((item: any) => {
             return {
@@ -109,14 +114,15 @@ const populaCasosTeste = async (term:string) => {
                 id: item.id
             }
         })
-        if (retrabalho.value.caso_teste.id_caso_teste) {
+
+        if (retrabalho.value.caso_teste.caso_teste_id) {
             retrabalho.value.caso_teste =
-                listaCasosTeste.value.find((item: CasoTesteInterface) => item.caso_teste_id == retrabalho.value.caso_teste.id_caso_teste);
+                listaCasosTeste.value.find((item: CasoTesteInterface) => item.caso_teste_id == retrabalho.value.caso_teste.caso_teste_id);
         }
     })
 }
 const populaCasosTestePorId = async (idCasoTeste:number) => {
-    await axios.get(`../projetos/consultas/casos-testes/${idCasoTeste}`).then((res) => {
+    await axios.get(import.meta.env.VITE_APP_URL+`/projetos/consultas/casos-testes/${idCasoTeste}`).then((res) => {
         listaCasosTeste.value = [res.data];
 
         listaCasosTeste.value = listaCasosTeste.value.map((item: any) => {
@@ -130,7 +136,7 @@ const populaCasosTestePorId = async (idCasoTeste:number) => {
                 id: item.id
             }
         })
-        if (retrabalho.value.caso_teste.id_caso_teste) {
+        if (retrabalho.value.caso_teste.caso_teste_id) {
             retrabalho.value.caso_teste =
                 listaCasosTeste.value.find((item: CasoTesteInterface) => {
                     return item.caso_teste_id === retrabalho.value.caso_teste.caso_teste_id;
@@ -140,30 +146,32 @@ const populaCasosTestePorId = async (idCasoTeste:number) => {
 }
 
 onMounted( async () => {
+
     populaTiposRetrabalho();
     populaAplicacoes();
     populaUsuarios();
-    if (retrabalho.value.caso_teste?.id_caso_teste) {
+    if (retrabalho.value.caso_teste?.caso_teste_id) {
         await populaCasosTestePorId(retrabalho.value.caso_teste.caso_teste_id);
         caso_teste.value = retrabalho.value.caso_teste;
     }
 
 });
 watchEffect(()  => {
-
     if(retrabalho.value.aplicacao?.id){
         populaProjetos(retrabalho.value.aplicacao.id);
     }
-    if(caso_teste.value  && caso_teste.value.id){
-        retrabalho.value.caso_teste.caso_teste_id = caso_teste.value.caso_teste_id;
+});
+watch(caso_teste, (new_caso_teste, old_caso_teste) => {
+    if(new_caso_teste  && new_caso_teste.id){
+        retrabalho.value.caso_teste = new_caso_teste;
     }
-
 })
 
 </script>
 
 <template>
     <form id="form-rework" :action="actionForm" method="POST" autocomplete="off">
+        <input type="hidden" name="_method" :value="method">
         <input type="hidden" name="_token" :value="csrf">
         <div class="row">
             <div class="col-md-6 border-e-sm">
@@ -179,8 +187,8 @@ watchEffect(()  => {
                                 :return-object="true"
                                 item-title="descricao"
                                 item-value="id"
-                                id="tipo_retrabalho"
-                                name="tipo_retrabalho"
+                                id="_tipo_retrabalho"
+                                name="_tipo_retrabalho"
                                 :error="shouldShowError('tipo_retrabalho_id')"
                                 :error-messages="getShowError('tipo_retrabalho_id')"
                             >
@@ -255,6 +263,7 @@ watchEffect(()  => {
                                 v-model="retrabalho.data"
                                 label="Data"
                                 name="data"
+                                variant="solo"
                                 id="data"
                                 type="date"
                                 :error="shouldShowError('data')"
@@ -269,6 +278,7 @@ watchEffect(()  => {
                                 label="Tarefa"
                                 name="numero_tarefa"
                                 id="numero_tarefa"
+                                variant="solo"
                                 :error="shouldShowError('numero_tarefa')"
                                 :error-messages="getShowError('numero_tarefa')"
                             ></v-text-field>
@@ -278,19 +288,19 @@ watchEffect(()  => {
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <input type="hidden" :value="retrabalho.caso_teste?.id_caso_teste" name="caso_teste_id" />
+                            <input type="hidden" :value="retrabalho.caso_teste?.caso_teste_id" name="caso_teste_id" />
                             <v-autocomplete
                                 v-model="caso_teste"
                                 label="Caso de teste"
                                 :items="listaCasosTeste"
                                 variant="solo"
-                                :return-object="true"
+                                return-object
                                 item-title="titulo_caso_teste"
-                                item-value="id_caso_teste"
+                                item-value="caso_teste_id"
                                 :clearable="true"
                                 id="_caso_teste"
                                 name="_caso_teste"
-                                @click:clear="retrabalho.caso_teste.id_caso_teste = null"
+                                @click:clear="retrabalho.caso_teste.caso_teste_id = null"
                                 @update:search="populaCasosTeste"
                                 v-if="retrabalho.tipo_retrabalho?.tipo === TipoRetrabalhoEnum.FUNCIONAL"
                                 :error="shouldShowError('caso_teste_id')"

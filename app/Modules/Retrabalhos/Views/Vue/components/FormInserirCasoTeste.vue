@@ -1,22 +1,18 @@
 <script setup lang="ts">
-import {PropType, ref} from "vue";
 import {CasoTesteInterface} from "../Interfaces/CasoTeste.interface";
 import {getError, hasError} from "../../../../../../resources/js/ErrorHelper";
 
 const props = defineProps({
-    casoTeste: {
-        type: {} as PropType<CasoTesteInterface>,
-        required: true,
-    },
+
     errors: {
         type: Object,
         required: true,
     },
 });
-const casoTeste = defineModel<CasoTesteInterface>()
-//const casoTeste = ref<CasoTesteInterface>(props.casoTeste);
+const casoTeste = defineModel<CasoTesteInterface>();
+
 const isDisable = () => {
-    return casoTeste.value.id_caso_teste !== null;
+    return casoTeste.value && casoTeste.value.caso_teste_id;
 }
 </script>
 

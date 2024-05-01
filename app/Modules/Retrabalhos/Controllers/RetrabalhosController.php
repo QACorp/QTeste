@@ -15,6 +15,7 @@ use App\System\Traits\EquipeTools;
 use App\System\Utils\EquipeUtils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 
 class RetrabalhosController extends Controller
@@ -32,19 +33,58 @@ class RetrabalhosController extends Controller
         $retrabalhos = $this->retrabalhoBusiness->buscarRetrabalho(EquipeUtils::equipeUsuarioLogado(), Auth::user()->getAuthIdentifier());
 
         $heads = [
-            ['label' => 'Id', 'width' => 10],
-            'Nome',
-            'Descrição',
-            ['label' => 'Ações', 'width' => 20],
+            ['label' => '#', 'width' => 10],
+            'Data',
+            'Tarefa',
+            'Usuário',
+            'Criador',
+            ['label' => 'Ações', 'width' => 10, 'orderable' => false],
         ];
 
         $config = [
             ...config('adminlte.datatable_config'),
-            'columns' => [null, null, null, ['orderable' => false]],
+            'columns' => [['orderable' => true], ['orderable' => true], ['orderable' => true], ['orderable' => true], ['orderable' => true], ['orderable' => false]],
         ];
         return view('retrabalhos::index', compact('heads', 'config', 'retrabalhos'));
     }
+    public function alterar(int $idRetrabalho)
+    {
 
+        $retrabalho = $this->retrabalhoBusiness->buscarPorId($idRetrabalho, Auth::user()->getAuthIdentifier());
+        if($this->retrabalhoBusiness->canAlterarRetrabalho($retrabalho, Auth::user()->getAuthIdentifier())){
+            return view('retrabalhos::alterar', compact('retrabalho'));
+        }
+        return redirect(route('retrabalhos.index'))
+            ->with([Controller::MESSAGE_KEY_ERROR => ['Retrabalho não encontrado']]);
+
+
+    }
+    public function editar(int $idRetrabalho, RetrabalhoCasoTesteDTO $retrabalhoDTO)
+    {
+        $retrabalhoDTO->id = $idRetrabalho;
+        if(!$this->retrabalhoBusiness->canAlterarRetrabalho($retrabalhoDTO, Auth::user()->getAuthIdentifier())){
+            return redirect()->route('retrabalhos.index')
+                ->with([Controller::MESSAGE_KEY_ERROR => ['Acesso não autorizado']]);
+        }
+        try{
+
+            $retrabalho = $this->retrabalhoBusiness->editar(
+                $retrabalhoDTO,
+                Auth::user()->getAuthIdentifier(),
+                EquipeUtils::equipeUsuarioLogado()
+            );
+            return redirect()->route('retrabalhos.index')
+                ->with([Controller::MESSAGE_KEY_SUCCESS => ['Retrabalho alterado com sucesso']]);
+        }catch (UnauthorizedException $e){
+            return redirect()->back()->withErrors($e->getMessage())->withInput();
+        }catch (NotFoundException $e) {
+            return redirect()->back()->withErrors($e->getMessage())->withInput();
+        }catch (UnprocessableEntityException $e){
+            return redirect()->back()->withErrors($e->getValidator())->withInput();
+        }
+
+
+    }
     public function inserir()
     {
         Auth::user()->can(PermissionEnum::INSERIR_RETRABALHO->value);
@@ -60,6 +100,7 @@ class RetrabalhosController extends Controller
             return redirect()->route('retrabalhos.providencia.index', $retrabalho->id)
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Retrabalho inserido com sucesso']]);
         }catch (UnauthorizedException $e){
+
             return redirect()->back()->withErrors($e->getMessage())->withInput();
         }catch (NotFoundException $e) {
             return redirect()->back()->withErrors($e->getMessage())->withInput();
@@ -69,9 +110,24 @@ class RetrabalhosController extends Controller
     }
     public function mostrarProvidencia(int $idRetrabalho){
         Auth::user()->can(PermissionEnum::LISTAR_RETRABALHO->value);
-        $retrabalho = $this->retrabalhoBusiness->buscarPorId($idRetrabalho, Auth::id());
+        $retrabalho = $this->retrabalhoBusiness->buscarPorId($idRetrabalho, Auth::user()->getAuthIdentifier());
 
         return view('retrabalhos::show_providencia', compact('retrabalho'));
+    }
+
+    public function excluir(int $idRetrabalho)
+    {
+        try{
+            $this->retrabalhoBusiness->remover($idRetrabalho, Auth::user()->getAuthIdentifier());
+            return redirect(route('retrabalhos.index'))->with([Controller::MESSAGE_KEY_SUCCESS => ['Retrabalho removido com sucesso']]);
+        }catch (UnauthorizedException $e) {
+            return redirect(route('retrabalhos.index'))
+                ->with([Controller::MESSAGE_KEY_ERROR => ['Permissão negada ao remover retrabalho']]);
+        }catch (NotFoundException $exception){
+            return redirect(route('retrabalhos.index'))
+                ->with([Controller::MESSAGE_KEY_ERROR => ['Registro não encontrado']]);
+        }
+
     }
 
 }

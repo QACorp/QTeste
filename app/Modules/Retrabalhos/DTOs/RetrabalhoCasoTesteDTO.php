@@ -35,10 +35,12 @@ class RetrabalhoCasoTesteDTO extends DTO
     public ?int $usuario_criador_id;
     #[Required]
     public ?int $usuario_id;
+
     public ?int $projeto_id;
 
     #[Required]
     public ?int $aplicacao_id;
+
     public ?int $caso_teste_id;
 
     #[WithoutValidation]
@@ -53,6 +55,9 @@ class RetrabalhoCasoTesteDTO extends DTO
     #[WithoutValidation]
     #[WithCast(User::class)]
     public ?UserDTO $usuario;
+    #[WithoutValidation]
+    #[WithCast(User::class)]
+    public ?UserDTO $usuario_criador;
 
     public ?string $titulo_caso_teste;
     public ?string $requisito_caso_teste;

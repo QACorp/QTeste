@@ -3,7 +3,11 @@
 @section('title', 'QAKit - Retrabalhos | Inserir')
 @section('plugins.Datatables', true)
 @section('content_header')
-    <h1 class="m-0 text-dark">Inserir retrabalho </h1>
+    <h1 class="m-0 text-dark">
+        <a href="{{ route('retrabalhos.index') }}" class="btn btn-warning rounded-circle mr-1" title="Voltar para a lista">
+            <i class="fas fa-arrow-left"></i>
+        </a>Inserir retrabalho
+    </h1>
 
 @stop
 
@@ -19,12 +23,12 @@
                             descricao: '{{old('descricao', '')}}',
                             data: '{{old('data', '')}}',
                             motivo_exclusao: '{{old('motivo_exclusao', '')}}',
-                            id_tipo_retrabalho: {{old('id_tipo_retrabalho', null) ?? 'null' }},
-                            id_usuario_criador: {{old('id_usuario_criador', null) ?? 'null' }},
-                            id_usuario: {{old('id_usuario', null) ?? 'null' }},
-                            id_projeto: {{old('id_projeto', null)  ?? 'null'}},
-                            id_aplicacao: {{old('id_aplicacao', null)  ?? 'null'}},
-                            id_caso_teste: {{old('id_caso_teste', null)  ?? 'null'}},
+                            tipo_retrabalho_id: {{old('tipo_retrabalho_id', null) ?? 'null' }},
+                            usuario_criador_id: {{old('usuario_criador_id', null) ?? 'null' }},
+                            usuario_id: {{old('usuario_id', null) ?? 'null' }},
+                            projeto_id: {{old('projeto_id', null)  ?? 'null'}},
+                            aplicacao_id: {{old('aplicacao_id', null)  ?? 'null'}},
+                            caso_teste_id: {{old('caso_teste_id', null)  ?? 'null'}},
                             numero_tarefa: '{{old('numero_tarefa', '')}}',
                             caso_teste: {
                                 titulo_caso_teste: '{{old('titulo_caso_teste', '')}}',
@@ -32,7 +36,7 @@
                                 requisito_caso_teste: '{{old('requisito_caso_teste', '')}}',
                                 cenario_caso_teste: '{{old('cenario_caso_teste', '')}}',
                                 teste_caso_teste: '{{old('teste_caso_teste', '')}}',
-                                id_caso_teste: {{old('id_caso_teste', null) ?? 'null'}}
+                                caso_teste_id: {{old('caso_teste_id', null) ?? 'null'}}
                             }
 
                         }"

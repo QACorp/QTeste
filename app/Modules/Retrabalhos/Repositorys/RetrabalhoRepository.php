@@ -28,11 +28,25 @@ class RetrabalhoRepository implements RetrabalhoRepositoryContract
 
     public function buscarTodosPorEquipe(int $idEquipe): DataCollection
     {
-        $retrabalhos = Retrabalho::with(['caso_teste', 'aplicacao', 'tipo_retrabalho', 'projeto', 'usuario'])
+        $retrabalhos = Retrabalho::with(['caso_teste', 'aplicacao', 'tipo_retrabalho', 'projeto', 'usuario', 'usuario_criador'])
+            ->addSelect('retrabalhos.*')
             ->join('projetos.aplicacoes', 'retrabalhos.aplicacao_id', '=', 'aplicacoes.id')
             ->join('projetos.aplicacoes_equipes','aplicacoes_equipes.aplicacao_id','=','aplicacoes.id')
             ->where('aplicacoes_equipes.equipe_id',$idEquipe)
             ->get();
-        dd($retrabalhos);
+        return RetrabalhoCasoTesteDTO::collection($retrabalhos);
+    }
+
+    public function remover(int $idRetrabalho): bool
+    {
+        return Retrabalho::find($idRetrabalho)->delete();
+    }
+
+    public function editar(RetrabalhoCasoTesteDTO $retrabalhoCasoTesteDTO): RetrabalhoCasoTesteDTO
+    {
+        $retrabalho = Retrabalho::find($retrabalhoCasoTesteDTO->id);
+        $retrabalho->fill($retrabalhoCasoTesteDTO->toArray());
+        $retrabalho->save();
+        return RetrabalhoCasoTesteDTO::from($retrabalho);
     }
 }

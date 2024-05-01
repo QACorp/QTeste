@@ -32,11 +32,12 @@ class IdCasoTesteOuCasoTesteRule implements ValidationRule, DataAwareRule
     }
     public function validateCasoTeste():bool
     {
-        $tipoRetrabalho = $this->tipoRetrabalhoBusiness->getTipoRetrabalhoPorId($this->data['id_tipo_retrabalho']);
-        if ($tipoRetrabalho->tipo != TipoRetrabalhoEnum::FUNCIONAL) {
+
+        $tipoRetrabalho = $this->tipoRetrabalhoBusiness->getTipoRetrabalhoPorId($this->data['tipo_retrabalho_id']);
+        if ($tipoRetrabalho->tipo->value !== TipoRetrabalhoEnum::FUNCIONAL->value) {
             return true;
         }
-        if(!empty($this->data['id_caso_teste']) || $this->casoTestePreenchido()) {
+        if(!empty($this->data['caso_teste_id']) || $this->casoTestePreenchido()) {
             return true;
         }
         return false;

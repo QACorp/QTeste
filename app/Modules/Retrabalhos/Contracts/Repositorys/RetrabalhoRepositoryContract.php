@@ -10,4 +10,6 @@ interface RetrabalhoRepositoryContract
     public function salvar(RetrabalhoCasoTesteDTO $retrabalhoCasoTesteDTO): RetrabalhoCasoTesteDTO;
     public function buscarPorId(int $idRetrabalho): ?RetrabalhoCasoTesteDTO;
     public function buscarTodosPorEquipe(int $idEquipe):DataCollection;
+    public function remover(int $idRetrabalho): bool;
+    public function editar(RetrabalhoCasoTesteDTO $retrabalhoCasoTesteDTO): RetrabalhoCasoTesteDTO;
 }

@@ -21,25 +21,25 @@
                                 foi encontrado o seguinte retrabalho nesta tarefa, favor corrigir.<br />
                                 ==================================================== <br />
                                 <strong>Descrição:</strong><br />
-                                {{ nl2br($retrabalho->descricao) }}<br />
+                                {!! strip_tags(nl2br($retrabalho->descricao),['<br />','<br>']) !!}<br />
                                 ====================================================<br />
                                 @if($retrabalho->caso_teste)
                                     <strong>CASO DE TESTE #{{ $retrabalho->caso_teste->id }}</strong><br />
                                     ====================================================<br />
                                     <strong>Título:</strong><br />
-                                    {{ nl2br($retrabalho->caso_teste->titulo) }}<br />
+                                    {!! strip_tags(nl2br($retrabalho->caso_teste->titulo),['<br />','<br>']) !!}<br />
                                     ----------------------------------------------------<br />
                                     <strong>Requisito:</strong><br />
-                                    {{ nl2br($retrabalho->caso_teste->requisito) }}<br />
+                                    {!! strip_tags(nl2br($retrabalho->caso_teste->requisito),['<br />','<br>']) !!}<br />
                                     ----------------------------------------------------<br />
                                     <strong>Cenário:</strong><br />
-                                    {{ nl2br($retrabalho->caso_teste->cenario) }}<br />
+                                    {!! strip_tags(nl2br($retrabalho->caso_teste->cenario),['<br />','<br>']) !!}<br />
                                     ----------------------------------------------------<br />
                                     <strong>Teste:</strong><br />
-                                    {!!   nl2br($retrabalho->caso_teste->teste) !!}<br />
+                                    {!!  strip_tags(nl2br($retrabalho->caso_teste->teste),['<br />','<br>']) !!}<br />
                                     ----------------------------------------------------<br />
                                     <strong>Resultado esperado:</strong><br />
-                                    {{ nl2br($retrabalho->caso_teste->resultado_esperado) }}<br />
+                                    {!! strip_tags(nl2br($retrabalho->caso_teste->resultado_esperado),['<br />','<br>']) !!}<br />
                                     ====================================================<br />
                                 @endif
 
