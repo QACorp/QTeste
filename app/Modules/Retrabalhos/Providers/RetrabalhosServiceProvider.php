@@ -59,7 +59,7 @@ class RetrabalhosServiceProvider extends ServiceProviderAbstract
         Blade::component('grafico-evolucao-retrabalho-aplicacao', GraficoEvolucaoRetrabalhoAplicacao::class);
         Blade::component('grafico-evolucao-retrabalho', GraficoEvolucaoRetrabalho::class);
         Blade::component('retrabalho-total-equipe', RetrabalhoTotalEquipe::class);
-        DashboardConfig::addDashboardWidget(new Widget('x-retrabalho-total-equipe',12));
+        DashboardConfig::addDashboardWidget(new Widget('x-retrabalho-total-equipe',12, ['ano' => date('Y')]));
         $this->moduleExists(ProjetosServiceProvider::class);
         MenuConfig::configureMenuModule();
 

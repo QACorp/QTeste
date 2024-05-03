@@ -14,19 +14,19 @@ class DashboardBusiness implements DashboardBusinessContract
     {
     }
 
-    public function getTotalRetrabalhoPorEquipe(int $idEquipe): int
+    public function getTotalRetrabalhoPorEquipe(int $idEquipe, int $ano): int
     {
-        return $this->dashboardRepository->getTotalRetrabalhoPorEquipe($idEquipe);
+        return $this->dashboardRepository->getTotalRetrabalhoPorEquipe($idEquipe, $ano);
     }
 
-    public function getTotalRetrabalhoPorEquipePorTarefa(int $idEquipe): float
+    public function getTotalRetrabalhoPorEquipePorTarefa(int $idEquipe, int $ano): float
     {
-        return $this->dashboardRepository->getTotalRetrabalhoPorEquipePorTarefa($idEquipe);
+        return $this->dashboardRepository->getTotalRetrabalhoPorEquipePorTarefa($idEquipe, $ano);
     }
 
-    public function getTotalRetrabalhoPorEquipePorUsuario(int $idEquipe): float
+    public function getTotalRetrabalhoPorEquipePorUsuario(int $idEquipe, int $ano,): float
     {
-        return $this->dashboardRepository->getTotalRetrabalhoPorEquipePorUsuario($idEquipe);
+        return $this->dashboardRepository->getTotalRetrabalhoPorEquipePorUsuario($idEquipe, $ano);
     }
 
     public function getTotaPorPeriodoAnual(int $idEquipe, int $ano): DataCollection

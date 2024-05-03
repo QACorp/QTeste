@@ -18,11 +18,15 @@ class RetrabalhoTotalEquipe extends Component
     /**
      * Create a new component instance.
      */
+
     public function __construct(
+        public ?int $ano = null,
         private readonly DashboardBusinessContract $dashboardBusiness
     )
     {
-
+        if($this->ano === null) {
+            $this->ano = date('Y');
+        }
     }
 
     /**
@@ -30,9 +34,9 @@ class RetrabalhoTotalEquipe extends Component
      */
     public function render(): View|Closure|string
     {
-        $totalRetrabalho = $this->dashboardBusiness->getTotalRetrabalhoPorEquipe(EquipeUtils::equipeUsuarioLogado());
-        $totalRetrabalhoPorEquipeDesenvolvedor = $this->dashboardBusiness->getTotalRetrabalhoPorEquipePorUsuario(EquipeUtils::equipeUsuarioLogado());
-        $totalRetrabalhoPorEquipeTarefa = $this->dashboardBusiness->getTotalRetrabalhoPorEquipePorTarefa(EquipeUtils::equipeUsuarioLogado());
+        $totalRetrabalho = $this->dashboardBusiness->getTotalRetrabalhoPorEquipe(EquipeUtils::equipeUsuarioLogado(), $this->ano);
+        $totalRetrabalhoPorEquipeDesenvolvedor = $this->dashboardBusiness->getTotalRetrabalhoPorEquipePorUsuario(EquipeUtils::equipeUsuarioLogado(), $this->ano);
+        $totalRetrabalhoPorEquipeTarefa = $this->dashboardBusiness->getTotalRetrabalhoPorEquipePorTarefa(EquipeUtils::equipeUsuarioLogado(), $this->ano);
         return view('retrabalhos::Components.retrabalho-total-equipe', compact(
             'totalRetrabalho',
             'totalRetrabalhoPorEquipeTarefa',

@@ -39,7 +39,7 @@
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <x-retrabalho-total-equipe></x-retrabalho-total-equipe>
+                                    <x-retrabalho-total-equipe :ano="$ano"></x-retrabalho-total-equipe>
                                 </div>
                             </div>
                             <div class="row">

@@ -12,54 +12,66 @@ use Spatie\LaravelData\DataCollection;
 class DashoboardRepository implements DashboardRepositoryContract
 {
 
-    public function getTotalRetrabalhoPorEquipe(int $idEquipe): int
+    public function getTotalRetrabalhoPorEquipe(int $idEquipe, int $ano): int
     {
         $retrabalhos = Retrabalho::with(['caso_teste', 'aplicacao', 'tipo_retrabalho', 'projeto', 'usuario', 'usuario_criador'])
             ->select(DB::raw('COUNT(retrabalhos.id) as total'))
             ->join('projetos.aplicacoes', 'retrabalhos.aplicacao_id', '=', 'aplicacoes.id')
             ->join('projetos.aplicacoes_equipes','aplicacoes_equipes.aplicacao_id','=','aplicacoes.id')
             ->where('aplicacoes_equipes.equipe_id',$idEquipe)
+            ->where(DB::raw('EXTRACT(YEAR FROM retrabalhos.data)'), $ano)
             ->first();
         return $retrabalhos->total;
     }
 
-    public function getTotalRetrabalhoPorEquipePorTarefa(int $idEquipe): float
+    public function getTotalRetrabalhoPorEquipePorTarefa(int $idEquipe, int $ano): float
     {
-        $retrabalhos = Retrabalho::with(['caso_teste', 'aplicacao', 'tipo_retrabalho', 'projeto', 'usuario', 'usuario_criador'])
-        ->select(DB::raw(
-            '(COUNT(retrabalhos.id)::numeric / (SELECT COUNT(DISTINCT (retrabalhos.numero_tarefa))
+        $retrabalhos = Retrabalho::select(DB::raw(
+            '(COUNT(retrabalhos.id)::numeric / (SELECT
+                                                 CASE
+                                                   WHEN COUNT(DISTINCT (retrabalhos.usuario_id)) = 0 THEN 1
+                                                 ELSE COUNT(DISTINCT (retrabalhos.usuario_id))
+                                                 END
                                  FROM projetos.retrabalhos
                                           JOIN projetos.aplicacoes ON retrabalhos.aplicacao_id = aplicacoes.id
                                           JOIN projetos.aplicacoes_equipes
                                                ON aplicacoes_equipes.aplicacao_id = aplicacoes.id
                                  WHERE
                                        aplicacoes_equipes.equipe_id = ? AND
+                                       EXTRACT(YEAR FROM retrabalhos.data) = ? AND
                                        retrabalhos.deleted_at is null)::numeric)::numeric(9,2) as total'
         ))
-        ->setBindings([$idEquipe])
+        ->setBindings([$idEquipe, $ano])
         ->join('projetos.aplicacoes', 'retrabalhos.aplicacao_id', '=', 'aplicacoes.id')
         ->join('projetos.aplicacoes_equipes','aplicacoes_equipes.aplicacao_id','=','aplicacoes.id')
         ->where('aplicacoes_equipes.equipe_id',$idEquipe)
+        ->where(DB::raw('EXTRACT(YEAR FROM retrabalhos.data)'), $ano)
         ->first();
         return $retrabalhos->total;
     }
 
-    public function getTotalRetrabalhoPorEquipePorUsuario(int $idEquipe): float
+    public function getTotalRetrabalhoPorEquipePorUsuario(int $idEquipe, int $ano): float
     {
         $retrabalhos = Retrabalho::select(DB::raw(
-                '(COUNT(retrabalhos.id)::numeric / (SELECT COUNT(DISTINCT (retrabalhos.usuario_id))
+                '(COUNT(retrabalhos.id)::numeric / (SELECT
+                                                 CASE
+                                                   WHEN COUNT(DISTINCT (retrabalhos.usuario_id)) = 0 THEN 1
+                                                 ELSE COUNT(DISTINCT (retrabalhos.usuario_id))
+                                                 END
                                  FROM projetos.retrabalhos
                                           JOIN projetos.aplicacoes ON retrabalhos.aplicacao_id = aplicacoes.id
                                           JOIN projetos.aplicacoes_equipes
                                                ON aplicacoes_equipes.aplicacao_id = aplicacoes.id
                                  WHERE
                                        aplicacoes_equipes.equipe_id = ? AND
+                                       EXTRACT(YEAR FROM retrabalhos.data) = ? AND
                                        retrabalhos.deleted_at is null)::numeric)::numeric(9,2) as total'
             ))
-            ->setBindings([$idEquipe])
+            ->setBindings([$idEquipe, $ano])
             ->join('projetos.aplicacoes', 'retrabalhos.aplicacao_id', '=', 'aplicacoes.id')
             ->join('projetos.aplicacoes_equipes','aplicacoes_equipes.aplicacao_id','=','aplicacoes.id')
             ->where('aplicacoes_equipes.equipe_id',$idEquipe)
+            ->where(DB::raw('EXTRACT(YEAR FROM retrabalhos.data)'), $ano)
             ->first();
         return $retrabalhos->total;
     }

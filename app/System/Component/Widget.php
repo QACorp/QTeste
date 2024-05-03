@@ -6,12 +6,17 @@ class Widget
 {
     public function __construct(
         private readonly string $nomeComponente,
-        private readonly int $size = 4
+        private readonly int $size = 4,
+        private readonly array $parameters = []
     )
     {
     }
     public function getComponente(){
-        return '<'.$this->nomeComponente.' />';
+        $parameters = '';
+        foreach($this->parameters as $key => $value){
+            $parameters .= ' :'.$key.'="'.$value.'"';
+        }
+        return '<'.$this->nomeComponente.' '.$parameters.' />';
     }
     public function getSize(){
         return $this->size;
