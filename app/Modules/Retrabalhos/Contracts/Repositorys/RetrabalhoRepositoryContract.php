@@ -12,4 +12,5 @@ interface RetrabalhoRepositoryContract
     public function buscarTodosPorEquipe(int $idEquipe):DataCollection;
     public function remover(int $idRetrabalho): bool;
     public function editar(RetrabalhoCasoTesteDTO $retrabalhoCasoTesteDTO): RetrabalhoCasoTesteDTO;
+    public function buscarTodosPorUsuario(int $idUsuario): DataCollection;
 }

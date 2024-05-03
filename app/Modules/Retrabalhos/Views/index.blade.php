@@ -31,7 +31,7 @@
                         compressed
                         hoverable
                         bordered
-                        beautify
+
                         striped>
                         @forelse($retrabalhos as $retrabalho)
                             <tr>
@@ -41,6 +41,12 @@
                                 <td>{{ $retrabalho->usuario->name }}</td>
                                 <td>{{ $retrabalho->usuario_criador->name }}</td>
                                 <td>
+                                    @if(App::make(RetrabalhoBusinessContract::class)->canVerRetrabalho($retrabalho, Auth::user()->getAuthIdentifier()))
+
+                                        <a class="btn btn-primary btn-sm" title="Visualizar providência"
+                                           href="{{ route('retrabalhos.providencia.index',$retrabalho->id) }}"><i
+                                                class="fas fa-eye"></i> </a>
+                                    @endif
                                     @if(App::make(RetrabalhoBusinessContract::class)->canAlterarRetrabalho($retrabalho, Auth::user()->getAuthIdentifier()))
 
                                         <a class="btn btn-warning btn-sm" title="Editar"

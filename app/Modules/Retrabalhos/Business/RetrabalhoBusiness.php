@@ -101,7 +101,8 @@ class RetrabalhoBusiness extends BusinessAbstract implements RetrabalhoBusinessC
 
     public function buscarTodosPorUsuario(int $idUsuario): DataCollection
     {
-        // TODO: Implement buscarTodosPorUsuario() method.
+        $this->can(PermissionEnum::LISTAR_RETRABALHO->value);
+        return $this->retrabalhoRepository->buscarTodosPorUsuario($idUsuario);
     }
 
     public function buscarRetrabalho(int $idEquipe, int $idUsuario): DataCollection
@@ -120,17 +121,29 @@ class RetrabalhoBusiness extends BusinessAbstract implements RetrabalhoBusinessC
             return true;
         }
 
-        $this->can(PermissionEnum::ALTERAR_RETRABALHO->value);
-        return $retrabalhoDTO->usuario_criador_id == $idUsuario;
+        if($this->canDo(PermissionEnum::ALTERAR_RETRABALHO->value)){
+            return $retrabalhoDTO->usuario_criador_id == $idUsuario;
+        }
+        return false;
+
     }
     public function canRemoverRetrabalho(RetrabalhoCasoTesteDTO $retrabalhoDTO, int $idUsuario): bool
     {
         if($this->canDo(PermissionEnum::REMOVER_TODOS_RETRABALHOS->value)){
             return true;
         }
+        if($this->canDo(PermissionEnum::REMOVER_RETRABALHO->value)){
+            return $retrabalhoDTO->usuario_criador_id == $idUsuario;
+        }
+        return false;
+    }
 
-        $this->can(PermissionEnum::REMOVER_RETRABALHO->value);
-        return $retrabalhoDTO->usuario_criador_id == $idUsuario;
+    public function canVerRetrabalho(RetrabalhoCasoTesteDTO $retrabalhoDTO, int $idUsuario): bool
+    {
+        if($this->canDo(PermissionEnum::VER_TODOS_RETRABALHOS->value)){
+            return true;
+        }
+        return $retrabalhoDTO->usuario_criador_id == $idUsuario || $retrabalhoDTO->usuario_id == $idUsuario;
     }
 
     public function remover(int $idRetrabalho, ?int $idUsuario): bool
@@ -152,22 +165,30 @@ class RetrabalhoBusiness extends BusinessAbstract implements RetrabalhoBusinessC
             throw new NotFoundException("Tipo de retrabalho não encontrado.");
         }
         $retrabalho = $this->retrabalhoRepository->buscarPorId($retrabalhoCasoTesteDTO->id);
-        if($this->canAlterarRetrabalho($retrabalho,$idUsuario)){
-            $retrabalhoCasoTesteDTO->usuario_criador_id = $retrabalho->usuario_criador_id;
-            if($tipoRetrabalho->tipo->value == TipoRetrabalhoEnum::FUNCIONAL->value) {
-                $this->startTransaction();
-                $casoTeste = $this->inserirCasoTeste($retrabalhoCasoTesteDTO, $idEquipe);
-                if (!$casoTeste) {
-                    $casoTeste = $this->casoTesteBusiness->buscarCasoTestePorId($retrabalhoCasoTesteDTO->caso_teste_id, $idEquipe);
-                }
-                if (!$casoTeste) {
-                    $this->rollback();
-                    throw new NotFoundException("Caso de teste não encontrado.");
-                }
-                $retrabalhoCasoTesteDTO->caso_teste_id = $casoTeste->id;
-            }
-            $this->commit();
-            return $this->retrabalhoRepository->editar($retrabalhoCasoTesteDTO);
+        if(!$this->canAlterarRetrabalho($retrabalho,$idUsuario)){
+            throw new UnauthorizedException('Acesso negado');
         }
+        $retrabalhoCasoTesteDTO->usuario_criador_id = $retrabalho->usuario_criador_id;
+        if($tipoRetrabalho->tipo->value == TipoRetrabalhoEnum::FUNCIONAL->value) {
+            $this->startTransaction();
+            $casoTeste = $this->inserirOuBuscar($retrabalhoCasoTesteDTO, $idEquipe);
+            $retrabalhoCasoTesteDTO->caso_teste_id = $casoTeste->id;
+        }
+        $this->commit();
+        return $this->retrabalhoRepository->editar($retrabalhoCasoTesteDTO);
+
+
+    }
+    private function inserirOuBuscar(RetrabalhoCasoTesteDTO $retrabalhoCasoTesteDTO, int $idEquipe): CasoTesteDTO
+    {
+        $casoTeste = $this->inserirCasoTeste($retrabalhoCasoTesteDTO, $idEquipe);
+        if (!$casoTeste) {
+            $casoTeste = $this->casoTesteBusiness->buscarCasoTestePorId($retrabalhoCasoTesteDTO->caso_teste_id, $idEquipe);
+        }
+        if (!$casoTeste) {
+            $this->rollback();
+            throw new NotFoundException("Caso de teste não encontrado.");
+        }
+        return $casoTeste;
     }
 }

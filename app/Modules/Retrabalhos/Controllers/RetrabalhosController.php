@@ -33,12 +33,12 @@ class RetrabalhosController extends Controller
         $retrabalhos = $this->retrabalhoBusiness->buscarRetrabalho(EquipeUtils::equipeUsuarioLogado(), Auth::user()->getAuthIdentifier());
 
         $heads = [
-            ['label' => '#', 'width' => 10],
+            ['label' => '#', 'width' => 8],
             'Data',
             'Tarefa',
             'Usuário',
             'Criador',
-            ['label' => 'Ações', 'width' => 10, 'orderable' => false],
+            ['label' => 'Ações', 'width' => 13, 'orderable' => false],
         ];
 
         $config = [
@@ -119,7 +119,8 @@ class RetrabalhosController extends Controller
     {
         try{
             $this->retrabalhoBusiness->remover($idRetrabalho, Auth::user()->getAuthIdentifier());
-            return redirect(route('retrabalhos.index'))->with([Controller::MESSAGE_KEY_SUCCESS => ['Retrabalho removido com sucesso']]);
+            return redirect(route('retrabalhos.index'))
+                ->with([Controller::MESSAGE_KEY_SUCCESS => ['Retrabalho removido com sucesso']]);
         }catch (UnauthorizedException $e) {
             return redirect(route('retrabalhos.index'))
                 ->with([Controller::MESSAGE_KEY_ERROR => ['Permissão negada ao remover retrabalho']]);

@@ -1,6 +1,7 @@
 <?php
 use App\Modules\Retrabalhos\Controllers\ConsultaRetrabalhosController;
 use App\Modules\Retrabalhos\Controllers\ConsultaUsuarioController;
+use App\Modules\Retrabalhos\Controllers\DashboardController;
 use App\Modules\Retrabalhos\Controllers\RetrabalhosController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,6 +18,10 @@ Route::group(['prefix' => ''],function () {
 Route::group(['prefix' => 'consultas'],function () {
     Route::get('/tipos', [ConsultaRetrabalhosController::class, 'getTipos'])->name('retrabalhos.tipos.index');
     Route::get('/usuarios', [ConsultaUsuarioController::class, 'getUsuarios'])->name('retrabalhos.usuarios.index');
+
+});
+Route::group(['prefix' => 'dashboard'],function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 
 });
 //Route::get('/',[GantController::class,'index'])->name('gestao-projetos.index');

@@ -49,4 +49,16 @@ class RetrabalhoRepository implements RetrabalhoRepositoryContract
         $retrabalho->save();
         return RetrabalhoCasoTesteDTO::from($retrabalho);
     }
+
+    public function buscarTodosPorUsuario(int $idUsuario): DataCollection
+    {
+        $retrabalhos = Retrabalho::with(['caso_teste', 'aplicacao', 'tipo_retrabalho', 'projeto', 'usuario', 'usuario_criador'])
+            ->addSelect('retrabalhos.*')
+            ->join('projetos.aplicacoes', 'retrabalhos.aplicacao_id', '=', 'aplicacoes.id')
+            ->join('projetos.aplicacoes_equipes','aplicacoes_equipes.aplicacao_id','=','aplicacoes.id')
+            ->where('retrabalhos.usuario_id',$idUsuario)
+            ->orWhere('usuario_criador_id', $idUsuario)
+            ->get();
+        return RetrabalhoCasoTesteDTO::collection($retrabalhos);
+    }
 }

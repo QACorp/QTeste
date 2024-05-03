@@ -25,8 +25,15 @@ class MenuConfig extends MenuConfigAbstract
                         'text' => 'Listar',
                         'route'  => 'retrabalhos.index',
                         'icon'  => 'fas fa-list',
-                        'active' => ['retrabalhos/*'],
+                        'active' => ['retrabalhos/', 'retrabalhos/inserir','retrabalhos/show/*', 'retrabalhos/alterar/*'],
                         'can'   => [PermissionEnum::LISTAR_RETRABALHO->value, PermissionEnum::VER_TODOS_RETRABALHOS->value]
+                    ],
+                    [
+                        'text' => 'Dashboard',
+                        'route'  => 'dashboard.index',
+                        'icon'  => 'fas fa-tachometer-alt',
+                        'active' => ['retrabalhos/dashboard/*'],
+                        'can'   => [PermissionEnum::VER_DASHBOARD->value]
                     ]
                 ]
             ]);

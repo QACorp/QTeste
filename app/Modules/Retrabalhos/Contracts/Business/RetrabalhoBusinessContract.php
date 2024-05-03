@@ -18,4 +18,5 @@ interface RetrabalhoBusinessContract
     public function canRemoverRetrabalho(RetrabalhoCasoTesteDTO $retrabalhoDTO, int $idUsuario): bool;
     public function remover(int $idRetrabalho, ?int $idUsuario): bool;
     public function editar(RetrabalhoCasoTesteDTO $retrabalhoCasoTesteDTO, int $idUsuario, int $idEquipe): RetrabalhoCasoTesteDTO;
+    public function canVerRetrabalho(RetrabalhoCasoTesteDTO $retrabalhoDTO, int $idUsuario): bool;
 }
