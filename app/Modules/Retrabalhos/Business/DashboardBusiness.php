@@ -4,9 +4,10 @@ namespace App\Modules\Retrabalhos\Business;
 
 use App\Modules\Retrabalhos\Contracts\Business\DashboardBusinessContract;
 use App\Modules\Retrabalhos\Contracts\Repositorys\DashboardRepositoryContract;
+use App\System\Impl\BusinessAbstract;
 use Spatie\LaravelData\DataCollection;
 
-class DashboardBusiness implements DashboardBusinessContract
+class DashboardBusiness extends BusinessAbstract implements DashboardBusinessContract
 {
     public function __construct(
         private readonly DashboardRepositoryContract $dashboardRepository

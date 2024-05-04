@@ -22,7 +22,7 @@ class MenuConfig extends MenuConfigAbstract
                 'active' => ['retrabalhos/*'],
                 'submenu' => [
                     [
-                        'text' => 'Listar',
+                        'text' => 'Listar retrabalhos',
                         'route'  => 'retrabalhos.index',
                         'icon'  => 'fas fa-list',
                         'active' => ['retrabalhos/', 'retrabalhos/inserir','retrabalhos/show/*', 'retrabalhos/alterar/*'],
@@ -34,6 +34,13 @@ class MenuConfig extends MenuConfigAbstract
                         'icon'  => 'fas fa-tachometer-alt',
                         'active' => ['retrabalhos/dashboard/*'],
                         'can'   => [PermissionEnum::VER_DASHBOARD->value]
+                    ],
+                    [
+                        'text' => 'Relatórios',
+                        'route'  => 'relatorios.index',
+                        'icon'  => 'fas fa-chart-area',
+                        'active' => ['retrabalhos/relatorios/*'],
+                        'can'   => [PermissionEnum::VER_RELATORIO_GESTOR->value, PermissionEnum::VER_RELATORIO_DESENVOLVEDOR->value, PermissionEnum::VER_RELATORIO_AUDITOR->value]
                     ]
                 ]
             ]);

@@ -5,6 +5,7 @@ namespace App\Modules\Retrabalhos\Providers;
 use App\Modules\Projetos\Components\TotaisTestes;
 use App\Modules\Projetos\Providers\ProjetosServiceProvider;
 use App\Modules\Retrabalhos\Business\DashboardBusiness;
+use App\Modules\Retrabalhos\Business\RelatorioBusiness;
 use App\Modules\Retrabalhos\Business\RetrabalhoBusiness;
 use App\Modules\Retrabalhos\Business\TipoRetrabalhoBusiness;
 use App\Modules\Retrabalhos\Business\UserBusiness;
@@ -15,14 +16,17 @@ use App\Modules\Retrabalhos\Components\RetrabalhoTotalEquipe;
 use App\Modules\Retrabalhos\Config\DashboardConfig;
 use App\Modules\Retrabalhos\Config\MenuConfig;
 use App\Modules\Retrabalhos\Contracts\Business\DashboardBusinessContract;
+use App\Modules\Retrabalhos\Contracts\Business\RelatorioBusinessContract;
 use App\Modules\Retrabalhos\Contracts\Business\RetrabalhoBusinessContract;
 use App\Modules\Retrabalhos\Contracts\Business\TipoRetrabalhoBusinessContract;
 use App\Modules\Retrabalhos\Contracts\Business\UserBusinessContract;
 use App\Modules\Retrabalhos\Contracts\Repositorys\DashboardRepositoryContract;
+use App\Modules\Retrabalhos\Contracts\Repositorys\RelatorioRepositoryContract;
 use App\Modules\Retrabalhos\Contracts\Repositorys\RetrabalhoRepositoryContract;
 use App\Modules\Retrabalhos\Contracts\Repositorys\TipoRetrabalhoRepositoryContract;
 use App\Modules\Retrabalhos\Contracts\Repositorys\UserRepositoryContract;
 use App\Modules\Retrabalhos\Repositorys\DashoboardRepository;
+use App\Modules\Retrabalhos\Repositorys\RelatorioRepository;
 use App\Modules\Retrabalhos\Repositorys\RetrabalhoRepository;
 use App\Modules\Retrabalhos\Repositorys\TipoRetrabalhoRepository;
 use App\Modules\Retrabalhos\Repositorys\UserRepository;
@@ -44,6 +48,8 @@ class RetrabalhosServiceProvider extends ServiceProviderAbstract
         UserRepositoryContract::class => UserRepository::class,
         DashboardRepositoryContract::class => DashoboardRepository::class,
         DashboardBusinessContract::class => DashboardBusiness::class,
+        RelatorioBusinessContract::class => RelatorioBusiness::class,
+        RelatorioRepositoryContract::class => RelatorioRepository::class
     ];
     /**
      * Register services.

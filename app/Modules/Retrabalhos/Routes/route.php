@@ -2,6 +2,7 @@
 use App\Modules\Retrabalhos\Controllers\ConsultaRetrabalhosController;
 use App\Modules\Retrabalhos\Controllers\ConsultaUsuarioController;
 use App\Modules\Retrabalhos\Controllers\DashboardController;
+use App\Modules\Retrabalhos\Controllers\RelatorioController;
 use App\Modules\Retrabalhos\Controllers\RetrabalhosController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,16 @@ Route::group(['prefix' => 'consultas'],function () {
 });
 Route::group(['prefix' => 'dashboard'],function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
+
+});
+Route::group(['prefix' => 'relatorios'],function () {
+    Route::get('/', [RelatorioController::class, 'index'])->name('relatorios.index');
+    Route::get('/desenvolvedores', [RelatorioController::class, 'porDesenvolvedor'])->name('relatorios.desenvolvedor');
+    Route::get('/tarefas', [RelatorioController::class, 'index'])->name('relatorios.tarefas');
+    Route::get('/aplicacoes', [RelatorioController::class, 'index'])->name('relatorios.aplicacoes');
+    Route::get('/meus-retrabalhos', [RelatorioController::class, 'index'])->name('relatorios.meus-retrabalhos');
+    Route::get('/meus-cadastros', [RelatorioController::class, 'index'])->name('relatorios.meus-cadastros');
+
 
 });
 //Route::get('/',[GantController::class,'index'])->name('gestao-projetos.index');

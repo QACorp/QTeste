@@ -1,0 +1,52 @@
+<?php
+
+namespace App\Modules\Retrabalhos\Controllers;
+
+use App\Modules\Retrabalhos\Contracts\Business\RelatorioBusinessContract;
+use App\Modules\Retrabalhos\DTOs\FiltrosDTO;
+use App\System\Http\Controllers\Controller;
+use App\System\Utils\EquipeUtils;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+
+
+class RelatorioController extends Controller
+{
+    public function __construct(
+        private readonly RelatorioBusinessContract $relatorioBusiness
+    )
+    {
+    }
+
+    public function index(Request $request)
+    {
+        return view('retrabalhos::relatorios.home');
+    }
+
+    public function porDesenvolvedor(Request $request)
+    {
+        $filtros = new FiltrosDTO();
+        $filtros->dataInicio = $request->get('dtInicio') ? Carbon::make($request->get('dtInicio')) : Carbon::now()->startOfMonth();
+        $filtros->dataFim = $request->get('dtFim') ? Carbon::make($request->get('dtFim')) : Carbon::now()->endOfMonth();
+        $retrabalhos = $this->relatorioBusiness->relatorioRetrabalhoDesenvolvedor($filtros, EquipeUtils::equipeUsuarioLogado());
+        $heads = [
+            '#',
+            ['label' => 'Nome', 'width' => 20],
+            'Qtde. Tarefas',
+            'Qtde. Retrabalhos',
+            'Proporção. Retrabalhos',
+            'Qtde. Ret. Análise',
+            'Proporção Ret. Análise',
+            'Qtde. Ret. Funcional',
+            'Proporção Ret. Funcional',
+        ];
+
+        $config = [
+            ...config('adminlte.datatable_config'),
+            'columns' => [['orderable' => true], ['orderable' => true], ['orderable' => true], ['orderable' => true], ['orderable' => true], ['orderable' => true], ['orderable' => true], ['orderable' => true], ['orderable' => true] ],
+        ];
+        return view('retrabalhos::relatorios.desenvolvedor',
+            array_merge(compact('retrabalhos', 'heads', 'config', 'filtros'),['dtInicio' => $filtros->dataInicio->format('Y-m-d'), 'dtFim' => $filtros->dataFim->format('Y-m-d') ])
+        );
+    }
+}

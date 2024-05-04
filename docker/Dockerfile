@@ -1,3 +1,13 @@
+FROM node:18.14.2-slim as build
+WORKDIR /var/www/
+
+COPY --link . .
+#COPY --link package-lock.json .
+RUN npm install --production=false
+
+RUN npm run build
+RUN npm prune --production
+
 FROM php:8.2-fpm
 
 WORKDIR /var/www
@@ -40,7 +50,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &
     chmod +x /usr/local/bin/entrypoint.sh && \
     chown -R www-data:www-data /var/www
 
-
+COPY --from=build /var/www/public/build /var/www/public/build
 
 RUN php artisan config:clear && \
      php artisan cache:clear && \
