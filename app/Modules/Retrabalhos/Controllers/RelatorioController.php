@@ -49,4 +49,36 @@ class RelatorioController extends Controller
             array_merge(compact('retrabalhos', 'heads', 'config', 'filtros'),['dtInicio' => $filtros->dataInicio->format('Y-m-d'), 'dtFim' => $filtros->dataFim->format('Y-m-d') ])
         );
     }
+
+    public function porTarefa(Request $request)
+    {
+        $filtros = new FiltrosDTO();
+        $filtros->dataInicio = $request->get('dtInicio') ? Carbon::make($request->get('dtInicio')) : Carbon::now()->startOfMonth();
+        $filtros->dataFim = $request->get('dtFim') ? Carbon::make($request->get('dtFim')) : Carbon::now()->endOfMonth();
+        $retrabalhos = $this->relatorioBusiness->relatorioRetrabalhoTarefa($filtros, EquipeUtils::equipeUsuarioLogado());
+        $heads = [
+            ['label' => 'Tarefa', 'width' => 10],
+            'Qtde. Retrabalhos',
+            'Qtde. Ret. Análise',
+            'Proporção Ret. Análise',
+            'Qtde. Ret. Funcional',
+            'Proporção Ret. Funcional',
+        ];
+
+        $config = [
+            ...config('adminlte.datatable_config'),
+
+            'columns' => [
+                ['orderable' => true],
+                ['orderable' => true],
+                ['orderable' => true],
+                ['orderable' => true],
+                ['orderable' => true],
+                ['orderable' => true]
+            ],
+        ];
+        return view('retrabalhos::relatorios.tarefa',
+            array_merge(compact('retrabalhos', 'heads', 'config', 'filtros'),['dtInicio' => $filtros->dataInicio->format('Y-m-d'), 'dtFim' => $filtros->dataFim->format('Y-m-d') ])
+        );
+    }
 }
