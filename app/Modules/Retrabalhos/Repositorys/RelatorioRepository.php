@@ -4,6 +4,7 @@ namespace App\Modules\Retrabalhos\Repositorys;
 
 use App\Modules\Retrabalhos\Contracts\Repositorys\RelatorioRepositoryContract;
 use App\Modules\Retrabalhos\DTOs\FiltrosDTO;
+use App\Modules\Retrabalhos\DTOs\RetrabalhoAplicacaoDTO;
 use App\Modules\Retrabalhos\DTOs\RetrabalhoDesenvolvedorDTO;
 use App\Modules\Retrabalhos\DTOs\RetrabalhoTarefaDTO;
 use Illuminate\Support\Facades\DB;
@@ -82,9 +83,9 @@ class RelatorioRepository implements RelatorioRepositoryContract
                                 )
 
                                 SELECT *,
-                                       CASE WHEN tarefas = 0 THEN 0 ELSE (retrabalhos / greatest(tarefas,1))::numeric(9,2) END as proporcao_retrabalho,
-                                       CASE WHEN retrabalhos_analise = 0 THEN 0 ELSE (retrabalhos_analise / greatest(retrabalhos,1))::numeric(9,2) END as proporcao_retrabalho_analise,
-                                       CASE WHEN retrabalhos_funcionais = 0 THEN 0 ELSE (retrabalhos_funcionais / greatest(retrabalhos,1))::numeric(9,2) END as proporcao_retrabalho_funcionais
+                                       CASE WHEN tarefas = 0 THEN 0 ELSE (retrabalhos / tarefas)::numeric(9,2) END as proporcao_retrabalho,
+                                       CASE WHEN retrabalhos = 0 THEN 0 ELSE (retrabalhos_analise / retrabalhos)::numeric(9,2) END as proporcao_retrabalho_analise,
+                                       CASE WHEN retrabalhos = 0 THEN 0 ELSE (retrabalhos_funcionais / retrabalhos)::numeric(9,2) END as proporcao_retrabalho_funcionais
                                 FROM
                                     retrabalhos".
                                 ($filtrosDTO->idUsuario ? " WHERE id = :idUsuario" : ""), $parameters);
@@ -149,11 +150,85 @@ class RelatorioRepository implements RelatorioRepositoryContract
                                         )
 
                                         SELECT *,
-                                               CASE WHEN retrabalhos_analise = 0 THEN 0 ELSE (retrabalhos / greatest(retrabalhos_analise,1))::numeric(9,2) END as proporcao_retrabalho_analise,
-                                               CASE WHEN retrabalhos_funcionais = 0 THEN 0 ELSE (retrabalhos / greatest(retrabalhos_funcionais,1))::numeric(9,2) END as proporcao_retrabalho_funcionais
+                                               CASE WHEN retrabalhos = 0 THEN 0 ELSE ( retrabalhos_analise / retrabalhos)::numeric(9,2) END as proporcao_retrabalho_analise,
+                                               CASE WHEN retrabalhos = 0 THEN 0 ELSE (retrabalhos_funcionais / retrabalhos)::numeric(9,2) END as proporcao_retrabalho_funcionais
                                         FROM
                                             retrabalhos", $parameters);
         return RetrabalhoTarefaDTO::collection($relatorio);
 
+    }
+
+    public function relatorioRetrabalhoAplicacao(FiltrosDTO $filtrosDTO, int $idEquipe): DataCollection
+    {
+        $parameters = [
+            'idEquipe' => $idEquipe,
+            'dataInicio' => $filtrosDTO->dataInicio,
+            'dataFim' => $filtrosDTO->dataFim,
+        ];
+        $relatorio = DB::select("WITH retrabalhos AS (
+                                            SELECT
+                                                ap.id as id_aplicacao,
+                                                ap.nome,
+                                                (SELECT
+                                                     COUNT(r.id)
+                                                 FROM projetos.retrabalhos r
+                                                          JOIN projetos.aplicacoes a ON r.aplicacao_id = a.id
+                                                          JOIN projetos.aplicacoes_equipes ae ON a.id = ae.aplicacao_id
+                                                 WHERE
+                                                     a.id = ap.id AND
+                                                     r.deleted_at IS NULL AND
+                                                     r.data between :dataInicio and :dataFim AND
+                                                     ae.equipe_id = ape.equipe_id)::numeric as retrabalhos,
+                                                (SELECT
+                                                     COUNT(r.id)
+                                                 FROM projetos.retrabalhos r
+                                                          JOIN projetos.aplicacoes a ON r.aplicacao_id = a.id
+                                                          JOIN projetos.aplicacoes_equipes ae ON a.id = ae.aplicacao_id
+                                                          JOIN projetos.tipos_retrabalhos tr ON r.tipo_retrabalho_id = tr.id
+                                                 WHERE
+                                                     a.id = ap.id AND
+                                                     tr.tipo = 'Funcional' AND
+                                                     r.data between :dataInicio and :dataFim AND
+                                                     r.deleted_at IS NULL AND
+                                                     ae.equipe_id = ape.equipe_id)::numeric as retrabalhos_funcionais,
+                                                (SELECT
+                                                     COUNT(r.id)
+                                                 FROM projetos.retrabalhos r
+                                                          JOIN projetos.aplicacoes a ON r.aplicacao_id = a.id
+                                                          JOIN projetos.aplicacoes_equipes ae ON a.id = ae.aplicacao_id
+                                                          JOIN projetos.tipos_retrabalhos tr ON r.tipo_retrabalho_id = tr.id
+                                                 WHERE
+                                                     a.id = ap.id AND
+                                                     tr.tipo = 'Análise de código' AND
+                                                     r.data between :dataInicio and :dataFim AND
+                                                     r.deleted_at IS NULL AND
+                                                     ae.equipe_id = ape.equipe_id)::numeric as retrabalhos_analise,
+                                            (SELECT
+                                                 COUNT(DISTINCT (r.numero_tarefa))
+                                             FROM projetos.retrabalhos r
+                                                      JOIN projetos.aplicacoes a ON r.aplicacao_id = a.id
+                                                      JOIN projetos.aplicacoes_equipes ae ON a.id = ae.aplicacao_id
+                                             WHERE
+                                                 a.id = ap.id AND
+                                                 r.data between :dataInicio and :dataFim AND
+                                                 r.deleted_at IS NULL AND
+                                                 ae.equipe_id = :idEquipe)::numeric as tarefas
+
+
+                                            FROM
+                                                projetos.aplicacoes ap
+                                                   JOIN projetos.aplicacoes_equipes ape ON ap.id = ape.aplicacao_id
+                                            WHERE
+                                                ape.equipe_id = :idEquipe AND
+                                                ap.deleted_at IS NULL
+                                        )
+
+                                        SELECT *,
+                                               CASE WHEN tarefas = 0 THEN 0 ELSE (retrabalhos / tarefas)::numeric(9,2) END as proporcao_retrabalho,
+                                               CASE WHEN retrabalhos = 0 THEN 0 ELSE (retrabalhos_analise / retrabalhos)::numeric(9,2) END as proporcao_retrabalho_analise,
+                                               CASE WHEN retrabalhos = 0 THEN 0 ELSE (retrabalhos_funcionais / retrabalhos)::numeric(9,2) END as proporcao_retrabalho_funcionais
+                                        FROM
+                                            retrabalhos", $parameters);
+        return RetrabalhoAplicacaoDTO::collection($relatorio);
     }
 }
