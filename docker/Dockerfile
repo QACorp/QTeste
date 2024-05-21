@@ -21,8 +21,8 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 COPY ./docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
-    cp /var/www/docker/$BUILD_APP_ENV/php.ini /usr/local/etc/php/php.ini && \
-    apt-get update && apt-get -y upgrade && \
+    cp /var/www/docker/$BUILD_APP_ENV/php.ini /usr/local/etc/php/php.ini
+RUN apt-get update && apt-get -y upgrade && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
         nano \
         wget \
@@ -63,6 +63,6 @@ COPY ./docker/www.conf /usr/local/etc/php-fpm.d/www.conf
 COPY ./docker/supervisor/conf.d /etc/supervisor/conf.d
 
 RUN if [ "${CONTAINER_ROLE}" = "scheduler" ]; then service supervisor stop && service supervisor start  && supervisorctl reread && supervisorctl update && service supervisor restart horizon; fi
-
+RUN chown -R ${USERID} /var/www
 USER ${USERID}
 CMD ["/usr/local/bin/entrypoint.sh"]
