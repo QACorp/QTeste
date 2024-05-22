@@ -34,4 +34,10 @@ class RelatorioBusiness extends BusinessAbstract implements RelatorioBusinessCon
         $this->can(PermissionEnum::VER_RELATORIO_GESTOR->value);
         return $this->relatorioRepository->relatorioRetrabalhoAplicacao($filtrosDTO, $idEquipe);
     }
+
+    public function relatorioMeusRetrabalhos(FiltrosDTO $filtrosDTO, int $idUser): DataCollection
+    {
+        $this->can(PermissionEnum::LISTAR_MEUS_RETRABALHOS->value);
+        return $this->relatorioRepository->relatorioMeusRetrabalhos($filtrosDTO, $idUser);
+    }
 }

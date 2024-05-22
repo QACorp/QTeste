@@ -8,6 +8,7 @@ use App\System\Http\Controllers\Controller;
 use App\System\Utils\EquipeUtils;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 class RelatorioController extends Controller
@@ -115,6 +116,29 @@ class RelatorioController extends Controller
             ],
         ];
         return view('retrabalhos::relatorios.aplicacao',
+            array_merge(compact('retrabalhos', 'heads', 'config', 'filtros'),['dtInicio' => $filtros->dataInicio->format('Y-m-d'), 'dtFim' => $filtros->dataFim->format('Y-m-d') ])
+        );
+    }
+    public function meusRetrabalhos(Request $request)
+    {
+        $filtros = new FiltrosDTO();
+        $filtros->dataInicio = $request->get('dtInicio') ? Carbon::make($request->get('dtInicio')) : Carbon::now()->startOfMonth();
+        $filtros->dataFim = $request->get('dtFim') ? Carbon::make($request->get('dtFim')) : Carbon::now()->endOfMonth();
+        $retrabalhos = $this->relatorioBusiness->relatorioMeusRetrabalhos($filtros, Auth::user()->getAuthIdentifier());
+        $heads = [
+            '#',
+            'Tarefa',
+            'Data',
+            ['label' => 'Criador', 'width' => 20],
+            'Aplicação',
+            'Projeto'
+        ];
+
+        $config = [
+            ...config('adminlte.datatable_config'),
+            'columns' => [['orderable' => true], ['orderable' => true], ['orderable' => true], ['orderable' => true], ['orderable' => true], ['orderable' => true] ],
+        ];
+        return view('retrabalhos::relatorios.meus-retrabalhos',
             array_merge(compact('retrabalhos', 'heads', 'config', 'filtros'),['dtInicio' => $filtros->dataInicio->format('Y-m-d'), 'dtFim' => $filtros->dataFim->format('Y-m-d') ])
         );
     }

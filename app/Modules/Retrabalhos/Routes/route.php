@@ -30,7 +30,7 @@ Route::group(['prefix' => 'relatorios'],function () {
     Route::get('/desenvolvedores', [RelatorioController::class, 'porDesenvolvedor'])->name('relatorios.desenvolvedor');
     Route::get('/tarefas', [RelatorioController::class, 'porTarefa'])->name('relatorios.tarefas');
     Route::get('/aplicacoes', [RelatorioController::class, 'porAplicacao'])->name('relatorios.aplicacoes');
-    Route::get('/meus-retrabalhos', [RelatorioController::class, 'index'])->name('relatorios.meus-retrabalhos');
+    Route::get('/meus-retrabalhos', [RelatorioController::class, 'meusRetrabalhos'])->name('relatorios.meus-retrabalhos');
     Route::get('/meus-cadastros', [RelatorioController::class, 'index'])->name('relatorios.meus-cadastros');
 
 

@@ -11,4 +11,5 @@ interface RelatorioRepositoryContract
     public function relatorioRetrabalhoDesenvolvedor(FiltrosDTO $filtrosDTO, int $idEquipe):DataCollection;
     public function relatorioRetrabalhoTarefa(FiltrosDTO $filtrosDTO, int $idEquipe):DataCollection;
     public function relatorioRetrabalhoAplicacao(FiltrosDTO $filtrosDTO, int $idEquipe):DataCollection;
+    public function relatorioMeusRetrabalhos(FiltrosDTO $filtrosDTO, int $idUser):DataCollection;
 }
