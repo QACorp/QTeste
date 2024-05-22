@@ -4,6 +4,7 @@ namespace App\Modules\Retrabalhos\Repositorys;
 
 use App\Modules\Retrabalhos\Contracts\Repositorys\RelatorioRepositoryContract;
 use App\Modules\Retrabalhos\DTOs\FiltrosDTO;
+use App\Modules\Retrabalhos\DTOs\MeusCadastrosDTO;
 use App\Modules\Retrabalhos\DTOs\MeusRetrabalhosDTO;
 use App\Modules\Retrabalhos\DTOs\RetrabalhoAplicacaoDTO;
 use App\Modules\Retrabalhos\DTOs\RetrabalhoDesenvolvedorDTO;
@@ -257,5 +258,31 @@ class RelatorioRepository implements RelatorioRepositoryContract
                                             retrabalhos.deleted_at IS NULL AND
                                             retrabalhos.data BETWEEN :dataInicio AND :dataFim", $parameters);
         return MeusRetrabalhosDTO::collection($relatorio);
+    }
+
+    public function relatorioMeusCadastros(FiltrosDTO $filtrosDTO, int $idUser): DataCollection
+    {
+        $parameters = [
+            'dataInicio' => $filtrosDTO->dataInicio,
+            'dataFim' => $filtrosDTO->dataFim,
+            'idUsuario' => $idUser
+        ];
+        $relatorio = DB::select("SELECT
+                                            retrabalhos.id,
+                                            retrabalhos.numero_tarefa,
+                                            retrabalhos.data,
+                                            aplicacoes.nome as nome_aplicacao,
+                                            projetos.nome as nome_projeto,
+                                            users.name as nome
+                                        FROM
+                                            projetos.retrabalhos
+                                                JOIN projetos.aplicacoes ON retrabalhos.aplicacao_id = aplicacoes.id
+                                                JOIN projetos.projetos ON retrabalhos.projeto_id = projetos.id
+                                                JOIN users ON retrabalhos.usuario_id = users.id
+                                        WHERE
+                                            retrabalhos.usuario_criador_id = :idUsuario AND
+                                            retrabalhos.deleted_at IS NULL AND
+                                            retrabalhos.data BETWEEN :dataInicio AND :dataFim", $parameters);
+        return MeusCadastrosDTO::collection($relatorio);
     }
 }

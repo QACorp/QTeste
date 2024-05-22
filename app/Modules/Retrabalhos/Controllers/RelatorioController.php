@@ -142,4 +142,27 @@ class RelatorioController extends Controller
             array_merge(compact('retrabalhos', 'heads', 'config', 'filtros'),['dtInicio' => $filtros->dataInicio->format('Y-m-d'), 'dtFim' => $filtros->dataFim->format('Y-m-d') ])
         );
     }
+    public function meusCadastros(Request $request)
+    {
+        $filtros = new FiltrosDTO();
+        $filtros->dataInicio = $request->get('dtInicio') ? Carbon::make($request->get('dtInicio')) : Carbon::now()->startOfMonth();
+        $filtros->dataFim = $request->get('dtFim') ? Carbon::make($request->get('dtFim')) : Carbon::now()->endOfMonth();
+        $retrabalhos = $this->relatorioBusiness->relatorioMeusCadastros($filtros, Auth::user()->getAuthIdentifier());
+        $heads = [
+            '#',
+            'Tarefa',
+            'Data',
+            ['label' => 'Usuário', 'width' => 20],
+            'Aplicação',
+            'Projeto'
+        ];
+
+        $config = [
+            ...config('adminlte.datatable_config'),
+            'columns' => [['orderable' => true], ['orderable' => true], ['orderable' => true], ['orderable' => true], ['orderable' => true], ['orderable' => true] ],
+        ];
+        return view('retrabalhos::relatorios.meus-cadastros',
+            array_merge(compact('retrabalhos', 'heads', 'config', 'filtros'),['dtInicio' => $filtros->dataInicio->format('Y-m-d'), 'dtFim' => $filtros->dataFim->format('Y-m-d') ])
+        );
+    }
 }

@@ -13,7 +13,7 @@
         </h1>
         <div class="text-right col-md-2">
             <form method="GET" id="select-ano">
-                <x-adminlte-select name="ano" onclick="$('#select-ano').submit()">
+                <x-adminlte-select name="ano" onchange="$('#select-ano').submit()">
                     @foreach($anos as $lAno)
                         <option value="{{$lAno}}" @if($lAno == $ano) selected @endif>{{$lAno}}</option>
                     @endforeach
