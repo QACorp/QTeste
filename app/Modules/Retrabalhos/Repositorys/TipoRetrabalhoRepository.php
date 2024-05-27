@@ -20,4 +20,11 @@ class TipoRetrabalhoRepository implements TipoRetrabalhoRepositoryContract
         $tipoRetrabalho = TipoRetrabalho::find($id);
         return $tipoRetrabalho ? TipoRetrabalhoDTO::from($tipoRetrabalho): null;
     }
+
+    public function createTipoRetrabalho(TipoRetrabalhoDTO $tipoRetrabalhoDTO): TipoRetrabalhoDTO
+    {
+        $tipoRetrabalho = new TipoRetrabalho($tipoRetrabalhoDTO->all());
+        $tipoRetrabalho->save();
+        return TipoRetrabalhoDTO::from($tipoRetrabalho);
+    }
 }

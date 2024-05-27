@@ -9,4 +9,5 @@ interface TipoRetrabalhoRepositoryContract
 {
     public function listaTipoRetrabalho():DataCollection;
     public function getTipoRetrabalhoPorId(int $id): ?TipoRetrabalhoDTO;
+    public function createTipoRetrabalho(TipoRetrabalhoDTO $tipoRetrabalhoDTO): TipoRetrabalhoDTO;
 }
