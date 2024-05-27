@@ -12,7 +12,7 @@ class TipoRetrabalhoRepository implements TipoRetrabalhoRepositoryContract
 {
     public function listaTipoRetrabalho(): DataCollection
     {
-        return TipoRetrabalhoDTO::collection(TipoRetrabalho::all());
+        return TipoRetrabalhoDTO::collection(TipoRetrabalho::orderBy('descricao')->get());
     }
 
     public function getTipoRetrabalhoPorId(int $id): ?TipoRetrabalhoDTO

@@ -27,6 +27,6 @@ class TipoRetrabalhoBusiness extends BusinessAbstract implements TipoRetrabalhoB
 
     public function createTipoRetrabalho(TipoRetrabalhoDTO $tipoRetrabalhoDTO): TipoRetrabalhoDTO
     {
-        $this->tipoRetrabalhoRepository->createTipoRetrabalho($tipoRetrabalhoDTO);
+        return $this->tipoRetrabalhoRepository->createTipoRetrabalho($tipoRetrabalhoDTO);
     }
 }

@@ -17,35 +17,35 @@ return new class extends Migration
     {
         $tipoRetrabalhoBusiness = App::make(TipoRetrabalhoBusinessContract::class);
         $tipoRetrabalhoBusiness->createTipoRetrabalho(TipoRetrabalhoDTO::from([
-            'nome' => 'Erro Sonar ou análise de código manual',
+            'descricao' => 'Erro Sonar ou análise de código manual',
             'tipo' => TipoRetrabalhoEnum::ANALISE_CODIGO
         ]));
         $tipoRetrabalhoBusiness->createTipoRetrabalho(TipoRetrabalhoDTO::from([
-            'nome' => 'Informação na providência inexistente ou errada',
+            'descricao' => 'Informação na providência inexistente ou errada',
             'tipo' => TipoRetrabalhoEnum::ANALISE_CODIGO
         ]));
         $tipoRetrabalhoBusiness->createTipoRetrabalho(TipoRetrabalhoDTO::from([
-            'nome' => 'Branch inexistente ou errada',
+            'descricao' => 'Branch inexistente ou errada',
             'tipo' => TipoRetrabalhoEnum::ANALISE_CODIGO
         ]));
         $tipoRetrabalhoBusiness->createTipoRetrabalho(TipoRetrabalhoDTO::from([
-            'nome' => 'Teste unitário quebrado',
+            'descricao' => 'Teste unitário quebrado',
             'tipo' => TipoRetrabalhoEnum::ANALISE_CODIGO
         ]));
         $tipoRetrabalhoBusiness->createTipoRetrabalho(TipoRetrabalhoDTO::from([
-            'nome' => 'Teste unitário mal escrito',
+            'descricao' => 'Teste unitário mal escrito',
             'tipo' => TipoRetrabalhoEnum::ANALISE_CODIGO
         ]));
         $tipoRetrabalhoBusiness->createTipoRetrabalho(TipoRetrabalhoDTO::from([
-            'nome' => 'Erro de desenvolvimento',
+            'descricao' => 'Erro de desenvolvimento',
             'tipo' => TipoRetrabalhoEnum::FUNCIONAL
         ]));
         $tipoRetrabalhoBusiness->createTipoRetrabalho(TipoRetrabalhoDTO::from([
-            'nome' => 'Teste automatizado quebrado (E2E e API)',
+            'descricao' => 'Teste automatizado quebrado (E2E e API)',
             'tipo' => TipoRetrabalhoEnum::FUNCIONAL
         ]));
         $tipoRetrabalhoBusiness->createTipoRetrabalho(TipoRetrabalhoDTO::from([
-            'nome' => 'Erro de análise de requisitos ou tarefa',
+            'descricao' => 'Erro de análise de requisitos ou tarefa',
             'tipo' => TipoRetrabalhoEnum::FUNCIONAL
         ]));
     }
