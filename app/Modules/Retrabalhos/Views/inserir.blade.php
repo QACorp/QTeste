@@ -20,23 +20,23 @@
                     <form-inserir-retrabalho
                         :errors="{{ json_encode($errors->getMessages()) }}"
                         :retrabalho="{
-                            descricao: '{{old('descricao', '')}}',
-                            data: '{{old('data', '')}}',
-                            motivo_exclusao: '{{old('motivo_exclusao', '')}}',
-                            tipo_retrabalho_id: {{old('tipo_retrabalho_id', null) ?? 'null' }},
-                            usuario_criador_id: {{old('usuario_criador_id', null) ?? 'null' }},
-                            usuario_id: {{old('usuario_id', null) ?? 'null' }},
-                            projeto_id: {{old('projeto_id', null)  ?? 'null'}},
-                            aplicacao_id: {{old('aplicacao_id', null)  ?? 'null'}},
-                            caso_teste_id: {{old('caso_teste_id', null)  ?? 'null'}},
-                            numero_tarefa: '{{old('numero_tarefa', '')}}',
+                            descricao: '{{ old('descricao', '') }}',
+                            data: '{{ old('data', '') }}',
+                            motivo_exclusao: '{{ old('motivo_exclusao', '') }}',
+                            tipo_retrabalho_id: {{ old('tipo_retrabalho_id', null) ?? 'null' }},
+                            usuario_criador_id: {{ old('usuario_criador_id', null) ?? 'null' }},
+                            usuario_id: {{ old('usuario_id', null) ?? 'null' }},
+                            projeto_id: {{ old('projeto_id', null)  ?? 'null' }},
+                            aplicacao_id: {{ old('aplicacao_id', null)  ?? 'null' }},
+                            caso_teste_id: {{ old('caso_teste_id', null)  ?? 'null' }},
+                            numero_tarefa: '{{ old('numero_tarefa', '') }}',
                             caso_teste: {
-                                titulo_caso_teste: '{{old('titulo_caso_teste', '')}}',
-                                resultado_esperado_caso_teste: '{{old('resultado_esperado_caso_teste', '')}}',
-                                requisito_caso_teste: '{{old('requisito_caso_teste', '')}}',
-                                cenario_caso_teste: '{{old('cenario_caso_teste', '')}}',
-                                teste_caso_teste: '{{old('teste_caso_teste', '')}}',
-                                caso_teste_id: {{old('caso_teste_id', null) ?? 'null'}}
+                                titulo_caso_teste: '{{ old('titulo_caso_teste', '') }}',
+                                resultado_esperado_caso_teste: '{{ old('resultado_esperado_caso_teste', '') }}',
+                                requisito_caso_teste: '{{ old('requisito_caso_teste', '') }}',
+                                cenario_caso_teste: '{{ old('cenario_caso_teste', '') }}',
+                                teste_caso_teste: '{{ old('teste_caso_teste', '') }}',
+                                caso_teste_id: {{ old('caso_teste_id', null) ?? 'null' }}
                             }
 
                         }"

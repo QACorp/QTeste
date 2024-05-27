@@ -49,7 +49,6 @@ retrabalho.value.tipo_retrabalho = null;
 retrabalho.value.aplicacao = null;
 retrabalho.value.projeto = null;
 retrabalho.value.usuario = null;
-retrabalho.value.caso_teste = retrabalho.value.caso_teste.caso_teste_id ? retrabalho.value.caso_teste : {} as CasoTesteInterface;
 retrabalho.value.data = retrabalho.value.data ? retrabalho.value.data : moment().format('YYYY-MM-DD');
 
 const caso_teste = ref<CasoTesteInterface>(props.retrabalho.caso_teste?.caso_teste_id ? props.retrabalho.caso_teste : null);
@@ -81,7 +80,6 @@ const populaUsuarios = async () => {
 const populaAplicacoes = async () => {
     await axios.get(import.meta.env.VITE_APP_URL+'/projetos/consultas/aplicacoes').then((res) => {
         listaAplicacoes.value = res.data;
-
         if (retrabalho.value.aplicacao_id) {
             retrabalho.value.aplicacao =
                 listaAplicacoes.value.find((item: AplicacaoInterface) => item.id == retrabalho.value.aplicacao_id);
@@ -122,9 +120,9 @@ const populaCasosTeste = async (term:string) => {
     })
 }
 const populaCasosTestePorId = async (idCasoTeste:number) => {
+
     await axios.get(import.meta.env.VITE_APP_URL+`/projetos/consultas/casos-testes/${idCasoTeste}`).then((res) => {
         listaCasosTeste.value = [res.data];
-
         listaCasosTeste.value = listaCasosTeste.value.map((item: any) => {
             return {
                 caso_teste_id: item.id,
@@ -146,14 +144,15 @@ const populaCasosTestePorId = async (idCasoTeste:number) => {
 }
 
 onMounted( async () => {
-
     populaTiposRetrabalho();
     populaAplicacoes();
     populaUsuarios();
+
     if (retrabalho.value.caso_teste?.caso_teste_id) {
         await populaCasosTestePorId(retrabalho.value.caso_teste.caso_teste_id);
         caso_teste.value = retrabalho.value.caso_teste;
     }
+
 
 });
 watchEffect(()  => {
@@ -295,6 +294,8 @@ watch(caso_teste, (new_caso_teste, old_caso_teste) => {
                                 :items="listaCasosTeste"
                                 variant="solo"
                                 return-object
+                                no-data-text="Nenhum caso de teste encontrado, digite para pesquisar ou cadastre um novo usando os campos ao lado"
+                                hint="Digite para começar a filtrar"
                                 item-title="titulo_caso_teste"
                                 item-value="caso_teste_id"
                                 :clearable="true"
@@ -324,30 +325,32 @@ watch(caso_teste, (new_caso_teste, old_caso_teste) => {
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row m-1">
+                            <v-btn
+                                color="primary"
+                                type="submit"
+                                :loading="loading"
+                                @click="loading = true"
+                            >
+                                Salvar
+                            </v-btn>
+                        </div>
+                    </div>
+                </div>
             </div>
+
             <div class="col-md-6">
+
                 <form-inserir-caso-teste
                     v-model="retrabalho.caso_teste"
                     v-if="retrabalho.tipo_retrabalho?.tipo === TipoRetrabalhoEnum.FUNCIONAL"
-                    :casoTeste="retrabalho.caso_teste"
                     :errors="props.errors"
                 />
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="row m-1">
-                    <v-btn
-                        color="primary"
-                        type="submit"
-                        :loading="loading"
-                        @click="loading = true"
-                    >
-                        Salvar
-                    </v-btn>
-                </div>
-            </div>
-        </div>
+
     </form>
 </template>
 

@@ -3,7 +3,6 @@ import {CasoTesteInterface} from "../Interfaces/CasoTeste.interface";
 import {getError, hasError} from "../../../../../../resources/js/ErrorHelper";
 
 const props = defineProps({
-
     errors: {
         type: Object,
         required: true,

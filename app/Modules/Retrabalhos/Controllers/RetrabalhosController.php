@@ -100,7 +100,6 @@ class RetrabalhosController extends Controller
             return redirect()->route('retrabalhos.providencia.index', $retrabalho->id)
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Retrabalho inserido com sucesso']]);
         }catch (UnauthorizedException $e){
-
             return redirect()->back()->withErrors($e->getMessage())->withInput();
         }catch (NotFoundException $e) {
             return redirect()->back()->withErrors($e->getMessage())->withInput();
