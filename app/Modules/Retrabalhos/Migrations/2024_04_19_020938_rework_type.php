@@ -21,7 +21,7 @@ return new class extends Migration
             'tipo' => TipoRetrabalhoEnum::ANALISE_CODIGO
         ]));
         $tipoRetrabalhoBusiness->createTipoRetrabalho(TipoRetrabalhoDTO::from([
-            'descricao' => 'Informação na providência inexistente ou errada',
+            'descricao' => 'Informação inexistente ou errada na providência',
             'tipo' => TipoRetrabalhoEnum::ANALISE_CODIGO
         ]));
         $tipoRetrabalhoBusiness->createTipoRetrabalho(TipoRetrabalhoDTO::from([
