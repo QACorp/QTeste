@@ -49,11 +49,7 @@ return new class extends Migration
             'tipo' => TipoRetrabalhoEnum::FUNCIONAL
         ]));
         $tipoRetrabalhoBusiness->createTipoRetrabalho(TipoRetrabalhoDTO::from([
-            'descricao' => 'Erro de performance',
-            'tipo' => TipoRetrabalhoEnum::FUNCIONAL
-        ]));
-        $tipoRetrabalhoBusiness->createTipoRetrabalho(TipoRetrabalhoDTO::from([
-            'descricao' => 'Erro de segurança',
+            'descricao' => 'Impacto em funcionalidade existente',
             'tipo' => TipoRetrabalhoEnum::FUNCIONAL
         ]));
     }

@@ -1,3 +1,6 @@
+@php
+    use App\Modules\Retrabalhos\Enums\CriticidadeEnum;
+@endphp
 @extends('adminlte::page')
 
 @section('title', 'QAKit - Retrabalhos | Alterar')
@@ -21,6 +24,7 @@
                     <form-inserir-retrabalho
                         :errors="{{ json_encode($errors->getMessages()) }}"
                         method="PUT"
+                        :criticidades="{{ json_encode(CriticidadeEnum::cases()) }}"
                         :retrabalho="{
                             descricao: '{{old('descricao', $retrabalho->descricao)}}',
                             data: '{{old('data', $retrabalho->data->format('Y-m-d'))}}',
@@ -32,6 +36,7 @@
                             aplicacao_id: {{old('aplicacao_id', $retrabalho->aplicacao_id)  ?? 'null'}},
                             caso_teste_id: {{old('caso_teste_id', $retrabalho->caso_teste_id)  ?? 'null'}},
                             numero_tarefa: '{{old('numero_tarefa', $retrabalho->numero_tarefa)}}',
+                            criticidade: '{{ old('criticidade', $retrabalho->criticidade) }}',
                             caso_teste: {
                                 titulo_caso_teste: '{{old('titulo_caso_teste', $retrabalho->titulo_caso_teste)}}',
                                 resultado_esperado_caso_teste: '{{old('resultado_esperado_caso_teste', $retrabalho->resultado_esperado_caso_teste)}}',

@@ -1,7 +1,4 @@
 @extends('retrabalhos::relatorios.index')
-@section('plugins.Datatables', true)
-@section('plugins.DatatablesPlugin', true)
-
 @section('relatorio-content')
     <div class="row mt-12">
         <form method="get" id="form-filtro">
@@ -26,7 +23,7 @@
             </div>
         </form>
         <x-adminlte-datatable
-            id="table1"
+            id="perApplication"
             :heads="$heads"
             :config="$config"
             compressed

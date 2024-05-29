@@ -7,6 +7,7 @@ use App\Modules\Projetos\DTOs\CasoTesteDTO;
 use App\Modules\Projetos\Models\Aplicacao;
 use App\Modules\Projetos\Models\CasoTeste;
 use App\Modules\Retrabalhos\Contracts\Business\TipoRetrabalhoBusinessContract;
+use App\Modules\Retrabalhos\Enums\CriticidadeEnum;
 use App\Modules\Retrabalhos\Models\Projeto;
 use App\Modules\Retrabalhos\Models\User;
 use App\Modules\Retrabalhos\Rules\IdCasoTesteOuCasoTesteRule;
@@ -42,6 +43,9 @@ class RetrabalhoCasoTesteDTO extends DTO
     public ?int $aplicacao_id;
 
     public ?int $caso_teste_id;
+
+    #[Required]
+    public ?CriticidadeEnum $criticidade;
 
     #[WithoutValidation]
     #[WithCast(CasoTeste::class)]

@@ -16,6 +16,7 @@ export interface RetrabalhoInterface {
     projeto_id: number,
     aplicacao_id: number,
     caso_teste_id: number,
+    criticidade: string,
     tipo_retrabalho: TipoRetrabalhoInterface | null,
     aplicacao: AplicacaoInterface | null,
     projeto: ProjetoInterface | null,

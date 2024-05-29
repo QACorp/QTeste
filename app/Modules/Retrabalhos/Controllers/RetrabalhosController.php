@@ -38,12 +38,21 @@ class RetrabalhosController extends Controller
             'Tarefa',
             'Usuário',
             'Criador',
-            ['label' => 'Ações', 'width' => 13, 'orderable' => false],
+            'Criticidade',
+            ['label' => 'Ações', 'width' => 13],
         ];
 
         $config = [
             ...config('adminlte.datatable_config'),
-            'columns' => [['orderable' => true], ['orderable' => true], ['orderable' => true], ['orderable' => true], ['orderable' => true], ['orderable' => false]],
+            'columns' => [
+                ['orderable' => true],
+                ['orderable' => true],
+                ['orderable' => true],
+                ['orderable' => true],
+                ['orderable' => true],
+                ['orderable' => true],
+                ['orderable' => false]
+            ],
         ];
         return view('retrabalhos::index', compact('heads', 'config', 'retrabalhos'));
     }
@@ -68,16 +77,14 @@ class RetrabalhosController extends Controller
         }
         try{
 
-            $retrabalho = $this->retrabalhoBusiness->editar(
+            $this->retrabalhoBusiness->editar(
                 $retrabalhoDTO,
                 Auth::user()->getAuthIdentifier(),
                 EquipeUtils::equipeUsuarioLogado()
             );
             return redirect()->route('retrabalhos.index')
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Retrabalho alterado com sucesso']]);
-        }catch (UnauthorizedException $e){
-            return redirect()->back()->withErrors($e->getMessage())->withInput();
-        }catch (NotFoundException $e) {
+        }catch (UnauthorizedException | NotFoundException $e){
             return redirect()->back()->withErrors($e->getMessage())->withInput();
         }catch (UnprocessableEntityException $e){
             return redirect()->back()->withErrors($e->getValidator())->withInput();
@@ -99,9 +106,7 @@ class RetrabalhosController extends Controller
             $retrabalho = $this->retrabalhoBusiness->salvar($retrabalhoDTO, EquipeUtils::equipeUsuarioLogado());
             return redirect()->route('retrabalhos.providencia.index', $retrabalho->id)
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Retrabalho inserido com sucesso']]);
-        }catch (UnauthorizedException $e){
-            return redirect()->back()->withErrors($e->getMessage())->withInput();
-        }catch (NotFoundException $e) {
+        }catch (UnauthorizedException | NotFoundException $e){
             return redirect()->back()->withErrors($e->getMessage())->withInput();
         }catch (UnprocessableEntityException $e){
             return redirect()->back()->withErrors($e->getValidator())->withInput();

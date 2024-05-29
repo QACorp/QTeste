@@ -2,6 +2,7 @@
 
 namespace App\Modules\Retrabalhos\DTOs;
 
+use App\Modules\Retrabalhos\Enums\CriticidadeEnum;
 use App\System\Casts\CastCarbonDate;
 use App\System\Utils\DTO;
 use Illuminate\Contracts\Support\Arrayable;
@@ -19,12 +20,14 @@ class RetrabalhoDTO extends DTO
     public ?Carbon $data;
     public ?string $motivo_exclusao;
     public ?int $numero_tarefa;
-    public ?int $id_tipo_retrabalho;
-    public ?int $id_usuario_criador;
-    public ?int $id_usuario;
-    public ?int $id_projeto;
-    public ?int $id_aplicacao;
-    public ?int $id_caso_teste;
+    public ?int $tipo_retrabalho_id;
+    public ?int $usuario_criador_id;
+    public ?int $usuario_id;
+    public ?int $projeto_id;
+    public ?int $aplicacao_id;
+    public ?int $caso_teste_id;
+
+    public ?CriticidadeEnum $criticidade;
     public static function rules(ValidationContext $context): array
     {
         return [

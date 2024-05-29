@@ -49,6 +49,7 @@ class RetrabalhoBusiness extends BusinessAbstract implements RetrabalhoBusinessC
             } else {
                 $casoTeste = $this->casoTesteBusiness->buscarCasoTestePorId($retrabalhoCasoTesteDTO->caso_teste_id, $idEquipe);
                 if (!$casoTeste) {
+                    $this->rollback();
                     throw new NotFoundException("Caso de teste não encontrado.");
                 }
             }

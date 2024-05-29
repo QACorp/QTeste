@@ -31,6 +31,10 @@ const props = defineProps({
         required: true
 
     },
+    criticidades: {
+        type: Array,
+        required: true
+    },
     method:{
         type: String,
         required: true,
@@ -49,6 +53,7 @@ retrabalho.value.tipo_retrabalho = null;
 retrabalho.value.aplicacao = null;
 retrabalho.value.projeto = null;
 retrabalho.value.usuario = null;
+retrabalho.value.criticidade = retrabalho.value.criticidade == '' ? null : retrabalho.value.criticidade;
 retrabalho.value.data = retrabalho.value.data ? retrabalho.value.data : moment().format('YYYY-MM-DD');
 
 const caso_teste = ref<CasoTesteInterface>(props.retrabalho.caso_teste?.caso_teste_id ? props.retrabalho.caso_teste : null);
@@ -213,6 +218,7 @@ watch(caso_teste, (new_caso_teste, old_caso_teste) => {
                             </v-combobox>
                         </div>
                     </div>
+
                 </div>
                 <div class="row">
                     <div class="col-md-6">
@@ -270,7 +276,7 @@ watch(caso_teste, (new_caso_teste, old_caso_teste) => {
                             />
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <v-text-field
                                 v-model="retrabalho.numero_tarefa"
@@ -281,6 +287,25 @@ watch(caso_teste, (new_caso_teste, old_caso_teste) => {
                                 :error="shouldShowError('numero_tarefa')"
                                 :error-messages="getShowError('numero_tarefa')"
                             ></v-text-field>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input type="hidden" :value="retrabalho.criticidade" name="criticidade" />
+                            <v-combobox
+                                v-model="retrabalho.criticidade"
+                                label="Criticidade"
+                                :items="props.criticidades"
+                                variant="solo"
+                                :return-object="true"
+                                item-title="name"
+                                item-value="id"
+                                id="_criticidade"
+                                name="_criticidade"
+                                :error="shouldShowError('criticidade')"
+                                :error-messages="getShowError('criticidade')"
+                            >
+                            </v-combobox>
                         </div>
                     </div>
                 </div>

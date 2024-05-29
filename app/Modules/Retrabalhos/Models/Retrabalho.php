@@ -25,7 +25,8 @@ class Retrabalho extends Model
         'usuario_id',
         'projeto_id',
         'aplicacao_id',
-        'caso_teste_id'
+        'caso_teste_id',
+        'criticidade'
     ];
     protected $visible = [
         'id',
@@ -43,7 +44,8 @@ class Retrabalho extends Model
         'projeto',
         'aplicacao',
         'caso_teste',
-        'usuario_criador'
+        'usuario_criador',
+        'criticidade'
     ];
     // Criar chaves estrangeiras
     public function tipo_retrabalho()
