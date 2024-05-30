@@ -15,29 +15,29 @@ services:
             timeout: 10s
         networks:
             - traefik-public
-    qakit_scheduler:
+  qakit_scheduler:
         image: ${REGISTRY_URL}/qakit_app:latest
         env_file:
             - .env
         depends_on:
-            - app
+            - qakit_app
         environment:
             - CONTAINER_ROLE=scheduler
             - USERID=${USERID:-1001}
         networks:
             - traefik-public
-    qakit_queue:
+  qakit_queue:
         image: ${REGISTRY_URL}/qakit_app:latest
         env_file:
             - .env
         depends_on:
-            - app
+            - qakit_app
         environment:
             - CONTAINER_ROLE=queue
             - USERID=${USERID:-1001}
         networks:
             - traefik-public
-    qakit_nginx:
+  qakit_nginx:
         image: ${REGISTRY_URL}/qakit_nginx:latest
         environment:
             - APP_NAME=${APP_NAME}
@@ -59,7 +59,7 @@ services:
                 - traefik.http.services.qakit.loadbalancer.server.port=80
             replicas: ${NGINX_REPLICAS:-1}
         depends_on:
-            - app
+            - qakit_app
         healthcheck:
             test: nginx -t || exit 1
             interval: 20s
