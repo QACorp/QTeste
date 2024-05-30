@@ -3,7 +3,7 @@ WORKDIR /var/www/
 
 COPY --link . .
 #COPY --link package-lock.json .
-RUN npm install --omit=dev
+RUN npm install
 
 RUN npm run build
 RUN npm prune --production
