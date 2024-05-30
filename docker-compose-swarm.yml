@@ -1,6 +1,6 @@
 version: '3.5'
 services:
-    app:
+  qakit_app:
         image: ${REGISTRY_URL}/qakit_app:latest
         env_file:
             - .env
@@ -15,7 +15,7 @@ services:
             timeout: 10s
         networks:
             - traefik-public
-    scheduler:
+    qakit_scheduler:
         image: ${REGISTRY_URL}/qakit_app:latest
         env_file:
             - .env
@@ -26,7 +26,7 @@ services:
             - USERID=${USERID:-1001}
         networks:
             - traefik-public
-    queue:
+    qakit_queue:
         image: ${REGISTRY_URL}/qakit_app:latest
         env_file:
             - .env
@@ -37,7 +37,7 @@ services:
             - USERID=${USERID:-1001}
         networks:
             - traefik-public
-    nginx_qakit:
+    qakit_nginx:
         image: ${REGISTRY_URL}/qakit_nginx:latest
         environment:
             - APP_NAME=${APP_NAME}
