@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-10">
                     <x-adminlte-textarea
                         label="Cenário"
                         name="cenario"
@@ -57,7 +57,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-10">
                     <x-adminlte-textarea
                         label="Teste"
                         name="teste"
@@ -70,7 +70,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-10">
                     <x-adminlte-textarea
                         label="Resultado esperado"
                         name="resultado_esperado"

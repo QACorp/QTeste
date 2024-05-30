@@ -92,4 +92,20 @@ class UserRepository extends BaseRepository implements UserRepositoryContract
         $user->equipes()->sync($idsEquipe);
         return $user;
     }
+
+    public function buscarUsuario(array $filter): DataCollection
+    {
+        $queryBuider = User::query();
+        foreach ($filter as $field => $value){
+            $queryBuider->where($field, $value);
+        }
+        return UserDTO::collection($queryBuider->get());
+    }
+
+    public function buscarUsuariosPorEquipe(int $idEquipe): DataCollection
+    {
+        return UserDTO::collection(User::join('users_equipes as ue', 'ue.user_id', '=', 'users.id')
+            ->where('ue.equipe_id', $idEquipe)
+            ->get());
+    }
 }

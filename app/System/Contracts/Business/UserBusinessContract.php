@@ -20,4 +20,6 @@ interface UserBusinessContract
     public function salvar(UserDTO $userDTO, UserPostRequest $userPostRequest = new UserPostRequest()): UserDTO;
     public function alterarEquipeSelecionada(int $idUsuario, int $idEquipe):bool;
     public function importarArquivoParaUser(?UploadedFile $uploadedFile, array $equipes,UploadPostRequest $uploadPostRequest = new UploadPostRequest()): void;
+    public function buscarUsuario(array $filter):DataCollection;
+    public function buscarUsuariosPorEquipe(int $idEquipe):DataCollection;
 }

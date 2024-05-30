@@ -62,7 +62,9 @@ services:
             - USERID=${USERID:-1001}
         networks:
             - traefik-public
-    nginx:
+        #volumes:
+        #    - ./:/var/www/
+    nginx_qakit:
         build:
             context: ./
             dockerfile: docker/nginx/Dockerfile

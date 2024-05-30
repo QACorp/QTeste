@@ -141,4 +141,14 @@ class UserBusiness extends BusinessAbstract implements UserBusinessContract
             'password' => Hash::make('teste')
         ]);
     }
+
+    public function buscarUsuario(array $filter): DataCollection
+    {
+        return $this->userRepository->buscarUsuario($filter);
+    }
+
+    public function buscarUsuariosPorEquipe(int $idEquipe): DataCollection
+    {
+        return $this->userRepository->buscarUsuariosPorEquipe($idEquipe);
+    }
 }

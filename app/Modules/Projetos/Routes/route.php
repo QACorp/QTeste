@@ -2,6 +2,9 @@
 
 use App\Modules\Projetos\Controllers\AplicacaoController;
 use App\Modules\Projetos\Controllers\CasoTesteController;
+use App\Modules\Projetos\Controllers\ConsultaAplicacaoController;
+use App\Modules\Projetos\Controllers\ConsultaCasoTesteController;
+use App\Modules\Projetos\Controllers\ConsultaProjetoController;
 use App\Modules\Projetos\Controllers\DocumentoController;
 use App\Modules\Projetos\Controllers\PlanoTesteController;
 use App\Modules\Projetos\Controllers\PlanoTesteExecucaoController;
@@ -86,5 +89,11 @@ Route::group(['prefix' => '/planos-teste'],function() {
     Route::get('/', [PlanoTesteController::class, 'index'])->name('aplicacoes.planos-teste.index');
 
 });
+Route::group(['prefix' => '/consultas'],function() {
+    Route::get('/aplicacoes', [ConsultaAplicacaoController::class, 'getAplicacao'])->name('aplicacoes.consulta.index');
+    Route::get('/aplicacoes/{idAplicacao}/projetos', [ConsultaProjetoController::class, 'getProjetosByAplicacao'])->name('aplicacoes.projetos.consulta.index');
+    Route::get('/casos-testes', [ConsultaCasoTesteController::class, 'getCasosTeste'])->name('casos-testes.consulta.index');
+    Route::get('/casos-testes/{idCasoTeste}', [ConsultaCasoTesteController::class, 'getCasosTestePorId'])->name('casos-testes.consultaPorId.index');
 
+});
 

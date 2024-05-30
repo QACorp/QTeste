@@ -13,8 +13,6 @@ use App\System\Traits\EquipeTools;
 use App\System\Utils\EquipeUtils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
-use Spatie\LaravelData\DataCollection;
 
 
 class AplicacaoController extends Controller
@@ -28,7 +26,6 @@ class AplicacaoController extends Controller
     }
     public function index()
     {
-        Auth::user()->can(PermissionEnum::LISTAR_APLICACAO->value);
         $aplicacoes = $this->aplicacaoBusiness->buscarTodos(EquipeUtils::equipeUsuarioLogado());
 
         $heads = [

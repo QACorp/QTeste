@@ -43,7 +43,7 @@ class DocumentoController
     {
         Auth::user()->can(PermissionEnum::REMOVER_CASO_TESTE->value);
         try{
-            $this->documentoBusiness->excluir($idProjeto, $idDocumento);
+            $this->documentoBusiness->excluir($idProjeto, $idDocumento, EquipeUtils::equipeUsuarioLogado());
             return redirect(route('aplicacoes.projetos.editar',[$idAplicacao, $idProjeto]))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Documento removido com sucesso!']]);
         }catch (NotFoundException $exception){
