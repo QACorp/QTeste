@@ -12,13 +12,18 @@ class MenuConfig extends MenuConfigAbstract
     static function configureMenuModule()
     {
         Event::listen(BuildingMenu::class, function (BuildingMenu $event) {
-            $event->menu->add('Projetos',[
+            $event->menu->add([
+                'text' => 'Projetos',
+                'key' => 'projetos_index',
+                'icon'  => 'fa-solid fa-diagram-project',
+            ]);
+            $event->menu->addIn('projetos_index',[
                 'key' => 'aplicacao_index',
                 'route' => 'aplicacoes.index',
                 'icon'  => 'fas fa-cogs',
                 'text' => 'Aplicações',
                 'can'   => 'LISTAR_APLICACAO',
-                'active' => ['projetos/aplicacoes/*', 'projetos/casos-teste/*'],
+                'active' => ['projetos/aplicacoes/*'],
                 'submenu' => [
                     [
                         'text' => 'Listar aplicações',
@@ -26,7 +31,17 @@ class MenuConfig extends MenuConfigAbstract
                         'icon'  => 'fas fa-list',
                         'active' => ['projetos/aplicacoes/*'],
                         'can'   => 'LISTAR_APLICACAO'
-                    ],
+                    ]
+                ]
+            ]);
+            $event->menu->addIn('projetos_index',[
+                'key' => 'testes_index',
+                'route' => 'aplicacoes.planos-teste.index',
+                'icon'  => 'fas fa-cogs',
+                'text' => 'Testes',
+                'can'   => ['LISTAR_CASO_TESTE', 'LISTAR_PLANO_TESTE'],
+                'active' => ['projetos/casos-teste/*'],
+                'submenu' => [
                     [
                         'text' => 'Listar casos de teste',
                         'route'  => 'aplicacoes.casos-teste.index',

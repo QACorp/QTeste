@@ -1,4 +1,14 @@
-FROM php:8.1-fpm
+FROM node:18.14.2-slim as build
+WORKDIR /var/www/
+
+COPY --link . .
+#COPY --link package-lock.json .
+RUN npm install --production=false
+
+RUN npm run build
+RUN npm prune --production
+
+FROM php:8.2-fpm
 
 WORKDIR /var/www
 ENV CURL_CA_BUNDLE /usr/lib/ssl/certs/ca-certificates.crt
@@ -11,10 +21,11 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 COPY ./docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
-    cp /var/www/docker/$BUILD_APP_ENV/php.ini /usr/local/etc/php/php.ini && \
-    apt-get update && apt-get -y upgrade && \
+    cp /var/www/docker/$BUILD_APP_ENV/php.ini /usr/local/etc/php/php.ini
+RUN apt-get update && apt-get -y upgrade && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
         nano \
+        wget \
         libcurl4-gnutls-dev \
         libxml2-dev \
         libpng-dev \
@@ -24,6 +35,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &
         openssl \
         zlib1g-dev \
         libpq-dev && \
+        wget  https://github.com/elastic/apm-agent-php/releases/download/v1.10.0/apm-agent-php_1.10.0_all.deb && \
+        dpkg -i apm-agent-php_1.10.0_all.deb && \
      docker-php-ext-install \
         bcmath \
         calendar \
@@ -37,6 +50,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &
     chmod +x /usr/local/bin/entrypoint.sh && \
     chown -R www-data:www-data /var/www
 
+COPY --from=build /var/www/public/build /var/www/public/build
+
 RUN php artisan config:clear && \
      php artisan cache:clear && \
      php artisan storage:link
@@ -48,6 +63,6 @@ COPY ./docker/www.conf /usr/local/etc/php-fpm.d/www.conf
 COPY ./docker/supervisor/conf.d /etc/supervisor/conf.d
 
 RUN if [ "${CONTAINER_ROLE}" = "scheduler" ]; then service supervisor stop && service supervisor start  && supervisorctl reread && supervisorctl update && service supervisor restart horizon; fi
-
+RUN chown -R ${USERID} /var/www
 USER ${USERID}
 CMD ["/usr/local/bin/entrypoint.sh"]

@@ -1,9 +1,9 @@
 #!/bin/bash
 
-docker_compose="docker-compose"
-node="docker-compose -f $(pwd)/docker/utils/docker-compose.yml"
-composer="docker-compose -f $(pwd)/docker/utils/docker-compose.yml"
-pgsql="docker-compose -f $(pwd)/docker/postgres/docker-compose.yml"
+docker_compose="docker compose"
+node="docker compose -f $(pwd)/docker/utils/docker-compose.yml"
+composer="docker compose -f $(pwd)/docker/utils/docker-compose.yml"
+pgsql="docker compose -f $(pwd)/docker/postgres/docker-compose.yml"
 
 # if [ "$1" = "teste" ]; then
 #     echo "teste";
@@ -72,6 +72,19 @@ infection_cmd(){
 pint_cmd(){
     php_cmd  ./vendor/bin/pint -v
 }
+swarm_prod_cmd(){
+    echo "Vou iniciar a configuração do ambiente de produção"
+    git fetch
+    git reset origin/master --hard
+    export $(cat .env)
+    docker-compose -f docker-compose-prd.yml build
+    docker tag qakit_nginx:latest "$REGISTRY_URL"/qakit_nginx:latest
+    docker tag qakit_app:latest "$REGISTRY_URL"/qakit_nginx:latest
+    docker push "$REGISTRY_URL"/qakit_nginx:latest
+    docker push "$REGISTRY_URL"/qakit_nginx:latest
+    docker service rm $1_app $1_nginx $1_queue $1_scheduler
+    docker stack deploy --prune --resolve-image always --with-registry-auth -c docker-compose-swarm.yml $1
+}
 
 check_cmd(){
     test_cmd test
@@ -90,6 +103,7 @@ case "$1" in
     "stop-pgsql") pgsql_cmd_down ;;
     "pint") pint_cmd;;
     "infection") infection_cmd ;;
+    "swarm") swarm_prod_cmd $2 ;;
     "check") check_cmd ;;
     *) php_cmd "$@"
 esac
