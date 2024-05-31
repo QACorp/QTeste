@@ -59,6 +59,7 @@ RUN if [ "$BUILD_APP_ENV" = "local" ]; then pecl install xdebug && docker-php-ex
 
 COPY ./docker/www.conf /usr/local/etc/php-fpm.d/www.conf
 COPY ./docker/supervisor/conf.d /etc/supervisor/conf.d
+RUN php artisan migrate --force
 
 RUN if [ "${CONTAINER_ROLE}" = "scheduler" ]; then service supervisor stop && service supervisor start  && supervisorctl reread && supervisorctl update && service supervisor restart horizon; fi
 RUN chown -R ${USERID} /var/www
