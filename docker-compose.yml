@@ -1,8 +1,7 @@
 version: '3.5'
 services:
     qakit_app:
-        image: ${APP_NAME}_app
-        container_name: ${APP_NAME}_app
+        image: qakit_app
         restart: unless-stopped
         build:
             context: ./
@@ -25,7 +24,7 @@ services:
         networks:
             - traefik-public
     qakit_scheduler:
-        image: ${APP_NAME}_app
+        image: qakit_app
         container_name: ${APP_NAME}_scheduler
         restart: unless-stopped
         env_file:
@@ -38,7 +37,6 @@ services:
         networks:
             - traefik-public
     redis:
-        container_name: ${APP_NAME}_redis
         image: redis
         restart: unless-stopped
         env_file:
@@ -50,7 +48,7 @@ services:
         volumes:
             - redisdata:/data
     qakit_queue:
-        image: ${APP_NAME}_app
+        image: qakit_app
         container_name: ${APP_NAME}_queue
         restart: unless-stopped
         env_file:
@@ -68,8 +66,7 @@ services:
         build:
             context: ./
             dockerfile: docker/nginx/Dockerfile
-        image: ${APP_NAME}_nginx
-        container_name: ${APP_NAME}_nginx
+        image: qakit_nginx
         restart: unless-stopped
         environment:
             - APP_NAME=${APP_NAME}
