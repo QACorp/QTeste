@@ -16,7 +16,7 @@ php_cmd(){
 }
 
 artisan_cmd(){
-    $docker_compose run --rm app php "$@"
+    $docker_compose run --rm qakit_app php "$@"
 }
 
 pgsql_cmd_up(){
