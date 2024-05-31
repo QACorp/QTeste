@@ -1,6 +1,6 @@
 version: '3.5'
 services:
-    app:
+    qakit_app:
         image: ${APP_NAME}_app
         container_name: ${APP_NAME}_app
         restart: unless-stopped
@@ -24,7 +24,7 @@ services:
             - ./:/var/www/
         networks:
             - traefik-public
-    scheduler:
+    qakit_scheduler:
         image: ${APP_NAME}_app
         container_name: ${APP_NAME}_scheduler
         restart: unless-stopped
@@ -49,7 +49,7 @@ services:
             - traefik-public
         volumes:
             - redisdata:/data
-    queue:
+    qakit_queue:
         image: ${APP_NAME}_app
         container_name: ${APP_NAME}_queue
         restart: unless-stopped
@@ -64,7 +64,7 @@ services:
             - traefik-public
         #volumes:
         #    - ./:/var/www/
-    nginx_qakit:
+    qakit_nginx:
         build:
             context: ./
             dockerfile: docker/nginx/Dockerfile
