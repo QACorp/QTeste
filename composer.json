@@ -4,7 +4,7 @@
     "description": "Ferramenta para gestão de QA",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
-    "version": "0.1.10-beta",
+    "version": "0.1.11-beta",
     "require": {
         "php": "^8.2",
         "ext-http": "*",
