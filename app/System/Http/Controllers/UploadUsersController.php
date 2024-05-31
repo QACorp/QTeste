@@ -31,7 +31,7 @@ class UploadUsersController extends Controller
          }catch (UnprocessableEntityException $exception){
              return redirect(route('users.index'))
                  ->withErrors($exception->getValidator())
-                 ->with([Controller::MESSAGE_KEY_ERROR => ['Houve um erro ao processar o arquivo, verifique se os usuários do arquivo já não existe na base de dados']])
+                 ->with([Controller::MESSAGE_KEY_ERROR => ['Houve um erro ao processar o arquivo']])
                  ->withInput();
          }
      }
