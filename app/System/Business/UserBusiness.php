@@ -134,11 +134,11 @@ class UserBusiness extends BusinessAbstract implements UserBusinessContract
     public function criarUserPorLinhaXLSX(Collection $row):UserDTO
     {
         return UserDTO::from([
-            'name' => $row->get(0),
-            'email' => $row->get(1),
-            'roles' => [RoleDTO::from(['name' => $row->get(2), 'guard' => 'web'])],
-            'equipes' => [EquipeDTO::from(['id' => $row->get(3)])],
-            'password' => Hash::make('teste')
+            'name' => $row->get(self::COLUNA_NAME),
+            'email' => $row->get(self::COLUNA_EMAIL),
+            'roles' => [RoleDTO::from(['name' => $row->get(self::COLUNA_REGRA), 'guard' => 'web'])],
+            'equipes' => [EquipeDTO::from(['id' => $row->get(self::COLUNA_EQUIPE)])],
+            'password' => Hash::make(uniqid())
         ]);
     }
 
