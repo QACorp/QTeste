@@ -7,5 +7,5 @@ use Spatie\LaravelData\DataCollection;
 
 interface UserBusinessContract extends BaseUserBusinessContract
 {
-    public function listaUsuariosByPermissaoDesenvolvedor():DataCollection;
+    public function listaUsuariosByPermissaoDesenvolvedor(int $idEquipe):DataCollection;
 }
