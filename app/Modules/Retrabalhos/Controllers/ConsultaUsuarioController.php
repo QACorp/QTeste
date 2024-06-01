@@ -5,6 +5,7 @@ namespace App\Modules\Retrabalhos\Controllers;
 use App\Modules\Retrabalhos\Contracts\Business\UserBusinessContract;
 use App\System\Http\Controllers\Controller;
 use App\System\Traits\EquipeTools;
+use App\System\Utils\EquipeUtils;
 
 class ConsultaUsuarioController extends Controller
 {
@@ -17,7 +18,7 @@ class ConsultaUsuarioController extends Controller
     }
     public function getUsuarios()
     {
-        return response()->json($this->userBusiness->listaUsuariosByPermissaoDesenvolvedor());
+        return response()->json($this->userBusiness->listaUsuariosByPermissaoDesenvolvedor(EquipeUtils::equipeUsuarioLogado()));
     }
 
 

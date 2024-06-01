@@ -16,8 +16,8 @@ class UserBusiness extends BaseUserBusiness implements UserBusinessContract
         parent::__construct(App::make(BaseUserRepositoryContract::class));
     }
 
-    public function listaUsuariosByPermissaoDesenvolvedor(): DataCollection
+    public function listaUsuariosByPermissaoDesenvolvedor(int $idEquipe): DataCollection
     {
-        return $this->userRepository->listaUsuariosByPermissaoDesenvolvedor();
+        return $this->userRepository->listaUsuariosByPermissaoDesenvolvedor($idEquipe);
     }
 }

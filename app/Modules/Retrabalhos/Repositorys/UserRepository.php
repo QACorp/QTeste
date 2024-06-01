@@ -13,10 +13,20 @@ use Spatie\LaravelData\DataCollection;
 class UserRepository extends BaseRepository implements UserRepositoryContract
 {
 
-    public function listaUsuariosByPermissaoDesenvolvedor(): DataCollection
+    public function listaUsuariosByPermissaoDesenvolvedor(int $idEquipe): DataCollection
     {
+
         return UserDTO::collection(
-            User::role(RoleEnum::DESENVOLVEDOR->value)->get()
+            User::role(RoleEnum::DESENVOLVEDOR->value)
+                ->whereRaw('? IN (
+                                            SELECT
+                                                equipe_id
+                                            FROM
+                                                users_equipes
+                                            WHERE
+                                                users.id = users_equipes.user_id AND
+                                                equipe_id = ?)', [$idEquipe, $idEquipe])
+                ->get()
         );
     }
 }

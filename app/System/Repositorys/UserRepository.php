@@ -73,6 +73,7 @@ class UserRepository extends BaseRepository implements UserRepositoryContract
             DB::commit();
             return UserDTO::from($user);
         }catch (Exception $exception){
+
             DB::rollBack();
             throw $exception;
         }
