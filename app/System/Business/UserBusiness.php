@@ -11,6 +11,7 @@ use App\System\DTOs\RoleDTO;
 use App\System\DTOs\UserDTO;
 use App\System\Enums\PermissionEnum;
 use App\System\Exceptions\NotFoundException;
+use App\System\Exceptions\UnauthorizedException;
 use App\System\Impl\BusinessAbstract;
 use App\System\Requests\PasswordPutRequest;
 use App\System\Requests\UploadPostRequest;
@@ -20,6 +21,7 @@ use App\System\Traits\EquipeTools;
 use App\System\Traits\Validation;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
@@ -73,10 +75,19 @@ class UserBusiness extends BusinessAbstract implements UserBusinessContract
         $this->userRepository->vincularPerfil($userDTO->roles->toArray(), $user->id);
         return $user;
     }
-
+    private function isMe(int $userId)
+    {
+        return Auth::user()->getAuthIdentifier() == $userId;
+    }
+    public function canAlterarSenha(UserDTO $userDTO): bool
+    {
+        return $this->canDo(PermissionEnum::ALTERAR_SENHA_USUARIO->value) || $this->isMe($userDTO->id);
+    }
     public function alterarSenha(UserDTO $userDTO, PasswordPutRequest $passwordPutRequest = new PasswordPutRequest()): UserDTO
     {
-        $this->can(PermissionEnum::ALTERAR_SENHA_USUARIO->value);
+        if(!$this->canAlterarSenha($userDTO)){
+            throw new UnauthorizedException(403, 'Você não tem permissão para alterar a senha deste usuário.');
+        }
         $user = $this->buscarPorId($userDTO->id);
         if($user == null){
             throw new NotFoundException();
