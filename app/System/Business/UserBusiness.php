@@ -46,10 +46,15 @@ class UserBusiness extends BusinessAbstract implements UserBusinessContract
         $this->can(PermissionEnum::LISTAR_USUARIO->value);
         return $this->userRepository->buscarTodos();
     }
-
+    private function canFindUser(int $userId): bool
+    {
+        return $this->canDo(PermissionEnum::LISTAR_USUARIO->value) || $this->isMe($userId);
+    }
     public function buscarPorId(int $userId): ?UserDTO
     {
-        $this->can(PermissionEnum::LISTAR_USUARIO->value);
+        if(!$this->canFindUser($userId)){
+            throw new UnauthorizedException(403, 'Você não tem permissão para visualizar este usuário.');
+        }
         return $this->userRepository->buscarPorId($userId);
     }
 
@@ -88,7 +93,9 @@ class UserBusiness extends BusinessAbstract implements UserBusinessContract
         if(!$this->canAlterarSenha($userDTO)){
             throw new UnauthorizedException(403, 'Você não tem permissão para alterar a senha deste usuário.');
         }
+
         $user = $this->buscarPorId($userDTO->id);
+
         if($user == null){
             throw new NotFoundException();
         }
