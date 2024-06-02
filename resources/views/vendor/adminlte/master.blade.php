@@ -1,4 +1,3 @@
-@section('plugins.Toastr', true)
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -9,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
     {{-- Custom Meta Tags --}}
     @yield('meta_tags')
 
@@ -40,7 +40,7 @@
 
     {{-- Livewire Styles --}}
     @if(config('adminlte.livewire'))
-        @if(app()->version() >= 7)
+        @if(intval(app()->version()) >= 7)
             @livewireStyles
         @else
             <livewire:styles />
@@ -87,7 +87,7 @@
         <script src="{{ asset('vendor/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
         <script src="{{ asset('vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
     @else
-        <script src="{{ mix(config('adminlte.laravel_mix_js_path', 'js/app.ts')) }}"></script>
+        <script src="{{ mix(config('adminlte.laravel_mix_js_path', 'js/app.js')) }}"></script>
     @endif
     @vite('resources/js/app.ts')
 
@@ -96,7 +96,7 @@
 
     {{-- Livewire Script --}}
     @if(config('adminlte.livewire'))
-        @if(app()->version() >= 7)
+        @if(intval(app()->version()) >= 7)
             @livewireScripts
         @else
             <livewire:scripts />
