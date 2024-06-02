@@ -99,6 +99,31 @@ class UserController extends Controller
                 ->withInput();
         }
     }
+    public function editarSenhaUsuarioLogado(Request $request)
+    {
+        $user = Auth::user();
+
+        return view('users.alterar-senha-usuario-logado',compact('user'));
+    }
+    public function atualizarSenhaUsuarioLogado(Request $request)
+    {
+        try {
+            $userDTO = UserDTO::from([
+                ...$request->only(['password', 'password_confirmation']),
+                'id' => Auth::user()->getAuthIdentifier()
+            ]);
+
+            $this->userBusiness->alterarSenha($userDTO);
+
+            return redirect(route('users.alterar-senha-usuario-logado'))
+                ->with([Controller::MESSAGE_KEY_SUCCESS => ['Usuário alterado com sucesso']]);
+        }catch (UnprocessableEntityException $exception){
+
+            return redirect(route('users.alterar-senha-usuario-logado'))
+                ->withErrors($exception->getValidator())
+                ->withInput();
+        }
+    }
     public function inserir(Request $request)
     {
 

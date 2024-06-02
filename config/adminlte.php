@@ -304,6 +304,13 @@ return [
     */
 
     'menu' => [
+        [
+            'text' => 'Alterar senha',
+            'route' => 'users.alterar-senha-usuario-logado',
+            'icon' => 'fas fa-fw fa-lock',
+            'classes' => 'nav-item',
+            'topnav_user' => true
+        ],
 
     ],
 

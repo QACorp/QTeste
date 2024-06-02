@@ -32,6 +32,13 @@ Route::post('logout', 'App\System\Http\Controllers\Auth\LoginController@logout')
 //Route::post('password/reset', 'App\System\Http\Controllers\Auth\ResetPasswordController@reset');
 
 //Route::get('teste',[\App\Modules\Example\Controller\ExampleController::class,'myMethod'])->middleware('auth');
+Route::group(['middleware' => 'auth'],function() {
+    Route::get('/alterar-senha', [UserController::class,'editarSenhaUsuarioLogado'])->name('users.alterar-senha-usuario-logado');
+    Route::put('/alterar-senha', [UserController::class,'atualizarSenhaUsuarioLogado'])->name('users.atualizar-senha-usuario-logado');
+
+});
+
+
 
 Route::group(['prefix' => 'usuarios', 'middleware' => 'auth'],function(){
     Route::get('/', [UserController::class,'index'])->name('users.index');
@@ -44,6 +51,8 @@ Route::group(['prefix' => 'usuarios', 'middleware' => 'auth'],function(){
     Route::put('/{idUsuario}/alterar-senha', [UserController::class,'atualizarSenha'])->name('users.atualizar-senha');
     Route::post('/inserir', [UserController::class,'salvar'])->name('users.salvar');
     Route::put('/{idUsuario}', [UserController::class,'atualizar'])->name('users.atualizar');
+
+
 });
 
 Route::group(['prefix' => 'equipes', 'middleware' => 'auth'],function(){
