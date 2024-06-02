@@ -76,6 +76,8 @@ swarm_prod_cmd(){
     echo "Vou iniciar a configuração do ambiente de produção"
     git fetch
     git reset origin/master --hard
+    rm composer.lock
+    ./cli composer install
     export $(cat .env)
     docker-compose -f docker-compose-prd.yml build
     docker tag qakit_nginx:latest "$REGISTRY_URL"/qakit_nginx:latest
