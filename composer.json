@@ -9,6 +9,7 @@
         "php": "^8.2",
         "ext-http": "*",
         "dompdf/dompdf": "^1",
+        "gemini-api-php/laravel": "^0.3.0",
         "google/apiclient": "^2.15",
         "guzzlehttp/guzzle": "^7.7",
         "jeroennoten/laravel-adminlte": "^v3.11.0",

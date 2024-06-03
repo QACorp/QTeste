@@ -9,13 +9,13 @@ use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 class MenuConfig extends MenuConfigAbstract
 {
 
-    static function configureMenuModule()
+    public static function configureMenuModule()
     {
         Event::listen(BuildingMenu::class, function (BuildingMenu $event) {
             $event->menu->add([
                 'text' => 'Projetos',
                 'key' => 'projetos_index',
-                'icon'  => 'fa-solid fa-diagram-project',
+                'icon'  => 'fas fa-project-diagram',
             ]);
             $event->menu->addIn('projetos_index',[
                 'key' => 'aplicacao_index',
@@ -24,9 +24,11 @@ class MenuConfig extends MenuConfigAbstract
                 'text' => 'Aplicações',
                 'can'   => 'LISTAR_APLICACAO',
                 'active' => ['projetos/aplicacoes/*'],
+                'classes' => 'ml-3',
                 'submenu' => [
                     [
                         'text' => 'Listar aplicações',
+                        'classes' => 'ml-4',
                         'route'  => 'aplicacoes.index',
                         'icon'  => 'fas fa-list',
                         'active' => ['projetos/aplicacoes/*'],
@@ -41,21 +43,44 @@ class MenuConfig extends MenuConfigAbstract
                 'text' => 'Testes',
                 'can'   => ['LISTAR_CASO_TESTE', 'LISTAR_PLANO_TESTE'],
                 'active' => ['projetos/casos-teste/*'],
+                'classes' => 'ml-3',
                 'submenu' => [
                     [
-                        'text' => 'Listar casos de teste',
-                        'route'  => 'aplicacoes.casos-teste.index',
+                        'text' => 'Casos de teste',
                         'icon'  => 'fas fa-cubes',
+                        'classes' => 'ml-3',
                         'active' => ['projetos/casos-teste/*'],
-                        'can'   => 'LISTAR_CASO_TESTE'
+                        'submenu' => [
+                            [
+                                'text' => 'Listar',
+                                'route'  => 'aplicacoes.casos-teste.index',
+                                'classes' => 'ml-4',
+                                'icon'  => 'fas fa-list',
+                                'active' => ['projetos/casos-teste/','projetos/casos-teste/inserir/*', 'projetos/casos-teste/editar/*'],
+                                'can'   => 'LISTAR_CASO_TESTE',
+                            ],
+                            [
+                                'text' => 'QAra',
+                                'route'  => 'caso-teste.qara.index',
+                                'classes' => 'ml-4',
+                                'icon'  => 'fas fa-file-alt',
+                                'active' => ['projetos/casos-teste/qara/*'],
+                                'label' => 'Novo',
+                                'label_color' => 'success'
+                                //'can'   => 'LISTAR_PLANO_TESTE'
+                            ]
+                        ]
                     ],
                     [
-                        'text' => 'Listar planos de teste',
+                        'text' => 'Planos de teste',
                         'route'  => 'aplicacoes.planos-teste.index',
                         'icon'  => 'fas fa-file-alt',
+                        'classes' => 'ml-3',
                         'active' => ['projetos/planos-teste/*'],
                         'can'   => 'LISTAR_PLANO_TESTE'
-                    ]
+                    ],
+
+
                 ]
             ]);
         });

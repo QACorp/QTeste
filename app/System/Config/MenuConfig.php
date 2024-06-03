@@ -14,12 +14,11 @@ use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 class MenuConfig extends MenuConfigAbstract
 {
 
-    static function configureMenuModule()
+    public static function configureMenuModule()
     {
         Event::listen(BuildingMenu::class, function (BuildingMenu $event) {
             // Add some items to the menu...
             $request = App::make(Request::class);
-            //Cookie::queue(config('app.cookie_equipe_nome'), 8, (60*60*60));
             Auth::user()->equipes()->each(function ($item, $key) use(&$event, $request) {
                 $event->menu->add(
                     [
@@ -58,6 +57,7 @@ class MenuConfig extends MenuConfigAbstract
                     [
                         'key' => 'users_index',
                         'route' => 'users.index',
+                        'classes' => 'ml-4',
                         'icon'  => 'fas  fa-user',
                         'text' => 'Usuários',
                         'can'   => 'LISTAR_USUARIO',
@@ -65,6 +65,7 @@ class MenuConfig extends MenuConfigAbstract
                     ],
                     [
                         'key' => 'equipes_index',
+                        'classes' => 'ml-4',
                         'text' => 'Equipes',
                         'route'  => 'equipes.index',
                         'icon'  => 'fas fa-users',

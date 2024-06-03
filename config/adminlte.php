@@ -124,7 +124,7 @@ return [
         'enabled' => true,
         'img' => [
             'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
-            'alt' => 'AdminLTE Preloader Image',
+            'alt' => 'QAKit',
             'effect' => 'animation__shake',
             'width' => 60,
             'height' => 60,

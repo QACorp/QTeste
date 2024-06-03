@@ -8,6 +8,7 @@ use App\Modules\Projetos\Controllers\ConsultaProjetoController;
 use App\Modules\Projetos\Controllers\DocumentoController;
 use App\Modules\Projetos\Controllers\PlanoTesteController;
 use App\Modules\Projetos\Controllers\PlanoTesteExecucaoController;
+use App\Modules\Projetos\Controllers\QAraController;
 use Illuminate\Support\Facades\Route;
 use App\Modules\Projetos\Controllers\ProjetoController;
 use App\Modules\Projetos\Controllers\ObservacaoController;
@@ -71,6 +72,11 @@ Route::group(['prefix' => 'aplicacoes'],function(){
 
 });
 Route::group(['prefix' => '/casos-teste'],function() {
+    Route::group(['prefix' => '/qara'],function() {
+        Route::get('/', [QAraController::class, 'index'])->name('caso-teste.qara.index');
+        Route::post('/gerar-texto', [QAraController::class, 'index'])->name('caso-teste.qara.gerar-texto');
+    });
+
     Route::get('/', [CasoTesteController::class, 'index'])->name('aplicacoes.casos-teste.index');
     Route::get('/list',[CasoTesteController::class,'list'])->name('aplicacoes.casos-teste.list');
 
@@ -82,6 +88,7 @@ Route::group(['prefix' => '/casos-teste'],function() {
     Route::post('/inserir', [CasoTesteController::class, 'salvar'])->name('aplicacoes.casos-teste.salvar');
     Route::put('/{idCasoTeste}', [CasoTesteController::class, 'atualizar'])->name('aplicacoes.casos-teste.atualizar');
     Route::delete('/{idCasoTeste}', [CasoTesteController::class, 'excluir'])->name('aplicacoes.casos-teste.excluir');
+
 
 });
 
