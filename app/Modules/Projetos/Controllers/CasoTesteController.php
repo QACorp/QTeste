@@ -7,6 +7,7 @@ use App\Modules\Projetos\Contracts\Business\CasoTesteBusinessContract;
 use App\Modules\Projetos\DTOs\CasoTesteDTO;
 use App\Modules\Projetos\Enums\PermissionEnum;
 use App\System\DTOs\EquipeDTO;
+use App\System\Exceptions\ConflictException;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Http\Controllers\Controller;
@@ -16,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Mockery\Exception;
 use Spatie\LaravelData\DataCollection;
 
 class CasoTesteController extends Controller
@@ -126,7 +128,7 @@ class CasoTesteController extends Controller
 
     public function excluir(Request $request, int $idCasoTeste)
     {
-        Auth::user()->can(PermissionEnum::REMOVER_CASO_TESTE->value);
+
         try{
             $this->casoTesteBusiness->excluir($idCasoTeste, EquipeUtils::equipeUsuarioLogado());
             return redirect(route('aplicacoes.casos-teste.index'))
@@ -134,6 +136,9 @@ class CasoTesteController extends Controller
         }catch (NotFoundException $e){
             return redirect(route('aplicacoes.casos-teste.index'))
                 ->with([Controller::MESSAGE_KEY_ERROR => ['Caso de teste não existe']]);
+        }catch (ConflictException $e){
+            return redirect(route('aplicacoes.casos-teste.index'))
+                ->with([Controller::MESSAGE_KEY_ERROR => [$e->getMessage()]]);
         }
     }
 

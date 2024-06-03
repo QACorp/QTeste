@@ -2,8 +2,10 @@
 
 namespace App\Modules\Retrabalhos\Repositorys;
 
+use App\Modules\Projetos\DTOs\CasoTesteDTO;
 use App\Modules\Retrabalhos\Contracts\Repositorys\RetrabalhoRepositoryContract;
 use App\Modules\Retrabalhos\DTOs\RetrabalhoCasoTesteDTO;
+use App\Modules\Retrabalhos\DTOs\RetrabalhoDTO;
 use App\Modules\Retrabalhos\Models\Retrabalho;
 use Spatie\LaravelData\DataCollection;
 
@@ -60,5 +62,12 @@ class RetrabalhoRepository implements RetrabalhoRepositoryContract
             ->orWhere('usuario_criador_id', $idUsuario)
             ->get();
         return RetrabalhoCasoTesteDTO::collection($retrabalhos);
+    }
+
+    public function buscarRetrabalhoPorCasoTeste(CasoTesteDTO $casoTesteDTO): DataCollection
+    {
+        return RetrabalhoDTO::collection(
+            Retrabalho::where('caso_teste_id', $casoTesteDTO->id)->get()
+        );
     }
 }

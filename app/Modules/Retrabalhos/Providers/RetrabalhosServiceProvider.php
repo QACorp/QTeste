@@ -3,6 +3,7 @@
 namespace App\Modules\Retrabalhos\Providers;
 
 use App\Modules\Projetos\Components\TotaisTestes;
+use App\Modules\Projetos\Models\CasoTeste;
 use App\Modules\Projetos\Providers\ProjetosServiceProvider;
 use App\Modules\Retrabalhos\Business\DashboardBusiness;
 use App\Modules\Retrabalhos\Business\RelatorioBusiness;
@@ -25,6 +26,7 @@ use App\Modules\Retrabalhos\Contracts\Repositorys\RelatorioRepositoryContract;
 use App\Modules\Retrabalhos\Contracts\Repositorys\RetrabalhoRepositoryContract;
 use App\Modules\Retrabalhos\Contracts\Repositorys\TipoRetrabalhoRepositoryContract;
 use App\Modules\Retrabalhos\Contracts\Repositorys\UserRepositoryContract;
+use App\Modules\Retrabalhos\Observers\CasoTesteObserver;
 use App\Modules\Retrabalhos\Repositorys\DashoboardRepository;
 use App\Modules\Retrabalhos\Repositorys\RelatorioRepository;
 use App\Modules\Retrabalhos\Repositorys\RetrabalhoRepository;
@@ -36,6 +38,7 @@ use Illuminate\Support\Facades\Blade;
 
 class RetrabalhosServiceProvider extends ServiceProviderAbstract
 {
+
     protected string $module_path = 'Modules/Retrabalhos';
     protected string $prefix = 'retrabalhos';
     protected string $view_namespace = 'retrabalhos';
@@ -61,6 +64,7 @@ class RetrabalhosServiceProvider extends ServiceProviderAbstract
 
     public function boot(): void
     {
+        CasoTeste::observe(CasoTesteObserver::class);
         Blade::component('grafico-evolucao-retrabalho-usuario', GraficoEvolucaoRetrabalhoUsuario::class);
         Blade::component('grafico-evolucao-retrabalho-aplicacao', GraficoEvolucaoRetrabalhoAplicacao::class);
         Blade::component('grafico-evolucao-retrabalho', GraficoEvolucaoRetrabalho::class);

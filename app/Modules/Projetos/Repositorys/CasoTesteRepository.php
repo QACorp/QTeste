@@ -9,6 +9,7 @@ use App\Modules\Projetos\Enums\CasoTesteEnum;
 use App\Modules\Projetos\Models\CasoTeste;
 use App\Modules\Projetos\Models\PlanoTeste;
 use App\System\DTOs\EquipeDTO;
+use App\System\Exceptions\ConflictException;
 use App\System\Impl\BaseRepository;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -114,7 +115,11 @@ class CasoTesteRepository extends BaseRepository  implements CasoTesteRepository
     }
     public function excluir(int $idCasoTeste): bool
     {
-        return CasoTeste::find($idCasoTeste)->delete();
+        try {
+            return CasoTeste::find($idCasoTeste)->delete();
+        }catch (ConflictException $exception){
+            throw $exception;
+        }
     }
 
     public function buscarCasoTestePorId(int $idCasoTeste, int $idEquipe): ?CasoTesteDTO
