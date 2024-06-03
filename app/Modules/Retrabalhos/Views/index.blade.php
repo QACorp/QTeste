@@ -68,7 +68,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6">Nenhum registro encontrado</td>
+                                <td colspan="7">Nenhum registro encontrado</td>
                             </tr>
                         @endforelse
                     </x-adminlte-datatable>
