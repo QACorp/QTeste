@@ -89,6 +89,7 @@ class CasoTesteBusiness extends BusinessAbstract implements CasoTesteBusinessCon
         return $this->casoTesteRespository->buscarTodos($idEquipe);
     }
 
+
     public function excluir(int $idCasoTeste, int $idEquipe): bool
     {
         $this->can(PermissionEnum::REMOVER_CASO_TESTE->value);

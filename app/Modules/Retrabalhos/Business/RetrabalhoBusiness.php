@@ -192,4 +192,9 @@ class RetrabalhoBusiness extends BusinessAbstract implements RetrabalhoBusinessC
         }
         return $casoTeste;
     }
+
+    public function buscarRetrabalhoPorCasoTeste(CasoTesteDTO $casoTesteDTO): DataCollection
+    {
+        return $this->retrabalhoRepository->buscarRetrabalhoPorCasoTeste($casoTesteDTO);
+    }
 }

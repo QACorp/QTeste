@@ -47,6 +47,9 @@ class Retrabalho extends Model
         'usuario_criador',
         'criticidade'
     ];
+    protected $casts = [
+        'data' => 'date'
+    ];
     // Criar chaves estrangeiras
     public function tipo_retrabalho()
     {

@@ -2,6 +2,7 @@
 
 namespace App\Modules\Retrabalhos\Contracts\Repositorys;
 
+use App\Modules\Projetos\DTOs\CasoTesteDTO;
 use App\Modules\Retrabalhos\DTOs\RetrabalhoCasoTesteDTO;
 use Spatie\LaravelData\DataCollection;
 
@@ -13,4 +14,5 @@ interface RetrabalhoRepositoryContract
     public function remover(int $idRetrabalho): bool;
     public function editar(RetrabalhoCasoTesteDTO $retrabalhoCasoTesteDTO): RetrabalhoCasoTesteDTO;
     public function buscarTodosPorUsuario(int $idUsuario): DataCollection;
+    public function buscarRetrabalhoPorCasoTeste(CasoTesteDTO $casoTesteDTO):DataCollection;
 }
