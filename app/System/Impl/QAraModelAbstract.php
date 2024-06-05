@@ -10,5 +10,5 @@ use Spatie\LaravelData\DataCollection;
 
 abstract class QAraModelAbstract
 {
-    abstract public static  function gerarTexto(QAraMessageDTO $message):DataCollection ;
+    abstract public static  function gerarTexto(DataCollection $message):DataCollection ;
 }

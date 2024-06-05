@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\QAra\Config;
+namespace App\Modules\QAraCasosTeste\Config;
 
 use App\System\Impl\MenuConfigAbstract;
 use Illuminate\Support\Facades\Event;

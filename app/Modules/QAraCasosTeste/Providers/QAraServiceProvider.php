@@ -1,17 +1,21 @@
 <?php
 
-namespace App\Modules\QAra\Providers;
+namespace App\Modules\QAraCasosTeste\Providers;
 
 use App\Modules\Projetos\Providers\ProjetosServiceProvider;
-use App\Modules\QAra\Config\MenuConfig;
+use App\Modules\QAraCasosTeste\Business\QAraCasosTesteBusiness;
+use App\Modules\QAraCasosTeste\Config\MenuConfig;
+use App\Modules\QAraCasosTeste\Contracts\Business\QAraCasosTesteBusinessContract;
 use App\System\Impl\ServiceProviderAbstract;
 
 class QAraServiceProvider extends ServiceProviderAbstract
 {
-    protected string $module_path = 'Modules/QAra';
+    protected string $module_path = 'Modules/QAraCasosTeste';
     protected string $prefix = 'qara';
     protected string $view_namespace = 'qara';
-
+    public $bindings = [
+        QAraCasosTesteBusinessContract::class => QAraCasosTesteBusiness::class
+    ];
     /**
      * Register services.
      */
