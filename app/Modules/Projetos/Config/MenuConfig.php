@@ -48,6 +48,7 @@ class MenuConfig extends MenuConfigAbstract
                     [
                         'text' => 'Casos de teste',
                         'icon'  => 'fas fa-cubes',
+                        'key' => 'casos_teste_index',
                         'classes' => 'ml-3',
                         'active' => ['projetos/casos-teste/*'],
                         'submenu' => [
@@ -59,16 +60,6 @@ class MenuConfig extends MenuConfigAbstract
                                 'active' => ['projetos/casos-teste/','projetos/casos-teste/inserir/*', 'projetos/casos-teste/editar/*'],
                                 'can'   => 'LISTAR_CASO_TESTE',
                             ],
-                            [
-                                'text' => 'QAra',
-                                'route'  => 'caso-teste.qara.index',
-                                'classes' => 'ml-4',
-                                'icon'  => 'fas fa-file-alt',
-                                'active' => ['projetos/casos-teste/qara/*'],
-                                'label' => 'Novo',
-                                'label_color' => 'success'
-                                //'can'   => 'LISTAR_PLANO_TESTE'
-                            ]
                         ]
                     ],
                     [

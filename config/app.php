@@ -198,6 +198,7 @@ return [
 
         App\Modules\Projetos\Providers\ProjetosServiceProvider::class,
         App\Modules\Retrabalhos\Providers\RetrabalhosServiceProvider::class,
+        App\Modules\QAra\Providers\QAraServiceProvider::class,
 
 
     ],

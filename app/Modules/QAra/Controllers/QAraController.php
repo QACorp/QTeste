@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Modules\Projetos\Controllers;
+namespace App\Modules\QAra\Controllers;
 
 use App\Modules\Projetos\Contracts\Business\AplicacaoBusinessContract;
 use App\Modules\Projetos\Contracts\Business\CasoTesteBusinessContract;
 use App\Modules\Projetos\Contracts\Business\ProjetoBusinessContract;
-use App\Modules\Projetos\DTOs\ProjetoDTO;
 use App\System\Services\Qara\DTOs\QAraMessageDTO;
-use App\System\Services\Qara\QAra;
 use App\System\Services\Qara\QAraCasosTesteModel;
 use App\System\Services\Qara\QAraRoleEnum;
 use App\System\Utils\EquipeUtils;
@@ -31,7 +29,11 @@ class QAraController
                 'content' => $request->get('requisitos')
             ])
         );
-        dd($casosTeste);
+
+        return view('qara::qara.casos-teste', compact(
+                'casosTeste'
+            )
+        );
     }
     public function index(Request $request)
     {
@@ -42,7 +44,7 @@ class QAraController
         if($idAplicacao){
             $projetos = $this->projetoBusiness->buscarTodosPorAplicacao($idAplicacao, EquipeUtils::equipeUsuarioLogado());
         }
-        return view('projetos::qara.index', compact(
+        return view('qara::qara.index', compact(
                     'aplicacoes', 'idAplicacao', 'idProjeto', 'projetos'
             )
         );
