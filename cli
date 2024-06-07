@@ -79,6 +79,7 @@ swarm_prod_cmd(){
     rm composer.lock
     ./cli composer install
     export $(cat .env)
+    ./cli npm run build
     docker-compose -f docker-compose-prd.yml build
     docker tag qakit_nginx:latest "$REGISTRY_URL"/qakit_nginx:latest
     docker tag qakit_app:latest "$REGISTRY_URL"/qakit_app:latest
