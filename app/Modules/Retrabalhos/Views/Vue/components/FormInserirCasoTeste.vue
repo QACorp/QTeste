@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import {CasoTesteInterface} from "../Interfaces/CasoTeste.interface";
 import {getError, hasError} from "../../../../../../resources/js/ErrorHelper";
+import {watch, watchEffect} from "vue";
+import {types} from "sass";
+import Boolean = types.Boolean;
 
 const props = defineProps({
     errors: {
@@ -10,9 +13,10 @@ const props = defineProps({
 });
 const casoTeste = defineModel<CasoTesteInterface>();
 
-const isDisable = () => {
-    return casoTeste.value && casoTeste.value.caso_teste_id;
+const isDisable = ():boolean => {
+    return (casoTeste.value && casoTeste.value?.caso_teste_id != null);
 }
+
 </script>
 
 <template>

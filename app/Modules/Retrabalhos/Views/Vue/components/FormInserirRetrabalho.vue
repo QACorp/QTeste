@@ -105,7 +105,8 @@ const populaProjetos = async (idAplicacao:number) => {
 }
 
 const populaCasosTeste = async (term:string) => {
-    if(term.length <= 3) return;
+    if(!term || term.length < 3) return;
+
     noDataText.value = 'Buscando...'
     await axios.get(import.meta.env.VITE_APP_URL+`/projetos/consultas/casos-testes?term=${term}`).then((res) => {
         listaCasosTeste.value = res.data;
@@ -171,7 +172,7 @@ watchEffect(()  => {
     }
 });
 watch(caso_teste, (new_caso_teste, old_caso_teste) => {
-    if(new_caso_teste  && new_caso_teste.id){
+    if(new_caso_teste  && new_caso_teste?.id !== null){
         retrabalho.value.caso_teste = new_caso_teste;
     }
 })
@@ -331,7 +332,7 @@ watch(caso_teste, (new_caso_teste, old_caso_teste) => {
                                 :clearable="true"
                                 id="_caso_teste"
                                 name="_caso_teste"
-                                @click:clear="retrabalho.caso_teste.caso_teste_id = null"
+                                @click:clear="retrabalho.caso_teste = {} as CasoTesteInterface"
                                 @update:search="populaCasosTeste"
                                 v-if="retrabalho.tipo_retrabalho?.tipo === TipoRetrabalhoEnum.FUNCIONAL"
                                 :error="shouldShowError('caso_teste_id')"
