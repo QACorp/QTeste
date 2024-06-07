@@ -42,6 +42,7 @@ const props = defineProps({
     }
 });
 const loading = ref(false);
+const noDataText = ref<string>('Digite para iniciar a busca');
 const listaTiposRetrabalho = ref<TipoRetrabalhoInterface[]>([]);
 const listaAplicacoes = ref<AplicacaoInterface[]>([]);
 const listaProjetos = ref<ProjetoInterface[]>([]);
@@ -104,6 +105,9 @@ const populaProjetos = async (idAplicacao:number) => {
 }
 
 const populaCasosTeste = async (term:string) => {
+    if(!term || term.length < 3) return;
+
+    noDataText.value = 'Buscando...'
     await axios.get(import.meta.env.VITE_APP_URL+`/projetos/consultas/casos-testes?term=${term}`).then((res) => {
         listaCasosTeste.value = res.data;
         listaCasosTeste.value = listaCasosTeste.value.map((item: any) => {
@@ -117,7 +121,9 @@ const populaCasosTeste = async (term:string) => {
                 id: item.id
             }
         })
-
+        if(listaCasosTeste.value.length === 0){
+            noDataText.value = 'Nenhum registro encontrado'
+        }
         if (retrabalho.value.caso_teste.caso_teste_id) {
             retrabalho.value.caso_teste =
                 listaCasosTeste.value.find((item: CasoTesteInterface) => item.caso_teste_id == retrabalho.value.caso_teste.caso_teste_id);
@@ -166,7 +172,7 @@ watchEffect(()  => {
     }
 });
 watch(caso_teste, (new_caso_teste, old_caso_teste) => {
-    if(new_caso_teste  && new_caso_teste.id){
+    if(new_caso_teste  && new_caso_teste?.id !== null){
         retrabalho.value.caso_teste = new_caso_teste;
     }
 })
@@ -262,7 +268,7 @@ watch(caso_teste, (new_caso_teste, old_caso_teste) => {
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <v-text-field
                                 v-model="retrabalho.data"
@@ -289,7 +295,7 @@ watch(caso_teste, (new_caso_teste, old_caso_teste) => {
                             ></v-text-field>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-5">
                         <div class="form-group">
                             <input type="hidden" :value="retrabalho.criticidade" name="criticidade" />
                             <v-combobox
@@ -319,14 +325,14 @@ watch(caso_teste, (new_caso_teste, old_caso_teste) => {
                                 :items="listaCasosTeste"
                                 variant="solo"
                                 return-object
-                                no-data-text="Nenhum caso de teste encontrado, digite para pesquisar ou cadastre um novo usando os campos ao lado"
-                                hint="Digite para começar a filtrar"
+                                :no-data-text="noDataText"
+                                hint="Digite pelo menos 3 letras para para começar a filtrar"
                                 item-title="titulo_caso_teste"
                                 item-value="caso_teste_id"
                                 :clearable="true"
                                 id="_caso_teste"
                                 name="_caso_teste"
-                                @click:clear="retrabalho.caso_teste.caso_teste_id = null"
+                                @click:clear="retrabalho.caso_teste = {} as CasoTesteInterface"
                                 @update:search="populaCasosTeste"
                                 v-if="retrabalho.tipo_retrabalho?.tipo === TipoRetrabalhoEnum.FUNCIONAL"
                                 :error="shouldShowError('caso_teste_id')"
