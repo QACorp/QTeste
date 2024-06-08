@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\QAra\Services\QAra;
+namespace App\Modules\QAraCasosTeste\Services\QAra;
 
 use App\Modules\Projetos\DTOs\CasoTesteDTO;
 use App\System\Impl\QAraModelAbstract;
@@ -21,7 +21,7 @@ class QAraCasosTesteModel extends QAraModelAbstract
             ]),
 
             QAraMessageDTO::from([
-                'role' => QAraRoleEnum::USER->value,
+                'role' => QAraRoleEnum::SYSTEM->value,
                 'content' => 'Escreva os casos de testes em JSON com o seguinte formato:{casos_teste:[
                     {
                         requisito: "decricao do requisito",

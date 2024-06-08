@@ -18,12 +18,25 @@
 
                 <div class="card-body">
 
-                    <form action="{{ route('caso-teste.qara.gerar-texto') }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('caso-teste.qara.gerar-texto') }}" id="form-caso-teste" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
-                        @foreach($casosTeste as $casoTeste)
+                            <div class="col-md-12 mb-2">
+                                <button class="btn btn-success btn-sm" type="button" onclick="">
+                                    <i class="fas fa-plus-circle"></i>
+                                </button>
+                            </div>
+                        @foreach($casosTeste as $key => $casoTeste)
 
-                            <div class="col-md-12 border rounded border-black mb-2 pt-4">
+                            <div class="col-md-12 border rounded border-black mb-2 pt-4" id="ct_{{ $key }}">
+                                <div class="row">
+                                    <div class="col-md-12 text-right">
+                                        <button class="btn btn-light btn-sm" type="button" onclick="document.getElementById('ct_{{ $key }}').remove()">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <div class="row">
@@ -88,9 +101,14 @@
                             </div>
                             @endforeach
 
-                            <div class="col-md-12">
+                            <div class="col-md-3">
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-success btn-lg w-100">Gerar Casos de Teste</button>
+                                    <button type="submit" class="btn btn-success btn-md">Salvar</button>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <a href="{{ route('caso-teste.qara.index') }}" class="btn btn-warning btn-md"> <i class="fas fa-arrow-alt-circle-left" ></i> Voltar para formulário</a>
                                 </div>
                             </div>
                         </div>
@@ -100,4 +118,9 @@
             </div>
         </div>
     </div>
+@stop
+@section('js')
+    <script>
+
+    </script>
 @stop

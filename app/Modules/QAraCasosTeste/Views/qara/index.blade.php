@@ -32,7 +32,7 @@
                                         Primeiro selecione a aplicação, pois será com base nela que serão gerados os casos de teste.
                                     </div>
                                     <x-adminlte-select2
-                                        name="aplicacao"
+                                        name="idAplicacao"
                                         class="col-md-12"
                                         label="Aplicação"
                                         onchange="window.location.href = this.value != '' ? '{{ route('caso-teste.qara.index') }}?idAplicacao=' + this.value : '{{ route('caso-teste.qara.index') }}'"
@@ -53,7 +53,7 @@
                                         </div>
 
                                         <x-adminlte-select2
-                                            name="projeto"
+                                            name="idProjeto"
                                             class="col-md-12"
                                             label="Projeto"
                                         >

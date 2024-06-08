@@ -4,13 +4,12 @@ namespace App\Modules\QAraCasosTeste\Business;
 
 use App\Modules\Projetos\Contracts\Business\AplicacaoBusinessContract;
 use App\Modules\Projetos\Contracts\Business\ProjetoBusinessContract;
-use App\Modules\QAra\Services\QAra\QAraCasosTesteModel;
 use App\Modules\QAraCasosTeste\Contracts\Business\QAraCasosTesteBusinessContract;
 use App\Modules\QAraCasosTeste\DTOs\QAraCasosTesteDTO;
+use App\Modules\QAraCasosTeste\Services\QAra\QAraCasosTesteModel;
 use App\System\Services\Qara\DTOs\QAraMessageDTO;
 use App\System\Services\Qara\QAraRoleEnum;
-use App\System\Utils\EquipeUtils;
-use Illuminate\Support\Collection;
+
 use Spatie\LaravelData\DataCollection;
 
 class QAraCasosTesteBusiness implements QAraCasosTesteBusinessContract
