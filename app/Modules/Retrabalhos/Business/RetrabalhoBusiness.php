@@ -121,10 +121,10 @@ class RetrabalhoBusiness extends BusinessAbstract implements RetrabalhoBusinessC
         if($this->canDo(PermissionEnum::ALTERAR_TODOS_RETRABALHOS->value)){
             return true;
         }
-
         if($this->canDo(PermissionEnum::ALTERAR_RETRABALHO->value)){
             return $retrabalhoDTO->usuario_criador_id == $idUsuario;
         }
+
         return false;
 
     }

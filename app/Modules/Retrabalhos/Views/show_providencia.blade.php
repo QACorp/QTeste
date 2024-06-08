@@ -59,7 +59,7 @@
                                 </div>
                                 @endcan
                                 <div class="col-md-4 ">
-                                    <button id="copy" onclick="copy()" class="btn btn-primary py-2 col-md-12">Copiar para área de transferência</button>
+                                    <button id="copy" data-clipboard-target="#providencia" class="btn btn-primary py-2 col-md-12">Copiar para área de transferência</button>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="alert alert-success fade hidden py-2 mr-1" role="alert" id="cliped">
@@ -76,16 +76,20 @@
 
 @stop
 @push('js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"></script>
     <script>
-        function copy() {
-            // Get the text field
-            var copyText = document.getElementById("providencia");
-            navigator.clipboard.writeText(copyText.innerHTML);
-            $("#cliped").addClass('show')
-            setTimeout(() => {
-                $("#cliped").removeClass('show')
-            }, 5000);
 
-        }
+        var clipboard = new ClipboardJS('#copy');
+
+        clipboard.on('success', function(e) {
+            $("#cliped").addClass('show');
+            e.clearSelection();
+
+        });
+        setTimeout(() => {
+            $("#cliped").removeClass('show')
+        }, 5000);
+
+
     </script>
 @endpush
