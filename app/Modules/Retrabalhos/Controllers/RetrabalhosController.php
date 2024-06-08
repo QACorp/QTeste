@@ -71,10 +71,8 @@ class RetrabalhosController extends Controller
     public function editar(int $idRetrabalho, RetrabalhoCasoTesteDTO $retrabalhoDTO)
     {
         $retrabalhoDTO->id = $idRetrabalho;
-        if(!$this->retrabalhoBusiness->canAlterarRetrabalho($retrabalhoDTO, Auth::user()->getAuthIdentifier())){
-            return redirect()->route('retrabalhos.index')
-                ->with([Controller::MESSAGE_KEY_ERROR => ['Acesso não autorizado']]);
-        }
+
+
         try{
 
             $this->retrabalhoBusiness->editar(

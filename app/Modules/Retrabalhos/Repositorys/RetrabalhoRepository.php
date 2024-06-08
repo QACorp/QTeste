@@ -18,13 +18,12 @@ class RetrabalhoRepository implements RetrabalhoRepositoryContract
         $retrabalho->save();
         $retrabalho->refresh();
         $retrabalho->load(['caso_teste', 'aplicacao', 'tipo_retrabalho', 'projeto', 'usuario']);
-        //$retrabalho = $retrabalho->with(['caso_teste', 'aplicacao', 'tipo_retrabalho', 'projeto', 'usuario']);
         return RetrabalhoCasoTesteDTO::from($retrabalho);
     }
 
     public function buscarPorId(int $idRetrabalho): ?RetrabalhoCasoTesteDTO
     {
-        $retrabalho = Retrabalho::with(['caso_teste', 'aplicacao', 'tipo_retrabalho', 'projeto', 'usuario'])->find($idRetrabalho);
+        $retrabalho = Retrabalho::with(['caso_teste', 'aplicacao', 'tipo_retrabalho', 'projeto', 'usuario', 'usuario_criador'])->find($idRetrabalho);
         return $retrabalho ? RetrabalhoCasoTesteDTO::from($retrabalho) : null;
     }
 
