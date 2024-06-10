@@ -23,8 +23,8 @@ class MenuConfig extends MenuConfigAbstract
                                     'icon'  => 'fas fa-file-alt',
                                     'active' => ['projetos/qara/casos-teste/*'],
                                     'label' => 'Novo',
-                                    'label_color' => 'success'
-                                    //'can'   => 'LISTAR_PLANO_TESTE'
+                                    'label_color' => 'success',
+                                    'can'   => 'QARA_CASOS_TESTE_INSERIR'
 
             ]);
         });

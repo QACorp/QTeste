@@ -9,6 +9,7 @@ use App\Modules\Projetos\Enums\CasoTesteEnum;
 use App\Modules\Projetos\Models\CasoTeste;
 use App\Modules\QAraCasosTeste\Contracts\Business\QAraCasosTesteBusinessContract;
 use App\Modules\QAraCasosTeste\DTOs\QAraCasosTesteDTO;
+use App\Modules\QAraCasosTeste\Enums\PermissionEnum;
 use App\System\DTOs\EquipeDTO;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnauthorizedException;
@@ -32,6 +33,7 @@ class QAraController
 
     public function gerarTexto(QAraCasosTesteDTO $qaraCasosTesteDTO){
         try{
+            $this->qaraCasosTesteBusiness->can(PermissionEnum::QARA_CASOS_TESTE_INSERIR->value);
             $casosTeste = $this->qaraCasosTesteBusiness->gerarTextoIA($qaraCasosTesteDTO, EquipeUtils::equipeUsuarioLogado());
             return view('qara::qara.casos-teste', compact(
                     'casosTeste'
@@ -63,13 +65,21 @@ class QAraController
             ]));
         }
         $casosTesteDTO = CasoTesteDTO::collection($casosTeste);
-        $casosTeste = $this->qaraCasosTesteBusiness->salvarCasosTeste($casosTesteDTO, EquipeUtils::equipeUsuarioLogado());
-        return redirect(route('aplicacoes.casos-teste.index'))
-            ->with([Controller::MESSAGE_KEY_SUCCESS => ['Casos de teste salvos com sucesso.']]);
+        try{
+            $casosTeste = $this->qaraCasosTesteBusiness->salvarCasosTeste($casosTesteDTO, EquipeUtils::equipeUsuarioLogado());
+            return redirect(route('aplicacoes.casos-teste.index'))
+                ->with([Controller::MESSAGE_KEY_SUCCESS => ['Casos de teste salvos com sucesso.']]);
+
+        }catch (NotFoundException $e) {
+            return redirect(route('aplicacoes.casos-teste.index'))
+                ->with([Controller::MESSAGE_KEY_ERROR => ['Registro não encontrado.']]);
+        }
+
 
     }
     public function index(Request $request)
     {
+        $this->qaraCasosTesteBusiness->can(PermissionEnum::QARA_CASOS_TESTE_INSERIR->value);
         $idAplicacao = $request->get('idAplicacao');
         $idProjeto = $request->get('idProjeto');
         $aplicacoes = $this->aplicacaoBusiness->buscarTodos(EquipeUtils::equipeUsuarioLogado());

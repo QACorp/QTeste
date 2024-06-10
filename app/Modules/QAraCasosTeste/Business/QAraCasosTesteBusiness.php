@@ -8,18 +8,22 @@ use App\Modules\Projetos\Contracts\Business\ProjetoBusinessContract;
 use App\Modules\Projetos\DTOs\CasoTesteDTO;
 use App\Modules\QAraCasosTeste\Contracts\Business\QAraCasosTesteBusinessContract;
 use App\Modules\QAraCasosTeste\DTOs\QAraCasosTesteDTO;
+use App\Modules\QAraCasosTeste\Enums\PermissionEnum;
 use App\Modules\QAraCasosTeste\Services\QAra\QAraCasosTesteModel;
 use App\System\Exceptions\UnprocessableEntityException;
+use App\System\Impl\BusinessAbstract;
 use App\System\Services\Qara\DTOs\QAraMessageDTO;
 use App\System\Services\Qara\QAraRoleEnum;
 
+use App\System\Traits\Authverification;
 use App\System\Traits\TransactionDatabase;
+use App\System\Traits\Validation;
 use Illuminate\Support\Collection;
 use Spatie\LaravelData\DataCollection;
 
-class QAraCasosTesteBusiness implements QAraCasosTesteBusinessContract
+class QAraCasosTesteBusiness extends BusinessAbstract implements QAraCasosTesteBusinessContract
 {
-    use TransactionDatabase;
+    use TransactionDatabase, Authverification, Validation;
     public function __construct(
         private readonly AplicacaoBusinessContract $aplicacaoBusiness,
         private readonly ProjetoBusinessContract $projetoBusiness,
@@ -57,6 +61,7 @@ class QAraCasosTesteBusiness implements QAraCasosTesteBusinessContract
 
     public function salvarCasosTeste(DataCollection $qaraCasosTesteDTO, int $idEquipe): DataCollection
     {
+        $this->can(PermissionEnum::QARA_CASOS_TESTE_INSERIR->value);
         $insertedCasos = Collection::empty();
         try{
             $this->startTransaction();
