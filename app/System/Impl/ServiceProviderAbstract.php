@@ -23,11 +23,8 @@ abstract class ServiceProviderAbstract extends ServiceProvider
         Route::prefix($this->prefix)
             ->middleware(['web', 'auth'])
             ->group(base_path($this->module_path. '/Routes/route.php'));
-//        if(file_exists($this->module_path. '/Routes/api.php')){
-//            Route::prefix($this->prefix)
-//                ->middleware(['jwt', 'auth'])
-//                ->group(app_path($this->module_path. '/Routes/route.php'));
-//        }
+
+        $this->addDirectoryMigration();
 
     }
 
@@ -43,5 +40,12 @@ abstract class ServiceProviderAbstract extends ServiceProvider
         }
         return true;
     }
+    private function addDirectoryMigration():void
+    {
+        $mainPath = database_path('migrations');
+        $directories = glob(base_path($this->module_path. '/Migrations') , GLOB_ONLYDIR);
+        $paths = array_merge([$mainPath], $directories);
 
+        $this->loadMigrationsFrom($paths);
+    }
 }

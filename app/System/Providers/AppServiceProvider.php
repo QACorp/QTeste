@@ -46,7 +46,6 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('generic-modal', GenericModal::class);
         Blade::component('assinatura', Assinatura::class);
         MenuConfig::configureMenuModule();
-        $this->addDirectoryMigration();
 
         if ($this->app->environment('production')) {
             $this->app['request']->server->set('HTTPS','on');
@@ -55,11 +54,4 @@ class AppServiceProvider extends ServiceProvider
 
     }
 
-    private function addDirectoryMigration(){
-        $mainPath = database_path('migrations');
-        $directories = glob(app_path('Modules') . '/*/Migrations' , GLOB_ONLYDIR);
-        $paths = array_merge([$mainPath], $directories);
-
-        $this->loadMigrationsFrom($paths);
-    }
 }
