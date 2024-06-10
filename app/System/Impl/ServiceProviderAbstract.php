@@ -15,11 +15,14 @@ abstract class ServiceProviderAbstract extends ServiceProvider
     protected string $module_path;
     public function boot(): void
     {
-        app('config')->set($this->prefix, require app_path($this->module_path . DIRECTORY_SEPARATOR . 'Config' . DIRECTORY_SEPARATOR . $this->prefix . '.php'));
-        View::addNamespace($this->view_namespace, app_path($this->module_path. '/Views'));
+        if(file_exists(app_path($this->module_path . DIRECTORY_SEPARATOR . 'Config' . DIRECTORY_SEPARATOR . $this->prefix . '.php'))) {
+            app('config')->set($this->prefix, require app_path($this->module_path . DIRECTORY_SEPARATOR . 'Config' . DIRECTORY_SEPARATOR . $this->prefix . '.php'));
+        }
+
+        View::addNamespace($this->view_namespace, base_path($this->module_path. '/Views'));
         Route::prefix($this->prefix)
             ->middleware(['web', 'auth'])
-            ->group(app_path($this->module_path. '/Routes/route.php'));
+            ->group(base_path($this->module_path. '/Routes/route.php'));
 //        if(file_exists($this->module_path. '/Routes/api.php')){
 //            Route::prefix($this->prefix)
 //                ->middleware(['jwt', 'auth'])

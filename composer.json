@@ -18,6 +18,7 @@
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.2",
         "maatwebsite/excel": "^3.1",
+        "malf88/qa-kit-qara-caso-teste": "^0.0.6",
         "openai-php/laravel": "^0.9.1",
         "psr/simple-cache": "^2.0",
         "spatie/laravel-data": "^3.2",

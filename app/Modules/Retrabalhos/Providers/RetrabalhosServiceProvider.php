@@ -38,8 +38,7 @@ use Illuminate\Support\Facades\Blade;
 
 class RetrabalhosServiceProvider extends ServiceProviderAbstract
 {
-
-    protected string $module_path = 'Modules/Retrabalhos';
+    protected string $module_path = 'app/Modules/Retrabalhos';
     protected string $prefix = 'retrabalhos';
     protected string $view_namespace = 'retrabalhos';
     public $bindings = [
