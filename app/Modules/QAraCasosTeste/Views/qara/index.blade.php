@@ -64,7 +64,7 @@
                                         </x-adminlte-select2>
                                     </div>
                                 </div>
-                            @endif
+
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <div class="alert alert-primary">
@@ -75,11 +75,13 @@
                                     <x-adminlte-textarea name="requisitos" label="Requisitos" rows="15"></x-adminlte-textarea>
                                 </div>
                             </div>
+
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-success btn-lg w-100">Gerar Casos de Teste</button>
                                 </div>
                             </div>
+                        @endif
                         </div>
                     </form>
 

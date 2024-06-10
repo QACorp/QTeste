@@ -4,17 +4,24 @@ namespace App\Modules\QAraCasosTeste\Controllers;
 
 use App\Modules\Projetos\Contracts\Business\AplicacaoBusinessContract;
 use App\Modules\Projetos\Contracts\Business\ProjetoBusinessContract;
+use App\Modules\Projetos\DTOs\CasoTesteDTO;
+use App\Modules\Projetos\Enums\CasoTesteEnum;
+use App\Modules\Projetos\Models\CasoTeste;
 use App\Modules\QAraCasosTeste\Contracts\Business\QAraCasosTesteBusinessContract;
 use App\Modules\QAraCasosTeste\DTOs\QAraCasosTesteDTO;
+use App\System\DTOs\EquipeDTO;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnauthorizedException;
 use App\System\Http\Controllers\Controller;
+use App\System\Traits\EquipeTools;
 use App\System\Utils\EquipeUtils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Spatie\LaravelData\DataCollection;
 
 class QAraController
 {
+    use EquipeTools;
     public function __construct(
         private readonly QAraCasosTesteBusinessContract $qaraCasosTesteBusiness,
         private readonly ProjetoBusinessContract $projetoBusiness,
@@ -37,7 +44,28 @@ class QAraController
             return redirect(route('caso-teste.qara.index'))
                 ->with([Controller::MESSAGE_KEY_ERROR => ['Você não pode fazer isso.']]);
         }
+    }
 
+    public function salvar(Request $request)
+    {
+        $casosTeste = Collection::empty();
+        foreach ($request->get('titulo') as $key => $item) {
+            $casosTeste->add(CasoTesteDTO::from([
+                'titulo' => $item,
+                'requisito' => $request->get('requisito')[$key],
+                'cenario' => $request->get('cenario')[$key],
+                'teste' => $request->get('teste')[$key],
+                'resultado_esperado' => $request->get('resultado_esperado')[$key],
+                'equipes' => EquipeDTO::collection(
+                    [['id' => EquipeUtils::equipeUsuarioLogado()]]
+                ),
+                'status' => CasoTesteEnum::CONCLUIDO->value
+            ]));
+        }
+        $casosTesteDTO = CasoTesteDTO::collection($casosTeste);
+        $casosTeste = $this->qaraCasosTesteBusiness->salvarCasosTeste($casosTesteDTO, EquipeUtils::equipeUsuarioLogado());
+        return redirect(route('aplicacoes.casos-teste.index'))
+            ->with([Controller::MESSAGE_KEY_SUCCESS => ['Casos de teste salvos com sucesso.']]);
 
     }
     public function index(Request $request)

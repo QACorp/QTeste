@@ -72,10 +72,6 @@ Route::group(['prefix' => 'aplicacoes'],function(){
 
 });
 Route::group(['prefix' => '/casos-teste'],function() {
-    Route::group(['prefix' => '/qara'],function() {
-        Route::get('/', [QAraController::class, 'index'])->name('caso-teste.qara.index');
-        Route::post('/gerar-texto', [QAraController::class, 'gerarTexto'])->name('caso-teste.qara.gerar-texto');
-    });
 
     Route::get('/', [CasoTesteController::class, 'index'])->name('aplicacoes.casos-teste.index');
     Route::get('/list',[CasoTesteController::class,'list'])->name('aplicacoes.casos-teste.list');

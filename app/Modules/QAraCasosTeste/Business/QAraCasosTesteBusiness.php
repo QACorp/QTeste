@@ -3,20 +3,27 @@
 namespace App\Modules\QAraCasosTeste\Business;
 
 use App\Modules\Projetos\Contracts\Business\AplicacaoBusinessContract;
+use App\Modules\Projetos\Contracts\Business\CasoTesteBusinessContract;
 use App\Modules\Projetos\Contracts\Business\ProjetoBusinessContract;
+use App\Modules\Projetos\DTOs\CasoTesteDTO;
 use App\Modules\QAraCasosTeste\Contracts\Business\QAraCasosTesteBusinessContract;
 use App\Modules\QAraCasosTeste\DTOs\QAraCasosTesteDTO;
 use App\Modules\QAraCasosTeste\Services\QAra\QAraCasosTesteModel;
+use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Services\Qara\DTOs\QAraMessageDTO;
 use App\System\Services\Qara\QAraRoleEnum;
 
+use App\System\Traits\TransactionDatabase;
+use Illuminate\Support\Collection;
 use Spatie\LaravelData\DataCollection;
 
 class QAraCasosTesteBusiness implements QAraCasosTesteBusinessContract
 {
+    use TransactionDatabase;
     public function __construct(
         private readonly AplicacaoBusinessContract $aplicacaoBusiness,
         private readonly ProjetoBusinessContract $projetoBusiness,
+        private readonly CasoTesteBusinessContract $casoTesteBusiness
     )
     {
     }
@@ -46,5 +53,22 @@ class QAraCasosTesteBusiness implements QAraCasosTesteBusinessContract
             ])
         );
         return $casosTeste;
+    }
+
+    public function salvarCasosTeste(DataCollection $qaraCasosTesteDTO, int $idEquipe): DataCollection
+    {
+        $insertedCasos = Collection::empty();
+        try{
+            $this->startTransaction();
+            $qaraCasosTesteDTO->each(function($item, $key) use($idEquipe, $insertedCasos){
+                $insertedCasos->add($this->casoTesteBusiness->inserirCasoTeste($item, $idEquipe));
+            });
+            $this->commit();
+            return CasoTesteDTO::collection($insertedCasos);
+        }catch (UnprocessableEntityException $e){
+            $this->rollback();
+            throw $e;
+        }
+
     }
 }

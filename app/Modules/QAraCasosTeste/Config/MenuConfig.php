@@ -21,7 +21,7 @@ class MenuConfig extends MenuConfigAbstract
                                     'route'  => 'caso-teste.qara.index',
                                     'classes' => 'ml-4',
                                     'icon'  => 'fas fa-file-alt',
-                                    'active' => ['projetos/casos-teste/qara/*'],
+                                    'active' => ['projetos/qara/casos-teste/*'],
                                     'label' => 'Novo',
                                     'label_color' => 'success'
                                     //'can'   => 'LISTAR_PLANO_TESTE'
