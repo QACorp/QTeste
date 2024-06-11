@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 @section('plugins.Select2', true)
-@section('title', 'QAKit - Usuários | Alterar Senha')
+@section('title', 'QTeste - Usuários | Alterar Senha')
 @section('content_header')
     <h1 class="m-0 text-dark"><i class="fas fa-key"></i> Alterar senha </h1>
 

@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'QAKit - Aplicações | Inserir')
+@section('title', 'QTeste - Aplicações | Inserir')
 @section('plugins.Datatables', true)
 @section('content_header')
     <h1 class="m-0 text-dark">Inserir Aplicação </h1>

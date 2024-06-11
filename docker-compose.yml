@@ -1,7 +1,7 @@
 version: '3.5'
 services:
-    qakit_app:
-        image: qakit_app
+    qteste_app:
+        image: qteste_app
         restart: unless-stopped
         build:
             context: ./
@@ -23,14 +23,14 @@ services:
             - ./:/var/www/
         networks:
             - traefik-public
-    qakit_scheduler:
-        image: qakit_app
+    qteste_scheduler:
+        image: qteste_app
         container_name: ${APP_NAME}_scheduler
         restart: unless-stopped
         env_file:
             - .env
         depends_on:
-            - qakit_app
+            - qteste_app
         environment:
             - CONTAINER_ROLE=scheduler
             - USERID=${USERID:-1001}
@@ -47,14 +47,14 @@ services:
             - traefik-public
         volumes:
             - redisdata:/data
-    qakit_queue:
-        image: qakit_app
+    qteste_queue:
+        image: qteste_app
         container_name: ${APP_NAME}_queue
         restart: unless-stopped
         env_file:
             - .env
         depends_on:
-            - qakit_app
+            - qteste_app
         environment:
             - CONTAINER_ROLE=queue
             - USERID=${USERID:-1001}
@@ -62,11 +62,11 @@ services:
             - traefik-public
         #volumes:
         #    - ./:/var/www/
-    qakit_nginx:
+    qteste_nginx:
         build:
             context: ./
             dockerfile: docker/nginx/Dockerfile
-        image: qakit_nginx
+        image: qteste_nginx
         restart: unless-stopped
         environment:
             - APP_NAME=${APP_NAME}
@@ -78,17 +78,17 @@ services:
                 - traefik.port=80
                 - traefik.docker.network=traefik-public
                 - traefik.constraint-label=traefik-public
-                - traefik.http.routers.qakit-http.rule=Host(`${APP_URL:-localhost}`)
-                - traefik.http.routers.qakit-http.entrypoints=http
-                - traefik.http.routers.qakit-http.middlewares=https-redirect
-                - traefik.http.routers.qakit-https.rule=Host(`${APP_URL:-localhost}`)
-                - traefik.http.routers.qakit-https.entrypoints=https
-                - traefik.http.routers.qakit-https.tls=true
-                - traefik.http.routers.qakit-https.tls.certresolver=le
-                - traefik.http.services.qakit.loadbalancer.server.port=80
+                - traefik.http.routers.qteste-http.rule=Host(`${APP_URL:-localhost}`)
+                - traefik.http.routers.qteste-http.entrypoints=http
+                - traefik.http.routers.qteste-http.middlewares=https-redirect
+                - traefik.http.routers.qteste-https.rule=Host(`${APP_URL:-localhost}`)
+                - traefik.http.routers.qteste-https.entrypoints=https
+                - traefik.http.routers.qteste-https.tls=true
+                - traefik.http.routers.qteste-https.tls.certresolver=le
+                - traefik.http.services.qteste.loadbalancer.server.port=80
             replicas: ${NGINX_REPLICAS:-1}
         depends_on:
-            - qakit_app
+            - qteste_app
         healthcheck:
             test: nginx -t || exit 1
             interval: 20s

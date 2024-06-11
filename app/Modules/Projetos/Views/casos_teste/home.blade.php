@@ -1,6 +1,6 @@
     @extends('adminlte::page')
 
-@section('title', 'QAKit - Casos de teste')
+@section('title', 'QTeste - Casos de teste')
 @section('plugins.Datatables', true)
 @section('plugins.DatatablesPlugin', true)
 @section('content_header')
