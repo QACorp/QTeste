@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'qteste',
+    'title' => 'QTeste',
     'title_prefix' => '',
     'title_postfix' => '',
     'datatable_config' => [
@@ -44,7 +44,7 @@ return [
     |
     */
 
-    'use_ico_only' => false,
+    'use_ico_only' => true,
     'use_full_favicon' => false,
 
     /*
@@ -82,7 +82,7 @@ return [
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'Admin Logo',
+    'logo_img_alt' => 'QTeste',
 
     /*
     |--------------------------------------------------------------------------
@@ -98,9 +98,9 @@ return [
     */
 
     'auth_logo' => [
-        'enabled' => false,
+        'enabled' => true,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.webp',
             'alt' => 'Auth Logo',
             'class' => '',
             'width' => 50,
@@ -123,7 +123,7 @@ return [
     'preloader' => [
         'enabled' => true,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.webp',
             'alt' => 'qteste',
             'effect' => 'animation__shake',
             'width' => 60,
