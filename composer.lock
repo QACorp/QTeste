@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c519dcb47f6fc9d9f3127838b6e9795d",
+    "content-hash": "96e117320741044a3e595dda2f600a73",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -3919,71 +3919,6 @@
             "time": "2023-06-21T14:59:35+00:00"
         },
         {
-            "name": "malf88/qa-kit-qara-caso-teste",
-            "version": "v0.0.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/malf88/qa-kit-qara-caso-teste.git",
-                "reference": "29f505e9190cea68d65ef051dc7da015e72b58f0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/malf88/qa-kit-qara-caso-teste/zipball/29f505e9190cea68d65ef051dc7da015e72b58f0",
-                "reference": "29f505e9190cea68d65ef051dc7da015e72b58f0",
-                "shasum": ""
-            },
-            "require": {
-                "laravel/framework": "^10.0",
-                "openai-php/laravel": "^0.9.1",
-                "php": "^8.2",
-                "spatie/laravel-data": "^3.2",
-                "spatie/laravel-permission": "^5.10"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "App\\Modules\\QAraCasosTeste\\Providers\\QAraServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "App\\Modules\\QAraCasosTeste\\": "QAraCasosTeste/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Marco Aurélio Lima Fernandes",
-                    "email": "malf88@gmail.com"
-                }
-            ],
-            "description": "Módulo do QAKit para gerar casos de testes via ChatGPT",
-            "keywords": [
-                "GPT-3",
-                "api",
-                "client",
-                "codex",
-                "dall-e",
-                "language",
-                "laravel",
-                "natural",
-                "openai",
-                "php",
-                "processing",
-                "sdk"
-            ],
-            "support": {
-                "issues": "https://github.com/malf88/qa-kit-qara-caso-teste/issues",
-                "source": "https://github.com/malf88/qa-kit-qara-caso-teste/tree/v0.0.6"
-            },
-            "time": "2024-06-10T05:06:53+00:00"
-        },
-        {
             "name": "markbaker/complex",
             "version": "3.0.2",
             "source": {
@@ -6100,6 +6035,71 @@
                 "source": "https://github.com/bobthecow/psysh/tree/v0.12.4"
             },
             "time": "2024-06-10T01:18:23+00:00"
+        },
+        {
+            "name": "qacorp/qteste-qaract",
+            "version": "v0.0.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/QACorp/QTeste-QAraCT.git",
+                "reference": "6e8726188d038d21621e2ec376ac72c4e1aee423"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/QACorp/QTeste-QAraCT/zipball/6e8726188d038d21621e2ec376ac72c4e1aee423",
+                "reference": "6e8726188d038d21621e2ec376ac72c4e1aee423",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^10.0",
+                "openai-php/laravel": "^0.9.1",
+                "php": "^8.2",
+                "spatie/laravel-data": "^3.2",
+                "spatie/laravel-permission": "^5.10"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "App\\Modules\\QAraCasosTeste\\Providers\\QAraServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "App\\Modules\\QAraCasosTeste\\": "QAraCasosTeste/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marco Aurélio Lima Fernandes",
+                    "email": "malf88@gmail.com"
+                }
+            ],
+            "description": "Módulo do QTeste para gerar casos de testes via ChatGPT",
+            "keywords": [
+                "GPT-3",
+                "api",
+                "client",
+                "codex",
+                "dall-e",
+                "language",
+                "laravel",
+                "natural",
+                "openai",
+                "php",
+                "processing",
+                "sdk"
+            ],
+            "support": {
+                "issues": "https://github.com/QACorp/QTeste-QAraCT/issues",
+                "source": "https://github.com/QACorp/QTeste-QAraCT/tree/v0.0.9"
+            },
+            "time": "2024-06-11T01:44:30+00:00"
         },
         {
             "name": "ralouphie/getallheaders",

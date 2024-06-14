@@ -139,7 +139,7 @@ class ProjetosServiceProvider extends ServiceProviderAbstract
         Blade::component('casos-teste-mais-falhas', CasosTesteComMaisFalhas::class);
         Blade::component('grafico-falha-sucesso', GraficoFalhasSucesso::class);
         Blade::component('grafico-aplicacoes-mais-testes', GraficoAplicacoesComMaisTestes::class);
-        MenuConfig::configureMenuModule();
+
         DashboardConfig::addDashboardWidget(new Widget('x-totais-testes'));
         DashboardConfig::addDashboardWidget(new Widget('x-grafico-execucoes-mensais',8));
 

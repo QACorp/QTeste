@@ -3,8 +3,11 @@
 namespace App\System\Config;
 
 use App\System\Impl\MenuConfigAbstract;
+use App\System\Impl\ServiceProviderAbstract;
+use App\System\Providers\AppServiceProvider;
 use App\System\Utils\EquipeUtils;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
@@ -32,9 +35,6 @@ class MenuConfig extends MenuConfigAbstract
                     ]
                 );
             });
-
-
-
             $event->menu->add(
                 [
                     'type'         => 'fullscreen-widget',
@@ -74,6 +74,17 @@ class MenuConfig extends MenuConfigAbstract
                     ]
                 ]
             ]);
+
+        });
+        self::configureMenuServicesProvider();
+    }
+    private static function configureMenuServicesProvider(){
+        $servicesProvider = Collection::make(App::getProviders(ServiceProviderAbstract::class));
+        $servicesProvider->each(function ($item, $key) {
+            Event::listen(BuildingMenu::class, function (BuildingMenu $event)  use ($item){
+                $event->menu->add(config($item->getPrefix() . '.menu',[]));
+            });
+
 
         });
     }

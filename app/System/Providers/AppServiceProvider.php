@@ -2,6 +2,7 @@
 
 namespace App\System\Providers;
 
+use App\Modules\Projetos\Providers\ProjetosServiceProvider;
 use App\System\Business\EquipeBusiness;
 use App\System\Business\UserBusiness;
 use App\System\Component\Assinatura;
@@ -14,10 +15,17 @@ use App\System\Contracts\Business\EquipeBusinessContract;
 use App\System\Contracts\Business\UserBusinessContract;
 use App\System\Contracts\Repository\EquipeRepositoryContract;
 use App\System\Contracts\Repository\UserRepositoryContract;
+use App\System\Impl\ServiceProviderAbstract;
 use App\System\Repositorys\EquipeRepository;
 use App\System\Repositorys\UserRepository;
+use App\System\Utils\MenuUtils;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
+use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
+use ReflectionClass;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -40,12 +48,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+
+        MenuConfig::configureMenuModule();
+
         Blade::component('delete-modal', DeleteModal::class);
         Blade::component('combo-equipes', ComboEquipes::class);
         Blade::component('upload-modal', UploadModal::class);
         Blade::component('generic-modal', GenericModal::class);
         Blade::component('assinatura', Assinatura::class);
-        MenuConfig::configureMenuModule();
+
 
         if ($this->app->environment('production')) {
             $this->app['request']->server->set('HTTPS','on');
