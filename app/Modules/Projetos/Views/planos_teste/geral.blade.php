@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'QAKit - Aplicações | Projetos | Planos de teste')
+@section('title', 'QTeste - Aplicações | Projetos | Planos de teste')
 @section('plugins.Datatables', true)
 @section('plugins.DatatablesPlugin', true)
 @section('content_header')

@@ -18,7 +18,6 @@ class EquipeUtils
                 return Auth::user()->equipes->get(0)->id;
             }else {
                 redirect()->route('users.index')->send();
-
             }
         }
 

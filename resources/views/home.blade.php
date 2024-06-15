@@ -3,7 +3,7 @@
 @endphp
 @extends('adminlte::page')
 
-@section('title', 'QAKit')
+@section('title', 'QTeste')
 
 @section('content_header')
     <h1 class="m-0 text-dark">QA Kit</h1>

@@ -3,7 +3,7 @@
 @endphp
 @extends('adminlte::page')
 
-@section('title', 'QAKit - Retrabalhos | Alterar')
+@section('title', 'QTeste - Retrabalhos | Alterar')
 @section('plugins.Datatables', true)
 @section('content_header')
     <h1 class="m-0 text-dark">

@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 @section('plugins.Select2', true)
-@section('title', 'QAKit - Equipes | Inserir')
+@section('title', 'QTeste - Equipes | Inserir')
 @section('content_header')
     <h1 class="m-0 text-dark">Inserir equipe </h1>
 

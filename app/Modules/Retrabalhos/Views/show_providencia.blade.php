@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 @section('plugins.Jquery', true)
-@section('title', 'QAKit - Retrabalhos | Sucesso')
+@section('title', 'QTeste - Retrabalhos | Sucesso')
 @section('content_header')
     <h1 class="m-0 text-dark">Inserir novo retrabalho </h1>
 

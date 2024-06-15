@@ -1,5 +1,6 @@
 <?php
 
+use App\System\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\System\Http\Controllers\UserController;
 use App\System\Http\Controllers\EquipeController;
@@ -67,6 +68,6 @@ Route::group(['prefix' => 'equipes', 'middleware' => 'auth'],function(){
     Route::put('/{idUsuario}', [EquipeController::class,'atualizar'])->name('equipes.atualizar');
 });
 
-Route::get('/home', [\App\System\Http\Controllers\HomeController::class,'index'])->name('home')->middleware(['auth']);
+Route::get('/home', [HomeController::class,'index'])->name('home.index')->middleware(['auth']);
 
 

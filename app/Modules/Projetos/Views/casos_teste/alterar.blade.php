@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'QAKit - Casos de teste | Editar')
+@section('title', 'QTeste - Casos de teste | Editar')
 @section('content_header')
     <h1 class="m-0 text-dark">Alterar Caso de teste</h1>
 

@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'QAKit - Aplicações | Projetos | Planos de teste | Inserir')
+@section('title', 'QTeste - Aplicações | Projetos | Planos de teste | Inserir')
 @section('content_header')
     <h1 class="m-0 text-dark">Inserir Plano de Teste </h1>
 
