@@ -4,7 +4,6 @@ namespace App\System\Impl;
 
 use App\System\Exceptions\InvalidServiceProviderClassException;
 use App\System\Exceptions\ModuleNotFoundException;
-use App\System\Utils\MenuUtils;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -19,7 +18,6 @@ abstract class ServiceProviderAbstract extends ServiceProvider
     protected MenuUtils $menuUtils;
     public function __construct($app)
     {
-        $this->menuUtils = App::make(MenuUtils::class);
         parent::__construct($app);
     }
 

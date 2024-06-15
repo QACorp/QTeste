@@ -18,7 +18,6 @@ use App\System\Contracts\Repository\UserRepositoryContract;
 use App\System\Impl\ServiceProviderAbstract;
 use App\System\Repositorys\EquipeRepository;
 use App\System\Repositorys\UserRepository;
-use App\System\Utils\MenuUtils;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Blade;
