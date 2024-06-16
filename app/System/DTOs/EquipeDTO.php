@@ -12,7 +12,7 @@ class EquipeDTO extends DTO
 {
     public ?int $id;
     public ?string $nome;
-    public int $empresa_id;
+    public ?int $empresa_id;
     #[WithCast(CastUsers::class)]
     public ?DataCollectable $users;
     public ?EmpresaDTO $empresa;

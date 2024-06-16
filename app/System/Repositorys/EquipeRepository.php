@@ -25,6 +25,7 @@ class EquipeRepository extends BaseRepository  implements EquipeRepositoryContra
         try {
             DB::beginTransaction();
             $equipeModel = new Equipe($equipe->only('nome')->toArray());
+
             $equipeModel->save();
             $usersMembersIds = [];
             $equipe->users->each(function ($item, $key) use (&$usersMembersIds) {
