@@ -2,6 +2,7 @@
 
 namespace App\System\Config;
 
+use App\System\Enums\PermissionEnum;
 use App\System\Impl\MenuConfigAbstract;
 use App\System\Impl\ServiceProviderAbstract;
 use App\System\Providers\AppServiceProvider;
@@ -49,6 +50,14 @@ class MenuConfig extends MenuConfigAbstract
                 'text' => 'Home',
                 'can'   => 'ACESSAR_SISTEMA'
             ]);
+            $event->menu->add([
+                'text' => 'Alterar dados da empresa',
+                'route' => 'users.alterar-empresa',
+                'icon' => 'fas fa-building',
+                'classes' => 'nav-item',
+                'topnav_user' => true
+            ],);
+
             $event->menu->add([
                 'text' => 'Sistema',
                 'icon'  => 'fas  fa-cog',

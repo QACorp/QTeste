@@ -10,4 +10,7 @@ use Spatie\LaravelData\DataCollection;
 interface EmpresaBusinessContract
 {
     public function salvar(EmpresaDTO $data): EmpresaDTO;
+    public function buscarEmpresaPorIdUsuario(int $idUsuario): EmpresaDTO;
+    public function buscarAdministradorPorIdEmpresa(int $idEmpresa): DataCollection;
+    public function alterar(EmpresaDTO $data): EmpresaDTO;
 }
