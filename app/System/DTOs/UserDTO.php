@@ -13,20 +13,25 @@ use Spatie\LaravelData\Contracts\DataCollectable;
 
 class UserDTO extends DTO
 {
-    public function __construct(
-        public ?int $id,
-        public ?string $name,
-        public ?string $email,
-        public ?string $password,
-        public ?string $password_confirmation,
-        #[WithCast(CastRoles::class)]
-        public ?DataCollectable $roles,
-        #[WithCast(CastEquipes::class)]
-        public ?DataCollectable $equipes
-    )
+    public ?int $id = null;
+    public ?string $name;
+    public ?string $email;
+    public ?string $password = null;
+    public ?string $password_confirmation;
+    #[WithCast(CastRoles::class)]
+    public ?DataCollectable $roles;
+    #[WithCast(CastEquipes::class)]
+    public ?DataCollectable $equipes;
+    public ?int $empresa_id;
+    public ?EmpresaDTO $empresa;
+
+
+    public function __construct()
     {
-        if($this->password == null && $id == null)
+        if($this->password == null && $this->id == null){
             $this->password = Hash::make(md5(uniqid('_')));
+        }
+
     }
 
 }

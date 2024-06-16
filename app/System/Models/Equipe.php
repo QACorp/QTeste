@@ -21,4 +21,8 @@ class Equipe  extends Model
     {
         return $this->belongsToMany(User::class, 'users_equipes');
     }
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class);
+    }
 }

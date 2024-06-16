@@ -5,7 +5,9 @@ namespace App\System\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\System\DTOs\UserDTO;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -27,7 +29,8 @@ class User extends Authenticatable implements Cast
         'name',
         'email',
         'password',
-        'selected_equipe_id'
+        'selected_equipe_id',
+        'empresa_id'
     ];
 
     /**
@@ -57,6 +60,10 @@ class User extends Authenticatable implements Cast
     public function equipes(): BelongsToMany
     {
         return $this->belongsToMany(Equipe::class, 'users_equipes');
+    }
+    public function empresa(): BelongsTo
+    {
+        return $this->belongsTo(Empresa::class, 'empresa_id');
     }
 
 }
