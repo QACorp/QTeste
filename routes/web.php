@@ -1,5 +1,6 @@
 <?php
 
+use App\System\Http\Controllers\EmpresaController;
 use App\System\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\System\Http\Controllers\UserController;
@@ -22,19 +23,10 @@ Route::get('/', [App\System\Http\Controllers\HomeController::class, 'index'])->n
 Route::get('login', 'App\System\Http\Controllers\Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'App\System\Http\Controllers\Auth\LoginController@login');
 Route::post('logout', 'App\System\Http\Controllers\Auth\LoginController@logout');
-
-// Registration Routes...
-//Route::get('register', 'App\System\Http\Controllers\Auth\RegisterController@showRegistrationForm');
-//Route::post('register', 'App\System\Http\Controllers\Auth\RegisterController@register');
-
-// Password Reset Routes...
-//Route::get('password/reset/{token?}', 'App\System\Http\Controllers\Auth\ResetPasswordController@showResetForm');
-//Route::post('password/email', 'App\System\Http\Controllers\Auth\ResetPasswordController@sendResetLinkEmail');
-//Route::post('password/reset', 'App\System\Http\Controllers\Auth\ResetPasswordController@reset');
-
-//Route::get('teste',[\App\Modules\Example\Controller\ExampleController::class,'myMethod'])->middleware('auth');
 Route::group(['middleware' => 'auth'],function() {
     Route::get('/alterar-senha', [UserController::class,'editarSenhaUsuarioLogado'])->name('users.alterar-senha-usuario-logado');
+    Route::get('/alterar-empresa', [EmpresaController::class,'editar'])->name('users.alterar-empresa');
+    Route::put('/alterar-empresa', [EmpresaController::class,'atualizar'])->name('users.atualizar-empresa');
     Route::put('/alterar-senha', [UserController::class,'atualizarSenhaUsuarioLogado'])->name('users.atualizar-senha-usuario-logado');
 
 });

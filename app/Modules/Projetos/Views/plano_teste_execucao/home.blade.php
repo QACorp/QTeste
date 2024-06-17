@@ -1,3 +1,6 @@
+@php
+    use App\Modules\Projetos\Enums\PermissionEnum;
+@endphp
 @extends('adminlte::page')
 
 @section('title', 'QTeste - Aplicações | Projetos | Planos de Teste | Executar')
@@ -32,7 +35,7 @@
                                 </p>
                                 <h3 class="display-3">{{ $planoTesteExecucao->resultado }}</h3>
                                 <hr class="my-4">
-                                @can(\App\Modules\Projetos\Enums\PermissionEnum::INSERIR_EXECUCAO_PLANO_TESTE->value)
+                                @can(PermissionEnum::INSERIR_EXECUCAO_PLANO_TESTE->value)
                                     <a class="btn btn-{{$planoTesteExecucao->resultado == \App\Modules\Projetos\Enums\PlanoTesteExecucaoEnum::PASSOU->value ? 'success' : 'danger' }} btn-lg"
                                        href="{{ route('aplicacoes.projetos.planos-teste.criar',[$idAplicacao, $idProjeto, $planoTesteExecucao->plano_teste->id]) }}"
                                        role="button"
@@ -170,6 +173,8 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
 @stop
 

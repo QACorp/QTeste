@@ -2,6 +2,7 @@
 
 namespace App\Modules\Retrabalhos\Providers;
 
+use App\Modules\Projetos\Models\CasoTeste;
 use App\Modules\Projetos\Providers\ProjetosServiceProvider;
 use App\Modules\Retrabalhos\Business\DashboardBusiness;
 use App\Modules\Retrabalhos\Business\RelatorioBusiness;

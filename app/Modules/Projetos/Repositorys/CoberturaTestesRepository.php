@@ -15,8 +15,8 @@ class CoberturaTestesRepository extends BaseRepository  implements CoberturaTest
     {
         return CoberturaTestesDTO::collection(
             Aplicacao::selectRaw('
-                                id,
-                                nome,
+                                aplicacoes.id,
+                                aplicacoes.nome,
                                 (SELECT
                                     COUNT(ctpt.caso_teste_id)
                                 FROM projetos.planos_teste pt
@@ -30,7 +30,6 @@ class CoberturaTestesRepository extends BaseRepository  implements CoberturaTest
                                         casos_teste_equipes.equipe_id = ae.equipe_id AND
                                         pt.deleted_at IS NULL) as total_testes'
             )
-                ->join('projetos.aplicacoes_equipes as ae','ae.aplicacao_id', '=', 'aplicacoes.id')
                 ->where('equipe_id', $idEquipe)
                 ->get()
         );

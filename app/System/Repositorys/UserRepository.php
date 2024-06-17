@@ -8,6 +8,7 @@ use App\System\DTOs\UserDTO;
 use App\System\Impl\BaseRepository;
 use App\System\Models\User;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\DataCollection;
 
@@ -18,13 +19,15 @@ class UserRepository extends BaseRepository implements UserRepositoryContract
     {
         return UserDTO::collection(
             User::with('roles')
-            ->get()
+                ->where('empresa_id', Auth::user()->empresa_id)
+                ->get()
         );
     }
 
     public function buscarPorId(int $userId): ?UserDTO
     {
         $user = User::where('id', $userId)
+                    ->where('empresa_id', Auth::user()->empresa_id)
                     ->with('roles')
                     ->first();
 
@@ -39,12 +42,14 @@ class UserRepository extends BaseRepository implements UserRepositoryContract
     public function alterar(UserDTO $userDTO): UserDTO
     {
 
-        $user = User::find($userDTO->id);
+        $user = User::where('empresa_id', Auth::user()->empresa_id)
+            ->where('id',$userDTO->id)
+            ->first();
         if(empty($userDTO->password))
             $userDTO->password = $user->password;
         try {
             DB::beginTransaction();
-            $user->fill($userDTO->toArray());
+            $user->fill($userDTO->except('empresa_id')->toArray());
             $user->update();
             $user = $this->atualizarUsuarioEquipe($userDTO, $user);
             DB::commit();
@@ -100,12 +105,14 @@ class UserRepository extends BaseRepository implements UserRepositoryContract
         foreach ($filter as $field => $value){
             $queryBuider->where($field, $value);
         }
+        $queryBuider->where('empresa_id', Auth::user()->empresa_id);
         return UserDTO::collection($queryBuider->get());
     }
 
     public function buscarUsuariosPorEquipe(int $idEquipe): DataCollection
     {
         return UserDTO::collection(User::join('users_equipes as ue', 'ue.user_id', '=', 'users.id')
+            ->where('empresa_id', Auth::user()->empresa_id)
             ->where('ue.equipe_id', $idEquipe)
             ->get());
     }
