@@ -46,8 +46,8 @@ class Aplicacao extends Model implements Cast
 //        return parent::newQuery()->whereRaw('empresa_id', Auth::user()->empresa_id);
         return parent::newQuery()
             ->addSelect('aplicacoes.*')
-            ->join('projetos.aplicacoes_equipes','aplicacoes_equipes.aplicacao_id','=','aplicacoes.id')
-            ->join('equipes','equipes.id','=','aplicacoes_equipes.equipe_id')
+            ->join('projetos.aplicacoes_equipes as ae','ae.aplicacao_id','=','aplicacoes.id')
+            ->join('equipes','equipes.id','=','ae.equipe_id')
             ->where('equipes.empresa_id', Auth::user()->empresa_id);
     }
 }
