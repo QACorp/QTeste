@@ -6,9 +6,11 @@ namespace App\Modules\Retrabalhos\Models;
 use App\Modules\Projetos\Models\Aplicacao;
 use App\Modules\Projetos\Models\CasoTeste;
 use App\Modules\Retrabalhos\Enums\TipoRetrabalhoEnum;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Retrabalho extends Model
 {
@@ -74,5 +76,15 @@ class Retrabalho extends Model
     public function caso_teste()
     {
         return $this->belongsTo(CasoTeste::class, 'caso_teste_id');
+    }
+
+    public function newQuery(): Builder
+    {
+        return parent::newQuery()
+
+            ->join('projetos.aplicacoes','aplicacoes.id','=','retrabalhos.aplicacao_id')
+            ->join('projetos.aplicacoes_equipes','aplicacoes_equipes.aplicacao_id','=','aplicacoes.id')
+            ->join('equipes','equipes.id','=','aplicacoes_equipes.equipe_id')
+            ->where('equipes.empresa_id', Auth::user()->empresa_id);
     }
 }

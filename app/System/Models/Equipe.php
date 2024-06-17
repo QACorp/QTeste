@@ -2,6 +2,7 @@
 
 namespace App\System\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -35,7 +36,7 @@ class Equipe  extends Model
     {
         return $this->belongsTo(Empresa::class);
     }
-    public function newQuery()
+    public function newQuery(): Builder
     {
         return parent::newQuery()->where('empresa_id', Auth::user()->empresa_id);
     }

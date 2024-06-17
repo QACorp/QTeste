@@ -38,6 +38,11 @@ return new class extends Migration
             $table->integer('empresa_id')->default($empresa->id)->after('name');
             $table->foreign('empresa_id')->references('id')->on('empresas');
         });
+
+//        Schema::table('projetos.casos_teste', function (Blueprint $table) use($empresa) {
+//            $table->integer('empresa_id')->default($empresa->id)->after('name');
+//            $table->foreign('empresa_id')->references('id')->on('empresas');
+//        });
         Permission::create(['name' => 'ALTERAR_EMPRESA']);
 
         $roleAdministrador = Role::findByName('ADMINISTRADOR');

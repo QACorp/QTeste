@@ -17,9 +17,6 @@ class PlanoTesteRepository extends BaseRepository  implements PlanoTesteReposito
     {
         return PlanoTesteDTO::collection(
             PlanoTeste::select('planos_teste.*')
-                ->join('projetos.projetos','projetos.id','=','planos_teste.projeto_id')
-                ->join('projetos.aplicacoes','aplicacoes.id','=','projetos.aplicacao_id')
-                ->join('projetos.aplicacoes_equipes','aplicacoes.id','=','aplicacoes_equipes.aplicacao_id')
                 ->where('equipe_id',$idEquipe)
                 ->where('projeto_id',$idProjeto)
                 ->get()
@@ -43,9 +40,6 @@ class PlanoTesteRepository extends BaseRepository  implements PlanoTesteReposito
     {
         $planoTeste = PlanoTeste::select('planos_teste.*')
                         ->where('planos_teste.id',$idPlanoTeste)
-                        ->join('projetos.projetos','projetos.id','=','planos_teste.projeto_id')
-                        ->join('projetos.aplicacoes','aplicacoes.id','=','projetos.aplicacao_id')
-                        ->join('projetos.aplicacoes_equipes','aplicacoes.id','=','aplicacoes_equipes.aplicacao_id')
                         ->where('equipe_id',$idEquipe)
                         ->with('casos_teste')
                         ->first();
@@ -70,18 +64,15 @@ class PlanoTesteRepository extends BaseRepository  implements PlanoTesteReposito
                        titulo,
                        planos_teste.descricao,
                        user_id, projeto_id,
-                       p.nome as nome_projeto,
-                       a.nome as nome_aplicacao,
+                       projetos.nome as nome_projeto,
+                       aplicacoes.nome as nome_aplicacao,
                        planos_teste.created_at,
-                       a.id as aplicacao_id,
+                       aplicacoes.id as aplicacao_id,
                        (SELECT MAX(data_execucao)
                         FROM projetos.plano_teste_execucoes pte
                         WHERE planos_teste.id = pte.id) as ultima_execucao'
                 )
             )
-                ->join('projetos.projetos as p', 'planos_teste.projeto_id','=','p.id')
-                ->join('projetos.aplicacoes as a', 'p.aplicacao_id','=','a.id')
-                ->join('projetos.aplicacoes_equipes as ae','a.id','=','ae.aplicacao_id')
                 ->where('equipe_id',$idEquipe)
                 ->get()
         );
