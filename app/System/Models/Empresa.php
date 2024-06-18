@@ -25,4 +25,8 @@ class Empresa extends Model
     {
         return $this->hasMany(Equipe::class);
     }
+    public function configuracoes(): HasMany
+    {
+        return $this->hasMany(EmpresaConfiguracao::class);
+    }
 }

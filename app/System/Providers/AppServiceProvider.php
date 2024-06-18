@@ -4,6 +4,7 @@ namespace App\System\Providers;
 
 use App\Modules\Projetos\Providers\ProjetosServiceProvider;
 use App\System\Business\EmpresaBusiness;
+use App\System\Business\EmpresaConfiguracaoBusiness;
 use App\System\Business\EquipeBusiness;
 use App\System\Business\UserBusiness;
 use App\System\Component\Assinatura;
@@ -13,12 +14,15 @@ use App\System\Component\GenericModal;
 use App\System\Component\UploadModal;
 use App\System\Config\MenuConfig;
 use App\System\Contracts\Business\EmpresaBusinessContract;
+use App\System\Contracts\Business\EmpresaConfiguracaoBusinessContract;
 use App\System\Contracts\Business\EquipeBusinessContract;
 use App\System\Contracts\Business\UserBusinessContract;
+use App\System\Contracts\Repository\EmpresaConfiguracaoRepositoryContract;
 use App\System\Contracts\Repository\EmpresaRepositoryContract;
 use App\System\Contracts\Repository\EquipeRepositoryContract;
 use App\System\Contracts\Repository\UserRepositoryContract;
 use App\System\Impl\ServiceProviderAbstract;
+use App\System\Repositorys\EmpresaConfiguracaoRepository;
 use App\System\Repositorys\EmpresaRepository;
 use App\System\Repositorys\EquipeRepository;
 use App\System\Repositorys\UserRepository;
@@ -38,7 +42,9 @@ class AppServiceProvider extends ServiceProvider
         EquipeBusinessContract::class => EquipeBusiness::class,
         EquipeRepositoryContract::class => EquipeRepository::class,
         EmpresaBusinessContract::class => EmpresaBusiness::class,
-        EmpresaRepositoryContract::class => EmpresaRepository::class
+        EmpresaRepositoryContract::class => EmpresaRepository::class,
+        EmpresaConfiguracaoRepositoryContract::class => EmpresaConfiguracaoRepository::class,
+        EmpresaConfiguracaoBusinessContract::class => EmpresaConfiguracaoBusiness::class
     ];
     /**
      * Register any application services.

@@ -36,9 +36,9 @@ use Illuminate\Support\Facades\Blade;
 
 class RetrabalhosServiceProvider extends ServiceProviderAbstract
 {
-    protected string $module_path = 'app/Modules/Retrabalhos';
-    protected string $prefix = 'retrabalhos';
-    protected string $view_namespace = 'retrabalhos';
+    public static string $module_path = 'app/Modules/Retrabalhos';
+    public static string $prefix = 'retrabalhos';
+    public static string $view_namespace = 'retrabalhos';
     public $bindings = [
         RetrabalhoBusinessContract::class => RetrabalhoBusiness::class,
         RetrabalhoRepositoryContract::class => RetrabalhoRepository::class,

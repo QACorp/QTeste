@@ -11,9 +11,9 @@ use Illuminate\Support\ServiceProvider;
 
 abstract class ServiceProviderAbstract extends ServiceProvider
 {
-    protected string $prefix;
-    protected string $view_namespace;
-    protected string $module_path;
+    public static string $prefix;
+    public static string $view_namespace;
+    public static string $module_path;
 
     protected MenuUtils $menuUtils;
     public function __construct($app)
@@ -25,10 +25,10 @@ abstract class ServiceProviderAbstract extends ServiceProvider
     {
         $this->addConfigFiles();
 
-        View::addNamespace($this->view_namespace, base_path($this->module_path. '/Views'));
-        Route::prefix($this->prefix)
+        View::addNamespace(static::$view_namespace, base_path(static::$module_path. '/Views'));
+        Route::prefix(static::$prefix)
             ->middleware(['web', 'auth'])
-            ->group(base_path($this->module_path. '/Routes/route.php'));
+            ->group(base_path(static::$module_path. '/Routes/route.php'));
 
         $this->addDirectoryMigration();
 
@@ -49,7 +49,7 @@ abstract class ServiceProviderAbstract extends ServiceProvider
     private function addDirectoryMigration():void
     {
         $mainPath = database_path('migrations');
-        $directories = glob(base_path($this->module_path. '/Migrations') , GLOB_ONLYDIR);
+        $directories = glob(base_path(static::$module_path. '/Migrations') , GLOB_ONLYDIR);
         $paths = array_merge([$mainPath], $directories);
 
         $this->loadMigrationsFrom($paths);
@@ -57,13 +57,13 @@ abstract class ServiceProviderAbstract extends ServiceProvider
 
     public function getPrefix(): string
     {
-        return $this->prefix;
+        return static::$prefix;
     }
 
     private function addConfigFiles():void{
-        if(!app('config')->get($this->prefix) &&
-                file_exists(base_path($this->module_path . DIRECTORY_SEPARATOR . 'Config' . DIRECTORY_SEPARATOR . $this->prefix . '.php'))) {
-            app('config')->set($this->prefix, require base_path($this->module_path . DIRECTORY_SEPARATOR . 'Config' . DIRECTORY_SEPARATOR . $this->prefix . '.php'));
+        if(!app('config')->get(static::$prefix) &&
+                file_exists(base_path(static::$module_path . DIRECTORY_SEPARATOR . 'Config' . DIRECTORY_SEPARATOR . static::$prefix . '.php'))) {
+            app('config')->set(static::$prefix, require base_path(static::$module_path . DIRECTORY_SEPARATOR . 'Config' . DIRECTORY_SEPARATOR . static::$prefix . '.php'));
         }
     }
 }
