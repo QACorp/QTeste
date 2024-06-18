@@ -15,6 +15,7 @@ use App\System\Impl\BaseRepository;
 use App\System\Models\Empresa;
 use App\System\Models\EmpresaConfiguracao;
 use App\System\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Spatie\LaravelData\Attributes\Validation\Rule;
 use Spatie\LaravelData\DataCollection;
 
@@ -55,7 +56,9 @@ class EmpresaConfiguracaoRepository extends BaseRepository  implements EmpresaCo
 
     public function buscarPorConfiguracao(string $prefixo, string $nome): EmpresaConfiguracaoDTO
     {
-        $configuracao = EmpresaConfiguracao::where('prefixo_modulo', $prefixo)->where('nome', $nome)->first();
+        $configuracao = EmpresaConfiguracao::where('prefixo_modulo', $prefixo)
+                            ->where('nome', $nome)
+                            ->first();
         if (!$configuracao) {
             throw new NotFoundException('Configuração não encontrada');
         }

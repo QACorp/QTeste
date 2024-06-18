@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('empresa_configuracoes', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->string('valor');
+            $table->text('valor');
             $table->boolean('valor_criptografado')->default(false);
             $table->string('descricao', 300)->nullable();
             $table->string('prefixo_modulo');
+
+            $table->integer('empresa_id');
             $table->foreign('empresa_id')->references('id')->on('empresas');
             $table->timestamps();
         });

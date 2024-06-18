@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class EmpresaConfiguracao extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
     protected $table = 'empresa_configuracoes';
 
     protected $fillable = [
@@ -24,5 +24,10 @@ class EmpresaConfiguracao extends Model
     public function empresa(): BelongsTo
     {
         return $this->belongsTo(Empresa::class);
+    }
+    public function newQuery($excludeDeleted = true)
+    {
+        return parent::newQuery()
+            ->where('empresa_id', auth()->user()->empresa_id);
     }
 }

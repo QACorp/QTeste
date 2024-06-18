@@ -15,7 +15,7 @@ class EmpresaConfiguracaoDTO extends DTO
     public ?string $nome;
     #[Required]
     public ?string $valor;
-    public ?bool $valorCriptografado;
+    public ?bool $valor_criptografado;
     public ?string $descricao;
     #[Required]
     public ?string $prefixo_modulo;
