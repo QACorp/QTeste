@@ -1,3 +1,6 @@
+@php
+    use App\Modules\Projetos\Enums\PermissionEnum;
+@endphp
 @extends('adminlte::page')
 
 @section('title', 'QTeste - Aplicações | Projetos | Planos de teste')
@@ -5,14 +8,14 @@
 @section('plugins.DatatablesPlugin', true)
 @section('content_header')
     <div class="row">
-        <h1 class="m-0 text-dark col-md-8">Planos de teste de <strong>{{ $projeto->nome }}</strong></h1>
-        <div class="text-right col-md-4">
-            @can(\App\Modules\Projetos\Enums\PermissionEnum::INSERIR_PLANO_TESTE->value)
+        <h1 class="m-0 text-dark col-md-6">Planos de teste de <strong>{{ $projeto->nome }}</strong></h1>
+        <div class="text-right col-md-6">
+            @can(PermissionEnum::INSERIR_PLANO_TESTE->value)
                 <a class="btn btn-primary"
                    href="{{route('aplicacoes.projetos.planos-teste.inserir',[$idAplicacao, $idProjeto])}}"><i
                         class="fas fa-plus"></i> Inserir plano de teste</a>
             @endcan
-            @can(\App\Modules\Projetos\Enums\PermissionEnum::LISTAR_PROJETO->value)
+            @can(PermissionEnum::LISTAR_PROJETO->value)
                 <a class="btn btn-warning" href="{{route('aplicacoes.projetos.index',$idAplicacao)}}"><i
                         class="fas fa-undo"></i> Lista de projetos</a>
             @endcan
@@ -45,7 +48,7 @@
                                     <a class="btn btn-primary btn-sm" title="Visualizar"
                                        href="{{ route('aplicacoes.projetos.planos-teste.visualizar',[$idAplicacao, $idProjeto, $plano_teste->id]) }}"><i
                                             class="fas fa-eye"></i> </a>
-                                    @can(\App\Modules\Projetos\Enums\PermissionEnum::REMOVER_PLANO_TESTE->value)
+                                    @can(PermissionEnum::REMOVER_PLANO_TESTE->value)
                                         <x-delete-modal
                                             :registro="$plano_teste"
                                             message="Deseja excluir o registro {{ $plano_teste->titulo }}?"

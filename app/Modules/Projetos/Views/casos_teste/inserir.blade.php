@@ -97,17 +97,19 @@
                                     </div>
                                 </div>
                                 <div class="row pl-3">
-                                    <x-adminlte-button
-                                        label="Salvar"
-                                        theme="success"
-                                        icon="fas fa-save"
-                                        type="submit"
-                                    />
-                                    <a href="{{ route('aplicacoes.casos-teste.index') }}"
-                                       class="btn btn-primary ml-1"
-                                    >
-                                        <i class="fas fa-undo"></i> Voltar para lista
-                                    </a>
+                                    <div class="col-md-6">
+                                        <x-adminlte-button
+                                            label="Salvar"
+                                            theme="success"
+                                            icon="fas fa-save"
+                                            type="submit"
+                                        />
+                                        <a href="{{ route('aplicacoes.casos-teste.index') }}"
+                                           class="btn btn-primary ml-1"
+                                        >
+                                            <i class="fas fa-undo"></i> Voltar para lista
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-3">

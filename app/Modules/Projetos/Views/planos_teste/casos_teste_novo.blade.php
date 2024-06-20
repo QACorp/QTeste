@@ -1,3 +1,6 @@
+@php
+    use App\Modules\Projetos\Enums\CasoTesteEnum;
+@endphp
 <x-adminlte-modal
     id="modalMin_inserirCasoTeste"
     title="Inserir Caso de teste"
@@ -47,7 +50,8 @@
                                             readonly
                                         >
 
-                                                <option value="{{ \App\Modules\Projetos\Enums\CasoTesteEnum::CONCLUIDO->value }}">{{ \App\Modules\Projetos\Enums\CasoTesteEnum::CONCLUIDO->value }}</option>
+                                            <option
+                                                value="{{ CasoTesteEnum::CONCLUIDO->value }}">{{ CasoTesteEnum::CONCLUIDO->value }}</option>
 
                                         </x-adminlte-select>
                                     </div>
@@ -92,19 +96,21 @@
                                     </div>
                                 </div>
                                 <div class="row pl-3">
-                                    <x-adminlte-button
-                                        label="Salvar"
-                                        theme="success"
-                                        icon="fas fa-save"
-                                        type="submit"
-                                    />
-                                    <x-adminlte-button
-                                        class="row ml-3"
-                                        label="Cancelar"
-                                        theme="primary"
-                                        icon="fas fa-undo"
-                                        data-dismiss="modal"
-                                    />
+                                    <div class="col-md-12">
+                                        <x-adminlte-button
+                                            label="Salvar"
+                                            theme="success"
+                                            icon="fas fa-save"
+                                            type="submit"
+                                        />
+                                        <x-adminlte-button
+
+                                            label="Cancelar"
+                                            theme="primary"
+                                            icon="fas fa-undo"
+                                            data-dismiss="modal"
+                                        />
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-3">

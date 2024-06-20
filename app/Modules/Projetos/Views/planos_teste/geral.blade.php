@@ -1,3 +1,6 @@
+@php
+    use App\Modules\Projetos\Enums\PermissionEnum;
+@endphp
 @extends('adminlte::page')
 
 @section('title', 'QTeste - Aplicações | Projetos | Planos de teste')
@@ -37,7 +40,7 @@
                                            href="{{ route('aplicacoes.projetos.planos-teste.visualizar',[$plano_teste->aplicacao_id, $plano_teste->projeto_id, $plano_teste->id]) }}"><i
                                                 class="fas fa-eye"></i> </a>
                                     @endcan
-                                    @can(\App\Modules\Projetos\Enums\PermissionEnum::REMOVER_PLANO_TESTE->value)
+                                    @can(PermissionEnum::REMOVER_PLANO_TESTE->value)
                                         <x-delete-modal
                                             :registro="$plano_teste"
                                             message="Deseja excluir o registro {{ $plano_teste->titulo }}?"

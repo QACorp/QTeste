@@ -1,18 +1,21 @@
+@php
+    use App\Modules\Projetos\Enums\PermissionEnum;
+@endphp
 <div class="row">
-    <div class="col-md-12 p-0">
+    <div class="col-md-12 pl-3">
         @include('projetos::planos_teste.casos_teste_novo')
-        @can(\App\Modules\Projetos\Enums\PermissionEnum::INSERIR_EXECUCAO_PLANO_TESTE->value)
+        @can(PermissionEnum::INSERIR_EXECUCAO_PLANO_TESTE->value)
             <a href="{{ route('aplicacoes.projetos.planos-teste.criar',[$idAplicacao, $idProjeto, $idPlanoTeste]) }}"
                class="btn btn-danger mb-2"><i class="fas fa-list"></i> Iniciar uma nova execução</a>
         @endcan
 
-        @can(\App\Modules\Projetos\Enums\PermissionEnum::EXECUTAR_CASO_TESTE->value)
+        @can(PermissionEnum::EXECUTAR_CASO_TESTE->value)
             @if($existePlanoTesteExecucao)
                 <a href="{{ route('aplicacoes.projetos.planos-teste.executar',[$idAplicacao, $idProjeto, $idPlanoTeste]) }}"
                    class="btn btn-primary mb-2"><i class="fas fa-tasks"></i> Continuar última execução</a>
             @endif
         @endcan
-        @can(\App\Modules\Projetos\Enums\PermissionEnum::IMPORTAR_PLANILHA_CASO_TESTE->value)
+        @can(PermissionEnum::IMPORTAR_PLANILHA_CASO_TESTE->value)
             <x-upload-modal
                 idModal="uploadPlanilha"
                 message="Selecione o arquivo para importar"
@@ -20,7 +23,7 @@
                 labelBtnEnviar="Importar arquivo"
             />
         @endcan
-        @can(\App\Modules\Projetos\Enums\PermissionEnum::VINCULAR_CASO_TESTE->value)
+        @can(PermissionEnum::VINCULAR_CASO_TESTE->value)
             <form
                 action="{{ route('aplicacoes.projetos.planos-teste.casos-teste.vincular',[$idAplicacao, $idProjeto, $idPlanoTeste]) }}"
                 method="post"
@@ -42,7 +45,7 @@
         @endcan
     </div>
 </div>
-@can(\App\Modules\Projetos\Enums\PermissionEnum::LISTAR_CASO_TESTE->value)
+@can(PermissionEnum::LISTAR_CASO_TESTE->value)
     <x-adminlte-datatable
         id="casos_teste"
         :heads="$heads"
@@ -62,7 +65,7 @@
                     <x-caso-teste-detalhes
                         :registro="$casoTeste"
                     />
-                    @can(\App\Modules\Projetos\Enums\PermissionEnum::DESVINCULAR_CASO_TESTE->value)
+                    @can(PermissionEnum::DESVINCULAR_CASO_TESTE->value)
                         <x-delete-modal
                             :registro="$casoTeste"
                             message="Deseja desvincular caso de teste?"

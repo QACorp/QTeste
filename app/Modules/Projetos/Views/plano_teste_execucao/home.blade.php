@@ -1,5 +1,7 @@
 @php
     use App\Modules\Projetos\Enums\PermissionEnum;
+    use App\Modules\Projetos\Enums\PlanoTesteExecucaoEnum;
+    use App\System\Utils\EquipeUtils;
 @endphp
 @extends('adminlte::page')
 
@@ -7,7 +9,8 @@
 @section('plugins.Datatables', true)
 @section('plugins.JqueryUi', true)
 @section('content_header')
-    <h1 class="m-0 text-dark">Execução do plano de teste <strong>{{ $planoTesteExecucao->plano_teste->titulo }}</strong>
+    <h1 class="m-0 text-dark">
+        Execução do plano de teste <strong>{{ $planoTesteExecucao->plano_teste->titulo }}</strong>
     </h1>
 
 @stop
@@ -22,10 +25,10 @@
     </div>
     @if($planoTesteExecucao->resultado != null)
         <div class="row">
-            <div class="col-12 m-0">
+            <div class="col-12">
                 <div class="card">
                     <div
-                        class="card-body bg-{{$planoTesteExecucao->resultado == \App\Modules\Projetos\Enums\PlanoTesteExecucaoEnum::PASSOU->value ? 'success' : 'danger' }}">
+                        class="card-body bg-{{$planoTesteExecucao->resultado == PlanoTesteExecucaoEnum::PASSOU->value ? 'success' : 'danger' }}">
                         <div class="jumbotron jumbotron-fluid bg-transparent p-0">
                             <div class="container">
                                 <p class="lead">
@@ -36,7 +39,7 @@
                                 <h3 class="display-3">{{ $planoTesteExecucao->resultado }}</h3>
                                 <hr class="my-4">
                                 @can(PermissionEnum::INSERIR_EXECUCAO_PLANO_TESTE->value)
-                                    <a class="btn btn-{{$planoTesteExecucao->resultado == \App\Modules\Projetos\Enums\PlanoTesteExecucaoEnum::PASSOU->value ? 'success' : 'danger' }} btn-lg"
+                                    <a class="btn btn-{{$planoTesteExecucao->resultado == PlanoTesteExecucaoEnum::PASSOU->value ? 'success' : 'danger' }} btn-lg"
                                        href="{{ route('aplicacoes.projetos.planos-teste.criar',[$idAplicacao, $idProjeto, $planoTesteExecucao->plano_teste->id]) }}"
                                        role="button"
                                     >
@@ -90,29 +93,29 @@
                                                     <div class="card-body">
                                                         <div class="row">
                                                             <strong>Cenário: &nbsp;</strong>
-                                                            {!! nl2br($casoTeste->cenario) !!}
+                                                            <div class="ml-6">{!! nl2br($casoTeste->cenario) !!}</div>
                                                         </div>
                                                         <div class="row">
-                                                            <p class="d-block"><strong>Teste: &nbsp;</strong></p>
-                                                            {!! nl2br($casoTeste->teste) !!}
-
+                                                            <strong>Teste: &nbsp;</strong>
+                                                            <div class="ml-6">{!! nl2br($casoTeste->teste) !!}</div>
                                                         </div>
                                                         <div class="row">
                                                             <strong>Resultado esperado:&nbsp; </strong>
-                                                            {!! nl2br($casoTeste->resultado_esperado) !!}
+                                                            <div
+                                                                class="ml-6">{!! nl2br($casoTeste->resultado_esperado) !!}</div>
                                                         </div>
-                                                        @php $casoTesteExiste = $casoTesteExecucaoBusiness->casoTesteExecutado($planoTesteExecucao->id, $casoTeste->id, \App\System\Utils\EquipeUtils::equipeUsuarioLogado())  @endphp
+                                                        @php $casoTesteExiste = $casoTesteExecucaoBusiness->casoTesteExecutado($planoTesteExecucao->id, $casoTeste->id, EquipeUtils::equipeUsuarioLogado())  @endphp
                                                         <div
                                                             class="row mt-2 bg-gray-light rounded-bottom rounded-top p-3">
                                                             @if(!$casoTesteExiste &&
                                                                     $planoTesteExecucao->resultado == null)
-                                                                @can(\App\Modules\Projetos\Enums\PermissionEnum::EXECUTAR_CASO_TESTE->value)
+                                                                @can(PermissionEnum::EXECUTAR_CASO_TESTE->value)
                                                                     <div class="col-md-1">
                                                                         <form method="post"
                                                                               action="{{ route('aplicacoes.projetos.planos-teste.executar-caso-teste', [$idAplicacao, $idProjeto, $planoTesteExecucao->plano_teste->id, $planoTesteExecucao->id, $casoTeste->id]) }}#ct{{$casoTeste->id}}">
                                                                             @csrf
                                                                             <input type="hidden" name="status"
-                                                                                   value="{{ \App\Modules\Projetos\Enums\PlanoTesteExecucaoEnum::PASSOU->value }}"/>
+                                                                                   value="{{ PlanoTesteExecucaoEnum::PASSOU->value }}"/>
 
                                                                             <x-adminlte-button
                                                                                 label="Passou"
@@ -127,7 +130,7 @@
                                                                               action="{{ route('aplicacoes.projetos.planos-teste.executar-caso-teste', [$idAplicacao, $idProjeto, $planoTesteExecucao->plano_teste->id, $planoTesteExecucao->id, $casoTeste->id]) }}#ct{{$casoTeste->id}}">
                                                                             @csrf
                                                                             <input type="hidden" name="status"
-                                                                                   value="{{ \App\Modules\Projetos\Enums\PlanoTesteExecucaoEnum::FALHOU->value }}"/>
+                                                                                   value="{{ PlanoTesteExecucaoEnum::FALHOU->value }}"/>
                                                                             <x-adminlte-button
                                                                                 label="Falhou"
                                                                                 theme="danger"
@@ -140,9 +143,9 @@
                                                             @else
                                                                 <div class="col-md-12">
 
-                                                                    @if( $casoTesteExiste && $casoTesteExiste->resultado == \App\Modules\Projetos\Enums\PlanoTesteExecucaoEnum::PASSOU->value)
+                                                                    @if( $casoTesteExiste && $casoTesteExiste->resultado == PlanoTesteExecucaoEnum::PASSOU->value)
                                                                         <p><i class="fas fa-check"></i> Passou</p>
-                                                                    @elseif($casoTesteExiste && $casoTesteExecucaoBusiness->casoTesteExecutado($planoTesteExecucao->id, $casoTeste->id, \App\System\Utils\EquipeUtils::equipeUsuarioLogado())->resultado == \App\Modules\Projetos\Enums\PlanoTesteExecucaoEnum::FALHOU->value)
+                                                                    @elseif($casoTesteExiste && $casoTesteExecucaoBusiness->casoTesteExecutado($planoTesteExecucao->id, $casoTeste->id, EquipeUtils::equipeUsuarioLogado())->resultado == PlanoTesteExecucaoEnum::FALHOU->value)
 
                                                                         <p><i class="fas fa-bug"></i> Falhou</p>
                                                                     @else
@@ -159,7 +162,7 @@
                                             </div>
                                         @endforeach
                                         @if($casosTeste->count() > 0 && $planoTesteExecucao->resultado == null)
-                                            @can(\App\Modules\Projetos\Enums\PermissionEnum::FINALIZAR_PLANO_TESTE->value)
+                                            @can(PermissionEnum::FINALIZAR_PLANO_TESTE->value)
                                                 <div class="row mt-2 bg-gray-light rounded-bottom rounded-top p-3">
                                                     @include('projetos::plano_teste_execucao.modal_finalizar_execucao')
                                                 </div>

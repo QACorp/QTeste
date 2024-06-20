@@ -31,7 +31,7 @@
     </div>
 </x-adminlte-modal>
 <x-adminlte-button
-    class="btn-sm"
+    class="btn-lg"
     theme="success"
     label="Finalizar execução"
     title="Finalizar execução"

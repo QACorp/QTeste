@@ -21,6 +21,7 @@
 
     {{-- Custom stylesheets (pre AdminLTE) --}}
     @yield('adminlte_css_pre')
+    <link href="//cdn.datatables.net/v/bs5/dt-2.0.8/af-2.7.0/b-3.0.2/b-html5-3.0.2/date-1.5.2/r-3.0.2/sc-2.4.3/datatables.min.css" rel="stylesheet">
 
     {{-- Base Stylesheets --}}
     @if(!config('adminlte.enabled_laravel_mix'))
@@ -89,6 +90,8 @@
     @else
         <script src="{{ mix(config('adminlte.laravel_mix_js_path', 'js/app.js')) }}"></script>
     @endif
+    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
     @vite('resources/js/app.ts')
 
     {{-- Extra Configured Plugins Scripts --}}
