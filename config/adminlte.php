@@ -164,10 +164,10 @@ return [
 
     'layout_topnav' => null,
     'layout_boxed' => null,
-    'layout_fixed_sidebar' => null,
+    'layout_fixed_sidebar' => true,
     'layout_fixed_navbar' => null,
     'layout_fixed_footer' => null,
-    'layout_dark_mode' => null,
+    'layout_dark_mode' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -181,10 +181,10 @@ return [
     |
     */
 
-    'classes_auth_card' => 'card-outline card-primary',
-    'classes_auth_header' => '',
-    'classes_auth_body' => '',
-    'classes_auth_footer' => '',
+    'classes_auth_card' => '',
+    'classes_auth_header' => 'bg-dark',
+    'classes_auth_body' => 'bg-dark',
+    'classes_auth_footer' => 'bg-dark',
     'classes_auth_icon' => '',
     'classes_auth_btn' => 'btn-flat btn-primary',
 
@@ -201,7 +201,7 @@ return [
     */
 
     'classes_body' => '',
-    'classes_brand' => '',
+    'classes_brand' => 'text-decoration-none',
     'classes_brand_text' => '',
     'classes_content_wrapper' => 'h-auto',
     'classes_content_header' => '',
