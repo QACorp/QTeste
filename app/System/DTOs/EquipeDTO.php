@@ -10,12 +10,10 @@ use Spatie\LaravelData\Contracts\DataCollectable;
 
 class EquipeDTO extends DTO
 {
-    public function __construct(
-        public ?int $id,
-        public ?string $nome,
-        #[WithCast(CastUsers::class)]
-        public ?DataCollectable $users,
-    )
-    {
-    }
+    public ?int $id;
+    public ?string $nome;
+    public ?int $empresa_id;
+    #[WithCast(CastUsers::class)]
+    public ?DataCollectable $users;
+    public ?EmpresaDTO $empresa;
 }

@@ -16,4 +16,5 @@ enum PermissionEnum:string
     case ALTERAR_EQUIPE = 'ALTERAR_EQUIPE';
     case REMOVER_EQUIPE = 'REMOVER_EQUIPE';
     case VINCULAR_EQUIPE = 'VINCULAR_EQUIPE';
+    case ALTERAR_EMPRESA = 'ALTERAR_EMPRESA';
 }

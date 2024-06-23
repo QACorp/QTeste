@@ -38,7 +38,7 @@ class PlanoTesteExecucaoRepository extends BaseRepository  implements PlanoTeste
 
     public function buscarPlanoTesteExecucaoPorId(int $idPlanoTesteExecucao, int $idEquipe): ?PlanoTesteExecucaoDTO
     {
-        $planoTesteExecucao = PlanoTesteExecucao::where('id',$idPlanoTesteExecucao)
+        $planoTesteExecucao = PlanoTesteExecucao::where('plano_teste_execucoes.id',$idPlanoTesteExecucao)
                                 ->where('equipe_id',$idEquipe)
                                 ->with(['plano_teste','user'])
                                 ->first();

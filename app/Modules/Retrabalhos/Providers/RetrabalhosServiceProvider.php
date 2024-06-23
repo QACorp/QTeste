@@ -2,7 +2,6 @@
 
 namespace App\Modules\Retrabalhos\Providers;
 
-use App\Modules\Projetos\Components\TotaisTestes;
 use App\Modules\Projetos\Models\CasoTeste;
 use App\Modules\Projetos\Providers\ProjetosServiceProvider;
 use App\Modules\Retrabalhos\Business\DashboardBusiness;
@@ -15,7 +14,6 @@ use App\Modules\Retrabalhos\Components\GraficoEvolucaoRetrabalhoAplicacao;
 use App\Modules\Retrabalhos\Components\GraficoEvolucaoRetrabalhoUsuario;
 use App\Modules\Retrabalhos\Components\RetrabalhoTotalEquipe;
 use App\Modules\Retrabalhos\Config\DashboardConfig;
-use App\Modules\Retrabalhos\Config\MenuConfig;
 use App\Modules\Retrabalhos\Contracts\Business\DashboardBusinessContract;
 use App\Modules\Retrabalhos\Contracts\Business\RelatorioBusinessContract;
 use App\Modules\Retrabalhos\Contracts\Business\RetrabalhoBusinessContract;
@@ -38,10 +36,9 @@ use Illuminate\Support\Facades\Blade;
 
 class RetrabalhosServiceProvider extends ServiceProviderAbstract
 {
-
-    protected string $module_path = 'Modules/Retrabalhos';
-    protected string $prefix = 'retrabalhos';
-    protected string $view_namespace = 'retrabalhos';
+    public static string $module_path = __DIR__.'/..';
+    public static string $prefix = 'retrabalhos';
+    public static string $view_namespace = 'retrabalhos';
     public $bindings = [
         RetrabalhoBusinessContract::class => RetrabalhoBusiness::class,
         RetrabalhoRepositoryContract::class => RetrabalhoRepository::class,
@@ -71,10 +68,6 @@ class RetrabalhosServiceProvider extends ServiceProviderAbstract
         Blade::component('retrabalho-total-equipe', RetrabalhoTotalEquipe::class);
         DashboardConfig::addDashboardWidget(new Widget('x-retrabalho-total-equipe',12, ['ano' => date('Y')]));
         $this->moduleExists(ProjetosServiceProvider::class);
-        MenuConfig::configureMenuModule();
-
-        //DashboardConfig::addDashboardWidget(new Widget('x-totais-testes'));
-
         parent::boot();
     }
 

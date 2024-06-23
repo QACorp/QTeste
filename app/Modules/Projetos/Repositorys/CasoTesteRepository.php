@@ -23,7 +23,6 @@ class CasoTesteRepository extends BaseRepository  implements CasoTesteRepository
         return CasoTesteDTO::collection(
             PlanoTeste::find($idPlanoTeste)
                 ->casos_teste()
-                ->join('projetos.casos_teste_equipes','casos_teste_equipes.caso_teste_id','=','casos_teste.id')
                 ->where('equipe_id',$idEquipe)
                 ->where('projetos.caso_teste_plano_teste.deleted_at', null)
                 ->get()
@@ -35,7 +34,6 @@ class CasoTesteRepository extends BaseRepository  implements CasoTesteRepository
 
         return CasoTesteDTO::collection(
             CasoTeste::select('casos_teste.*')
-                ->join('projetos.casos_teste_equipes','casos_teste_equipes.caso_teste_id','=','casos_teste.id')
                 ->where('status', CasoTesteEnum::CONCLUIDO->value)
                 ->where('equipe_id', $idEquipe)
                 ->where(function($query) use($term){
@@ -67,9 +65,8 @@ class CasoTesteRepository extends BaseRepository  implements CasoTesteRepository
     {
         $planoTeste = PlanoTeste::find($idPlanoTeste);
         $existe = $planoTeste->casos_teste()
-                            ->join('projetos.casos_teste_equipes','casos_teste_equipes.caso_teste_id','=','casos_teste.id')
                             ->where('equipe_id', $idEquipe)
-                            ->where('id', $idCasoTeste)
+                            ->where('casos_teste.id', $idCasoTeste)
                             ->count();
 
         return $existe > 0;
@@ -78,9 +75,8 @@ class CasoTesteRepository extends BaseRepository  implements CasoTesteRepository
     public function existeCasoTeste(int $idCasoTeste, int $idEquipe): bool
     {
         return  CasoTeste::select('casos_teste.*')
-                ->join('projetos.casos_teste_equipes','casos_teste_equipes.caso_teste_id','=','casos_teste.id')
                 ->where('equipe_id',$idEquipe)
-                ->where('id', $idCasoTeste)
+                ->where('casos_teste.id', $idCasoTeste)
                 ->first() != null;
     }
     public function inserirCasoTeste(CasoTesteDTO $casoTesteDTO): CasoTesteDTO
@@ -108,8 +104,7 @@ class CasoTesteRepository extends BaseRepository  implements CasoTesteRepository
     public function buscarTodos(int $idEquipe): DataCollection
     {
         return CasoTesteDTO::collection(
-            CasoTeste::join('projetos.casos_teste_equipes','casos_teste_equipes.caso_teste_id','=','casos_teste.id')
-                ->where('casos_teste_equipes.equipe_id',$idEquipe)
+            CasoTeste::where('casos_teste_equipes.equipe_id',$idEquipe)
                 ->get()
         );
     }
@@ -124,9 +119,8 @@ class CasoTesteRepository extends BaseRepository  implements CasoTesteRepository
 
     public function buscarCasoTestePorId(int $idCasoTeste, int $idEquipe): ?CasoTesteDTO
     {
-        $casoTeste = CasoTeste::join('projetos.casos_teste_equipes','casos_teste_equipes.caso_teste_id','=','casos_teste.id')
-            ->where('casos_teste_equipes.equipe_id',$idEquipe)
-            ->where('id', $idCasoTeste)
+        $casoTeste = CasoTeste::where('casos_teste_equipes.equipe_id',$idEquipe)
+            ->where('casos_teste.id', $idCasoTeste)
             ->first();
         if($casoTeste != null){
             $casoTesteDTO = CasoTesteDTO::from($casoTeste);

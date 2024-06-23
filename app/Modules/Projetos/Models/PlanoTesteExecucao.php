@@ -4,10 +4,12 @@ namespace App\Modules\Projetos\Models;
 
 use App\System\Models\Equipe;
 use App\System\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class PlanoTesteExecucao extends Model
 {
@@ -43,5 +45,13 @@ class PlanoTesteExecucao extends Model
     public function equipe(): BelongsTo
     {
         return $this->belongsTo(Equipe::class);
+    }
+
+    public function newQuery(): Builder
+    {
+        return parent::newQuery()
+            ->addSelect('plano_teste_execucoes.*')
+            ->join('equipes','equipes.id','=','plano_teste_execucoes.equipe_id')
+            ->where('equipes.empresa_id', Auth::user()->empresa_id);
     }
 }

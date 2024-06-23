@@ -3,12 +3,12 @@
 @endphp
 @extends('adminlte::page')
 
-@section('title', 'QAKit - Dashboard de Retrabalhos')
+@section('title', 'QTeste - Dashboard de Retrabalhos')
 @section('plugins.Datatables', true)
 @section('plugins.DatatablesPlugin', true)
 @section('content_header')
     <div class="row">
-        <h1 class="m-0 text-dark col-md-8">
+        <h1 class="m-0 text-dark col-md-7">
             Dashboard de retrabalhos
         </h1>
         <div class="text-right col-md-2">
@@ -20,7 +20,7 @@
                 </x-adminlte-select>
             </form>
         </div>
-        <div class="text-right col-md-2">
+        <div class="text-right col-md-3">
 
             @can(PermissionEnum::INSERIR_RETRABALHO->value)
                 <a title="Inserir Retrabalho" class="btn btn-primary"

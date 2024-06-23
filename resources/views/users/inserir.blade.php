@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 @section('plugins.Select2', true)
-@section('title', 'QAKit - Usuários | Inserir')
+@section('title', 'QTeste - Usuários | Inserir')
 @section('content_header')
     <h1 class="m-0 text-dark">Inserir usuário </h1>
 

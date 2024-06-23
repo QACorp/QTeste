@@ -5,7 +5,7 @@
 @endphp
 @extends('adminlte::page')
 
-@section('title', 'QAKit - Relatórios')
+@section('title', 'QTeste - Relatórios')
 @section('plugins.Datatables', true)
 @section('plugins.DatatablesPlugin', true)
 @section('content_header')

@@ -16,8 +16,7 @@ class AplicacaoRepository extends BaseRepository  implements AplicacaoRepository
     public function buscarTodos(int $idEquipe): DataCollection
     {
         return AplicacaoDTO::collection(
-            Aplicacao::join('projetos.aplicacoes_equipes','aplicacoes_equipes.aplicacao_id','=','aplicacoes.id')
-                ->where('aplicacoes_equipes.equipe_id',$idEquipe)
+            Aplicacao::where('ae.equipe_id',$idEquipe)
                 ->get()
         );
     }
@@ -41,9 +40,8 @@ class AplicacaoRepository extends BaseRepository  implements AplicacaoRepository
 
     public function buscarPorId(int $id, int $idEquipe): ?AplicacaoDTO
     {
-        $aplicacao = Aplicacao::join('projetos.aplicacoes_equipes','aplicacoes_equipes.aplicacao_id','=','aplicacoes.id')
-            ->where('aplicacoes_equipes.equipe_id',$idEquipe)
-            ->where('id',$id)
+        $aplicacao = Aplicacao::where('ae.equipe_id',$idEquipe)
+            ->where('aplicacoes.id',$id)
             ->first();
         if($aplicacao != null){
             $aplicacaoDTO = AplicacaoDTO::from($aplicacao);

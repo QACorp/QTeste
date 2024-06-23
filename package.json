@@ -1,7 +1,7 @@
 {
     "private": true,
     "scripts": {
-        "dev": "vite",
+        "dev": "vite build --minify=false --watch",
         "build": "npm run type-check && vite build",
         "type-check": "vue-tsc --noEmit",
         "watch": "vite build --watch"

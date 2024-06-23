@@ -6,7 +6,7 @@
 @extends('adminlte::page')
 @section('plugins.Datatables', true)
 @section('plugins.DatatablesPlugin', true)
-@section('title', 'QAKit - Retrabalhos')
+@section('title', 'QTeste - Retrabalhos')
 
 @section('content_header')
     <div class="row">

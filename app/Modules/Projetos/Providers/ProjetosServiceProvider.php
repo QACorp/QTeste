@@ -83,9 +83,9 @@ use Illuminate\Support\Facades\Blade;
 
 class ProjetosServiceProvider extends ServiceProviderAbstract
 {
-    protected string $module_path = 'Modules/Projetos';
-    protected string $prefix = 'projetos';
-    protected string $view_namespace = 'projetos';
+    public static string $module_path = __DIR__.'/..';
+    public static string $prefix = 'projetos';
+    public static string $view_namespace = 'projetos';
     public $bindings = [
         AplicacaoRepositoryContract::class => AplicacaoRepository::class,
         AplicacaoBusinessContract::class => AplicacaoBusiness::class,
@@ -139,7 +139,7 @@ class ProjetosServiceProvider extends ServiceProviderAbstract
         Blade::component('casos-teste-mais-falhas', CasosTesteComMaisFalhas::class);
         Blade::component('grafico-falha-sucesso', GraficoFalhasSucesso::class);
         Blade::component('grafico-aplicacoes-mais-testes', GraficoAplicacoesComMaisTestes::class);
-        MenuConfig::configureMenuModule();
+
         DashboardConfig::addDashboardWidget(new Widget('x-totais-testes'));
         DashboardConfig::addDashboardWidget(new Widget('x-grafico-execucoes-mensais',8));
 

@@ -1,6 +1,9 @@
+@php
+    use App\Modules\Projetos\Enums\PermissionEnum;
+    @endphp
 @extends('adminlte::page')
 
-@section('title', 'QAKit - Aplicações | Projetos | Planos de Teste | Visualizar')
+@section('title', 'QTeste - Aplicações | Projetos | Planos de Teste | Visualizar')
 @section('plugins.Datatables', true)
 @section('plugins.JqueryUi', true)
 @section('content_header')
@@ -48,16 +51,21 @@
                                                 </x-adminlte-textarea>
                                             </div>
                                         </div>
-                                        <div class="row pl-3">
-                                            <x-adminlte-button
-                                                label="Salvar"
-                                                theme="success"
-                                                icon="fas fa-save"
-                                                type="submit"
-                                            />
-                                            <a href="{{ route('aplicacoes.projetos.planos-teste.index', [$idAplicacao, $idProjeto]) }}"
-                                               class="btn btn-primary ml-1"
-                                            ><i class="fas fa-undo"></i> Voltar para lista</a>
+                                        <div class="row pl-1">
+
+                                            <div class="col-md-12">
+                                                <x-adminlte-button
+                                                    label="Salvar"
+                                                    size="md"
+                                                    theme="success"
+                                                    icon="fas fa-save"
+                                                    type="submit"
+                                                />
+                                                <a href="{{ route('aplicacoes.projetos.planos-teste.index', [$idAplicacao, $idProjeto]) }}"
+                                                   class="btn btn-primary ml-1"
+                                                ><i class="fas fa-undo"></i> Voltar</a>
+
+                                            </div>
                                         </div>
                                     </form>
                                 </div>
@@ -73,7 +81,7 @@
                             Casos de teste
                         </div>
                         <div class="card-body">
-                            @can(\App\Modules\Projetos\Enums\PermissionEnum::LISTAR_CASO_TESTE->value)
+                            @can(PermissionEnum::LISTAR_CASO_TESTE->value)
                                 @include('projetos::planos_teste.casos_teste_lista')
                             @endcan
                         </div>
@@ -87,7 +95,7 @@
                             Execuções
                         </div>
                         <div class="card-body">
-                            @can(\App\Modules\Projetos\Enums\PermissionEnum::LISTAR_EXECUCAO_PLANO_TESTE->value)
+                            @can(PermissionEnum::LISTAR_EXECUCAO_PLANO_TESTE->value)
                                 @include('projetos::plano_teste_execucao.geral')
                             @endcan
                         </div>

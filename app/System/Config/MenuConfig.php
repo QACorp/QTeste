@@ -2,9 +2,13 @@
 
 namespace App\System\Config;
 
+use App\System\Enums\PermissionEnum;
 use App\System\Impl\MenuConfigAbstract;
+use App\System\Impl\ServiceProviderAbstract;
+use App\System\Providers\AppServiceProvider;
 use App\System\Utils\EquipeUtils;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
@@ -14,12 +18,11 @@ use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 class MenuConfig extends MenuConfigAbstract
 {
 
-    static function configureMenuModule()
+    public static function configureMenuModule()
     {
         Event::listen(BuildingMenu::class, function (BuildingMenu $event) {
             // Add some items to the menu...
             $request = App::make(Request::class);
-            //Cookie::queue(config('app.cookie_equipe_nome'), 8, (60*60*60));
             Auth::user()->equipes()->each(function ($item, $key) use(&$event, $request) {
                 $event->menu->add(
                     [
@@ -33,9 +36,6 @@ class MenuConfig extends MenuConfigAbstract
                     ]
                 );
             });
-
-
-
             $event->menu->add(
                 [
                     'type'         => 'fullscreen-widget',
@@ -51,6 +51,14 @@ class MenuConfig extends MenuConfigAbstract
                 'can'   => 'ACESSAR_SISTEMA'
             ]);
             $event->menu->add([
+                'text' => 'Alterar dados da empresa',
+                'route' => 'users.alterar-empresa',
+                'icon' => 'fas fa-building',
+                'classes' => 'nav-item',
+                'topnav_user' => true
+            ],);
+
+            $event->menu->add([
                 'text' => 'Sistema',
                 'icon'  => 'fas  fa-cog',
                 'can'   => ['LISTAR_USUARIO','LISTAR_EQUIPE'],
@@ -58,6 +66,7 @@ class MenuConfig extends MenuConfigAbstract
                     [
                         'key' => 'users_index',
                         'route' => 'users.index',
+                        'classes' => 'ml-4',
                         'icon'  => 'fas  fa-user',
                         'text' => 'Usuários',
                         'can'   => 'LISTAR_USUARIO',
@@ -65,6 +74,7 @@ class MenuConfig extends MenuConfigAbstract
                     ],
                     [
                         'key' => 'equipes_index',
+                        'classes' => 'ml-4',
                         'text' => 'Equipes',
                         'route'  => 'equipes.index',
                         'icon'  => 'fas fa-users',
@@ -73,6 +83,17 @@ class MenuConfig extends MenuConfigAbstract
                     ]
                 ]
             ]);
+
+        });
+        self::configureMenuServicesProvider();
+    }
+    private static function configureMenuServicesProvider(){
+        $servicesProvider = Collection::make(App::getProviders(ServiceProviderAbstract::class));
+        $servicesProvider->each(function ($item, $key) {
+            Event::listen(BuildingMenu::class, function (BuildingMenu $event)  use ($item){
+                $event->menu->add(config($item->getPrefix() . '.menu',[]));
+            });
+
 
         });
     }

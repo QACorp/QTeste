@@ -16,8 +16,6 @@ class DashoboardRepository implements DashboardRepositoryContract
     {
         $retrabalhos = Retrabalho::with(['caso_teste', 'aplicacao', 'tipo_retrabalho', 'projeto', 'usuario', 'usuario_criador'])
             ->select(DB::raw('COUNT(retrabalhos.id) as total'))
-            ->join('projetos.aplicacoes', 'retrabalhos.aplicacao_id', '=', 'aplicacoes.id')
-            ->join('projetos.aplicacoes_equipes','aplicacoes_equipes.aplicacao_id','=','aplicacoes.id')
             ->where('aplicacoes_equipes.equipe_id',$idEquipe)
             ->where(DB::raw('EXTRACT(YEAR FROM retrabalhos.data)'), $ano)
             ->first();
@@ -26,7 +24,7 @@ class DashoboardRepository implements DashboardRepositoryContract
 
     public function getTotalRetrabalhoPorEquipePorTarefa(int $idEquipe, int $ano): float
     {
-        $retrabalhos = Retrabalho::select(DB::raw(
+        $retrabalhos = Retrabalho::selectRaw(
             '(COUNT(retrabalhos.id)::numeric / (SELECT
                                                  CASE
                                                    WHEN COUNT(DISTINCT (retrabalhos.usuario_id)) = 0 THEN 1
@@ -40,10 +38,7 @@ class DashoboardRepository implements DashboardRepositoryContract
                                        aplicacoes_equipes.equipe_id = ? AND
                                        EXTRACT(YEAR FROM retrabalhos.data) = ? AND
                                        retrabalhos.deleted_at is null)::numeric)::numeric(9,2) as total'
-        ))
-        ->setBindings([$idEquipe, $ano])
-        ->join('projetos.aplicacoes', 'retrabalhos.aplicacao_id', '=', 'aplicacoes.id')
-        ->join('projetos.aplicacoes_equipes','aplicacoes_equipes.aplicacao_id','=','aplicacoes.id')
+        ,[$idEquipe, $ano])
         ->where('aplicacoes_equipes.equipe_id',$idEquipe)
         ->where(DB::raw('EXTRACT(YEAR FROM retrabalhos.data)'), $ano)
         ->first();
@@ -52,7 +47,7 @@ class DashoboardRepository implements DashboardRepositoryContract
 
     public function getTotalRetrabalhoPorEquipePorUsuario(int $idEquipe, int $ano): float
     {
-        $retrabalhos = Retrabalho::select(DB::raw(
+        $retrabalhos = Retrabalho::selectRaw(
                 '(COUNT(retrabalhos.id)::numeric / (SELECT
                                                  CASE
                                                    WHEN COUNT(DISTINCT (retrabalhos.usuario_id)) = 0 THEN 1
@@ -66,10 +61,7 @@ class DashoboardRepository implements DashboardRepositoryContract
                                        aplicacoes_equipes.equipe_id = ? AND
                                        EXTRACT(YEAR FROM retrabalhos.data) = ? AND
                                        retrabalhos.deleted_at is null)::numeric)::numeric(9,2) as total'
-            ))
-            ->setBindings([$idEquipe, $ano])
-            ->join('projetos.aplicacoes', 'retrabalhos.aplicacao_id', '=', 'aplicacoes.id')
-            ->join('projetos.aplicacoes_equipes','aplicacoes_equipes.aplicacao_id','=','aplicacoes.id')
+            ,[$idEquipe, $ano])
             ->where('aplicacoes_equipes.equipe_id',$idEquipe)
             ->where(DB::raw('EXTRACT(YEAR FROM retrabalhos.data)'), $ano)
             ->first();
