@@ -83,7 +83,7 @@ use Illuminate\Support\Facades\Blade;
 
 class ProjetosServiceProvider extends ServiceProviderAbstract
 {
-    public static string $module_path = 'app/Modules/Projetos';
+    public static string $module_path = __DIR__.'/..';
     public static string $prefix = 'projetos';
     public static string $view_namespace = 'projetos';
     public $bindings = [
