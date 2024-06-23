@@ -4,5 +4,10 @@
 // Variables
 @import 'variables';
 
-// Bootstrap
-@import 'bootstrap/scss/bootstrap';
+.card-header{
+    padding-top: 15px;
+}
+.modal-body{
+    padding-left:25px;
+}
+

@@ -16,35 +16,10 @@
 @section('classes_body'){{ ($auth_type ?? 'login') . '-page' }}@stop
 
 @section('body')
+
     <div class="{{ $auth_type ?? 'login' }}-box">
 
-        {{-- Logo --}}
-        <div class="{{ $auth_type ?? 'login' }}-logo">
-            <a href="{{ $dashboard_url }}">
 
-                {{-- Logo Image --}}
-                @if (config('adminlte.auth_logo.enabled', false))
-                    <img src="{{ asset(config('adminlte.auth_logo.img.path')) }}"
-                         alt="{{ config('adminlte.auth_logo.img.alt') }}"
-                         @if (config('adminlte.auth_logo.img.class', null))
-                            class="{{ config('adminlte.auth_logo.img.class') }}"
-                         @endif
-                         @if (config('adminlte.auth_logo.img.width', null))
-                            width="{{ config('adminlte.auth_logo.img.width') }}"
-                         @endif
-                         @if (config('adminlte.auth_logo.img.height', null))
-                            height="{{ config('adminlte.auth_logo.img.height') }}"
-                         @endif>
-                @else
-                    <img src="{{ asset(config('adminlte.logo_img')) }}"
-                         alt="{{ config('adminlte.logo_img_alt') }}" height="50">
-                @endif
-
-                {{-- Logo Label --}}
-                {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
-
-            </a>
-        </div>
 
         {{-- Card Box --}}
         <div class="card {{ config('adminlte.classes_auth_card', 'card-outline card-primary') }}">
@@ -60,6 +35,33 @@
 
             {{-- Card Body --}}
             <div class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
+                {{-- Logo --}}
+                <div class="{{ $auth_type ?? 'login' }}-logo">
+                    <a href="{{ $dashboard_url }}">
+
+                        {{-- Logo Image --}}
+                        @if (config('adminlte.auth_logo.enabled', false))
+                            <img src="{{ asset(config('adminlte.auth_logo.img.path')) }}"
+                                 alt="{{ config('adminlte.auth_logo.img.alt') }}"
+                                 @if (config('adminlte.auth_logo.img.class', null))
+                                     class="{{ config('adminlte.auth_logo.img.class') }}"
+                                 @endif
+                                 @if (config('adminlte.auth_logo.img.width', null))
+                                     width="{{ config('adminlte.auth_logo.img.width') }}"
+                                 @endif
+                                 @if (config('adminlte.auth_logo.img.height', null))
+                                     height="{{ config('adminlte.auth_logo.img.height') }}"
+                                @endif>
+                        @else
+                            <img src="{{ asset(config('adminlte.logo_img')) }}"
+                                 alt="{{ config('adminlte.logo_img_alt') }}" height="50">
+                        @endif
+
+                        {{-- Logo Label --}}
+                        <span class="text-white">{!! config('adminlte.logo', '<b>Admin</b>LTE') !!}</span>
+
+                    </a>
+                </div>
                 @yield('auth_body')
             </div>
 
@@ -73,6 +75,7 @@
         </div>
 
     </div>
+
 @stop
 
 @section('adminlte_js')
