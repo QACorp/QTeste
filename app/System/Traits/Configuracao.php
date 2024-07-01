@@ -8,6 +8,7 @@ use App\System\Exceptions\NotFoundException;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Spatie\LaravelData\DataCollection;
 
 trait Configuracao
 {
@@ -20,7 +21,7 @@ trait Configuracao
         return $this->configuracaoBusiness;
     }
 
-    public function buscarConfiguracao(string $prefixo, string $nome)
+    public function buscarConfiguracao(string $prefixo, string $nome):EmpresaConfiguracaoDTO
     {
         $configuracaoBusiness = $this->getConfiguracaoBusiness();
         $configuracao =  $configuracaoBusiness->buscarPorConfiguracao($prefixo, $nome);
@@ -28,6 +29,18 @@ trait Configuracao
             $configuracao->valor = Crypt::decryptString($configuracao->valor);
         }
         return $configuracao;
+    }
+
+    public function buscarConfiguracoesPorPrefixo(string $prefixo): DataCollection
+    {
+        $configuracaoBusiness = $this->getConfiguracaoBusiness();
+        $configuracoes =  $configuracaoBusiness->buscarPorConfiguracaoPorPrefixo($prefixo);
+        $configuracoes->each(function($item){
+            if($item->valor_criptografado){
+                $item->valor = Crypt::decryptString($item->valor);
+            }
+        });
+        return $configuracoes;
     }
 
     public function salvarConfiguracao(string $prefixo, string $nome, string $valor, string $descricao = null, $criptografado = false)

@@ -56,7 +56,15 @@ class MenuConfig extends MenuConfigAbstract
                 'icon' => 'fas fa-building',
                 'classes' => 'nav-item',
                 'topnav_user' => true
-            ],);
+            ]);
+            $event->menu->add([
+                'text' => 'Configurações',
+                'route' => 'configuracao.index',
+                'icon' => 'fas fa-cog',
+                'classes' => 'nav-item',
+                'topnav_user' => true,
+                'can'   => 'ACESSAR_CONFIGURACAO_EMPRESA'
+            ]);
 
             $event->menu->add([
                 'text' => 'Sistema',

@@ -12,5 +12,6 @@ interface EmpresaConfiguracaoRepositoryContract
     public function alterar(EmpresaConfiguracaoDTO $data): EmpresaConfiguracaoDTO;
     public function excluir(string $prefixo, string $nome): bool;
     public function buscarPorConfiguracao(string $prefixo, string $nome): EmpresaConfiguracaoDTO;
+    public function buscarPorConfiguracaoPorPrefixo(string $prefixo): DataCollection;
 
 }

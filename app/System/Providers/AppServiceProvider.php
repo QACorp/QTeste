@@ -3,6 +3,7 @@
 namespace App\System\Providers;
 
 use App\Modules\Projetos\Providers\ProjetosServiceProvider;
+use App\System\Business\CoreConfiguracaoBusiness;
 use App\System\Business\EmpresaBusiness;
 use App\System\Business\EmpresaConfiguracaoBusiness;
 use App\System\Business\EquipeBusiness;
@@ -13,6 +14,7 @@ use App\System\Component\DeleteModal;
 use App\System\Component\GenericModal;
 use App\System\Component\UploadModal;
 use App\System\Config\MenuConfig;
+use App\System\Contracts\Business\CoreConfiguracaoBusinessContract;
 use App\System\Contracts\Business\EmpresaBusinessContract;
 use App\System\Contracts\Business\EmpresaConfiguracaoBusinessContract;
 use App\System\Contracts\Business\EquipeBusinessContract;
@@ -44,7 +46,8 @@ class AppServiceProvider extends ServiceProvider
         EmpresaBusinessContract::class => EmpresaBusiness::class,
         EmpresaRepositoryContract::class => EmpresaRepository::class,
         EmpresaConfiguracaoRepositoryContract::class => EmpresaConfiguracaoRepository::class,
-        EmpresaConfiguracaoBusinessContract::class => EmpresaConfiguracaoBusiness::class
+        EmpresaConfiguracaoBusinessContract::class => EmpresaConfiguracaoBusiness::class,
+        CoreConfiguracaoBusinessContract::class => CoreConfiguracaoBusiness::class
     ];
     /**
      * Register any application services.
