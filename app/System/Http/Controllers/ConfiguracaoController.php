@@ -43,12 +43,9 @@ class ConfiguracaoController extends Controller
             return redirect(route('configuracao.index'))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Configurações da empresa alteradas com sucesso']]);
         }catch (UnprocessableEntityException $exception){
-            return redirect(route('users.alterar-empresa'))
+            return redirect(route('configuracao.index'))
                 ->withErrors($exception->getValidator())
                 ->withInput();
-        }catch (NotFoundException $exception){
-            return redirect(route('users.alterar-empresa'))
-                ->with([Controller::MESSAGE_KEY_ERROR => ['Empresa não encontrada']]);
         }
 
     }
