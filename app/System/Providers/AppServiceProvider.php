@@ -28,6 +28,9 @@ use App\System\Repositorys\EmpresaConfiguracaoRepository;
 use App\System\Repositorys\EmpresaRepository;
 use App\System\Repositorys\EquipeRepository;
 use App\System\Repositorys\UserRepository;
+use App\System\Services\Mail\DTOs\MailDTO;
+use App\System\Services\Mail\QTesteMail;
+use App\System\Traits\Configuracao;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Blade;
@@ -38,6 +41,7 @@ use ReflectionClass;
 
 class AppServiceProvider extends ServiceProvider
 {
+    use Configuracao;
     public $bindings = [
         UserBusinessContract::class => UserBusiness::class,
         UserRepositoryContract::class => UserRepository::class,
@@ -62,8 +66,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
-
         MenuConfig::configureMenuModule();
 
         Blade::component('delete-modal', DeleteModal::class);
@@ -71,7 +73,6 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('upload-modal', UploadModal::class);
         Blade::component('generic-modal', GenericModal::class);
         Blade::component('assinatura', Assinatura::class);
-
 
         if ($this->app->environment('production')) {
             $this->app['request']->server->set('HTTPS','on');

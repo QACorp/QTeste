@@ -113,7 +113,6 @@ class RetrabalhosController extends Controller
     public function mostrarProvidencia(int $idRetrabalho){
         Auth::user()->can(PermissionEnum::LISTAR_RETRABALHO->value);
         $retrabalho = $this->retrabalhoBusiness->buscarPorId($idRetrabalho, Auth::user()->getAuthIdentifier());
-
         return view('retrabalhos::show_providencia', compact('retrabalho'));
     }
 

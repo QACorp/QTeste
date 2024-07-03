@@ -5,6 +5,8 @@ namespace App\System\Traits;
 use App\System\Contracts\Business\EmpresaConfiguracaoBusinessContract;
 use App\System\DTOs\EmpresaConfiguracaoDTO;
 use App\System\Exceptions\NotFoundException;
+use App\System\Services\Mail\DTOs\MailDTO;
+use App\System\Services\Mail\QTesteMail;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -78,5 +80,21 @@ trait Configuracao
         if ($configuracao) {
             $configuracao->delete();
         }
+    }
+
+    public function configureMail():void
+    {
+        $configuracao = $this->buscarConfiguracoesPorPrefixo('core');
+
+        QTesteMail::configure(MailDTO::from([
+            'mailMailer' => $configuracao->where('nome','MAIL_MAILER')->first()?->valor,
+            'mailHost' => $configuracao->where('nome','MAIL_HOST')->first()?->valor,
+            'mailPort' => $configuracao->where('nome','MAIL_PORT')->first()?->valor,
+            'mailUsername' => $configuracao->where('nome','MAIL_USERNAME')->first()?->valor,
+            'mailPassword' => $configuracao->where('nome','MAIL_PASSWORD')->first()?->valor,
+            'mailEncryption' => $configuracao->where('nome','MAIL_ENCRYPTION')->first()?->valor,
+            'mailFromAddress' => $configuracao->where('nome','MAIL_FROM_ADDRESS')->first()?->valor,
+            'mailFromName' => $configuracao->where('nome','MAIL_FROM_NAME')->first()?->valor
+        ]));
     }
 }

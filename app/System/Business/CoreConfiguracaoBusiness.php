@@ -35,7 +35,7 @@ class CoreConfiguracaoBusiness implements CoreConfiguracaoBusinessContract
         $this->salvarConfiguracao('core', 'MAIL_ENCRYPTION', $configuracaoRequest->get('MAIL_ENCRYPTION'));
         $this->salvarConfiguracao('core', 'MAIL_FROM_ADDRESS', $configuracaoRequest->get('MAIL_FROM_ADDRESS'));
         $this->salvarConfiguracao('core', 'MAIL_FROM_NAME', $configuracaoRequest->get('MAIL_FROM_NAME'));
-        $this->salvarConfiguracao('core', 'SEND_MAIL_REWORK', $configuracaoRequest->get('SEND_MAIL_REWORK'));
+        $this->salvarConfiguracao('core', 'SEND_MAIL_ENABLE', $configuracaoRequest->get('SEND_MAIL_ENABLE') ?? 'false');
         return true;
     }
 }

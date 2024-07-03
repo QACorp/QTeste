@@ -101,13 +101,15 @@
                                 </div>
                                 <div class="row">
                                     <x-adminlte-input-switch
-                                        name="SEND_MAIL_REWORK"
+                                        name="SEND_MAIL_ENABLE"
                                         data-on-text="Sim"
                                         data-off-text="Não"
                                         value="true"
                                         data-on-color="teal"
-                                        checked="{{ ($configuracoes->where('nome','SEND_MAIL_REWORK')->first()?->valor == 'true' ? 'checked' : '') }}"
-                                        label="Enviar e-mail de retrabalho"
+                                        :config="[
+                                            'state' => ($configuracoes->where('nome','SEND_MAIL_ENABLE')->first()?->valor == 'true' ? true : false)
+                                        ]"
+                                        label="Habilitar o envio de e-mails"
                                     />
 
                                 </div>
