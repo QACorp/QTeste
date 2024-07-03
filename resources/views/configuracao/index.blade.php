@@ -1,5 +1,6 @@
 @extends('adminlte::page')
 @section('plugins.Select2', true)
+@section('plugins.BootstrapSwitch', true)
 @section('title', 'QTeste - Configurações')
 @section('content_header')
     <h1 class="m-0 text-dark">Configurações </h1>
@@ -13,9 +14,10 @@
                 <div class="card-body">
                     <form method="post" action="{{ route('configuracao.salvar') }}">
                         @csrf
-                        <h2>Configuração de envio de e-mail</h2>
+
                         <div class="row">
                             <div class="col-md-6">
+                                <h2>Configuração de envio de e-mail</h2>
                                 <div class="row">
                                     <x-adminlte-input
                                         name="MAIL_MAILER"
@@ -96,6 +98,18 @@
                                         value="{{ $configuracoes->where('nome','MAIL_FROM_NAME')->first()?->valor }}"
                                         required
                                     />
+                                </div>
+                                <div class="row">
+                                    <x-adminlte-input-switch
+                                        name="SEND_MAIL_REWORK"
+                                        data-on-text="Sim"
+                                        data-off-text="Não"
+                                        value="true"
+                                        data-on-color="teal"
+                                        checked="{{ ($configuracoes->where('nome','SEND_MAIL_REWORK')->first()?->valor == 'true' ? 'checked' : '') }}"
+                                        label="Enviar e-mail de retrabalho"
+                                    />
+
                                 </div>
 
 
