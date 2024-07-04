@@ -64,4 +64,9 @@ class EmpresaConfiguracaoRepository extends BaseRepository  implements EmpresaCo
         }
         return EmpresaConfiguracaoDTO::from($configuracao);
     }
+
+    public function buscarPorConfiguracaoPorPrefixo(string $prefixo): DataCollection
+    {
+        return EmpresaConfiguracaoDTO::collection(EmpresaConfiguracao::where('prefixo_modulo', $prefixo)->get());
+    }
 }

@@ -23,7 +23,15 @@ class RetrabalhoRepository implements RetrabalhoRepositoryContract
 
     public function buscarPorId(int $idRetrabalho): ?RetrabalhoCasoTesteDTO
     {
-        $retrabalho = Retrabalho::with(['caso_teste', 'aplicacao', 'tipo_retrabalho', 'projeto', 'usuario', 'usuario_criador'])->find($idRetrabalho);
+        $retrabalho = Retrabalho::select('retrabalhos.*')
+        ->with([
+            'caso_teste',
+            'aplicacao',
+            'tipo_retrabalho',
+            'projeto',
+            'usuario',
+            'usuario_criador'
+        ])->find($idRetrabalho);
         return $retrabalho ? RetrabalhoCasoTesteDTO::from($retrabalho) : null;
     }
 

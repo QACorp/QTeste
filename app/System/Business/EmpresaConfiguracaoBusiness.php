@@ -7,6 +7,7 @@ use App\System\Contracts\Repository\EmpresaConfiguracaoRepositoryContract;
 use App\System\DTOs\EmpresaConfiguracaoDTO;
 
 use App\System\Impl\BusinessAbstract;
+use Spatie\LaravelData\DataCollection;
 
 class EmpresaConfiguracaoBusiness extends BusinessAbstract implements EmpresaConfiguracaoBusinessContract
 {
@@ -34,5 +35,10 @@ class EmpresaConfiguracaoBusiness extends BusinessAbstract implements EmpresaCon
     public function buscarPorConfiguracao(string $prefixo, string $nome): EmpresaConfiguracaoDTO
     {
         return $this->empresaConfiguracaoRepository->buscarPorConfiguracao($prefixo, $nome);
+    }
+
+    public function buscarPorConfiguracaoPorPrefixo(string $prefixo): DataCollection
+    {
+        return $this->empresaConfiguracaoRepository->buscarPorConfiguracaoPorPrefixo($prefixo);
     }
 }
