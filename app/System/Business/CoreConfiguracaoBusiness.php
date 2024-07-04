@@ -31,7 +31,7 @@ class CoreConfiguracaoBusiness implements CoreConfiguracaoBusinessContract
         $this->salvarConfiguracao('core', 'MAIL_HOST', $configuracaoRequest->get('MAIL_HOST'));
         $this->salvarConfiguracao('core', 'MAIL_PORT', $configuracaoRequest->get('MAIL_PORT'));
         $this->salvarConfiguracao('core', 'MAIL_USERNAME', $configuracaoRequest->get('MAIL_USERNAME'));
-        $this->salvarConfiguracao('core', 'MAIL_PASSWORD', $configuracaoRequest->get('MAIL_PASSWORD'));
+        $this->salvarConfiguracao('core', 'MAIL_PASSWORD', $configuracaoRequest->get('MAIL_PASSWORD'), criptografado: true);
         $this->salvarConfiguracao('core', 'MAIL_ENCRYPTION', $configuracaoRequest->get('MAIL_ENCRYPTION'));
         $this->salvarConfiguracao('core', 'MAIL_FROM_ADDRESS', $configuracaoRequest->get('MAIL_FROM_ADDRESS'));
         $this->salvarConfiguracao('core', 'MAIL_FROM_NAME', $configuracaoRequest->get('MAIL_FROM_NAME'));
