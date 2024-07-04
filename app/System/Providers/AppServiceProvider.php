@@ -3,6 +3,7 @@
 namespace App\System\Providers;
 
 use App\Modules\Projetos\Providers\ProjetosServiceProvider;
+use App\System\Business\CoreConfiguracaoBusiness;
 use App\System\Business\EmpresaBusiness;
 use App\System\Business\EmpresaConfiguracaoBusiness;
 use App\System\Business\EquipeBusiness;
@@ -13,6 +14,7 @@ use App\System\Component\DeleteModal;
 use App\System\Component\GenericModal;
 use App\System\Component\UploadModal;
 use App\System\Config\MenuConfig;
+use App\System\Contracts\Business\CoreConfiguracaoBusinessContract;
 use App\System\Contracts\Business\EmpresaBusinessContract;
 use App\System\Contracts\Business\EmpresaConfiguracaoBusinessContract;
 use App\System\Contracts\Business\EquipeBusinessContract;
@@ -26,6 +28,9 @@ use App\System\Repositorys\EmpresaConfiguracaoRepository;
 use App\System\Repositorys\EmpresaRepository;
 use App\System\Repositorys\EquipeRepository;
 use App\System\Repositorys\UserRepository;
+use App\System\Services\Mail\DTOs\MailDTO;
+use App\System\Services\Mail\QTesteMail;
+use App\System\Traits\Configuracao;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Blade;
@@ -36,6 +41,7 @@ use ReflectionClass;
 
 class AppServiceProvider extends ServiceProvider
 {
+    use Configuracao;
     public $bindings = [
         UserBusinessContract::class => UserBusiness::class,
         UserRepositoryContract::class => UserRepository::class,
@@ -44,7 +50,8 @@ class AppServiceProvider extends ServiceProvider
         EmpresaBusinessContract::class => EmpresaBusiness::class,
         EmpresaRepositoryContract::class => EmpresaRepository::class,
         EmpresaConfiguracaoRepositoryContract::class => EmpresaConfiguracaoRepository::class,
-        EmpresaConfiguracaoBusinessContract::class => EmpresaConfiguracaoBusiness::class
+        EmpresaConfiguracaoBusinessContract::class => EmpresaConfiguracaoBusiness::class,
+        CoreConfiguracaoBusinessContract::class => CoreConfiguracaoBusiness::class
     ];
     /**
      * Register any application services.
@@ -59,8 +66,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
-
         MenuConfig::configureMenuModule();
 
         Blade::component('delete-modal', DeleteModal::class);
@@ -68,7 +73,6 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('upload-modal', UploadModal::class);
         Blade::component('generic-modal', GenericModal::class);
         Blade::component('assinatura', Assinatura::class);
-
 
         if ($this->app->environment('production')) {
             $this->app['request']->server->set('HTTPS','on');

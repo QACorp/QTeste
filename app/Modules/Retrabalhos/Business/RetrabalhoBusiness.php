@@ -11,20 +11,25 @@ use App\Modules\Retrabalhos\Contracts\Repositorys\RetrabalhoRepositoryContract;
 use App\Modules\Retrabalhos\DTOs\RetrabalhoCasoTesteDTO;
 use App\Modules\Retrabalhos\Enums\PermissionEnum;
 use App\Modules\Retrabalhos\Enums\TipoRetrabalhoEnum;
+use App\Modules\Retrabalhos\Mails\CadastroRetrabalho;
 use App\Modules\Retrabalhos\Rules\IdCasoTesteOuCasoTesteRule;
 use App\System\Contracts\Business\UserBusinessContract;
 use App\System\DTOs\EquipeDTO;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnauthorizedException;
 use App\System\Impl\BusinessAbstract;
+use App\System\Services\Mail\DTOs\MailDTO;
+use App\System\Services\Mail\QTesteMail;
+use App\System\Traits\Configuracao;
 use App\System\Traits\TransactionDatabase;
 use App\System\Traits\Validation;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Mail;
 use Spatie\LaravelData\DataCollection;
 
 class RetrabalhoBusiness extends BusinessAbstract implements RetrabalhoBusinessContract
 {
-    use TransactionDatabase;
+    use TransactionDatabase, Configuracao;
     public function __construct(
         private readonly RetrabalhoRepositoryContract $retrabalhoRepository,
         private readonly TipoRetrabalhoBusinessContract $tipoRetrabalhoBusiness,
@@ -56,6 +61,12 @@ class RetrabalhoBusiness extends BusinessAbstract implements RetrabalhoBusinessC
         }
         $retrabalho =  $this->retrabalhoRepository->salvar($retrabalhoCasoTesteDTO);
         $this->commit();
+        $this->configureMail();
+        if($this->buscarConfiguracao('core','SEND_MAIL_ENABLE')->valor == 'true'){
+            Mail::to($this->userBusiness->buscarPorId($retrabalho->usuario_id)->email)
+                ->send(new CadastroRetrabalho($retrabalho));
+        }
+
         return $retrabalho;
 
     }

@@ -1,3 +1,6 @@
+@php
+    use App\System\Enums\RoleEnum;
+@endphp
 @extends('adminlte::page')
 @section('plugins.Select2', true)
 @section('title', 'QTeste - Usuários | Alterar')
@@ -18,35 +21,37 @@
                             <div class="col-md-6">
                                 <div class="row">
                                     <x-adminlte-input
-                                            name="name"
-                                            label="Nome"
-                                            placeholder="Nome"
-                                            fgroup-class="col-md-12"
-                                            value="{{ old('nome',$user->name) }}"
-                                            required
+                                        name="name"
+                                        label="Nome"
+                                        placeholder="Nome"
+                                        fgroup-class="col-md-12"
+                                        value="{{ old('nome',$user->name) }}"
+                                        required
                                     />
                                 </div>
                                 <div class="row">
                                     <x-adminlte-input
-                                            name="email"
-                                            label="E-mail"
-                                            placeholder="algum@email.com"
-                                            fgroup-class="col-md-12"
-                                            value="{{ old('email',$user->email) }}"
-                                            required
+                                        name="email"
+                                        label="E-mail"
+                                        placeholder="algum@email.com"
+                                        fgroup-class="col-md-12"
+                                        value="{{ old('email',$user->email) }}"
+                                        required
                                     />
                                 </div>
 
-                                <div class="row p-2">
-                                    <x-adminlte-button
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <x-adminlte-button
                                             label="Salvar"
                                             theme="success"
                                             icon="fas fa-save"
                                             type="submit"
-                                    />
-                                    <a href="{{ route('users.index') }}"
-                                       class="btn btn-primary ml-1"
-                                    ><i class="fas fa-undo"></i> Cancelar</a>
+                                        />
+                                        <a href="{{ route('users.index') }}"
+                                           class="btn btn-primary ml-1"
+                                        ><i class="fas fa-undo"></i> Cancelar</a>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -68,10 +73,11 @@
                                         required
                                         fgroup-class="col-md-6"
                                     >
-                                        @foreach(\App\System\Enums\RoleEnum::cases() as $role)
-                                            <option @if(collect($userController->convertArrayRoleDTO(old('roles',$user->roles->items())))->where('name',$role->value)->count() > 0))
-                                                    selected
-                                                    @endif value="{{ $role->value }}">{{ $role->value }}</option>
+                                        @foreach(RoleEnum::cases() as $role)
+                                            <option
+                                                @if(collect($userController->convertArrayRoleDTO(old('roles',$user->roles->items())))->where('name',$role->value)->count() > 0))
+                                                selected
+                                                @endif value="{{ $role->value }}">{{ $role->value }}</option>
                                         @endforeach
                                     </x-adminlte-select2>
                                 </div>
