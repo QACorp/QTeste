@@ -2,6 +2,7 @@
 
 docker_compose="docker compose"
 node="docker compose -f $(pwd)/docker/utils/docker-compose.yml"
+docker_compose_php="docker compose -f $(pwd)/docker/utils/docker-compose.yml"
 composer="docker compose -f $(pwd)/docker/utils/docker-compose.yml"
 pgsql="docker compose -f $(pwd)/docker/postgres/docker-compose.yml"
 
@@ -16,7 +17,7 @@ php_cmd(){
 }
 
 artisan_cmd(){
-    $docker_compose run --rm qteste_app php "$@"
+    $docker_compose_php run --rm php php "$@"
 }
 
 pgsql_cmd_up(){
