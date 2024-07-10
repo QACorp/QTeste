@@ -80,6 +80,7 @@ swarm_prod_cmd(){
     rm composer.lock
     ./cli composer install
     export $(cat .env)
+    ./cli npm install
     ./cli npm run build
     docker-compose -f docker-compose-prd.yml build
     docker tag qteste_nginx:latest "$REGISTRY_URL"/qteste_nginx:latest

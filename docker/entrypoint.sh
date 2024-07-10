@@ -11,22 +11,15 @@ elif [ "$1" = "health" ]; then
     exit 1
 fi
 
-
-
-if [ "$role" = "app" ]; then
-    php /var/www/artisan migrate --force
-    exec php-fpm -F -R
-
-elif [ "$role" = "queue" ]; then
+if [ "$role" = "queue" ]; then
     echo "Queue iniciada."
     php artisan horizon
-
 
 elif [ "$role" = "scheduler" ]; then
 
     while [ true ]
     do
-      php /var/www/artisan schedule:run --verbose --no-interaction &
+      php artisan schedule:run --verbose --no-interaction &
       sleep 60
     done
 
