@@ -33,6 +33,7 @@ RUN apt-get update && apt-get -y upgrade && \
     docker-php-ext-enable redis &&\sed -i "s/CipherString = .*$/#CipherString/" /etc/ssl/openssl.cnf && \
     chown -R www-data:www-data /app
 # Copy the PHP files of your project in the public directory
+RUN if [ "$BUILD_APP_ENV" = "local" ]; then pecl install xdebug && docker-php-ext-enable xdebug && pear config-set php_ini /usr/local/etc/php/php.ini; fi
 
 RUN mv "$(pwd)/docker/$BUILD_APP_ENV/php.ini" "$PHP_INI_DIR/php.ini"
 
