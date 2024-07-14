@@ -75,8 +75,6 @@ pint_cmd(){
 }
 swarm_prod_cmd(){
     echo "Vou iniciar a configuração do ambiente de produção"
- #   git fetch
- #   git reset origin/master --hard
     rm composer.lock
     ./cli composer install
     export $(cat .env)
