@@ -21,6 +21,7 @@ return [
         'language' => [
             'lengthMenu' => 'Mostrando _MENU_ registros',
             'info'      => 'Mostrando _START_ até _END_ de um total de _TOTAL_ registros',
+            'infoEmpty' => 'Mostrando 0 até 0 de um total de 0 registros',
             'search'    => 'Buscar',
             'emptyTable'=> 'Nenhuma informação disponível',
             'decimal'   => ",",
