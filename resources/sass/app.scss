@@ -10,4 +10,16 @@
 .modal-body{
     padding-left:25px;
 }
+.nav-treeview{
+    padding-left: 15px !important;
+}
+.nav-item .has-treeview .nav-link{
+    width: 95% !important;
+}
+a.nav-link.font-active{
+    color: #AAA !important;
+}
+a.nav-link.active.font-active{
+    color: #FFF !important;
+}
 

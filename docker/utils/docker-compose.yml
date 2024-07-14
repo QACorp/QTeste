@@ -14,6 +14,14 @@ services:
     volumes:
       - ../../:/usr/src/app
     user: 1000:1000
+  php:
+      image: dunglas/frankenphp
+      restart: unless-stopped
+      working_dir: /app
+      env_file:
+          - ../../.env
+      volumes:
+          - ../../:/app
   robot:
     build:
       context: ./

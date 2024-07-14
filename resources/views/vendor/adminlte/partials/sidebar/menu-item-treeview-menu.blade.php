@@ -1,4 +1,4 @@
-<li @isset($item['id']) id="{{ $item['id'] }}" @endisset class="nav-item has-treeview {{ $item['submenu_class'] }}">
+<li @isset($item['id']) id="{{ $item['id'] }}" @endisset class="nav-item  has-treeview {{ $item['submenu_class'] }}">
 
     {{-- Menu toggler --}}
     <a class="nav-link {{ $item['class'] }} @isset($item['shift']) {{ $item['shift'] }} @endisset"
@@ -22,7 +22,7 @@
     </a>
 
     {{-- Menu items --}}
-    <ul class="nav nav-treeview">
+    <ul class="nav nav-treeview" >
         @each('adminlte::partials.sidebar.menu-item', $item['submenu'], 'item')
     </ul>
 
