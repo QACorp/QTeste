@@ -1,7 +1,7 @@
 version: '3.5'
 services:
     qteste_app:
-      image: qteste_app:frakenphp
+      image: qteste_app:2.0
       build:
         context: ./
         dockerfile: docker/production/Dockerfile
@@ -27,7 +27,7 @@ services:
       networks:
         - traefik-public
     qteste_scheduler:
-      image: qteste_app:frakenphp
+      image: qteste_app:2.0
       container_name: ${APP_NAME}_scheduler
       restart: unless-stopped
       entrypoint:
@@ -42,7 +42,7 @@ services:
       networks:
         - traefik-public
     qteste_queue:
-      image: qteste_app:frakenphp
+      image: qteste_app:2.0
       container_name: ${APP_NAME}_queue
       restart: unless-stopped
       entrypoint:
