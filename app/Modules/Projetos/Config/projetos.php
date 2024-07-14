@@ -1,4 +1,7 @@
 <?php
+
+use App\Modules\Projetos\Enums\PermissionEnum;
+
 return [
     'menu' => [
         'text' => 'Projetos',
@@ -12,7 +15,6 @@ return [
                 'text' => 'Aplicações',
                 'can'   => 'LISTAR_APLICACAO',
                 'active' => ['projetos/aplicacoes/*'],
-                'classes' => 'ml-3',
                 'submenu' => [
                     [
                         'text' => 'Listar aplicações',
@@ -20,7 +22,6 @@ return [
                         'icon'  => 'fas fa-list',
                         'active' => ['projetos/aplicacoes/*'],
                         'can'   => 'LISTAR_APLICACAO',
-                        'classes' => 'ml-4',
                     ]
                 ]
             ],
@@ -31,22 +32,26 @@ return [
                 'text' => 'Testes',
                 'can'   => ['LISTAR_CASO_TESTE', 'LISTAR_PLANO_TESTE'],
                 'active' => ['projetos/casos-teste/*'],
-                'classes' => 'ml-3',
                 'submenu' => [
                     [
                         'text' => 'Casos de teste',
                         'icon'  => 'fas fa-cubes',
                         'key' => 'casos_teste_index',
                         'active' => ['projetos/casos-teste/*'],
-                        'classes' => 'ml-4',
                         'submenu' => [
                             [
                                 'text' => 'Listar',
                                 'route'  => 'aplicacoes.casos-teste.index',
                                 'icon'  => 'fas fa-list',
-                                'active' => ['projetos/casos-teste/','projetos/casos-teste/inserir/*', 'projetos/casos-teste/editar/*'],
-                                'can'   => 'LISTAR_CASO_TESTE',
-                                'classes' => 'ml-5',
+                                'active' => ['projetos/casos-teste/', 'projetos/casos-teste/editar/*'],
+                                'can'   => PermissionEnum::LISTAR_CASO_TESTE->value,
+                            ],
+                            [
+                                'text' => 'Inserir',
+                                'route'  => 'aplicacoes.casos-teste.inserir',
+                                'icon'  => 'fas fa-plus',
+                                'active' => ['projetos/casos-teste/inserir/*'],
+                                'can'   => PermissionEnum::INSERIR_CASO_TESTE->value,
                             ],
                         ]
                     ],
@@ -56,7 +61,6 @@ return [
                         'icon'  => 'fas fa-file-alt',
                         'active' => ['projetos/planos-teste/*'],
                         'can'   => 'LISTAR_PLANO_TESTE',
-                        'classes' => 'ml-4',
                     ],
 
 
