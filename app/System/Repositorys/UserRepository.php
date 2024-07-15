@@ -114,6 +114,7 @@ class UserRepository extends BaseRepository implements UserRepositoryContract
         return UserDTO::collection(User::join('users_equipes as ue', 'ue.user_id', '=', 'users.id')
             ->where('empresa_id', Auth::user()->empresa_id)
             ->where('ue.equipe_id', $idEquipe)
+            ->where('active', true)
             ->get());
     }
 }

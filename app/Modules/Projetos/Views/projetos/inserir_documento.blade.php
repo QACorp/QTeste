@@ -53,7 +53,7 @@
         bordered
         striped
     >
-        @forelse($documentos as $documento)
+        @foreach($documentos as $documento)
             <tr>
                 <td><a target="__blank" href="{{ $documento->url }}">{{ $documento->titulo }}</a></td>
                 <td>{{ $documento->created_at->format('d/m/Y H\hi') }}</td>
@@ -67,11 +67,7 @@
                     @endcan
                 </td>
             </tr>
-        @empty
-            <tr>
-                <td colspan="3">Nenhum documento encontrado</td>
-            </tr>
-        @endforelse
+        @endforeach
     </x-adminlte-datatable>
 </div>
 

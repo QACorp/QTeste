@@ -15,13 +15,15 @@ services:
       - ../../:/usr/src/app
     user: 1000:1000
   php:
-      image: dunglas/frankenphp
+      image: qteste_app:frakenphp
       restart: unless-stopped
       working_dir: /app
       env_file:
           - ../../.env
       volumes:
           - ../../:/app
+      networks:
+          - traefik-public
   robot:
     build:
       context: ./
@@ -34,3 +36,6 @@ services:
       - ../../tests/Integration:/testes/
       - ../docker/robot/results:/report/
     network_mode: host
+networks:
+    traefik-public:
+        external: true
