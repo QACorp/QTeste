@@ -15,8 +15,15 @@ return [
                 'text' => 'Listar retrabalhos',
                 'route'  => 'retrabalhos.index',
                 'icon'  => 'fas fa-list',
-                'active' => ['retrabalhos/', 'retrabalhos/inserir','retrabalhos/show/*', 'retrabalhos/alterar/*'],
+                'active' => ['retrabalhos/','retrabalhos/show/*', 'retrabalhos/alterar/*'],
                 'can'   => [PermissionEnum::LISTAR_RETRABALHO->value, PermissionEnum::VER_TODOS_RETRABALHOS->value]
+            ],
+            [
+                'text' => 'Inserir retrabalho',
+                'route'  => 'retrabalhos.inserir',
+                'icon'  => 'fas fa-plus',
+                'active' => ['retrabalhos/inserir'],
+                'can'   => [PermissionEnum::INSERIR_RETRABALHO->value]
             ],
             [
                 'text' => 'Dashboard',

@@ -88,7 +88,7 @@ class ProjetoController extends Controller
             $configPlanoTeste = [
                 ...config('adminlte.datatable_config'),
                 'searching' => false,
-                'columns' => [null, null, null, ['orderable' => false]],
+                'columns' => [null, null, ['orderable' => false]],
             ];
             $documentos = $this->documentoBusiness->buscarTodosPorProjeto($idProjeto, EquipeUtils::equipeUsuarioLogado());
             $observacoes = $this->observacaoBusiness->buscarPorProjeto($idProjeto);
