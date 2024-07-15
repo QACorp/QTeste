@@ -24,6 +24,7 @@ class UserDTO extends DTO
     public ?DataCollectable $equipes;
     public ?int $empresa_id;
     public ?EmpresaDTO $empresa;
+    public bool $active = true;
 
 
     public function __construct()

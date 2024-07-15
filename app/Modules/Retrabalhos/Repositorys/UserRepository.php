@@ -25,7 +25,8 @@ class UserRepository extends BaseRepository implements UserRepositoryContract
                                                 users_equipes
                                             WHERE
                                                 users.id = users_equipes.user_id AND
-                                                equipe_id = ?)', [$idEquipe, $idEquipe])
+                                                equipe_id = ? AND
+                                                users.active = true)', [$idEquipe, $idEquipe])
                 ->get()
         );
     }

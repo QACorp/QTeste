@@ -3,6 +3,7 @@
 @endphp
 @extends('adminlte::page')
 @section('plugins.Select2', true)
+@section('plugins.BootstrapSwitch', true)
 @section('title', 'QTeste - Usuários | Alterar')
 @section('content_header')
     <h1 class="m-0 text-dark">Alterar usuário </h1>
@@ -38,6 +39,20 @@
                                         value="{{ old('email',$user->email) }}"
                                         required
                                     />
+                                </div>
+                                <div class="row">
+                                    <x-adminlte-input-switch
+                                        name="active"
+                                        data-on-text="Sim"
+                                        data-off-text="Não"
+                                        value="true"
+                                        data-on-color="teal"
+                                        :config="[
+                                            'state' => old('active',$user->active)
+                                        ]"
+                                        label="Ativo"
+                                    />
+
                                 </div>
 
                                 <div class="row">
