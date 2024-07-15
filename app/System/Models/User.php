@@ -39,7 +39,8 @@ class User extends Authenticatable implements Cast
         'email',
         'password',
         'selected_equipe_id',
-        'empresa_id'
+        'empresa_id',
+        'active'
     ];
 
     /**

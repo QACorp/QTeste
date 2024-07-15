@@ -20,8 +20,15 @@ return [
                         'text' => 'Listar aplicações',
                         'route'  => 'aplicacoes.index',
                         'icon'  => 'fas fa-list',
-                        'active' => ['projetos/aplicacoes/*'],
+                        'active' => ['projetos/aplicacoes/', 'projetos/aplicacoes/editar/*', 'projetos/aplicacoes/*/projetos/*'],
                         'can'   => 'LISTAR_APLICACAO',
+                    ],
+                    [
+                        'text' => 'Inserir aplicação',
+                        'route'  => 'aplicacoes.inserir',
+                        'icon'  => 'fas fa-plus',
+                        'active' => ['projetos/aplicacoes/inserir'],
+                        'can'   => PermissionEnum::INSERIR_APLICACAO->value,
                     ]
                 ]
             ],

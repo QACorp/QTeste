@@ -56,7 +56,8 @@ class UserController extends Controller
             $userDTO = UserDTO::from([
                 ...$request->only(['name', 'email']),
                 'id' => $idUsuario,
-                'roles' => $this->converterArrayEmRoleDTO($request->roles)
+                'roles' => $this->converterArrayEmRoleDTO($request->roles),
+                'active' => $request->has('active')
             ]);
             $userDTO->equipes = $this->convertArrayEquipeInDTO($request->only('equipes'));
             $this->userBusiness->alterar($userDTO);
@@ -135,7 +136,8 @@ class UserController extends Controller
         try {
             $userDTO = UserDTO::from([
                 ...$request->only(['name', 'email']),
-                'roles' => $this->converterArrayEmRoleDTO($request->roles)
+                'roles' => $this->converterArrayEmRoleDTO($request->roles),
+                'active' => $request->has('active')
             ]);
             $userDTO->equipes = $this->convertArrayEquipeInDTO($request->only('equipes'));
             $this->userBusiness->salvar($userDTO);

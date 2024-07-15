@@ -509,7 +509,7 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => 'vendor/bootstrap-switch/js/bootstrap-switch.min.js',
+                    'location' => '/vendor/bootstrap-switch/js/bootstrap-switch.min.js',
                 ],
             ],
         ],
