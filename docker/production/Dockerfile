@@ -12,8 +12,10 @@ ARG DB_DATABASE=qakit
 ARG DB_USERNAME=postgres
 ARG DB_PASSWORD=postgres
 ARG APP_ENV=local
+#ENV FRANKENPHP_CONFIG="worker ./public/index.php"
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 COPY . /app
+COPY ./docker/caddy/Caddyfile /etc/caddy/Caddyfile
 
 RUN apt-get update && apt-get -y upgrade && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -49,3 +51,15 @@ RUN php artisan optimize
 COPY ./docker/supervisor/conf.d /etc/supervisor/conf.d
 RUN if [ "${CONTAINER_ROLE}" = "scheduler" ]; then service supervisor stop && service supervisor start  && supervisorctl reread && supervisorctl update && service supervisor restart horizon; fi
 
+
+ARG USER=www-data
+
+RUN \
+	# Use "adduser -D ${USER}" for alpine based distros
+	useradd -D ${USER}; \
+	# Add additional capability to bind to port 80 and 443
+	setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/frankenphp; \
+	# Give write access to /data/caddy and /config/caddy
+	chown -R ${USER}:${USER} /data/caddy && chown -R ${USER}:${USER} /config/caddy
+
+USER ${USER}

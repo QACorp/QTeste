@@ -80,6 +80,7 @@ swarm_prod_cmd(){
     export $(cat .env)
     ./cli npm install
     ./cli npm run build
+    ./cli artisan optimize
     docker-compose -f docker-compose-prd.yml build
     docker tag qteste_app:2.0 "$REGISTRY_URL"/qteste_app:2.0
     docker push "$REGISTRY_URL"/qteste_app:2.0
