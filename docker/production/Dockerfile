@@ -19,8 +19,6 @@ COPY ./docker/caddy/Caddyfile /etc/caddy/Caddyfile
 
 RUN apt-get update && apt-get -y upgrade && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
-        nano \
-        wget \
         libcurl4-gnutls-dev \
         libxml2-dev \
         libpng-dev \
@@ -39,8 +37,7 @@ RUN apt-get update && apt-get -y upgrade && \
         pcntl \
         zip && \
     pecl install redis && \
-    docker-php-ext-enable redis &&\sed -i "s/CipherString = .*$/#CipherString/" /etc/ssl/openssl.cnf && \
-    chown -R www-data:www-data /app
+    docker-php-ext-enable redis &&\sed -i "s/CipherString = .*$/#CipherString/" /etc/ssl/openssl.cnf
 # Copy the PHP files of your project in the public directory
 RUN if [ "$BUILD_APP_ENV" = "local" ]; then pecl install xdebug && docker-php-ext-enable xdebug && pear config-set php_ini /usr/local/etc/php/php.ini; fi
 
@@ -52,14 +49,15 @@ COPY ./docker/supervisor/conf.d /etc/supervisor/conf.d
 RUN if [ "${CONTAINER_ROLE}" = "scheduler" ]; then service supervisor stop && service supervisor start  && supervisorctl reread && supervisorctl update && service supervisor restart horizon; fi
 
 
-ARG USER=www-data
-
-RUN \
-	# Use "adduser -D ${USER}" for alpine based distros
-	useradd -D ${USER}; \
-	# Add additional capability to bind to port 80 and 443
-	setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/frankenphp; \
-	# Give write access to /data/caddy and /config/caddy
-	chown -R ${USER}:${USER} /data/caddy && chown -R ${USER}:${USER} /config/caddy
-
-USER ${USER}
+#ARG USER=www-data
+#
+#RUN \
+#	# Use "adduser -D ${USER}" for alpine based distros
+#	useradd -D ${USER}; \
+#	# Add additional capability to bind to port 80 and 443
+#	setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/frankenphp; \
+#	# Give write access to /data/caddy and /config/caddy
+#	chown -R ${USER}:${USER} /data/caddy && chown -R ${USER}:${USER} /config/caddy && \
+#    chown -R ${USER}:${USER} /app
+#
+#USER ${USER}

@@ -5,7 +5,8 @@
     }
 }
 
-localhost {
+:80 {
+    root * /app/public
 	# Enable compression (optional)
 	encode zstd br gzip
 	# Execute PHP files in the current directory and serve assets

@@ -7,7 +7,6 @@ services:
             dockerfile: docker/production/Dockerfile
             args:
                 - "BUILD_APP_ENV=${APP_ENV}"
-
         restart: always
         env_file:
             - .env

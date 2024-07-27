@@ -7,7 +7,7 @@ services:
         dockerfile: docker/production/Dockerfile
         args:
           - "BUILD_APP_ENV=${APP_ENV}"
-          - APP_ENV:${APP_ENV:-local}
+          - APP_ENV=${APP_ENV:-local}
           - DB_CONNECTION=${DB_CONNECTION:-pgsql}
           - DB_HOST=${DB_HOST:-localhost}
           - DB_PORT=${DB_PORT:-5432}
