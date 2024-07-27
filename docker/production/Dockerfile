@@ -5,6 +5,13 @@ ENV SERVER_NAME=:80
 # If you want to disable HTTPS, use this value instead:
 #ENV SERVER_NAME=:80
 ARG BUILD_APP_ENV
+ARG DB_CONNECTION=pgsql
+ARG DB_HOST=localhost
+ARG DB_PORT=5432
+ARG DB_DATABASE=qakit
+ARG DB_USERNAME=postgres
+ARG DB_PASSWORD=postgres
+ARG APP_ENV=local
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 COPY . /app
 
