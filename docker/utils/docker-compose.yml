@@ -15,7 +15,7 @@ services:
       - ../../:/usr/src/app
     user: 1000:1000
   php:
-      image: qteste_app:frakenphp
+      image: qteste_app:2.0
       restart: unless-stopped
       working_dir: /app
       env_file:
