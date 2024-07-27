@@ -5,7 +5,11 @@ namespace App\System\Http\Controllers\Auth;
 use App\System\Http\Controllers\Controller;
 use App\System\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class LoginController extends Controller
 {
@@ -28,6 +32,14 @@ class LoginController extends Controller
      * @var string
      */
     protected $redirectTo = RouteServiceProvider::HOME;
+
+
+    protected function attemptLogin(Request $request)
+    {
+        return $this->guard()->attempt(
+            [...$this->credentials($request), 'active' => true], $request->boolean('remember')
+        );
+    }
 
 
     /**
