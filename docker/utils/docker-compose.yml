@@ -22,8 +22,6 @@ services:
           - ../../.env
       volumes:
           - ../../:/app
-      networks:
-          - traefik-public
   robot:
     build:
       context: ./
