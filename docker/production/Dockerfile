@@ -46,7 +46,6 @@ RUN mv "$(pwd)/docker/$BUILD_APP_ENV/php.ini" "$PHP_INI_DIR/php.ini"
 
 RUN php artisan optimize
 
-RUN if [ "$BUILD_APP_ENV" = "production" ]; then php artisan migrate --force; fi
 COPY ./docker/supervisor/conf.d /etc/supervisor/conf.d
 RUN if [ "${CONTAINER_ROLE}" = "scheduler" ]; then service supervisor stop && service supervisor start  && supervisorctl reread && supervisorctl update && service supervisor restart horizon; fi
 

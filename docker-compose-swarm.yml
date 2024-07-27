@@ -4,6 +4,7 @@ services:
         image: ${REGISTRY_URL}/qteste_app:2.0
         env_file:
             - .env
+        command: bash -c "if [ "$BUILD_APP_ENV" = "production" ]; then php artisan migrate --force; fi"
         deploy:
           labels:
             - traefik.enable=true
