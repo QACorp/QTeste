@@ -2,13 +2,17 @@ version: '3.5'
 services:
     qteste_app:
         image: qteste_app:2.0
+        container_name: ${APP_NAME}_app
         build:
             context: ./
             dockerfile: docker/production/Dockerfile
             args:
                 - "BUILD_APP_ENV=${APP_ENV}"
         restart: always
-        entrypoint: ["/app/docker/entrypoint.sh"]
+        environment:
+            - CONTAINER_ROLE=app
+        entrypoint:
+            - ./docker/entrypoint.sh
         env_file:
             - .env
         volumes:

@@ -48,7 +48,7 @@ class MenuConfig extends MenuConfigAbstract
                 'route' => 'home',
                 'icon'  => 'fas  fa-home',
                 'text' => 'Home',
-                'can'   => 'ACESSAR_SISTEMA'
+                'can'   => PermissionEnum::ACESSAR_SISTEMA->value
             ]);
             $event->menu->add([
                 'text' => 'Alterar dados da empresa',
@@ -69,7 +69,7 @@ class MenuConfig extends MenuConfigAbstract
             $event->menu->add([
                 'text' => 'Sistema',
                 'icon'  => 'fas  fa-cog',
-                'can'   => ['LISTAR_USUARIO','LISTAR_EQUIPE'],
+                'can'   => [PermissionEnum::LISTAR_USUARIO->value, PermissionEnum::LISTAR_EQUIPE->value],
                 'active' => ['usuarios/*', 'equipes/*'],
                 'submenu' => [
                     [

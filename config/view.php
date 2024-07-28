@@ -15,7 +15,6 @@ return [
 
     'paths' => [
         resource_path('views'),
-        app_path('Modules/Example/View'),
     ],
 
     /*
