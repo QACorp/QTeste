@@ -4,7 +4,7 @@ namespace App\System\Config;
 
 use App\System\Component\Widget;
 
-class DashboardConfig
+abstract class DashboardConfig
 {
     private static $dashboardWidget = [];
     public static function addDashboardWidget(Widget $widget){

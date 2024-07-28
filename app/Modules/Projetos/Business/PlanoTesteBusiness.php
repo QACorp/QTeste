@@ -29,9 +29,9 @@ class PlanoTesteBusiness extends BusinessAbstract implements PlanoTesteBusinessC
     public function buscarPlanosTestePorProjeto(int $idProjeto, int $idEquipe): DataCollection
     {
         $this->can(PermissionEnum::LISTAR_PLANO_TESTE->value);
-
-        if($this->projetoBusiness->buscarPorIdProjeto($idProjeto, $idEquipe) == null)
-            throw new NotFoundException();
+//
+//        if($this->projetoBusiness->buscarPorIdProjeto($idProjeto, $idEquipe) == null)
+//            throw new NotFoundException();
         return $this->planoTesteRepository->buscarPlanosTestePorProjeto($idProjeto, $idEquipe);
     }
 

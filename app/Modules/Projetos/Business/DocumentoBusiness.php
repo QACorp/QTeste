@@ -26,9 +26,9 @@ class DocumentoBusiness extends BusinessAbstract implements DocumentoBusinessCon
 
     public function buscarTodosPorProjeto(int $idProjeto, int $idEquipe): DataCollection
     {
-        $projeto = $this->projetoBusiness->buscarPorIdProjeto($idProjeto, $idEquipe);
-        if($projeto == null)
-            throw new NotFoundException();
+//        $projeto = $this->projetoBusiness->buscarPorIdProjeto($idProjeto, $idEquipe);
+//        if($projeto == null)
+//            throw new NotFoundException();
 
         return $this->documentoRepository->buscarTodosPorProjeto($idProjeto);
     }

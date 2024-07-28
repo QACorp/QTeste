@@ -70,6 +70,7 @@ class MenuConfig extends MenuConfigAbstract
                 'text' => 'Sistema',
                 'icon'  => 'fas  fa-cog',
                 'can'   => ['LISTAR_USUARIO','LISTAR_EQUIPE'],
+                'active' => ['usuarios/*', 'equipes/*'],
                 'submenu' => [
                     [
                         'key' => 'users_index',

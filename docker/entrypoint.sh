@@ -10,6 +10,18 @@ if [ "$1" = "health" ] && [ "$role" = "app" ]; then
 elif [ "$1" = "health" ]; then
     exit 1
 fi
+if [ "$role" = "app" ]; then
+    cd /app
+    php artisan migrate --force
+    php artisan optimize
+    if [ "$BUILD_APP_ENV" = "local" ]; then \
+        php artisan octane:frankenphp --workers=4 --max-requests=10 --port=80 --host=0.0.0.0 --admin-port=2019 --watch; \
+    else \
+        php artisan migrate --force
+        php artisan optimize
+        php artisan octane:frankenphp --workers=4 --max-requests=10 --port=80 --host=0.0.0.0 --admin-port=2019; \
+    fi
+fi
 
 if [ "$role" = "queue" ]; then
     echo "Queue iniciada."
