@@ -1,23 +1,25 @@
 version: '3.5'
 services:
     qteste_app:
-        image: qteste_app:frakenphp
+        image: qteste_app:2.0
         build:
             context: ./
             dockerfile: docker/production/Dockerfile
             args:
                 - "BUILD_APP_ENV=${APP_ENV}"
         restart: always
+        entrypoint: ["php", "artisan", "octane:frankenphp", "--workers=4", "--max-requests=10" ,"--port=80", "--host=0.0.0.0", "--admin-port=2019", "--watch"]
         env_file:
             - .env
         volumes:
             -   ./:/app
         ports:
             - ${PORT}:80
+            - "2019:2019"
         networks:
             - traefik-public
     qteste_scheduler:
-        image: qteste_app:frakenphp
+        image: qteste_app:2.0
         container_name: ${APP_NAME}_scheduler
         restart: unless-stopped
         entrypoint:
@@ -32,7 +34,7 @@ services:
         networks:
             - traefik-public
     qteste_queue:
-        image: qteste_app:frakenphp
+        image: qteste_app:2.0
         container_name: ${APP_NAME}_queue
         restart: unless-stopped
         entrypoint:

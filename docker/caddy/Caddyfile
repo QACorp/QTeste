@@ -1,8 +1,6 @@
 {
 	# Enable FrankenPHP
-	frankenphp {
-        num_threads 2 # Number of PHP workers
-    }
+	frankenphp
 }
 
 :80 {
