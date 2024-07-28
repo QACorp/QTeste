@@ -15,6 +15,7 @@ use App\System\Utils\EquipeUtils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Laravel\Octane\Facades\Octane;
 
 class ProjetoController extends Controller
 {
@@ -78,7 +79,12 @@ class ProjetoController extends Controller
     {
         Auth::user()->can(PermissionEnum::ALTERAR_PROJETO->value);
         try{
-            $planosTeste = $this->planoTesteBusiness->buscarPlanosTestePorProjeto($idProjeto,EquipeUtils::equipeUsuarioLogado() );
+            [$documentos, $observacoes, $projeto, $planosTeste] = Octane::concurrently([
+                fn () => $this->documentoBusiness->buscarTodosPorProjeto($idProjeto, EquipeUtils::equipeUsuarioLogado()),
+                fn () => $this->observacaoBusiness->buscarPorProjeto($idProjeto),
+                fn () => $this->projetoBusiness->buscarPorAplicacaoEProjeto($idAplicacao, $idProjeto, EquipeUtils::equipeUsuarioLogado()),
+                fn () => $this->planoTesteBusiness->buscarPlanosTestePorProjeto($idProjeto, EquipeUtils::equipeUsuarioLogado() ),
+            ]);
             $headsPlanoTeste = [
                 ['label' => 'Id', 'width' => 10],
                 'Título',
@@ -90,9 +96,7 @@ class ProjetoController extends Controller
                 'searching' => false,
                 'columns' => [null, null, ['orderable' => false]],
             ];
-            $documentos = $this->documentoBusiness->buscarTodosPorProjeto($idProjeto, EquipeUtils::equipeUsuarioLogado());
-            $observacoes = $this->observacaoBusiness->buscarPorProjeto($idProjeto);
-            $projeto = $this->projetoBusiness->buscarPorAplicacaoEProjeto($idAplicacao, $idProjeto, EquipeUtils::equipeUsuarioLogado());
+
             return view(
                 'projetos::projetos.alterar',
                 compact(

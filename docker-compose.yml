@@ -1,37 +1,29 @@
 version: '3.5'
 services:
     qteste_app:
-        image: qteste_app:frakenphp
+        image: qteste_app:2.0
+        container_name: ${APP_NAME}_app
         build:
             context: ./
             dockerfile: docker/production/Dockerfile
             args:
                 - "BUILD_APP_ENV=${APP_ENV}"
-        deploy:
-            labels:
-                - traefik.enable=true
-                - traefik.port=80
-                - traefik.docker.network=traefik-public
-                - traefik.constraint-label=traefik-public
-                - traefik.http.routers.qteste-http.rule=Host(`${APP_URL:-localhost}`)
-                - traefik.http.routers.qteste-http.entrypoints=http
-                - traefik.http.routers.qteste-http.middlewares=https-redirect
-                - traefik.http.routers.qteste-https.rule=Host(`${APP_URL:-localhost}`)
-                - traefik.http.routers.qteste-https.entrypoints=https
-                - traefik.http.routers.qteste-https.tls=true
-                - traefik.http.routers.qteste-https.tls.certresolver=le
-                - traefik.http.services.qteste.loadbalancer.server.port=80
         restart: always
+        environment:
+            - CONTAINER_ROLE=app
+        entrypoint:
+            - ./docker/entrypoint.sh
         env_file:
             - .env
         volumes:
             -   ./:/app
         ports:
             - ${PORT}:80
+            - "2019:2019"
         networks:
             - traefik-public
     qteste_scheduler:
-        image: qteste_app:frakenphp
+        image: qteste_app:2.0
         container_name: ${APP_NAME}_scheduler
         restart: unless-stopped
         entrypoint:
@@ -46,7 +38,7 @@ services:
         networks:
             - traefik-public
     qteste_queue:
-        image: qteste_app:frakenphp
+        image: qteste_app:2.0
         container_name: ${APP_NAME}_queue
         restart: unless-stopped
         entrypoint:

@@ -15,8 +15,7 @@ class ObservacaoRepository extends BaseRepository implements ObservacaoRepositor
     public function buscarPorProjeto(int $projetoId): DataCollection
     {
         return ObservacaoDTO::collection(
-            Projeto::find($projetoId)
-                ->observacoes()
+            Observacao::where('projeto_id', $projetoId)
                 ->with('user')
                 ->orderBy('created_at', 'DESC')
                 ->get()

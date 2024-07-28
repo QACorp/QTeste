@@ -15,8 +15,7 @@ class DocumentoRepository extends BaseRepository  implements DocumentoRepository
     public function buscarTodosPorProjeto(int $idProjeto): DataCollection
     {
         return DocumentoDTO::collection(
-            Projeto::find($idProjeto)
-                ->documentos()
+            Documento::where('projeto_id', $idProjeto)
                 ->orderBy('created_at', 'DESC')
                 ->get()
         );
