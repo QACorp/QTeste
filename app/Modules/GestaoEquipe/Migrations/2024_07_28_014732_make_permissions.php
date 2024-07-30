@@ -13,25 +13,25 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Permission::create(['name' => 'LISTAR_RETRABALHO']);
-
-
-
-        $roleAdministrador = Role::findByName('ADMINISTRADOR');
-        $roleAdministrador->syncPermissions(Permission::all());
-
-        $roleAuditor = Role::findByName('AUDITOR');
-        $roleAuditor->givePermissionTo([
-
-            ]);
-        $roleGestor = Role::findByName('GESTOR');
-        $roleGestor->givePermissionTo([
-
-            ]);
-        $roleDesenvolvedor = Role::findByName('DESENVOLVEDOR');
-        $roleDesenvolvedor->givePermissionTo([
-
-        ]);
+//        Permission::create(['name' => 'LISTAR_RETRABALHO']);
+//
+//
+//
+//        $roleAdministrador = Role::findByName('ADMINISTRADOR');
+//        $roleAdministrador->syncPermissions(Permission::all());
+//
+//        $roleAuditor = Role::findByName('AUDITOR');
+//        $roleAuditor->givePermissionTo([
+//
+//            ]);
+//        $roleGestor = Role::findByName('GESTOR');
+//        $roleGestor->givePermissionTo([
+//
+//            ]);
+//        $roleDesenvolvedor = Role::findByName('DESENVOLVEDOR');
+//        $roleDesenvolvedor->givePermissionTo([
+//
+//        ]);
     }
 
     /**
