@@ -24,7 +24,7 @@ class AlocacaoController extends Controller
         // TODO: Implement consultarAlocacao() method.
     }
     public function listarAlocacoes(){
-        // TODO: Implement consultarAlocacao() method.
+        return response()->json([]);
     }
     public function consultarAlocacao(int $id){
         // TODO: Implement consultarAlocacao() method.

@@ -31,6 +31,11 @@ abstract class ServiceProviderAbstract extends ServiceProvider
         Route::prefix(static::$prefix)
             ->middleware(['web', 'auth'])
             ->group($this->moduleDir. '/Routes/route.php');
+        if(file_exists($this->moduleDir. '/Routes/api.php')){
+            Route::prefix('api/'.static::$prefix)
+                ->middleware(['api', 'auth:api'])
+                ->group($this->moduleDir. '/Routes/api.php');
+        }
 
         $this->addDirectoryMigration();
 
