@@ -13,25 +13,33 @@ return new class extends Migration
      */
     public function up(): void
     {
-//        Permission::create(['name' => 'LISTAR_RETRABALHO']);
-//
-//
-//
-//        $roleAdministrador = Role::findByName('ADMINISTRADOR');
-//        $roleAdministrador->syncPermissions(Permission::all());
-//
-//        $roleAuditor = Role::findByName('AUDITOR');
-//        $roleAuditor->givePermissionTo([
-//
-//            ]);
-//        $roleGestor = Role::findByName('GESTOR');
-//        $roleGestor->givePermissionTo([
-//
-//            ]);
-//        $roleDesenvolvedor = Role::findByName('DESENVOLVEDOR');
-//        $roleDesenvolvedor->givePermissionTo([
-//
-//        ]);
+        permission::create(['name' => 'VER_ALOCACAO']);
+        Permission::create(['name' => 'CRIAR_ALOCACAO']);
+        Permission::create(['name' => 'EDITAR_ALOCACAO']);
+        Permission::create(['name' => 'EXCLUIR_ALOCACAO']);
+
+        Permission::create(['name' => 'VER_MINHA_ALOCACAO']);
+
+
+        $roleAdministrador = Role::findByName('ADMINISTRADOR');
+        $roleAdministrador->syncPermissions(Permission::all());
+
+        $roleAuditor = Role::findByName('AUDITOR');
+        $roleAuditor->givePermissionTo([
+            'VER_MINHA_ALOCACAO'
+        ]);
+        $roleGestor = Role::findByName('GESTOR');
+        $roleGestor->givePermissionTo([
+            'VER_ALOCACAO',
+            'CRIAR_ALOCACAO',
+            'EDITAR_ALOCACAO',
+            'EXCLUIR_ALOCACAO',
+            'VER_MINHA_ALOCACAO'
+        ]);
+        $roleDesenvolvedor = Role::findByName('DESENVOLVEDOR');
+        $roleDesenvolvedor->givePermissionTo([
+            'VER_MINHA_ALOCACAO'
+        ]);
     }
 
     /**

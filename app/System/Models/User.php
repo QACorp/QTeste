@@ -79,8 +79,10 @@ class User extends Authenticatable implements Cast, JWTSubject
         return $this->getKey();
     }
 
-    public function getJWTCustomClaims()
+    public function getJWTCustomClaims(): array
     {
         return [];
     }
+
+
 }

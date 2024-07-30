@@ -12,13 +12,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-//        Schema::create(self::SCHEMA.'aplicacoes', function (Blueprint $table) {
-//            $table->id();
-//            $table->string('nome',255);
-//            $table->longText('descricao')->nullable();
-//            $table->softDeletes();
-//            $table->timestamps();
-//        });
+        Schema::create(self::SCHEMA.'alocacoes', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('projeto_id')->nullable()->constrained('projetos.projetos');
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('empresa_id')->constrained('empresas');
+            $table->foreignId('equipe_id')->constrained('equipes');
+            $table->date('inicio');
+            $table->date('termino');
+            $table->date('concluida')->nullable();
+            $table->string('tarefa')->nullable();
+            $table->enum('natureza',['Sustentação', 'Melhoria', 'Projeto'])->nullable();
+            $table->text('observacao')->nullable();
+
+            $table->timestamps();
+            $table->softDeletes();
+        });
 
     }
 

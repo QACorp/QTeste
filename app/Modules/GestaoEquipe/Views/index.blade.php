@@ -25,53 +25,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <x-adminlte-datatable
-                        id="general"
-                        :heads="$heads"
-                        :config="$config"
-                        compressed
-                        hoverable
-                        bordered
-                        data-page-length='100'
-                        striped >
-                        @forelse($retrabalhos as $retrabalho)
-                            <tr>
-                                <td>{{ $retrabalho->id }}</td>
-                                <td>{{ $retrabalho->data->format('d/m/Y') }}</td>
-                                <td>{{ $retrabalho->numero_tarefa }}</td>
-                                <td>{{ $retrabalho->usuario->name }}</td>
-                                <td>{{ $retrabalho->usuario_criador->name }}</td>
-                                <td>{{ $retrabalho->criticidade }}</td>
-                                <td>
-                                    @if(App::make(RetrabalhoBusinessContract::class)->canVerRetrabalho($retrabalho, Auth::user()->getAuthIdentifier()))
-
-                                        <a class="btn btn-primary btn-sm" title="Visualizar providência"
-                                           href="{{ route('retrabalhos.providencia.index',$retrabalho->id) }}"><i
-                                                class="fas fa-eye"></i> </a>
-                                    @endif
-                                    @if(App::make(RetrabalhoBusinessContract::class)->canAlterarRetrabalho($retrabalho, Auth::user()->getAuthIdentifier()))
-
-                                        <a class="btn btn-warning btn-sm" title="Editar"
-                                           href="{{ route('retrabalhos.alterar.index',$retrabalho->id) }}"><i
-                                                class="fas fa-edit"></i> </a>
-                                    @endif
-
-                                    @if(App::make(RetrabalhoBusinessContract::class)->canRemoverRetrabalho($retrabalho, Auth::user()->getAuthIdentifier()))
-                                        <x-delete-modal
-                                            :registro="$retrabalho"
-                                            message="Deseja excluir o retrabalho #{{ $retrabalho->id }}?"
-                                            route="{{ route('retrabalhos.remover', [ $retrabalho->id]) }}"
-                                        />
-                                    @endif
-
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="7">Nenhum registro encontrado</td>
-                            </tr>
-                        @endforelse
-                    </x-adminlte-datatable>
+                    Teste
                 </div>
             </div>
         </div>
