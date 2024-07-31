@@ -20,7 +20,10 @@ class EquipeBusiness extends BusinessAbstract implements EquipeBusinessContract
     )
     {
     }
-
+    public function hasEquipe(int $idEquipe, int $idUsuario): bool
+    {
+        return $this->equipeRepository->hasEquipe($idEquipe, $idUsuario);
+    }
     public function buscarTodos(): DataCollection
     {
         $this->can(PermissionEnum::LISTAR_EQUIPE->value);

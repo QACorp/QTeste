@@ -3,8 +3,12 @@
 namespace App\Modules\GestaoEquipe\DTOs;
 
 use App\Modules\GestaoEquipe\Enums\NaturezaEnum;
+use App\Modules\Projetos\DTOs\ProjetoDTO;
+use App\System\DTOs\EquipeDTO;
+use App\System\DTOs\UserDTO;
 use App\System\Utils\DTO;
 use Illuminate\Support\Carbon;
+use Spatie\LaravelData\Contracts\DataCollectable;
 
 class AlocacaoDTO extends DTO
 {
@@ -18,6 +22,9 @@ class AlocacaoDTO extends DTO
     public ?string $tarefa;
     public ?NaturezaEnum $natureza;
     public ?string $observacao;
+    public ?UserDTO $user;
+    public ?EquipeDTO $equipe;
+    public ?ProjetoDTO $projeto;
     public function rules(): array
     {
         return [

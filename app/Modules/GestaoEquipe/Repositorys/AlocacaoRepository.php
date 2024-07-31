@@ -4,6 +4,7 @@ namespace App\Modules\GestaoEquipe\Repositorys;
 
 use App\Modules\GestaoEquipe\Contracts\Repositorys\AlocacaoRepositoryContract;
 use App\Modules\GestaoEquipe\DTOs\AlocacaoDTO;
+use App\Modules\GestaoEquipe\Models\Alocacao;
 use App\System\Impl\BaseRepository;
 use Spatie\LaravelData\DataCollection;
 
@@ -30,8 +31,16 @@ class AlocacaoRepository extends BaseRepository implements AlocacaoRepositoryCon
         // TODO: Implement consultarAlocacao() method.
     }
 
-    public function listarAlocacoes(): DataCollection
+    public function listarAlocacoes(int $idEquipe): DataCollection
     {
-        // TODO: Implement listarAlocacoes() method.
+        $alocacoes = Alocacao::where('equipe_id', $idEquipe)
+            ->with(['projeto', 'user', 'user.empresa','equipe'])
+            ->get();
+        return AlocacaoDTO::collection($alocacoes);
+    }
+
+    public function listarAlocacoesPorUsuario(int $idUsuario, int $idEmpresa): DataCollection
+    {
+        // TODO: Implement listarAlocacoesPorUsuario() method.
     }
 }
