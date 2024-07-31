@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\DataProperty;
@@ -82,6 +83,11 @@ class User extends Authenticatable implements Cast, JWTSubject
     public function getJWTCustomClaims(): array
     {
         return [];
+    }
+
+    public function guardName(): array
+    {
+        return ['web', 'api'];
     }
 
 
