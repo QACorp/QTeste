@@ -11,6 +11,16 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import '@mdi/font/css/materialdesignicons.css'
+import axios from "axios";
+
+//axios.defaults.headers.common['Authorization'] = 'Bearer ' + document.querySelector("meta[name='api-token']").getAttribute('content');
+export const axiosApi = axios.create({
+    headers: {
+        'Authorization': 'Bearer ' + document.querySelector("meta[name='api-token']").getAttribute('content')
+    },
+    baseURL: import.meta.env.VITE_API_URL
+});
+
 
 const vuetify = createVuetify({
     components,

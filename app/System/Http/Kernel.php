@@ -3,6 +3,7 @@
 namespace App\System\Http;
 
 
+use App\System\Http\Middleware\ManagerApiTokenSession;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -39,6 +40,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\System\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\System\Http\Middleware\ManagerApiTokenSession::class,
         ],
 
         'api' => [

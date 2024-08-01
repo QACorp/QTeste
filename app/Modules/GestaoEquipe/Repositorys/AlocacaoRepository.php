@@ -34,7 +34,9 @@ class AlocacaoRepository extends BaseRepository implements AlocacaoRepositoryCon
     public function listarAlocacoes(int $idEquipe): DataCollection
     {
         $alocacoes = Alocacao::where('equipe_id', $idEquipe)
-            ->with(['projeto', 'user', 'user.empresa','equipe'])
+            ->where('concluida', null)
+            ->with(['projeto', 'user', 'user.empresa','equipe', 'projeto.aplicacao'])
+            ->orderBy('inicio', 'desc')
             ->get();
         return AlocacaoDTO::collection($alocacoes);
     }

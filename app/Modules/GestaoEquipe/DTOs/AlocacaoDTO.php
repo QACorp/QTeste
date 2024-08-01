@@ -12,6 +12,7 @@ use Spatie\LaravelData\Contracts\DataCollectable;
 
 class AlocacaoDTO extends DTO
 {
+    public ?int $id;
     public ?int $projeto_id;
     public ?int $user_id;
     public ?int $empresa_id;

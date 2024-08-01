@@ -52,7 +52,7 @@ class LoginController extends Controller
             }
 
             $token = $this->loginApi($request);
-            session()->put(AuthEnum::SESSION_API_TOKEN->value, $token);
+            session()->put(AuthEnum::SESSION_API_TOKEN->value, serialize($this->getToken($token)));
 
             return $this->sendLoginResponse($request);
         }
