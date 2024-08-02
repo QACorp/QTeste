@@ -22,6 +22,8 @@
     },
     "dependencies": {
         "@vue/cli-plugin-typescript": "^5.0.8",
+        "@vueuse/components": "^10.11.0",
+        "@vueuse/core": "^10.11.0",
         "bootstrap-suggest": "^2.1.0",
         "dayjs": "^1.11.9",
         "frappe-gantt": "^0.6.1",

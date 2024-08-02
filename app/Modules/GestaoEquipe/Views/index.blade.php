@@ -22,10 +22,14 @@
 @section('content')
     <div class="row" id="vue">
         <div class="row">
-            <lista-alocacao-todos
-                token-api="{{ session()->get(AuthEnum::SESSION_API_TOKEN->value) }}">
+            <div class="card">
+                <div class="card-body">
+                    <lista-alocacao-todos
+                        token-api="{{ session()->get(AuthEnum::SESSION_API_TOKEN->value) }}">
 
-            </lista-alocacao-todos>
+                    </lista-alocacao-todos>
+                </div>
+            </div>
         </div>
     </div>
 @stop
