@@ -10,16 +10,25 @@ use const http\Client\Curl\AUTH_ANY;
 
 class EquipeUtils
 {
-    public static function equipeUsuarioLogado():?int{
-        if(Auth::user()->selected_equipe_id != null) {
-            return Auth::user()->selected_equipe_id;
+    public static function equipeUsuarioLogado(string $guard = 'web'):?int
+    {
+        $equipeUsuarioLogado = self::getEquipeUsuarioLogado($guard);
+        if(!$equipeUsuarioLogado) {
+            redirect()->route('users.index')->send();
+        }
+        return $equipeUsuarioLogado;
+
+    }
+    public static function getEquipeUsuarioLogado(string $guard = 'web'): ?int
+    {
+        if(Auth::guard($guard)->user()->selected_equipe_id != null) {
+            return Auth::guard($guard)->user()->selected_equipe_id;
         }else{
-            if(Auth::user()->equipes->get(0) != null) {
-                return Auth::user()->equipes->get(0)->id;
+            if(Auth::guard($guard)->user()->equipes->get(0) != null) {
+                return Auth::guard($guard)->user()->equipes->get(0)->id;
             }else {
-                redirect()->route('users.index')->send();
+                return null;
             }
         }
-
     }
 }

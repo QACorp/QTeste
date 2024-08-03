@@ -10,8 +10,9 @@ interface AlocacaoBusinessContract
 //Criar métodos para criar, alterar, excluir e consultar alocacoes
     public function criarAlocacao(AlocacaoDTO $dados): AlocacaoDTO;
     public function alterarAlocacao(int $id, AlocacaoDTO $dados): AlocacaoDTO;
+
     public function excluirAlocacao(int $id): bool;
-    public function consultarAlocacao(int $id): DataCollection;
+    public function consultarAlocacao(int $id, int $idEquipe): ?AlocacaoDTO;
     public function listarAlocacoes(int $idEquipe): DataCollection;
 
 }

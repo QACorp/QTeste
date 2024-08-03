@@ -18,7 +18,10 @@ class AlocacaoRepository extends BaseRepository implements AlocacaoRepositoryCon
 
     public function alterarAlocacao(int $id, AlocacaoDTO $dados): AlocacaoDTO
     {
-        // TODO: Implement alterarAlocacao() method.
+        $alocacaoModel = Alocacao::find($id);
+        $alocacaoModel->fill($dados->except('empresa_id', 'equipe_id')->toArray());
+        $alocacaoModel->save();
+        return AlocacaoDTO::from($alocacaoModel);
     }
 
     public function excluirAlocacao(int $id): bool
@@ -26,9 +29,15 @@ class AlocacaoRepository extends BaseRepository implements AlocacaoRepositoryCon
         // TODO: Implement excluirAlocacao() method.
     }
 
-    public function consultarAlocacao(int $id): DataCollection
+    public function consultarAlocacao(int $id, int $idEquipe): ?AlocacaoDTO
     {
-        // TODO: Implement consultarAlocacao() method.
+        $alocacao = Alocacao::where('equipe_id', $idEquipe)
+            ->where('id', $id)
+            ->with(['projeto', 'user', 'user.empresa','equipe', 'projeto.aplicacao'])
+            ->first();
+        if($alocacao)
+            return AlocacaoDTO::from($alocacao);
+        return null;
     }
 
     public function listarAlocacoes(int $idEquipe): DataCollection
@@ -44,5 +53,14 @@ class AlocacaoRepository extends BaseRepository implements AlocacaoRepositoryCon
     public function listarAlocacoesPorUsuario(int $idUsuario, int $idEmpresa): DataCollection
     {
         // TODO: Implement listarAlocacoesPorUsuario() method.
+    }
+
+    public function hasAlocacaoInDate(int $userId, int $equipeId, string $inicio, string $termino): bool
+    {
+        return Alocacao::where('user_id', $userId)
+            ->where('equipe_id', $equipeId)
+            ->whereBetween('inicio', [$inicio, $termino])
+            ->whereBetween('termino', [$inicio, $termino])
+            ->count() > 0;
     }
 }
