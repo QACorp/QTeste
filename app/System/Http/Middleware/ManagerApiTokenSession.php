@@ -24,19 +24,28 @@ class ManagerApiTokenSession
     public function handle(Request $request, Closure $next): Response
     {
         $apiTokenSession = unserialize($request->session()->get(AuthEnum::SESSION_API_TOKEN->value));
+
         if($apiTokenSession){
             $dueDateRemaning = $apiTokenSession->expires_in - Carbon::now()->diffInSeconds($apiTokenSession->created_at);
-
             if($dueDateRemaning < 20 ){
                 Auth::guard('api')->setToken($apiTokenSession->access_token);
                 if(Auth::guard('api')->check()){
                     Auth::guard('api')->invalidate(true);
                 }
-                $newToken = Auth::guard('api')->fromUser(Auth::user());
-                $request->session()->put(AuthEnum::SESSION_API_TOKEN->value,serialize($this->getToken($newToken)));
-
+                $this->regerarTokenJWT($request);
             }
         }
+        if(!$apiTokenSession && Auth::check()){
+            $this->regerarTokenJWT($request);
+        }
+
         return $next($request);
+    }
+    private function regerarTokenJWT(Request $request)
+    {
+
+        $newToken = Auth::guard('api')->fromUser(Auth::user());
+        $request->session()->put(AuthEnum::SESSION_API_TOKEN->value,serialize($this->getToken($newToken)));
+
     }
 }

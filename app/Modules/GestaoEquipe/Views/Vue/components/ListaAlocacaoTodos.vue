@@ -28,6 +28,13 @@ onMounted(() => {
 
 <template>
     <v-row>
+        <v-col md="3" v-if="alocacoes.length === 0">
+            <v-skeleton-loader type="card"></v-skeleton-loader>
+        </v-col>
+        <v-col md="3" v-if="alocacoes.length === 0">
+            <v-skeleton-loader type="card"></v-skeleton-loader>
+        </v-col>
+
         <v-col v-for="alocacao in alocacoes"
                :key="alocacao.id"
                sm="3"

@@ -5,6 +5,7 @@ import moment from "moment/moment";
 import {AlocacaoInterface} from "../Interfaces/Alocacao.interface";
 import {UseClipboard} from "@vueuse/components";
 import {defineProps} from "vue";
+import ActionButtonsAlocacao from "./ActionButtonsAlocacao.vue";
 const props = defineProps({
     alocacao: {
         type: Object as () => AlocacaoInterface,
@@ -34,15 +35,8 @@ const defineBackgroud = (weeks: number)=>{
     >
         <v-card-title>
             <v-row>
-                <v-col md="11">{{ alocacao.user.name }}</v-col>
-                <v-col md="1" justify="end" class="px-0">
-                    <v-btn class="" size="sm" variant="plain">
-                        <v-icon size="sm">mdi-pencil</v-icon>
-                    </v-btn>
-                </v-col>
+                <v-col md="12">{{ alocacao.user.name }}</v-col>
             </v-row>
-
-
         </v-card-title>
         <v-card-subtitle>
             <span>{{ alocacao.equipe.nome }}</span> -
@@ -56,8 +50,6 @@ const defineBackgroud = (weeks: number)=>{
                                     <span v-if="!copied">{{ alocacao.tarefa }}</span>
                                     <span v-else>Copiado!</span>
                                     <v-icon size="sm">mdi-content-copy</v-icon>
-
-
                                 </span>]
                         </UseClipboard>
                         <v-tooltip
@@ -82,6 +74,9 @@ const defineBackgroud = (weeks: number)=>{
                 </div>
             </div>
         </v-card-text>
+        <v-card-actions>
+            <ActionButtonsAlocacao :alocacao="alocacao"></ActionButtonsAlocacao>
+        </v-card-actions>
     </v-card>
 </template>
 
