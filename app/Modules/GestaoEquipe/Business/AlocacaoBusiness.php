@@ -50,7 +50,6 @@ class AlocacaoBusiness extends BusinessAbstract implements AlocacaoBusinessContr
     }
     private function hasAlteracao(AlocacaoDTO $newAlocacao, AlocacaoDTO $oldAlocacao): bool
     {
-
         return $newAlocacao->inicio->format('d/m/Y') != $oldAlocacao->inicio->format('d/m/Y') || $newAlocacao->termino->format('d/m/Y') != $oldAlocacao->termino->format('d/m/Y')|| $newAlocacao->user_id != $oldAlocacao->user_id;
     }
 
@@ -61,7 +60,11 @@ class AlocacaoBusiness extends BusinessAbstract implements AlocacaoBusinessContr
 
     public function consultarAlocacao(int $id, int $idEquipe): ?AlocacaoDTO
     {
-        // TODO: Implement consultarAlocacao() method.
+        $this->can(PermissionEnum::VER_ALOCACAO->value, 'api');
+        if(!$this->equipeBusiness->hasEquipe($idEquipe,Auth::user()->getAuthIdentifier())){
+            throw new NotFoundException();
+        }
+        return $this->alocacaoRepository->consultarAlocacao($id, $idEquipe);
     }
 
     public function listarAlocacoes(int $idEquipe): DataCollection

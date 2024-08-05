@@ -7,6 +7,7 @@ use App\Modules\GestaoEquipe\DTOs\AlocacaoDTO;
 use App\System\Exceptions\ConflictException;
 use App\System\Exceptions\UnauthorizedException;
 use App\System\Http\Controllers\Controller;
+use App\System\Utils\EquipeUtils;
 use Illuminate\Http\Request;
 
 class AlocacaoController extends Controller
@@ -33,14 +34,25 @@ class AlocacaoController extends Controller
     }
     public function listarAlocacoes(Request $request){
         try{
-            return response()->json($this->alocacaoBusiness->listarAlocacoes($request->get('idEquipe')));
+            if(!$request->get('idEquipe')){
+                return response()->json(['message' => 'Equipe não informada'], 422);
+            }
+            return $this->alocacaoBusiness->listarAlocacoes($request->get('idEquipe'));
         }catch (UnauthorizedException $e){
             return response()->json(['message' => $e->getMessage()], $e->getStatusCode());
         }
 
     }
-    public function consultarAlocacao(int $id){
-        // TODO: Implement consultarAlocacao() method.
+    public function consultarAlocacao(Request $request, int $idAlocacao){
+        try{
+            if(!$request->get('idEquipe')){
+                return response()->json(['message' => 'Equipe não informada'], 422);
+            }
+            return $this->alocacaoBusiness->consultarAlocacao($idAlocacao, $request->get('idEquipe'));
+        }catch (UnauthorizedException $e){
+            return response()->json(['message' => $e->getMessage()], $e->getStatusCode());
+        }
+
     }
 
 
