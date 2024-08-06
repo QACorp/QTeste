@@ -68,9 +68,18 @@ class AlocacaoController extends Controller
         }
 
     }
+    public function projetosDisponiveis(Request $request, string $inicio, string $termino)
+    {
+        $inicio = Carbon::make($inicio);
+        $termino = Carbon::make($termino);
+        try {
+            if (!$request->get('idEquipe')) {
+                return response()->json(['message' => 'Equipe não informada'], 422);
+            }
+            return $this->alocacaoBusiness->buscarProjetosVigentes($request->get('idEquipe'), $inicio, $termino);
+        }catch (UnauthorizedException $e){
+            return response()->json(['message' => $e->getMessage()], $e->getStatusCode());
+        }
 
-
-
-
-
+    }
 }

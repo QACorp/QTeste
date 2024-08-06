@@ -5,7 +5,9 @@ namespace App\Modules\GestaoEquipe\Providers;
 use App\Modules\GestaoEquipe\Business\AlocacaoBusiness;
 use App\Modules\GestaoEquipe\Contracts\Business\AlocacaoBusinessContract;
 use App\Modules\GestaoEquipe\Contracts\Repositorys\AlocacaoRepositoryContract;
+use App\Modules\GestaoEquipe\Contracts\Repositorys\ProjetoRepositoryContract;
 use App\Modules\GestaoEquipe\Repositorys\AlocacaoRepository;
+use App\Modules\GestaoEquipe\Repositorys\ProjetoRepository;
 use App\Modules\Projetos\Models\CasoTeste;
 use App\Modules\Projetos\Providers\ProjetosServiceProvider;
 use App\Modules\Retrabalhos\Business\DashboardBusiness;
@@ -45,7 +47,8 @@ class GestaoEquipeServiceProvider extends ServiceProviderAbstract
     public static string $view_namespace = 'gestao-equipe';
     public $bindings = [
         AlocacaoBusinessContract::class => AlocacaoBusiness::class,
-        AlocacaoRepositoryContract::class => AlocacaoRepository::class
+        AlocacaoRepositoryContract::class => AlocacaoRepository::class,
+        ProjetoRepositoryContract::class => ProjetoRepository::class
     ];
     /**
      * Register services.
