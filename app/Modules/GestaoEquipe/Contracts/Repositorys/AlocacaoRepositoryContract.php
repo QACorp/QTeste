@@ -3,6 +3,7 @@
 namespace App\Modules\GestaoEquipe\Contracts\Repositorys;
 
 use App\Modules\GestaoEquipe\DTOs\AlocacaoDTO;
+use Illuminate\Support\Carbon;
 use Spatie\LaravelData\DataCollection;
 
 interface AlocacaoRepositoryContract
@@ -14,4 +15,5 @@ interface AlocacaoRepositoryContract
     public function listarAlocacoes(int $idEquipe): DataCollection;
     public function listarAlocacoesPorUsuario(int $idUsuario, int $idEmpresa): DataCollection;
     public function hasAlocacaoInDate(int $userId, int $equipeId, string $inicio, string $termino): bool;
+    public function usuariosDisponiveis(int $idEquipe, Carbon $inicio, Carbon $termino): DataCollection;
 }

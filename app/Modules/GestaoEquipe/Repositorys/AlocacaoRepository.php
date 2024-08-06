@@ -5,7 +5,11 @@ namespace App\Modules\GestaoEquipe\Repositorys;
 use App\Modules\GestaoEquipe\Contracts\Repositorys\AlocacaoRepositoryContract;
 use App\Modules\GestaoEquipe\DTOs\AlocacaoDTO;
 use App\Modules\GestaoEquipe\Models\Alocacao;
+use App\Modules\GestaoEquipe\Models\User;
+use App\System\DTOs\UserDTO;
 use App\System\Impl\BaseRepository;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 use Spatie\LaravelData\DataCollection;
 
 class AlocacaoRepository extends BaseRepository implements AlocacaoRepositoryContract
@@ -59,8 +63,29 @@ class AlocacaoRepository extends BaseRepository implements AlocacaoRepositoryCon
     {
         return Alocacao::where('user_id', $userId)
             ->where('equipe_id', $equipeId)
-            ->whereBetween('inicio', [$inicio, $termino])
-            ->whereBetween('termino', [$inicio, $termino])
+            ->where(function(Builder $query) use ($inicio, $termino){
+                $query->whereBetween('inicio', [$inicio, $termino])
+                    ->orWhereBetween('termino', [$inicio, $termino]);
+            })
+            ->whereNull('concluida')
             ->count() > 0;
+    }
+
+    public function usuariosDisponiveis(int $idEquipe, Carbon $inicio, Carbon $termino): DataCollection
+    {
+        $usuarios = User::whereDoesntHave('alocacoes', function ($query) use ($inicio, $termino, $idEquipe) {
+                $query->where(function(Builder $query) use ($inicio, $termino){
+                    $query->whereBetween('inicio', [$inicio, $termino])
+                        ->orWhereBetween('termino', [$inicio, $termino]);
+                })
+                ->whereNull('concluida')
+                ->where('equipe_id', $idEquipe);
+            })
+            ->whereHas('equipes', function ($query) use ($idEquipe) {
+                $query->where('equipe_id', $idEquipe);
+            })
+            ->where('active', true)
+            ->get();
+        return UserDTO::collection($usuarios);
     }
 }

@@ -7,8 +7,8 @@ use App\Modules\GestaoEquipe\DTOs\AlocacaoDTO;
 use App\System\Exceptions\ConflictException;
 use App\System\Exceptions\UnauthorizedException;
 use App\System\Http\Controllers\Controller;
-use App\System\Utils\EquipeUtils;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class AlocacaoController extends Controller
 {
@@ -49,6 +49,20 @@ class AlocacaoController extends Controller
                 return response()->json(['message' => 'Equipe não informada'], 422);
             }
             return $this->alocacaoBusiness->consultarAlocacao($idAlocacao, $request->get('idEquipe'));
+        }catch (UnauthorizedException $e){
+            return response()->json(['message' => $e->getMessage()], $e->getStatusCode());
+        }
+
+    }
+    public function usuariosDisponiveis(Request $request, string $inicio, string $termino)
+    {
+        $inicio = Carbon::make($inicio);
+        $termino = Carbon::make($termino);
+        try {
+            if (!$request->get('idEquipe')) {
+                return response()->json(['message' => 'Equipe não informada'], 422);
+            }
+            return $this->alocacaoBusiness->usuariosDisponiveis($request->get('idEquipe'), $inicio, $termino);
         }catch (UnauthorizedException $e){
             return response()->json(['message' => $e->getMessage()], $e->getStatusCode());
         }

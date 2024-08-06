@@ -60,21 +60,21 @@ const defineBackgroud = (weeks: number)=>{
 
                     </span>
         </v-card-subtitle>
-        <v-card-text>
+        <v-card-text class="py-0 pt-1">
             <v-tooltip
                 activator="parent"
                 location="bottom"
             >{{ alocacao.observacao }}</v-tooltip>
             <div class="row">
                 <div class="col-md-6">
-                    <p>Início: {{ moment(alocacao.inicio).format('DD/MM/YYYY') }}</p>
+                    <span>Início: {{ moment(alocacao.inicio).format('DD/MM/YYYY') }}</span>
                 </div>
                 <div class="col-md-6">
-                    <p>Término: {{moment(alocacao.termino).format('DD/MM/YYYY')}}</p>
+                    <span>Término: {{moment(alocacao.termino).format('DD/MM/YYYY')}}</span>
                 </div>
             </div>
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions class="py-0 pt-1">
             <ActionButtonsAlocacao :alocacao="alocacao"></ActionButtonsAlocacao>
         </v-card-actions>
     </v-card>

@@ -13,7 +13,7 @@ const props = defineProps({
     }
 })
 
-const alocacoes = ref<AlocacaoInterface[]>([]);
+const alocacoes = ref<AlocacaoInterface[]>(null);
 
 onMounted(() => {
     axiosApi.get(`gestao-equipe/alocacao?idEquipe=${getIdEquipe()}`)
@@ -28,15 +28,16 @@ onMounted(() => {
 
 <template>
     <v-row>
-        <v-col md="3" v-if="alocacoes.length === 0">
+        <v-col md="3" v-if="!alocacoes">
             <v-skeleton-loader type="card"></v-skeleton-loader>
         </v-col>
-        <v-col md="3" v-if="alocacoes.length === 0">
+        <v-col md="3" v-if="!alocacoes">
             <v-skeleton-loader type="card"></v-skeleton-loader>
         </v-col>
 
-        <v-col v-for="alocacao in alocacoes"
+        <v-col v-if="alocacoes" v-for="alocacao in alocacoes"
                :key="alocacao.id"
+               cols="12"
                sm="3"
                md="3"
                lg="3"

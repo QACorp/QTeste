@@ -12,6 +12,7 @@ use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnauthorizedException;
 use App\System\Impl\BusinessAbstract;
 use App\System\Utils\EquipeUtils;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Spatie\LaravelData\DataCollection;
 
@@ -79,5 +80,13 @@ class AlocacaoBusiness extends BusinessAbstract implements AlocacaoBusinessContr
             return $this->alocacaoRepository->listarAlocacoes($idEquipe);
         }
         throw new UnauthorizedException(401, 'Sem permissão para acessar alocacoes');
+    }
+
+    public function usuariosDisponiveis(int $idEquipe, Carbon $inicio, Carbon $termino): DataCollection
+    {
+        if(!$this->equipeBusiness->hasEquipe($idEquipe,Auth::user()->getAuthIdentifier())){
+            throw new NotFoundException();
+        }
+        return $this->alocacaoRepository->usuariosDisponiveis($idEquipe, $inicio, $termino);
     }
 }
