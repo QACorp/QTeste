@@ -4,8 +4,10 @@ namespace App\Modules\GestaoEquipe\Business;
 
 use App\Modules\GestaoEquipe\Contracts\Business\AlocacaoBusinessContract;
 use App\Modules\GestaoEquipe\Contracts\Repositorys\AlocacaoRepositoryContract;
+use App\Modules\GestaoEquipe\Contracts\Repositorys\ProjetoRepositoryContract;
 use App\Modules\GestaoEquipe\DTOs\AlocacaoDTO;
 use App\Modules\GestaoEquipe\Enums\PermissionEnum;
+use App\Modules\GestaoEquipe\Repositorys\ProjetoRepository;
 use App\System\Contracts\Business\EquipeBusinessContract;
 use App\System\Exceptions\ConflictException;
 use App\System\Exceptions\NotFoundException;
@@ -20,7 +22,8 @@ class AlocacaoBusiness extends BusinessAbstract implements AlocacaoBusinessContr
 {
     public function __construct(
         private readonly AlocacaoRepositoryContract $alocacaoRepository,
-        private readonly EquipeBusinessContract $equipeBusiness
+        private readonly EquipeBusinessContract $equipeBusiness,
+        private readonly ProjetoRepositoryContract $projetoRepository
     )
     {
 
@@ -89,4 +92,12 @@ class AlocacaoBusiness extends BusinessAbstract implements AlocacaoBusinessContr
         }
         return $this->alocacaoRepository->usuariosDisponiveis($idEquipe, $inicio, $termino);
     }
+    public function buscarProjetosVigentes(int $equipeId, Carbon $dataInicio, Carbon $dataFim): DataCollection
+    {
+        if(!$this->equipeBusiness->hasEquipe($equipeId,Auth::user()->getAuthIdentifier())){
+            throw new NotFoundException();
+        }
+        return $this->projetoRepository->buscarProjetosVigentes($equipeId, $dataInicio, $dataFim);
+    }
+
 }

@@ -1,5 +1,5 @@
 export enum NaturezaEnum {
-    'MELHORIA' = 'Melhoria',
-    'PROJETO' = 'Projeto',
-    'SUSTENTACAO' = 'Sustentação'
+    MELHORIA = 'Melhoria',
+    PROJETO = 'Projeto',
+    SUSTENTACAO = 'Sustentação'
 }
