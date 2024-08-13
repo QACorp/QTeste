@@ -1,5 +1,5 @@
 @php
-    use App\Modules\Retrabalhos\Enums\PermissionEnum;
+    use App\Modules\GestaoEquipe\Enums\PermissionEnum;
     use App\System\Enums\AuthEnum;
 @endphp
 @extends('adminlte::page')
@@ -10,20 +10,23 @@
 @section('content_header')
     <div class="row">
         <h1 class="m-0 text-dark col-md-8">Alocações</h1>
-        <div class="text-right col-md-4">
-            @can(PermissionEnum::INSERIR_RETRABALHO->value)
-                <a title="Inserir Retrabalho" class="btn btn-primary"
-                   href="{{route('retrabalhos.inserir')}}"><i class="fas fa-plus"></i> Inserir alocação</a>
-            @endcan
-        </div>
+
     </div>
 @stop
 
 @section('content')
     <div class="row" id="vue">
+
         <div class="row">
             <div class="card">
                 <div class="card-body">
+                    <div class="row">
+                        <div class="text-right col-md-12 col-12 mb-2">
+                            @can(PermissionEnum::CRIAR_ALOCACAO->value)
+                                <modal-insert-alocacao></modal-insert-alocacao>
+                            @endcan
+                        </div>
+                    </div>
                     <lista-alocacao-todos
                         token-api="{{ session()->get(AuthEnum::SESSION_API_TOKEN->value) }}">
 
