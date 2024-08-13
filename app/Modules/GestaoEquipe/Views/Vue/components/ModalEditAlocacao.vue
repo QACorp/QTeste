@@ -65,7 +65,7 @@ const saveAlocacao = () => {
             $toast.success('Alocação alterada com sucesso!',{
                 duration: 5000
             });
-            helperStore.refresh = true;
+            helperStore.refreshAlocacao = true;
             dialog.value = false;
         })
         .catch(error => {

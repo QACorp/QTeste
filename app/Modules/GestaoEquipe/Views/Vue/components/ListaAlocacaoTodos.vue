@@ -31,10 +31,10 @@ const findAlocacoes = () => {
         })
 }
 watchEffect(() => {
-    if (helperStore.refresh) {
+    if (helperStore.refreshAlocacao) {
         alocacoes.value = null;
         findAlocacoes();
-        helperStore.refresh = false;
+        helperStore.refreshAlocacao = false;
     }
 })
 </script>
