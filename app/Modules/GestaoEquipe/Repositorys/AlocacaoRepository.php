@@ -17,7 +17,10 @@ class AlocacaoRepository extends BaseRepository implements AlocacaoRepositoryCon
 
     public function criarAlocacao(AlocacaoDTO $dados): AlocacaoDTO
     {
-        // TODO: Implement criarAlocacao() method.
+        $alocacaoModel = new Alocacao();
+        $alocacaoModel->fill($dados->toArray());
+        $alocacaoModel->save();
+        return AlocacaoDTO::from($alocacaoModel);
     }
 
     public function alterarAlocacao(int $id, AlocacaoDTO $dados): AlocacaoDTO

@@ -30,7 +30,17 @@ class AlocacaoBusiness extends BusinessAbstract implements AlocacaoBusinessContr
     }
     public function criarAlocacao(AlocacaoDTO $dados): AlocacaoDTO
     {
-        // TODO: Implement criarAlocacao() method.
+        $this->can(PermissionEnum::CRIAR_ALOCACAO->value, 'api');
+        if(
+            !$this->equipeBusiness->hasEquipe($dados->equipe_id, Auth::user()->getAuthIdentifier()) &&
+            !$this->equipeBusiness->hasEquipe($dados->equipe_id, $dados->user_id)){
+            throw new NotFoundException();
+        }
+        if($this->alocacaoRepository->hasAlocacaoInDate($dados->user_id, $dados->equipe_id, $dados->inicio, $dados->termino))
+        {
+            throw new ConflictException( 'Já existe uma alocação nesse período para este usuário',409);
+        }
+        return $this->alocacaoRepository->criarAlocacao($dados);
     }
 
     public function alterarAlocacao(int $id, AlocacaoDTO $dados): AlocacaoDTO
@@ -40,6 +50,9 @@ class AlocacaoBusiness extends BusinessAbstract implements AlocacaoBusinessContr
         $alocacao = $this->alocacaoRepository->consultarAlocacao($id, EquipeUtils::getEquipeUsuarioLogado('api'));
         if(!$this->isEquipeCriadora($alocacao->equipe_id)){
             throw new UnauthorizedException(401, 'Sem permissão para alterar alocacao');
+        }
+        if(!$this->equipeBusiness->hasEquipe($dados->equipe_id, $dados->user_id)){
+            throw new NotFoundException();
         }
         if( $this->hasAlteracao($dados, $alocacao) &&
             $this->alocacaoRepository->hasAlocacaoInDate($alocacao->user_id, $alocacao->equipe_id, $dados->inicio, $dados->termino, $alocacao->id))

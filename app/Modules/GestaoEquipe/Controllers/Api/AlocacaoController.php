@@ -9,6 +9,7 @@ use App\System\Exceptions\UnauthorizedException;
 use App\System\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class AlocacaoController extends Controller
 {
@@ -18,8 +19,13 @@ class AlocacaoController extends Controller
     {
 
     }
-    public function criarAlocacao(AlocacaoDTO $alocacaoDTO){
-        // TODO: Implement consultarAlocacao() method.
+    public function criarAlocacao(Request $request, AlocacaoDTO $alocacaoDTO){
+        try {
+            $alocacaoDTO->empresa_id = Auth::guard('api')->user()->empresa_id;
+            return $this->alocacaoBusiness->criarAlocacao($alocacaoDTO);
+        }catch (UnauthorizedException|ConflictException $e){
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
     }
     public function alterarAlocacao(AlocacaoDTO $alocacaoDTO, int $idAlocacao){
         try {
