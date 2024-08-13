@@ -14,6 +14,6 @@ interface AlocacaoRepositoryContract
     public function consultarAlocacao(int $id, int $idEquipe): ?AlocacaoDTO;
     public function listarAlocacoes(int $idEquipe): DataCollection;
     public function listarAlocacoesPorUsuario(int $idUsuario, int $idEmpresa): DataCollection;
-    public function hasAlocacaoInDate(int $userId, int $equipeId, string $inicio, string $termino): bool;
+    public function hasAlocacaoInDate(int $userId, int $equipeId, string $inicio, string $termino, int $alocacaoId = null): bool;
     public function usuariosDisponiveis(int $idEquipe, Carbon $inicio, Carbon $termino): DataCollection;
 }

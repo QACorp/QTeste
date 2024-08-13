@@ -42,7 +42,7 @@ class AlocacaoBusiness extends BusinessAbstract implements AlocacaoBusinessContr
             throw new UnauthorizedException(401, 'Sem permissão para alterar alocacao');
         }
         if( $this->hasAlteracao($dados, $alocacao) &&
-            $this->alocacaoRepository->hasAlocacaoInDate($alocacao->user_id, $alocacao->equipe_id, $dados->inicio, $dados->termino))
+            $this->alocacaoRepository->hasAlocacaoInDate($alocacao->user_id, $alocacao->equipe_id, $dados->inicio, $dados->termino, $alocacao->id))
         {
             throw new ConflictException( 'Já existe uma alocação nesse período para este usuário',409);
         }

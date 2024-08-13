@@ -22,4 +22,7 @@ a.nav-link.font-active{
 a.nav-link.active.font-active{
     color: #FFF !important;
 }
-
+.tox.tox-tinymce-aux,
+.tox-fullscreen .tox.tox-tinymce-aux {
+    z-index: 4000 !important;
+}

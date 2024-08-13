@@ -12,6 +12,7 @@ const props = defineProps({
         required: true
     }
 })
+const emit = defineEmits(['showMessage']);
 const diffDate = (data: string): number =>
 {
     return moment(data).diff(moment(), 'weeks');

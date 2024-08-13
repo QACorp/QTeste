@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import {defineProps, onMounted, ref} from "vue";
+import {defineProps, onMounted, ref, watch, watchEffect} from "vue";
 
 import {axiosApi} from "../../../../../../resources/js/app";
 import {getIdEquipe} from "../../../../../../resources/js/APIUtils/BaseAPI";
 import {AlocacaoInterface} from "../Interfaces/Alocacao.interface";
 import CardAlocacao from "./CardAlocacao.vue";
+import {helperStore} from "../HelperStore";
 
 const props = defineProps({
     tokenApi: {
@@ -16,6 +17,11 @@ const props = defineProps({
 const alocacoes = ref<AlocacaoInterface[]>(null);
 
 onMounted(() => {
+    findAlocacoes();
+    helperStore.refresh = false;
+
+})
+const findAlocacoes = () => {
     axiosApi.get(`gestao-equipe/alocacao?idEquipe=${getIdEquipe()}`)
         .then(response => {
             alocacoes.value = response.data;
@@ -23,10 +29,18 @@ onMounted(() => {
         .catch(error => {
             console.log(error)
         })
+}
+watchEffect(() => {
+    if (helperStore.refresh) {
+        alocacoes.value = null;
+        findAlocacoes();
+        helperStore.refresh = false;
+    }
 })
 </script>
 
 <template>
+
     <v-row>
         <v-col md="3" v-if="!alocacoes">
             <v-skeleton-loader type="card"></v-skeleton-loader>
