@@ -21,7 +21,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="text-right col-md-12 col-12 mb-2">
+                        <div class="text-right col-md-12 col-12 mb-5">
                             @can(PermissionEnum::CRIAR_ALOCACAO->value)
                                 <modal-insert-alocacao></modal-insert-alocacao>
                             @endcan

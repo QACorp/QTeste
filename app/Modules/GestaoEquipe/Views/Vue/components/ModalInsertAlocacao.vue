@@ -10,62 +10,51 @@ import Editor from '@tinymce/tinymce-vue'
 import {useToast} from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-sugar.css';
 import {helperStore} from "../HelperStore";
-
-
-
+import moment from "moment";
+import {SubmitEventPromise} from "vuetify";
 const dialog = ref<boolean>(false);
 const alocacao = ref<AlocacaoInterface>({} as AlocacaoInterface);
 const usuarios = ref<UsuarioInterface[]>(null);
 const projetos = ref<ProjetoInterface[]>(null);
-onMounted(() => {
-
-
-});
 const $toast = useToast();
-watch(dialog, (newValue) => {
-    if(dialog){
-        axiosApi.get(`gestao-equipe/alocacao/${props.alocacaoId}?idEquipe=${getIdEquipe()}`)
-            .then(response => {
-                alocacao.value = response.data;
-
-                if(
-                    alocacao.value.natureza === NaturezaEnum.PROJETO &&
-                    alocacao.value.inicio &&
-                    alocacao.value.termino){
-                    findProjetos();
-                }
-                findUsers();
-            })
-            .catch(error => {
-                console.log(error)
-            })
-
-    }
-});
-
+const form = ref<any>(null);
 const findUsers = () => {
+    alocacao.value.user = null;
+    alocacao.value.user_id = null;
+    usuarios.value = null;
+
     axiosApi.get(`gestao-equipe/alocacao/usuarios-disponiveis/${alocacao.value.inicio}/${alocacao.value.termino}/?idEquipe=${getIdEquipe()}`)
         .then(response => {
             usuarios.value = response.data;
-            usuarios.value.push(alocacao.value.user as UsuarioInterface);
         })
         .catch(error => {
             console.log(error)
         })
 }
+watch(dialog, (newValue) => {
+    if(dialog){
+        alocacao.value = {} as AlocacaoInterface;
+    }
+});
 
-const saveAlocacao = () => {
+const saveAlocacao = async (submitEventPromise: SubmitEventPromise) => {
+    const {valid, errors} = await submitEventPromise;
+    console.log(errors);
+    if (!valid) return;
     alocacao.value.equipe_id = parseInt(getIdEquipe());
     axiosApi.post(`gestao-equipe/alocacao`, alocacao.value)
         .then(response => {
-            $toast.success('Alocação inserida com sucesso!',{
+            $toast.success('Alocação inserida com sucesso!', {
                 duration: 5000
             });
             helperStore.refreshAlocacao = true;
+            alocacao.value = {} as AlocacaoInterface;
             dialog.value = false;
         })
         .catch(error => {
-            $toast.error(error);
+            $toast.error(error.response.data.message, {
+                duration: 5000
+            });
         })
 }
 
@@ -82,7 +71,7 @@ const findProjetos = () => {
 
 <template>
 
-    <v-btn class="p-2" size="sm" color="success"  @click="dialog = true" >
+    <v-btn class="p-2" size="sm" color="primary"  @click="dialog = true" >
         <v-icon size="sm">mdi-plus</v-icon>
         Inserir alocação
     </v-btn>
@@ -94,14 +83,14 @@ const findProjetos = () => {
         scroll-strategy="none"
     >
         <v-card >
-            <v-toolbar title="Alterar alocação">
+            <v-toolbar title="Inserir alocação">
                 <v-btn
                     icon="mdi-close"
                     @click="dialog = false"
                 ></v-btn>
             </v-toolbar>
             <v-card-text>
-                <form >
+                <v-form ref="form" validate-on="blur" @submit.prevent="saveAlocacao">
                     <v-row dense>
                         <v-col cols="12" sm="5" md="5">
                             <v-text-field
@@ -109,6 +98,10 @@ const findProjetos = () => {
                                 v-model="alocacao.inicio"
                                 label="Início"
                                 size="large"
+                                :rules="[
+                                        value => alocacao.termino && moment(alocacao.termino).isBefore(alocacao.inicio) ? 'A data de término deve ser maior que a data de início' : true,
+                                        value => !alocacao.inicio ? 'Selecione a data de início' : true
+                                     ]"
                                 required
                             ></v-text-field>
                         </v-col>
@@ -118,6 +111,10 @@ const findProjetos = () => {
                                 v-model="alocacao.termino"
                                 label="Término"
                                 size="large"
+                                :rules="[
+                                    value => alocacao.inicio && moment(alocacao.inicio).isAfter(alocacao.termino) ? 'A data de término deve ser maior que a data de início' : true,
+                                    value => !alocacao.termino ? 'Selecione a data de término' : true
+                                    ]"
                                 required
                             ></v-text-field>
                         </v-col>
@@ -133,6 +130,7 @@ const findProjetos = () => {
                                 v-model="alocacao.user"
                                 @update:modelValue="() => {alocacao.user_id = alocacao.user.id}"
                                 :items="usuarios"
+                                :rules="[value => !alocacao.user ?  'Selecione um usuário' : true]"
                                 return-object
                                 item-title="name"
                                 item-value="id"
@@ -152,6 +150,7 @@ const findProjetos = () => {
                             <v-select
                                 @update:menu="() => {alocacao.natureza === NaturezaEnum.PROJETO ? findProjetos(): '';}"
                                 v-model="alocacao.natureza"
+                                :rules="[value => !alocacao.natureza ?  'Selecione a natureza da alocação' : true]"
                                 :items="[
                                     NaturezaEnum.SUSTENTACAO,
                                     NaturezaEnum.MELHORIA,
@@ -166,6 +165,7 @@ const findProjetos = () => {
                                 v-model="alocacao.projeto"
                                 @update:modelValue="alocacao.projeto_id = alocacao.projeto.id"
                                 :items="projetos"
+                                :rules="[value => !alocacao.projeto && alocacao.natureza === NaturezaEnum.PROJETO ?  'Selecione um projeto' : true]"
                                 item-title="nome"
                                 return-object
                                 item-value="id"
@@ -189,10 +189,10 @@ const findProjetos = () => {
                     <v-row dense>
                         <v-col cols="12" sm="12" md="12" v-if="usuarios">
                             <v-spacer></v-spacer>
-                            <v-btn @click="saveAlocacao" color="primary" variant="flat">Salvar</v-btn>
+                            <v-btn type="submit" color="primary" variant="flat">Salvar</v-btn>
                         </v-col>
                     </v-row>
-                </form>
+                </v-form>
             </v-card-text>
         </v-card>
     </v-dialog>

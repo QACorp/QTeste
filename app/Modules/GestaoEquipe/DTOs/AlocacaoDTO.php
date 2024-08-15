@@ -38,6 +38,7 @@ class AlocacaoDTO extends DTO
     {
         return [
             'inicio.before_or_equal' => 'A data de início deve ser anterior ou igual a data de término',
+            'user_id.required' => 'O campo user_id é obrigatório',
             'required' => 'O campo :attribute é obrigatório',
         ];
     }

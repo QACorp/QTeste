@@ -104,7 +104,7 @@ const findProjetos = () => {
                 ></v-btn>
             </v-toolbar>
             <v-card-text>
-                <form >
+                <v-form ref="form" validate-on="blur" @submit.prevent="saveAlocacao">
                     <v-row dense>
                         <v-col cols="12" sm="5" md="5">
                             <v-text-field
@@ -112,6 +112,10 @@ const findProjetos = () => {
                                 v-model="alocacao.inicio"
                                 label="Início"
                                 size="large"
+                                :rules="[
+                                        value => alocacao.termino && moment(alocacao.termino).isBefore(alocacao.inicio) ? 'A data de término deve ser maior que a data de início' : true,
+                                        value => !alocacao.inicio ? 'Selecione a data de início' : true
+                                     ]"
                                 required
                             ></v-text-field>
                         </v-col>
@@ -121,6 +125,10 @@ const findProjetos = () => {
                                 v-model="alocacao.termino"
                                 label="Término"
                                 size="large"
+                                :rules="[
+                                    value => alocacao.inicio && moment(alocacao.inicio).isAfter(alocacao.termino) ? 'A data de término deve ser maior que a data de início' : true,
+                                    value => !alocacao.termino ? 'Selecione a data de término' : true
+                                    ]"
                                 required
                             ></v-text-field>
                         </v-col>
@@ -132,10 +140,12 @@ const findProjetos = () => {
                     </v-row>
                     <v-row dense>
                         <v-col cols="12" sm="3" md="3" v-if="usuarios">
-                             <v-select
+                            <v-select
                                 v-model="alocacao.user"
                                 @update:modelValue="() => {alocacao.user_id = alocacao.user.id}"
                                 :items="usuarios"
+                                :rules="[value => !alocacao.user ?  'Selecione um usuário' : true]"
+                                return-object
                                 item-title="name"
                                 item-value="id"
                                 label="Usuário"
@@ -154,6 +164,7 @@ const findProjetos = () => {
                             <v-select
                                 @update:menu="() => {alocacao.natureza === NaturezaEnum.PROJETO ? findProjetos(): '';}"
                                 v-model="alocacao.natureza"
+                                :rules="[value => !alocacao.natureza ?  'Selecione a natureza da alocação' : true]"
                                 :items="[
                                     NaturezaEnum.SUSTENTACAO,
                                     NaturezaEnum.MELHORIA,
@@ -168,6 +179,7 @@ const findProjetos = () => {
                                 v-model="alocacao.projeto"
                                 @update:modelValue="alocacao.projeto_id = alocacao.projeto.id"
                                 :items="projetos"
+                                :rules="[value => !alocacao.projeto && alocacao.natureza === NaturezaEnum.PROJETO ?  'Selecione um projeto' : true]"
                                 item-title="nome"
                                 return-object
                                 item-value="id"
@@ -191,10 +203,10 @@ const findProjetos = () => {
                     <v-row dense>
                         <v-col cols="12" sm="12" md="12" v-if="usuarios">
                             <v-spacer></v-spacer>
-                            <v-btn @click="saveAlocacao" color="primary" variant="flat">Salvar</v-btn>
+                            <v-btn type="submit" color="primary" variant="flat">Salvar</v-btn>
                         </v-col>
                     </v-row>
-                </form>
+                </v-form>
             </v-card-text>
         </v-card>
     </v-dialog>

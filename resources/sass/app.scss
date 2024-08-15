@@ -26,3 +26,6 @@ a.nav-link.active.font-active{
 .tox-fullscreen .tox.tox-tinymce-aux {
     z-index: 4000 !important;
 }
+.v-toast {
+    z-index: 9999999;
+}

@@ -42,8 +42,9 @@ class AlocacaoRepository extends BaseRepository implements AlocacaoRepositoryCon
             ->where('id', $id)
             ->with(['projeto', 'user', 'user.empresa','equipe', 'projeto.aplicacao'])
             ->first();
-        if($alocacao)
+        if($alocacao) {
             return AlocacaoDTO::from($alocacao);
+        }
         return null;
     }
 
@@ -81,8 +82,12 @@ class AlocacaoRepository extends BaseRepository implements AlocacaoRepositoryCon
     {
         $usuarios = User::whereDoesntHave('alocacoes', function ($query) use ($inicio, $termino, $idEquipe) {
                 $query->where(function(Builder $query) use ($inicio, $termino){
-                    $query->whereBetween('inicio', [$inicio, $termino])
-                        ->orWhereBetween('termino', [$inicio, $termino]);
+                    $query->whereRaw("? BETWEEN inicio AND termino")
+                        ->orWhereRaw("? BETWEEN inicio AND termino");
+                    $query->setBindings([
+                        $inicio->format('Y-m-d'),
+                        $termino->format('Y-m-d')
+                    ]);
                 })
                 ->whereNull('concluida')
                 ->where('equipe_id', $idEquipe);
