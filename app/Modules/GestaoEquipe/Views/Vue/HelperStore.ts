@@ -1,5 +1,6 @@
 import { reactive } from 'vue'
 
 export const helperStore = reactive({
-    refreshAlocacao: false
+    refreshAlocacao: false,
+    editAlocacao: false,
 })

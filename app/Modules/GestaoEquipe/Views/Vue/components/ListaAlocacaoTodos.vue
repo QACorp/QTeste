@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {defineProps, onMounted, ref, watch, watchEffect} from "vue";
+import {defineProps, onBeforeMount, onMounted, ref, watch, watchEffect} from "vue";
 
 import {axiosApi} from "../../../../../../resources/js/app";
 import {getIdEquipe} from "../../../../../../resources/js/APIUtils/BaseAPI";
@@ -8,17 +8,21 @@ import CardAlocacao from "./CardAlocacao.vue";
 import {helperStore} from "../HelperStore";
 
 const props = defineProps({
-    tokenApi: {
-        type: String,
-        required: true
+    editAlocacao: {
+        type: Boolean,
+        required: false,
+        default: false
     }
 })
 
 const alocacoes = ref<AlocacaoInterface[]>(null);
 
+onBeforeMount(() => {
+    helperStore.editAlocacao = props.editAlocacao;
+})
 onMounted(() => {
     findAlocacoes();
-    helperStore.refresh = false;
+    helperStore.refreshAlocacao = false;
 
 })
 const findAlocacoes = () => {

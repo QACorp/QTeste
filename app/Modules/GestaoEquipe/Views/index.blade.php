@@ -27,8 +27,7 @@
                             @endcan
                         </div>
                     </div>
-                    <lista-alocacao-todos
-                        token-api="{{ session()->get(AuthEnum::SESSION_API_TOKEN->value) }}">
+                    <lista-alocacao-todos :edit-alocacao="{{ Auth::guard('web')->user()->can(PermissionEnum::EDITAR_ALOCACAO->value) == true ? 'true' : 'false' }}">
 
                     </lista-alocacao-todos>
                 </div>
