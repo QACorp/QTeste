@@ -3,6 +3,7 @@ import {AlocacaoInterface} from "../Interfaces/Alocacao.interface";
 import {defineProps} from "vue";
 import ModalEditAlocacao from "./ModalEditAlocacao.vue";
 import {helperStore} from "../HelperStore";
+import FinishAlocacao from "./FinishAlocacao.vue";
 const props = defineProps({
     alocacao: {
         type: Object as () => AlocacaoInterface,
@@ -16,9 +17,7 @@ const props = defineProps({
     <v-row class="px-2">
         <v-col md="12" >
             <modal-edit-alocacao v-if="helperStore.editAlocacao === true" :alocacao-id="props.alocacao.id"/>
-            <v-btn class="p-2" size="sm" variant="tonal" stacked>
-                <v-icon size="sm">mdi-check-circle</v-icon>
-            </v-btn>
+            <finish-alocacao v-if="helperStore.finishAlocacao === true" :alocacao-id="props.alocacao.id"/>
         </v-col>
     </v-row>
 </template>

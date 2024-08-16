@@ -12,6 +12,11 @@ const props = defineProps({
         type: Boolean,
         required: false,
         default: false
+    },
+    finishAlocacao: {
+        type: Boolean,
+        required: false,
+        default: false
     }
 })
 
@@ -19,6 +24,7 @@ const alocacoes = ref<AlocacaoInterface[]>(null);
 
 onBeforeMount(() => {
     helperStore.editAlocacao = props.editAlocacao;
+    helperStore.finishAlocacao = props.finishAlocacao;
 })
 onMounted(() => {
     findAlocacoes();

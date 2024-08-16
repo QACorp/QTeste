@@ -22,10 +22,7 @@ const dialog = ref<boolean>(false);
 const alocacao = ref<AlocacaoInterface>({} as AlocacaoInterface);
 const usuarios = ref<UsuarioInterface[]>(null);
 const projetos = ref<ProjetoInterface[]>(null);
-onMounted(() => {
 
-
-});
 const $toast = useToast();
 watch(dialog, (newValue) => {
     if(dialog){

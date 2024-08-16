@@ -39,7 +39,6 @@ watch(dialog, (newValue) => {
 
 const saveAlocacao = async (submitEventPromise: SubmitEventPromise) => {
     const {valid, errors} = await submitEventPromise;
-    console.log(errors);
     if (!valid) return;
     alocacao.value.equipe_id = parseInt(getIdEquipe());
     axiosApi.post(`gestao-equipe/alocacao`, alocacao.value)
@@ -49,6 +48,7 @@ const saveAlocacao = async (submitEventPromise: SubmitEventPromise) => {
             });
             helperStore.refreshAlocacao = true;
             alocacao.value = {} as AlocacaoInterface;
+            usuarios.value = null;
             dialog.value = false;
         })
         .catch(error => {
