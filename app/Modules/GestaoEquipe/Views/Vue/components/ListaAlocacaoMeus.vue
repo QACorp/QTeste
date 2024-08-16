@@ -7,24 +7,13 @@ import {AlocacaoInterface} from "../Interfaces/Alocacao.interface";
 import CardAlocacao from "./CardAlocacao.vue";
 import {helperStore} from "../HelperStore";
 
-const props = defineProps({
-    editAlocacao: {
-        type: Boolean,
-        required: false,
-        default: false
-    },
-    finishAlocacao: {
-        type: Boolean,
-        required: false,
-        default: false
-    }
-})
+const props = defineProps({})
 
 const alocacoes = ref<AlocacaoInterface[]>(null);
 
 onBeforeMount(() => {
-    helperStore.editAlocacao = props.editAlocacao;
-    helperStore.finishAlocacao = props.finishAlocacao;
+    helperStore.editAlocacao = false;
+    helperStore.finishAlocacao = false;
 })
 onMounted(() => {
     findAlocacoes();
