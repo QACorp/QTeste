@@ -58,7 +58,7 @@ class AlocacaoRepository extends BaseRepository implements AlocacaoRepositoryCon
     public function listarAlocacoes(int $idEquipe): DataCollection
     {
         $alocacoes = $this->getQUeryBuilderSelectAlocacao($idEquipe)
-            ->get();
+                        ->get();
         return AlocacaoDTO::collection($alocacoes);
     }
 
