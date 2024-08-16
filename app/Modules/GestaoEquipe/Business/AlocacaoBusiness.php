@@ -7,7 +7,6 @@ use App\Modules\GestaoEquipe\Contracts\Repositorys\AlocacaoRepositoryContract;
 use App\Modules\GestaoEquipe\Contracts\Repositorys\ProjetoRepositoryContract;
 use App\Modules\GestaoEquipe\DTOs\AlocacaoDTO;
 use App\Modules\GestaoEquipe\Enums\PermissionEnum;
-use App\Modules\GestaoEquipe\Repositorys\ProjetoRepository;
 use App\System\Contracts\Business\EquipeBusinessContract;
 use App\System\Exceptions\ConflictException;
 use App\System\Exceptions\NotFoundException;

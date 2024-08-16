@@ -36,11 +36,11 @@ const defineBackgroud = (weeks: number)=>{
     >
         <v-card-title>
             <v-row>
-                <v-col md="12">{{ alocacao.user.name }}</v-col>
+                <v-col md="12"><span :title="alocacao.user.name">{{ alocacao.user.name }}</span></v-col>
             </v-row>
         </v-card-title>
         <v-card-subtitle>
-            <span>{{ alocacao.equipe.nome }}</span> -
+            <span >{{ alocacao.equipe.nome }}</span> -
             <span :class="[alocacao.projeto_id || alocacao.natureza === NaturezaEnum.MELHORIA ? 'cursor-pointer': '']">
                         {{ alocacao.natureza }}
                         <UseClipboard

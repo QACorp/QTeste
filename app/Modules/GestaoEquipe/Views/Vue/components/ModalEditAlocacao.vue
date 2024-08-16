@@ -39,7 +39,7 @@ watch(dialog, (newValue) => {
                 findUsers();
             })
             .catch(error => {
-                console.log(error)
+                $toast.error(error);
             })
 
     }
@@ -77,7 +77,7 @@ const findProjetos = () => {
             //projetos.value.push(alocacao.value.projeto as ProjetoInterface);
         })
         .catch(error => {
-            console.log(error)
+            $toast.error(error);
         })
 }
 </script>

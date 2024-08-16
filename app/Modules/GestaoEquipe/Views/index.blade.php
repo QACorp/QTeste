@@ -27,12 +27,20 @@
                             @endcan
                         </div>
                     </div>
+                    @can(PermissionEnum::VER_ALOCACAO->value)
                     <lista-alocacao-todos
                         :edit-alocacao="{{ Auth::guard('web')->user()->can(PermissionEnum::EDITAR_ALOCACAO->value) == true ? 'true' : 'false' }}"
                         :finish-alocacao="{{ Auth::guard('web')->user()->can(PermissionEnum::CONCLUIR_ALOCACAO->value) == true ? 'true' : 'false' }}"
                     >
-
                     </lista-alocacao-todos>
+                    @endcan
+                    @can(PermissionEnum::VER_MINHA_ALOCACAO->value)
+                        <lista-alocacao-meus
+                            :edit-alocacao="{{ Auth::guard('web')->user()->can(PermissionEnum::EDITAR_ALOCACAO->value) == true ? 'true' : 'false' }}"
+                            :finish-alocacao="{{ Auth::guard('web')->user()->can(PermissionEnum::CONCLUIR_ALOCACAO->value) == true ? 'true' : 'false' }}"
+                        >
+                        </lista-alocacao-meus>
+                    @endcan
                 </div>
             </div>
         </div>
