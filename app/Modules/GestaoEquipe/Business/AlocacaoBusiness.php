@@ -113,4 +113,21 @@ class AlocacaoBusiness extends BusinessAbstract implements AlocacaoBusinessContr
         return $this->projetoRepository->buscarProjetosVigentes($equipeId, $dataInicio, $dataFim);
     }
 
+    public function marcarAlocacaoComoConcluida(int $idAlocacao, int $idEquipe): AlocacaoDTO
+    {
+        $this->can(PermissionEnum::CONCLUIR_ALOCACAO->value, 'api');
+        $alocacao = $this->alocacaoRepository->consultarAlocacao($idAlocacao, $idEquipe);
+
+        if(!$alocacao){
+            throw new NotFoundException();
+        }
+        if($alocacao->concluida){
+            throw new ConflictException('Alocação já concluída', 409);
+        }
+        if(!$this->isEquipeCriadora($alocacao->equipe_id)){
+            throw new UnauthorizedException(401, 'Sem permissão para concluir alocação');
+        }
+        $alocacao->concluida = Carbon::now();
+        return $this->alocacaoRepository->alterarAlocacao($idAlocacao, $alocacao);
+    }
 }

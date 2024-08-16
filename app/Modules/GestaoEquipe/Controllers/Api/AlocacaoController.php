@@ -5,6 +5,7 @@ namespace App\Modules\GestaoEquipe\Controllers\Api;
 use App\Modules\GestaoEquipe\Contracts\Business\AlocacaoBusinessContract;
 use App\Modules\GestaoEquipe\DTOs\AlocacaoDTO;
 use App\System\Exceptions\ConflictException;
+use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnauthorizedException;
 use App\System\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -18,6 +19,16 @@ class AlocacaoController extends Controller
     )
     {
 
+    }
+    public function marcarAlocacaoComoConcluida(Request $request, int $idAlocacao){
+        if(!$request->get('idEquipe')){
+            return response()->json(['message' => 'Equipe não informada'], 422);
+        }
+        try {
+            return $this->alocacaoBusiness->marcarAlocacaoComoConcluida($idAlocacao, $request->get('idEquipe'));
+        }catch (UnauthorizedException|NotFoundException|ConflictException $e){
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
     }
     public function criarAlocacao(Request $request, AlocacaoDTO $alocacaoDTO){
         try {

@@ -10,4 +10,5 @@ Route::group(['prefix' => 'alocacao'],function () {
     Route::get('/projetos-disponiveis/{inicio}/{termino}', [AlocacaoController::class, 'projetosDisponiveis']);
     Route::put('/{idAlocacao}', [AlocacaoController::class, 'alterarAlocacao']);
     Route::get('/{idAlocacao}', [AlocacaoController::class, 'consultarAlocacao']);
+    Route::patch('/{idAlocacao}/concluir', [AlocacaoController::class, 'marcarAlocacaoComoConcluida']);
 });
