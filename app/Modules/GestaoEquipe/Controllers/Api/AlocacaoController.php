@@ -97,6 +97,12 @@ class AlocacaoController extends Controller
         }catch (UnauthorizedException $e){
             return response()->json(['message' => $e->getMessage()], $e->getStatusCode());
         }
-
+    }
+    public function listarMinhasAlocacoes(Request $request){
+        try{
+            return $this->alocacaoBusiness->listarMinhasAlocacoes($request->get('idEquipe'), Auth::guard('api')->user()->getAuthIdentifier());
+        }catch (UnauthorizedException $e){
+            return response()->json(['message' => $e->getMessage()], $e->getStatusCode());
+        }
     }
 }

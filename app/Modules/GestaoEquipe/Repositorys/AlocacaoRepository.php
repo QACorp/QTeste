@@ -47,20 +47,27 @@ class AlocacaoRepository extends BaseRepository implements AlocacaoRepositoryCon
         }
         return null;
     }
+    private function getQUeryBuilderSelectAlocacao(int $idEquipe): Builder
+    {
+        return Alocacao::where('equipe_id', $idEquipe)
+            ->where('concluida', null)
+            ->with(['projeto', 'user', 'user.empresa','equipe', 'projeto.aplicacao'])
+            ->orderBy('inicio', 'desc');
+    }
 
     public function listarAlocacoes(int $idEquipe): DataCollection
     {
-        $alocacoes = Alocacao::where('equipe_id', $idEquipe)
-            ->where('concluida', null)
-            ->with(['projeto', 'user', 'user.empresa','equipe', 'projeto.aplicacao'])
-            ->orderBy('inicio', 'desc')
+        $alocacoes = $this->getQUeryBuilderSelectAlocacao($idEquipe)
             ->get();
         return AlocacaoDTO::collection($alocacoes);
     }
 
-    public function listarAlocacoesPorUsuario(int $idUsuario, int $idEmpresa): DataCollection
+    public function listarAlocacoesPorUsuario(int $idEquipe, int $idUsuario): DataCollection
     {
-        // TODO: Implement listarAlocacoesPorUsuario() method.
+        $alocacoes = $this->getQUeryBuilderSelectAlocacao($idEquipe)
+                        ->where('user_id', $idUsuario)
+                        ->get();
+        return AlocacaoDTO::collection($alocacoes);
     }
 
     public function hasAlocacaoInDate(int $userId, int $equipeId, string $inicio, string $termino, int $alocacaoId = null): bool
@@ -99,4 +106,5 @@ class AlocacaoRepository extends BaseRepository implements AlocacaoRepositoryCon
             ->get();
         return UserDTO::collection($usuarios);
     }
+
 }

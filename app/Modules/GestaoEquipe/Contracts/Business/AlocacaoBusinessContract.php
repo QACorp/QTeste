@@ -18,6 +18,7 @@ interface AlocacaoBusinessContract
     public function usuariosDisponiveis(int $idEquipe, Carbon $inicio, Carbon $termino): DataCollection;
     public function buscarProjetosVigentes(int $equipeId, Carbon $dataInicio, Carbon $dataFim): DataCollection;
     public function marcarAlocacaoComoConcluida(int $idAlocacao, int $idEquipe): AlocacaoDTO;
+    public function listarMinhasAlocacoes(int $idEquipe, int $idUsuario): DataCollection;
 
 
 }

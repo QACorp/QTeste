@@ -130,4 +130,13 @@ class AlocacaoBusiness extends BusinessAbstract implements AlocacaoBusinessContr
         $alocacao->concluida = Carbon::now();
         return $this->alocacaoRepository->alterarAlocacao($idAlocacao, $alocacao);
     }
+
+    public function listarMinhasAlocacoes(int $idEquipe, int $idUsuario): DataCollection
+    {
+        $this->can(PermissionEnum::VER_MINHA_ALOCACAO->value, 'api');
+        if(!$this->equipeBusiness->hasEquipe($idEquipe,Auth::user()->getAuthIdentifier())){
+            throw new NotFoundException();
+        }
+        return $this->alocacaoRepository->listarAlocacoesPorUsuario($idEquipe, $idUsuario);
+    }
 }
