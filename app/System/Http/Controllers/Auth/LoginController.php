@@ -2,8 +2,10 @@
 
 namespace App\System\Http\Controllers\Auth;
 
+use App\System\Enums\AuthEnum;
 use App\System\Http\Controllers\Controller;
 use App\System\Providers\RouteServiceProvider;
+use App\System\Traits\Authverification;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -24,7 +26,7 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers, Authverification;
 
     /**
      * Where to redirect users after login.
@@ -33,6 +35,32 @@ class LoginController extends Controller
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
+    public function login(Request $request)
+    {
+        $this->validateLogin($request);
+
+        if (method_exists($this, 'hasTooManyLoginAttempts') &&
+            $this->hasTooManyLoginAttempts($request)) {
+            $this->fireLockoutEvent($request);
+
+            return $this->sendLockoutResponse($request);
+        }
+
+        if ($this->attemptLogin($request)) {
+            if ($request->hasSession()) {
+                $request->session()->put('auth.password_confirmed_at', time());
+            }
+
+            $token = $this->loginApi($request);
+            session()->put(AuthEnum::SESSION_API_TOKEN->value, serialize($this->getToken($token)));
+
+            return $this->sendLoginResponse($request);
+        }
+
+        $this->incrementLoginAttempts($request);
+
+        return $this->sendFailedLoginResponse($request);
+    }
 
     protected function attemptLogin(Request $request)
     {

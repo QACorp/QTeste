@@ -11,6 +11,7 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\DataCollection;
+use Spatie\Permission\Models\Role;
 
 class UserRepository extends BaseRepository implements UserRepositoryContract
 {
@@ -60,10 +61,13 @@ class UserRepository extends BaseRepository implements UserRepositoryContract
         }
     }
 
-    public function vincularPerfil(array $perfil, int $userId): UserDTO
+    public function vincularPerfil(array $perfis, int $userId): UserDTO
     {
         $user = User::find($userId);
-        $user->syncRoles($perfil);
+        foreach ($perfis as $perfil){
+            $roles[] = Role::where('name', $perfil['name'])->first();
+        }
+        $user->syncRoles($roles);
 
         return UserDTO::from($user);
     }

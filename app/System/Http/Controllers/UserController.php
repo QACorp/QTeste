@@ -52,12 +52,14 @@ class UserController extends Controller
     }
     public function atualizar(Request $request, int $idUsuario)
     {
+
         try {
             $userDTO = UserDTO::from([
                 ...$request->only(['name', 'email']),
                 'id' => $idUsuario,
-                'roles' => $this->converterArrayEmRoleDTO($request->roles),
-                'active' => $request->has('active')
+                'active' => $request->has('active') ? true : false,
+                'roles' => $this->converterArrayEmRoleDTO($request->roles)
+
             ]);
             $userDTO->equipes = $this->convertArrayEquipeInDTO($request->only('equipes'));
             $this->userBusiness->alterar($userDTO);

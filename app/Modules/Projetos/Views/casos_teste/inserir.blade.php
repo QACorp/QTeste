@@ -96,8 +96,8 @@
                                         </x-adminlte-textarea>
                                     </div>
                                 </div>
-                                <div class="row pl-3">
-                                    <div class="col-md-6">
+                                <div class="row pl-2">
+                                    <div class="col-md-12">
                                         <x-adminlte-button
                                             label="Salvar"
                                             theme="success"
