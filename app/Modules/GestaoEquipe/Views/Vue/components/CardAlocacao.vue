@@ -15,13 +15,14 @@ const props = defineProps({
 const emit = defineEmits(['showMessage']);
 const diffDate = (data: string): number =>
 {
-    return moment(data).diff(moment(), 'weeks');
+    return moment(data).diff(moment(), 'days');
 }
 
-const defineBackgroud = (weeks: number)=>{
-    if(weeks <= 1){
+const defineBackgroud = (days: number)=>{
+    console.log(days)
+    if(days <= 7){
         return 'bg-danger';
-    }else if(weeks <= 2) {
+    }else if(days <= 14) {
         return 'bg-warning';
     }else {
         return 'bg-success';

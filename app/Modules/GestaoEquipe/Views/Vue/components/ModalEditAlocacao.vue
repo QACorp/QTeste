@@ -10,6 +10,7 @@ import Editor from '@tinymce/tinymce-vue'
 import {useToast} from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-sugar.css';
 import {helperStore} from "../HelperStore";
+import moment from "moment";
 
 const props = defineProps({
     alocacaoId: {
@@ -66,7 +67,7 @@ const saveAlocacao = () => {
             dialog.value = false;
         })
         .catch(error => {
-            $toast.error(error);
+            $toast.error(error.response.data.message);
         })
 }
 
@@ -77,13 +78,18 @@ const findProjetos = () => {
             //projetos.value.push(alocacao.value.projeto as ProjetoInterface);
         })
         .catch(error => {
-            $toast.error(error);
+            $toast.error(error.response.data.message);
         })
 }
 </script>
 
 <template>
-    <v-btn class="p-2" size="sm" variant="tonal"  @click="dialog = true" stacked>
+    <v-btn
+        class="p-2"
+        size="sm"
+        variant="tonal"
+        @click="dialog = true"
+    >
         <v-icon size="sm">mdi-pencil</v-icon>
     </v-btn>
     <v-dialog
