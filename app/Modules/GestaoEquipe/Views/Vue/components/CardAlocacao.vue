@@ -19,7 +19,6 @@ const diffDate = (data: string): number =>
 }
 
 const defineBackgroud = (days: number)=>{
-    console.log(days)
     if(days <= 7){
         return 'bg-danger';
     }else if(days <= 14) {
