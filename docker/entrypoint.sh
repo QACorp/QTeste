@@ -12,15 +12,13 @@ elif [ "$1" = "health" ]; then
 fi
 if [ "$role" = "app" ]; then
     cd /app
-    php artisan migrate --force
     php artisan view:clear
     php artisan config:clear
     php artisan optimize
-    if [ "$BUILD_APP_ENV" = "local" ]; then \
+    if [ "$env" = "local" ]; then \
         php artisan octane:frankenphp --workers=4 --max-requests=10 --port=80 --host=0.0.0.0 --admin-port=2019 --watch; \
     else \
         php artisan migrate --force
-        php artisan optimize
         php artisan octane:frankenphp --workers=4 --max-requests=10 --port=80 --host=0.0.0.0 --admin-port=2019; \
     fi
 fi

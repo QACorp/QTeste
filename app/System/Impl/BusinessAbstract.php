@@ -7,15 +7,15 @@ use Illuminate\Support\Facades\Auth;
 
 class BusinessAbstract
 {
-    public function can(string $permission): void
+    public function can(string $permission, string $guard = 'web'): void
     {
-        if(!Auth::user()->can($permission)){
+        if(!Auth::guard($guard)->user()->can($permission)){
             throw new UnauthorizedException(403);
         }
     }
 
-    public function canDo(string $permission): bool
+    public function canDo(string $permission, string $guard = 'web'): bool
     {
-        return Auth::user()->can($permission);
+        return Auth::guard($guard)->user()->can($permission);
     }
 }

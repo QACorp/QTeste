@@ -43,9 +43,7 @@
                                         data-off-text="Não"
                                         value="true"
                                         data-on-color="teal"
-                                        :config="[
-                                            'state' => old('active',true)
-                                        ]"
+                                        :checked="old('active',false)"
                                         label="Ativo"
                                     />
 

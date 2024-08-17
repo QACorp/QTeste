@@ -16,4 +16,5 @@ interface EquipeBusinessContract
     public function alterar(
         EquipeDTO $equipe,
         EquipePostRequest $equipePostRequest = new EquipePostRequest()):EquipeDTO;
+    public function hasEquipe(int $idEquipe, int $idUsuario): bool;
 }

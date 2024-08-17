@@ -43,13 +43,13 @@
                                 <div class="row">
                                     <x-adminlte-input-switch
                                         name="active"
+                                        id="active"
                                         data-on-text="Sim"
                                         data-off-text="Não"
                                         value="true"
                                         data-on-color="teal"
-                                        :config="[
-                                            'state' => old('active',$user->active)
-                                        ]"
+                                        enable-old-support
+                                        :checked="old('active',$user->active)"
                                         label="Ativo"
                                     />
 

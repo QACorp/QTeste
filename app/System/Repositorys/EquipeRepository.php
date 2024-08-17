@@ -72,4 +72,12 @@ class EquipeRepository extends BaseRepository  implements EquipeRepositoryContra
         }
 
     }
+    public function hasEquipe(int $idEquipe, int $idUsuario):bool
+    {
+        return Equipe::where('id', $idEquipe)
+            ->whereHas('users', function ($query) use ($idUsuario) {
+                $query->where('id', $idUsuario);
+            })
+            ->exists();
+    }
 }
