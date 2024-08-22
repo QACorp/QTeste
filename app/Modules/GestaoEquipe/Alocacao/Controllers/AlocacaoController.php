@@ -8,6 +8,6 @@ class AlocacaoController extends Controller
 {
     public function index()
     {
-        return view('gestao-equipe::index');
+        return view('alocacao::index');
     }
 }

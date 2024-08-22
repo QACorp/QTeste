@@ -43,8 +43,8 @@ use Illuminate\Support\Facades\Blade;
 class AlocacaoServiceProvider extends ServiceProviderAbstract
 {
     public static string $module_path = __DIR__ . '/GestaoEquipe\Alocacao';
-    public static string $prefix = 'gestao-equipe';
-    public static string $view_namespace = 'gestao-equipe';
+    public static string $prefix = 'alocacao';
+    public static string $view_namespace = 'alocacao';
     public $bindings = [
         AlocacaoBusinessContract::class => AlocacaoBusiness::class,
         AlocacaoRepositoryContract::class => AlocacaoRepository::class,

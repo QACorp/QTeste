@@ -28,9 +28,11 @@ abstract class ServiceProviderAbstract extends ServiceProvider
 
         //dd(dirname(static::$module_path. '/Views',3));
         View::addNamespace(static::$view_namespace, $this->moduleDir. '/Views');
-        Route::prefix(static::$prefix)
-            ->middleware(['web', 'auth'])
-            ->group($this->moduleDir. '/Routes/route.php');
+        if(file_exists($this->moduleDir. '/Routes/route.php')) {
+            Route::prefix(static::$prefix)
+                ->middleware(['web', 'auth'])
+                ->group($this->moduleDir . '/Routes/route.php');
+        }
         if(file_exists($this->moduleDir. '/Routes/api.php')){
             Route::prefix('api/'.static::$prefix)
                 ->middleware(['api', 'auth:api'])
