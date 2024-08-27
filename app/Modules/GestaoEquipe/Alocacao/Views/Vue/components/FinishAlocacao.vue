@@ -13,7 +13,7 @@ const props = defineProps({
 })
 const dialog = ref<boolean>(false);
 const finishAlocacao = () => {
-    axiosApi.patch(`gestao-equipe/alocacao/${props.alocacaoId}/concluir?idEquipe=${getIdEquipe()}`)
+    axiosApi.patch(`/alocacao/${props.alocacaoId}/concluir?idEquipe=${getIdEquipe()}`)
         .then(response => {
             dialog.value = false;
             helperStore.refreshAlocacao = true;

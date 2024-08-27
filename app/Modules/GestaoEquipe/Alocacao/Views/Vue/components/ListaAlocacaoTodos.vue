@@ -32,7 +32,7 @@ onMounted(() => {
 
 })
 const findAlocacoes = () => {
-    axiosApi.get(`gestao-equipe/alocacao?idEquipe=${getIdEquipe()}`)
+    axiosApi.get(`alocacao?idEquipe=${getIdEquipe()}`)
         .then(response => {
             alocacoes.value = response.data;
         })

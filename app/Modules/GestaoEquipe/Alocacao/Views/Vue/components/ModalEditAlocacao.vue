@@ -27,7 +27,7 @@ const projetos = ref<ProjetoInterface[]>(null);
 const $toast = useToast();
 watch(dialog, (newValue) => {
     if(dialog){
-        axiosApi.get(`gestao-equipe/alocacao/${props.alocacaoId}?idEquipe=${getIdEquipe()}`)
+        axiosApi.get(`alocacao/${props.alocacaoId}?idEquipe=${getIdEquipe()}`)
             .then(response => {
                 alocacao.value = response.data;
 
@@ -47,7 +47,7 @@ watch(dialog, (newValue) => {
 });
 
 const findUsers = () => {
-    axiosApi.get(`gestao-equipe/alocacao/usuarios-disponiveis/${alocacao.value.inicio}/${alocacao.value.termino}/?idEquipe=${getIdEquipe()}`)
+    axiosApi.get(`alocacao/usuarios-disponiveis/${alocacao.value.inicio}/${alocacao.value.termino}/?idEquipe=${getIdEquipe()}`)
         .then(response => {
             usuarios.value = response.data;
             usuarios.value.push(alocacao.value.user as UsuarioInterface);
@@ -58,7 +58,7 @@ const findUsers = () => {
 }
 
 const saveAlocacao = () => {
-    axiosApi.put(`gestao-equipe/alocacao/${props.alocacaoId}`, alocacao.value)
+    axiosApi.put(`alocacao/${props.alocacaoId}`, alocacao.value)
         .then(response => {
             $toast.success('Alocação alterada com sucesso!',{
                 duration: 5000
@@ -72,10 +72,9 @@ const saveAlocacao = () => {
 }
 
 const findProjetos = () => {
-    axiosApi.get(`gestao-equipe/alocacao/projetos-disponiveis/${alocacao.value.inicio}/${alocacao.value.termino}/?idEquipe=${getIdEquipe()}`)
+    axiosApi.get(`alocacao/projetos-disponiveis/${alocacao.value.inicio}/${alocacao.value.termino}/?idEquipe=${getIdEquipe()}`)
         .then(response => {
             projetos.value = response.data;
-            //projetos.value.push(alocacao.value.projeto as ProjetoInterface);
         })
         .catch(error => {
             $toast.error(error.response.data.message);
