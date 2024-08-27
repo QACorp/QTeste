@@ -61,16 +61,18 @@
                                         </x-adminlte-textarea>
                                     </div>
                                 </div>
-                                <div class="row p-2">
-                                    <x-adminlte-button
-                                        label="Salvar"
-                                        theme="success"
-                                        icon="fas fa-save"
-                                        type="submit"
-                                    />
-                                    <a href="{{ route('aplicacoes.projetos.index', $idAplicacao) }}"
-                                       class="btn btn-primary ml-1"
-                                    ><i class="fas fa-undo"></i> Cancelar</a>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <x-adminlte-button
+                                            label="Salvar"
+                                            theme="success"
+                                            icon="fas fa-save"
+                                            type="submit"
+                                        />
+                                        <a href="{{ route('aplicacoes.projetos.index', $idAplicacao) }}"
+                                           class="btn btn-primary ml-1"
+                                        ><i class="fas fa-undo"></i> Cancelar</a>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-3">
