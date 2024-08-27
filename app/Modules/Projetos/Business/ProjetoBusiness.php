@@ -50,8 +50,6 @@ class ProjetoBusiness extends BusinessAbstract implements ProjetoBusinessContrac
     public function atualizar(ProjetoDTO $projetoDTO, ProjetosPutRequest $projetosPutRequest = new ProjetosPutRequest()): ProjetoDTO
     {
         $this->can(PermissionEnum::ALTERAR_PROJETO->value);
-        if(!$this->projetoExists($projetoDTO->aplicacao_id, $projetoDTO->id))
-            throw new NotFoundException();
 
         $validator = Validator::make($projetoDTO->toArray(), $projetosPutRequest->rules());
         if ($validator->fails()) {
