@@ -9,7 +9,7 @@
 
 @section('content_header')
     <div class="row">
-        <h1 class="m-0 text-dark col-md-8">Checkpoint</h1>
+        <h1 class="m-0 text-dark col-md-8">Checkpoints</h1>
 
     </div>
 @stop

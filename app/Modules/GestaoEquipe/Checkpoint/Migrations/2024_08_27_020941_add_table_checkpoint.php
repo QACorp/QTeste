@@ -8,7 +8,7 @@ return new class extends Migration {
     /**
      * Run the migrations.
      */
-    const SCHEMA = 'gestao_equipe.';
+    const SCHEMA = 'gestao_equipes.';
 
     /**
      * Run the migrations.

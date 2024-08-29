@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Modules\GestaoEquipe\Alocacao\Repositorys;
+namespace App\Modules\GestaoEquipe\Alocacao\Repositories;
 
-use App\Modules\GestaoEquipe\Alocacao\Contracts\Repositorys\ProjetoRepositoryContract;
+use App\Modules\GestaoEquipe\Alocacao\Contracts\Repositories\ProjetoRepositoryContract;
 use App\Modules\Projetos\DTOs\ProjetoDTO;
 use App\Modules\Projetos\Models\Projeto;
 use App\Modules\Projetos\Repositorys\ProjetoRepository as BaseProjetoRepository;

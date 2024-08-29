@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\GestaoEquipe\Alocacao\Contracts\Repositorys;
+namespace App\Modules\GestaoEquipe\Alocacao\Contracts\Repositories;
 
 use App\Modules\GestaoEquipe\Alocacao\DTOs\AlocacaoDTO;
 use Illuminate\Support\Carbon;

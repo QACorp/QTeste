@@ -1,7 +1,8 @@
 <?php
 
 
-use App\Modules\GestaoEquipe\Alocacao\Enums\PermissionEnum;
+use App\Modules\GestaoEquipe\Alocacao\Enums\PermissionEnum as PermissionEnumAlocacao;
+use App\Modules\GestaoEquipe\Checkpoint\Enums\PermissionEnum as PermissionEnumCheckpoint;
 
 return [
     'menu' => [
@@ -15,15 +16,15 @@ return [
                 'text' => 'Alocações',
                 'route'  => 'gestao-equipe.alocacoes.index',
                 'icon'  => 'fas fa-users-cog',
-                'active' => ['gestao-equipe/alocacoes/*'],
-                'can'   => [PermissionEnum::VER_ALOCACAO->value, PermissionEnum::VER_MINHA_ALOCACAO->value],
+                'active' => ['alocacao/*'],
+                'can'   => [PermissionEnumAlocacao::VER_ALOCACAO->value, PermissionEnumAlocacao::VER_MINHA_ALOCACAO->value],
             ],
             [
                 'text' => 'Checkpoints',
-                'route'  => 'gestao-equipe.alocacoes.index',
+                'route'  => 'gestao-equipe.checkpoint.index',
                 'icon'  => 'fas fa-users',
-                'active' => ['gestao-equipe/alocacoes/*'],
-                'can'   => [PermissionEnum::VER_ALOCACAO->value, PermissionEnum::VER_MINHA_ALOCACAO->value],
+                'active' => ['checkpoint/*'],
+                'can'   => [PermissionEnumCheckpoint::VER_CHECKPOINT->value],
             ]
         ]
     ]

@@ -3,8 +3,8 @@
 namespace App\Modules\GestaoEquipe\Alocacao\Business;
 
 use App\Modules\GestaoEquipe\Alocacao\Contracts\Business\AlocacaoBusinessContract;
-use App\Modules\GestaoEquipe\Alocacao\Contracts\Repositorys\AlocacaoRepositoryContract;
-use App\Modules\GestaoEquipe\Alocacao\Contracts\Repositorys\ProjetoRepositoryContract;
+use App\Modules\GestaoEquipe\Alocacao\Contracts\Repositories\AlocacaoRepositoryContract;
+use App\Modules\GestaoEquipe\Alocacao\Contracts\Repositories\ProjetoRepositoryContract;
 use App\Modules\GestaoEquipe\Alocacao\DTOs\AlocacaoDTO;
 use App\Modules\GestaoEquipe\Alocacao\Enums\PermissionEnum;
 use App\System\Contracts\Business\EquipeBusinessContract;

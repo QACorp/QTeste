@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Modules\GestaoEquipe\Alocacao\Repositorys;
+namespace App\Modules\GestaoEquipe\Alocacao\Repositories;
 
-use App\Modules\GestaoEquipe\Alocacao\Contracts\Repositorys\AlocacaoRepositoryContract;
+use App\Modules\GestaoEquipe\Alocacao\Contracts\Repositories\AlocacaoRepositoryContract;
 use App\Modules\GestaoEquipe\Alocacao\DTOs\AlocacaoDTO;
 use App\Modules\GestaoEquipe\Alocacao\Models\Alocacao;
 use App\Modules\GestaoEquipe\Alocacao\Models\User;

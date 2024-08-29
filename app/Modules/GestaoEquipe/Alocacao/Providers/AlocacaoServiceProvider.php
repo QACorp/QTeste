@@ -4,10 +4,10 @@ namespace App\Modules\GestaoEquipe\Alocacao\Providers;
 
 use App\Modules\GestaoEquipe\Alocacao\Business\AlocacaoBusiness;
 use App\Modules\GestaoEquipe\Alocacao\Contracts\Business\AlocacaoBusinessContract;
-use App\Modules\GestaoEquipe\Alocacao\Contracts\Repositorys\AlocacaoRepositoryContract;
-use App\Modules\GestaoEquipe\Alocacao\Contracts\Repositorys\ProjetoRepositoryContract;
-use App\Modules\GestaoEquipe\Alocacao\Repositorys\AlocacaoRepository;
-use App\Modules\GestaoEquipe\Alocacao\Repositorys\ProjetoRepository;
+use App\Modules\GestaoEquipe\Alocacao\Contracts\Repositories\AlocacaoRepositoryContract;
+use App\Modules\GestaoEquipe\Alocacao\Contracts\Repositories\ProjetoRepositoryContract;
+use App\Modules\GestaoEquipe\Alocacao\Repositories\AlocacaoRepository;
+use App\Modules\GestaoEquipe\Alocacao\Repositories\ProjetoRepository;
 use App\Modules\Projetos\Models\CasoTeste;
 use App\Modules\Projetos\Providers\ProjetosServiceProvider;
 use App\Modules\Retrabalhos\Business\DashboardBusiness;
