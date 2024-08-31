@@ -4,6 +4,7 @@ namespace App\Modules\GestaoEquipe\Checkpoint\Repositories;
 
 use App\Modules\GestaoEquipe\Checkpoint\Contracts\Respositories\CheckpointRepositoryContract;
 use App\Modules\GestaoEquipe\Checkpoint\DTOs\CheckpointDTO;
+use Illuminate\Support\Collection;
 use Spatie\LaravelData\DataCollection;
 
 class CheckpointRepository implements CheckpointRepositoryContract
@@ -26,7 +27,7 @@ class CheckpointRepository implements CheckpointRepositoryContract
 
     public function list(int $idEquipe): DataCollection
     {
-        // TODO: Implement list() method.
+        return new DataCollection(CheckpointDTO::class, []);
     }
 
     public function getCheckpoint(int $id): CheckpointDTO

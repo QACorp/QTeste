@@ -3,11 +3,17 @@
 namespace App\Modules\GestaoEquipe\Checkpoint\Business;
 
 use App\Modules\GestaoEquipe\Checkpoint\Contracts\Business\CheckpointBusinessContract;
+use App\Modules\GestaoEquipe\Checkpoint\Contracts\Respositories\CheckpointRepositoryContract;
 use App\Modules\GestaoEquipe\Checkpoint\DTOs\CheckpointDTO;
 use Spatie\LaravelData\DataCollection;
 
 class CheckpointBusiness implements CheckpointBusinessContract
 {
+    public function __construct(
+        private readonly CheckpointRepositoryContract $checkpointRepository
+    )
+    {
+    }
 
     public function create(CheckpointDTO $checkpointDTO, int $idEquipe): CheckpointDTO
     {
@@ -26,7 +32,7 @@ class CheckpointBusiness implements CheckpointBusinessContract
 
     public function list(int $idEquipe): DataCollection
     {
-        // TODO: Implement list() method.
+        return $this->checkpointRepository->list($idEquipe);
     }
 
     public function getCheckpoint(int $id): CheckpointDTO
