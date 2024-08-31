@@ -18,7 +18,7 @@ const props = defineProps({
     <v-row class="px-2">
         <v-col md="12" >
             <modal-edit-alocacao
-                v-if="!props.alocacao.concluida && moment(props.alocacao.termino).isAfter() && helperStore.editAlocacao === true"
+                v-if="!props.alocacao.concluida && moment(props.alocacao.termino,'YYYY-MM-DD').isSameOrAfter(moment(new Date().setHours(0,0,0,0))) && helperStore.editAlocacao === true"
                 :alocacao-id="props.alocacao.id"
             />
             <finish-alocacao v-if="helperStore.finishAlocacao === true" :alocacao-id="props.alocacao.id"/>
