@@ -4,10 +4,12 @@ namespace App\Modules\GestaoEquipe\Checkpoint\Models;
 
 use App\Modules\Projetos\Models\Projeto;
 use App\System\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Checkpoint extends Model
 {
@@ -43,6 +45,12 @@ class Checkpoint extends Model
     public function user():BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function newQuery(): Builder
+    {
+        return parent::newQuery()
+            ->where('criador.empresa_id', Auth::user()->empresa_id);
     }
 
 }

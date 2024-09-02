@@ -4,9 +4,13 @@ namespace App\Modules\GestaoEquipe\Checkpoint\Providers;
 
 
 use App\Modules\GestaoEquipe\Checkpoint\Business\CheckpointBusiness;
+use App\Modules\GestaoEquipe\Checkpoint\Business\UserBusiness;
 use App\Modules\GestaoEquipe\Checkpoint\Contracts\Business\CheckpointBusinessContract;
+use App\Modules\GestaoEquipe\Checkpoint\Contracts\Business\UserBusinessContract;
 use App\Modules\GestaoEquipe\Checkpoint\Contracts\Respositories\CheckpointRepositoryContract;
+use App\Modules\GestaoEquipe\Checkpoint\Contracts\Respositories\UserRepositoryContract;
 use App\Modules\GestaoEquipe\Checkpoint\Repositories\CheckpointRepository;
+use App\Modules\GestaoEquipe\Checkpoint\Repositories\UserRepository;
 use App\Modules\Projetos\Providers\ProjetosServiceProvider;
 
 use App\System\Impl\ServiceProviderAbstract;
@@ -19,7 +23,9 @@ class CheckpointServiceProvider extends ServiceProviderAbstract
     public static string $view_namespace = 'checkpoint';
     public $bindings = [
         CheckpointBusinessContract::class => CheckpointBusiness::class,
-        CheckpointRepositoryContract::class => CheckpointRepository::class
+        CheckpointRepositoryContract::class => CheckpointRepository::class,
+        UserBusinessContract::class => UserBusiness::class,
+        UserRepositoryContract::class => UserRepository::class
     ];
     /**
      * Register services.

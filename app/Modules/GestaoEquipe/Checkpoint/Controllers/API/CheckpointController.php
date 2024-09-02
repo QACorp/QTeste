@@ -22,5 +22,13 @@ class CheckpointController extends Controller
         }
         return response()->json($this->checkpointBusiness->list($idEquipe), 200);
     }
+    public function listaUsuarios(Request $request)
+    {
+        if(!$idEquipe = $request->get('idEquipe')){
+            return response()->json(['message' => 'O id da equipe é obrigatório'], 400);
+        }
+        return response()->json($this->checkpointBusiness->getListUser($idEquipe, intval($request->get('page')), intval($request->get('limit'))), 200);
+
+    }
 
 }

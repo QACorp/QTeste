@@ -3,14 +3,21 @@
 namespace App\Modules\GestaoEquipe\Checkpoint\Business;
 
 use App\Modules\GestaoEquipe\Checkpoint\Contracts\Business\CheckpointBusinessContract;
+use App\Modules\GestaoEquipe\Checkpoint\Contracts\Business\UserBusinessContract;
 use App\Modules\GestaoEquipe\Checkpoint\Contracts\Respositories\CheckpointRepositoryContract;
 use App\Modules\GestaoEquipe\Checkpoint\DTOs\CheckpointDTO;
+use App\System\Contracts\Business\EquipeBusinessContract;
+use App\System\Exceptions\NotFoundException;
+use Illuminate\Support\Facades\Auth;
 use Spatie\LaravelData\DataCollection;
+use Spatie\LaravelData\PaginatedDataCollection;
 
 class CheckpointBusiness implements CheckpointBusinessContract
 {
     public function __construct(
-        private readonly CheckpointRepositoryContract $checkpointRepository
+        private readonly CheckpointRepositoryContract $checkpointRepository,
+        private readonly UserBusinessContract $userBusiness,
+        private readonly EquipeBusinessContract $equipeBusiness
     )
     {
     }
@@ -38,5 +45,13 @@ class CheckpointBusiness implements CheckpointBusinessContract
     public function getCheckpoint(int $id): CheckpointDTO
     {
         // TODO: Implement getCheckpoint() method.
+    }
+
+    public function getListUser(int $idEquipe, int $page = null, int $limit = null): DataCollection|PaginatedDataCollection
+    {
+        if(!$this->equipeBusiness->hasEquipe($idEquipe, Auth::user()->getAuthIdentifier())){
+            throw new NotFoundException('Equipe não encontrada');
+        }
+        return $this->userBusiness->listarUsuariosPaginado($idEquipe, $page, $limit);
     }
 }
