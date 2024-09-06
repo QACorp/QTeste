@@ -8,8 +8,10 @@ use App\Modules\GestaoEquipe\Checkpoint\Business\UserBusiness;
 use App\Modules\GestaoEquipe\Checkpoint\Contracts\Business\CheckpointBusinessContract;
 use App\Modules\GestaoEquipe\Checkpoint\Contracts\Business\UserBusinessContract;
 use App\Modules\GestaoEquipe\Checkpoint\Contracts\Respositories\CheckpointRepositoryContract;
+use App\Modules\GestaoEquipe\Checkpoint\Contracts\Respositories\ProjetoRepositoryContract;
 use App\Modules\GestaoEquipe\Checkpoint\Contracts\Respositories\UserRepositoryContract;
 use App\Modules\GestaoEquipe\Checkpoint\Repositories\CheckpointRepository;
+use App\Modules\GestaoEquipe\Checkpoint\Repositories\ProjetoRepository;
 use App\Modules\GestaoEquipe\Checkpoint\Repositories\UserRepository;
 use App\Modules\Projetos\Providers\ProjetosServiceProvider;
 
@@ -25,7 +27,8 @@ class CheckpointServiceProvider extends ServiceProviderAbstract
         CheckpointBusinessContract::class => CheckpointBusiness::class,
         CheckpointRepositoryContract::class => CheckpointRepository::class,
         UserBusinessContract::class => UserBusiness::class,
-        UserRepositoryContract::class => UserRepository::class
+        UserRepositoryContract::class => UserRepository::class,
+        ProjetoRepositoryContract::class => ProjetoRepository::class
     ];
     /**
      * Register services.

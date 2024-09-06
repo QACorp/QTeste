@@ -3,6 +3,7 @@ import {onMounted, ref} from "vue";
 import {UsuarioInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Usuario.interface";
 import {axiosApi} from "../../../../../../../resources/js/app";
 import {getIdEquipe} from "../../../../../../../resources/js/APIUtils/BaseAPI";
+import InserirCheckpoint from "./InserirCheckpoint.vue";
 
 const itemsPerPage = ref(10);
 const search = ref('');
@@ -15,11 +16,11 @@ const headers = [
         sortable: false,
         key: 'name',
     },
-    { title: 'Ações', key: 'actions', align: 'end', sortable: false },
+    { title: 'Ações', key: 'id', align: 'end', sortable: false },
 ];
 const listUsuario = ref<UsuarioInterface[]>();
 onMounted(async () => {
-    await loadItems({});
+    //await loadItems({});
 });
 
 
@@ -47,10 +48,8 @@ const loadItems = async (options: any) => {
         loading-text="Carregando..."
         @update:options="loadItems"
     >
-        <template v-slot:item.actions="{ value }">
-            <v-btn color="primary" @click="">
-                <v-icon>mdi-plus-circle-outline</v-icon>
-            </v-btn>
+        <template v-slot:item.id="{ value }">
+            <inserir-checkpoint :id-usuario="value"/>
         </template>
     </v-data-table-server>
 </template>

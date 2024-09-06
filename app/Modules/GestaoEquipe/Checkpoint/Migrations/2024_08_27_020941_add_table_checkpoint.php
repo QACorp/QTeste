@@ -21,7 +21,7 @@ return new class extends Migration {
             $table->foreignId('criador_user_id')->constrained('users');
             $table->foreignId('user_id')->constrained('users');
             $table->text('descricao');
-            $table->dateTime('data');
+            $table->date('data');
             $table->string('tarefa')->nullable();
             $table->boolean('compareceu');
             $table->timestamps();

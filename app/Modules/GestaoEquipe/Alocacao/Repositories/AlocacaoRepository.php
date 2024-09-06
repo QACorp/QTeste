@@ -107,4 +107,17 @@ class AlocacaoRepository extends BaseRepository implements AlocacaoRepositoryCon
         return UserDTO::collection($usuarios);
     }
 
+    public function listarAlocacoesPorData(int $idEquipe, int $idUsuario, Carbon $data): DataCollection
+    {
+        $alocacoes = $this->getQUeryBuilderSelectAlocacao($idEquipe)
+            ->where(function(Builder $query) use ($data){
+                $query->whereRaw("? BETWEEN inicio AND termino");
+                $query->setBindings([
+                    $data->format('Y-m-d')
+                ]);
+            })
+            ->where('user_id', $idUsuario)
+            ->get();
+        return AlocacaoDTO::collection($alocacoes);
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Modules\GestaoEquipe\Checkpoint\Repositories;
 
 use App\Modules\GestaoEquipe\Checkpoint\Contracts\Respositories\CheckpointRepositoryContract;
 use App\Modules\GestaoEquipe\Checkpoint\DTOs\CheckpointDTO;
+use App\Modules\GestaoEquipe\Checkpoint\Models\Checkpoint;
 use Illuminate\Support\Collection;
 use Spatie\LaravelData\DataCollection;
 
@@ -34,4 +35,16 @@ class CheckpointRepository implements CheckpointRepositoryContract
     {
         // TODO: Implement getCheckpoint() method.
     }
+
+    public function getLastCheckpoint(int $idEquipe, int $idUsuario): ?CheckpointDTO
+    {
+        $checkpoint = Checkpoint::select('checkpoints.*')
+                                ->where('equipe_id', $idEquipe)
+                                ->where('user_id', $idUsuario)
+                                ->orderBy('data', 'desc')
+                                ->with('projeto','user', 'criador', 'projeto.aplicacao', 'alocacao')
+                                ->first();
+        return $checkpoint ? CheckpointDTO::from($checkpoint) : null;
+    }
+
 }

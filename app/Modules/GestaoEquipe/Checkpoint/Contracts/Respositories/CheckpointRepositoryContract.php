@@ -12,5 +12,5 @@ interface CheckpointRepositoryContract
     public function delete(int $id): bool;
     public function list(int $idEquipe): DataCollection;
     public function getCheckpoint(int $id): CheckpointDTO;
-
+    public function getLastCheckpoint(int $idEquipe, int $idUsuario): ?CheckpointDTO;
 }

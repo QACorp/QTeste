@@ -2,6 +2,7 @@
 
 namespace App\Modules\GestaoEquipe\Checkpoint\Models;
 
+use App\Modules\GestaoEquipe\Alocacao\Models\Alocacao;
 use App\Modules\Projetos\Models\Projeto;
 use App\System\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -23,7 +24,9 @@ class Checkpoint extends Model
         'descricao',
         'data',
         'tarefa',
-        'compareceu'
+        'compareceu',
+        'equipe_id',
+        'alocacao_id'
     ];
     protected $dates = [
         'data',
@@ -47,9 +50,15 @@ class Checkpoint extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function alocacao():BelongsTo
+    {
+        return $this->belongsTo(Alocacao::class, 'alocacao_id');
+    }
+
     public function newQuery(): Builder
     {
         return parent::newQuery()
+            ->join('users as criador', 'criador.id', '=', 'checkpoints.criador_user_id')
             ->where('criador.empresa_id', Auth::user()->empresa_id);
     }
 
