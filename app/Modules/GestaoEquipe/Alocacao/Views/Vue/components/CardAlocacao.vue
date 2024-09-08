@@ -57,7 +57,7 @@ const defineBackgroud = (days: number)=>{
                             v-if="alocacao.projeto_id !== null"
                             activator="parent"
                             location="bottom"
-                        >{{ alocacao.projeto.nome }}</v-tooltip>
+                        ><span v-html="alocacao.projeto.nome"></span> </v-tooltip>
 
                     </span>
         </v-card-subtitle>
@@ -65,7 +65,7 @@ const defineBackgroud = (days: number)=>{
             <v-tooltip
                 activator="parent"
                 location="bottom"
-            >{{ alocacao.observacao }}</v-tooltip>
+            ><span v-html="alocacao.observacao "></span> </v-tooltip>
             <div class="row">
                 <div class="col-md-6">
                     <span>Início: {{ moment(alocacao.inicio).format('DD/MM/YYYY') }}</span>

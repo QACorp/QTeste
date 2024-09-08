@@ -97,10 +97,9 @@ const saveCheckpoint = async () => {
       class="p-2"
       size="sm"
       variant="tonal"
-      color="primary"
       @click="dialog = true"
   >
-    <v-icon size="sm">mdi-plus-circle-outline</v-icon>
+    <v-icon size="sm">mdi-comment-plus-outline</v-icon>
   </v-btn>
   <v-dialog
       data-bs-focus="false"
@@ -112,6 +111,7 @@ const saveCheckpoint = async () => {
     <v-card >
       <v-toolbar title="Inserir checkpoint">
         <v-btn
+            title="Adicionar checkpoint"
             icon="mdi-close"
             @click="dialog = false"
         ></v-btn>

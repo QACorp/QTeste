@@ -11,10 +11,15 @@ import moment from "moment";
 import {getIdEquipe} from "../../../../../../../resources/js/APIUtils/BaseAPI";
 import {axiosApi} from "../../../../../../../resources/js/app";
 import {UsuarioInterface} from "../../../../../Retrabalhos/Views/Vue/Interfaces/Usuario.interface";
+import CheckpointInterface from "../../../../Checkpoint/Views/Vue/Interfaces/Checkpoint.interface";
 
 const props = defineProps({
     alocacaoId: {
         type: Number,
+        required: true
+    },
+    canEdit: {
+        type: Boolean,
         required: true
     }
 })
@@ -23,11 +28,11 @@ const dialog = ref<boolean>(false);
 const alocacao = ref<AlocacaoInterface>({} as AlocacaoInterface);
 const usuarios = ref<UsuarioInterface[]>(null);
 const projetos = ref<ProjetoInterface[]>(null);
-
+const checkpoints = ref<CheckpointInterface[]>(null)
 const $toast = useToast();
-watch(dialog, (newValue) => {
+watch(dialog, async (newValue) => {
     if(dialog){
-        axiosApi.get(`alocacao/${props.alocacaoId}?idEquipe=${getIdEquipe()}`)
+        await axiosApi.get(`alocacao/${props.alocacaoId}?idEquipe=${getIdEquipe()}`)
             .then(response => {
                 alocacao.value = response.data;
 
@@ -41,7 +46,9 @@ watch(dialog, (newValue) => {
             })
             .catch(error => {
                 $toast.error(error.response.data.message);
-            })
+            });
+        await findCheckpoints();
+
 
     }
 });
@@ -80,6 +87,15 @@ const findProjetos = () => {
             $toast.error(error.response.data.message);
         })
 }
+const findCheckpoints = async () => {
+    await axiosApi.get(`checkpoint/alocacao/${props.alocacaoId}?idEquipe=${getIdEquipe()}`)
+        .then(response => {
+            checkpoints.value = response.data;
+        })
+        .catch(error => {
+            $toast.error(error.response.data.message);
+        })
+}
 </script>
 
 <template>
@@ -95,8 +111,9 @@ const findProjetos = () => {
         data-bs-focus="false"
         v-model="dialog"
         min-width="50%"
+        max-height="90dvh"
         persistent
-        scroll-strategy="none"
+        scroll-strategy="block"
     >
         <v-card >
             <v-toolbar title="Alterar alocação">
@@ -106,109 +123,174 @@ const findProjetos = () => {
                 ></v-btn>
             </v-toolbar>
             <v-card-text>
-                <v-form ref="form" validate-on="blur" @submit.prevent="saveAlocacao">
-                    <v-row dense>
-                        <v-col cols="12" sm="5" md="5">
-                            <v-text-field
-                                type="date"
-                                v-model="alocacao.inicio"
-                                label="Início"
-                                size="large"
-                                :rules="[
+                <v-row class="h-screen">
+                    <v-col cols="6" md="6" sm="12" class="h-screen overflow-auto">
+                        <h3>Checkpoints</h3>
+                        <v-timeline side="end" v-if="checkpoints !== null" truncate-line="end">
+
+                            <v-timeline-item
+                                v-for="checkpoint in checkpoints"
+                                dot-color="primary"
+                                size="small"
+                            >
+                                <template v-slot:opposite>
+                                    <span class="font-weight-bold">{{ moment(checkpoint.data).format('DD/MM/YYYY') }}</span>
+                                </template>
+                                <v-alert
+                                    variant="tonal"
+                                    :value="true"
+                                >
+                                    <v-row class="mb-0">
+                                        <v-col cols="12" class="mb-0 pb-0" >
+                                            <span v-if="checkpoint.criador != null" class="font-italic text-xs text-black"> Por {{ checkpoint.criador.name }}</span>
+                                            <v-skeleton-loader v-else width="100" height="10"></v-skeleton-loader>
+                                        </v-col>
+
+                                        <v-col cols="2" class="mt-0" v-if="checkpoint.tarefa">
+                                            <span class="font-italic text-xs text-black" title="Tarefa">  {{ checkpoint.tarefa }}</span>
+                                        </v-col>
+                                        <v-col cols="10" class="mt-0" v-if="checkpoint.projeto">
+                                            <span class="font-italic text-xs text-black" title="Projeto"> {{ checkpoint.projeto.nome }}</span>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row class="p-0 mt-0">
+                                        <v-col cols="12">
+                                            {{ checkpoint.descricao}}
+                                        </v-col>
+                                    </v-row>
+                                </v-alert>
+                            </v-timeline-item>
+                            <v-timeline-item
+                                dot-color="success"
+                                size="small"
+                            >
+                                <template v-slot:opposite>
+                                    <span class="font-weight-bold">{{ moment(alocacao.inicio).format('DD/MM/YYYY') }}</span>
+                                </template>
+                                <v-alert
+                                    variant="tonal"
+                                    :value="true"
+                                >
+                                    Início
+                                </v-alert>
+                            </v-timeline-item>
+                        </v-timeline>
+                        <v-skeleton-loader v-else type="list-item" width="100%" height="100"></v-skeleton-loader>
+                    </v-col>
+                    <v-col cols="6" md="6" sm="12">
+                        <v-form ref="form" validate-on="blur" @submit.prevent="saveAlocacao">
+                            <v-row dense>
+                                <v-col cols="12" sm="5" md="5">
+                                    <v-text-field
+                                        type="date"
+                                        :disabled="!props.canEdit"
+                                        v-model="alocacao.inicio"
+                                        label="Início"
+                                        size="large"
+                                        :rules="[
                                         value => alocacao.termino && moment(alocacao.termino).isBefore(alocacao.inicio) ? 'A data de término deve ser maior que a data de início' : true,
                                         value => !alocacao.inicio ? 'Selecione a data de início' : true
                                      ]"
-                                required
-                            ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="5" md="5">
-                            <v-text-field
-                                type="date"
-                                v-model="alocacao.termino"
-                                label="Término"
-                                size="large"
-                                :rules="[
+                                        required
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col cols="12" sm="5" md="5">
+                                    <v-text-field
+                                        type="date"
+                                        v-model="alocacao.termino"
+                                        label="Término"
+                                        size="large"
+                                        :disabled="!props.canEdit"
+                                        :rules="[
                                     value => alocacao.inicio && moment(alocacao.inicio).isAfter(alocacao.termino) ? 'A data de término deve ser maior que a data de início' : true,
                                     value => !alocacao.termino ? 'Selecione a data de término' : true
                                     ]"
-                                required
-                            ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="2" md="2">
-                            <v-btn @click="findUsers()" size="x-large" variant="tonal" class="py-3">
-                                <v-icon >mdi-account-search</v-icon>
-                            </v-btn>
-                        </v-col>
-                    </v-row>
-                    <v-row dense>
-                        <v-col cols="12" sm="3" md="3" v-if="usuarios">
-                            <v-select
-                                v-model="alocacao.user"
-                                @update:modelValue="() => {alocacao.user_id = alocacao.user.id}"
-                                :items="usuarios"
-                                :rules="[value => !alocacao.user ?  'Selecione um usuário' : true]"
-                                return-object
-                                item-title="name"
-                                item-value="id"
-                                label="Usuário"
-                                required
-                            ></v-select>
-                        </v-col>
-                        <v-col cols="12" sm="3" md="3" v-if="usuarios">
-                            <v-text-field
-                                type="text"
-                                v-model="alocacao.tarefa"
-                                label="Tarefa"
-                                size="large"
-                            ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="3" md="3" v-if="usuarios">
-                            <v-select
-                                @update:menu="() => {alocacao.natureza === NaturezaEnum.PROJETO ? findProjetos(): '';}"
-                                v-model="alocacao.natureza"
-                                :rules="[value => !alocacao.natureza ?  'Selecione a natureza da alocação' : true]"
-                                :items="[
+                                        required
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col cols="12" sm="2" md="2">
+                                    <v-btn @click="findUsers()" :disabled="!props.canEdit" size="x-large" variant="tonal" class="py-3">
+                                        <v-icon >mdi-account-search</v-icon>
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                            <v-row dense>
+                                <v-col cols="12" sm="3" md="3" v-if="usuarios">
+                                    <v-select
+                                        v-model="alocacao.user"
+                                        @update:modelValue="() => {alocacao.user_id = alocacao.user.id}"
+                                        :items="usuarios"
+                                        :rules="[value => !alocacao.user ?  'Selecione um usuário' : true]"
+                                        return-object
+                                        :disabled="!props.canEdit"
+                                        item-title="name"
+                                        item-value="id"
+                                        label="Usuário"
+                                        required
+                                    ></v-select>
+                                </v-col>
+                                <v-col cols="12" sm="3" md="3" v-if="usuarios">
+                                    <v-text-field
+                                        type="text"
+                                        v-model="alocacao.tarefa"
+                                        label="Tarefa"
+                                        :disabled="!props.canEdit"
+                                        size="large"
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col cols="12" sm="3" md="3" v-if="usuarios">
+                                    <v-select
+                                        @update:menu="() => {alocacao.natureza === NaturezaEnum.PROJETO ? findProjetos(): '';}"
+                                        v-model="alocacao.natureza"
+                                        :rules="[value => !alocacao.natureza ?  'Selecione a natureza da alocação' : true]"
+                                        :items="[
                                     NaturezaEnum.SUSTENTACAO,
                                     NaturezaEnum.MELHORIA,
                                     NaturezaEnum.PROJETO
                                 ]"
-                                label="Natureza da alocação"
-                                required
-                            ></v-select>
-                        </v-col>
-                        <v-col cols="12" sm="3" md="3" v-if="alocacao.natureza === NaturezaEnum.PROJETO && projetos">
-                            <v-select
-                                v-model="alocacao.projeto"
-                                @update:modelValue="alocacao.projeto_id = alocacao.projeto.id"
-                                :items="projetos"
-                                :rules="[value => !alocacao.projeto && alocacao.natureza === NaturezaEnum.PROJETO ?  'Selecione um projeto' : true]"
-                                item-title="nome"
-                                return-object
-                                item-value="id"
-                                label="Projeto"
-                                required
-                            ></v-select>
-                        </v-col>
+                                        label="Natureza da alocação"
+                                        required
+                                        :disabled="!props.canEdit"
+                                    ></v-select>
+                                </v-col>
+                                <v-col cols="12" sm="3" md="3" v-if="alocacao.natureza === NaturezaEnum.PROJETO && projetos">
+                                    <v-select
+                                        v-model="alocacao.projeto"
+                                        @update:modelValue="alocacao.projeto_id = alocacao.projeto.id"
+                                        :items="projetos"
+                                        :rules="[value => !alocacao.projeto && alocacao.natureza === NaturezaEnum.PROJETO ?  'Selecione um projeto' : true]"
+                                        item-title="nome"
+                                        return-object
+                                        item-value="id"
+                                        label="Projeto"
+                                        required
+                                        :disabled="!props.canEdit"
+                                    ></v-select>
+                                </v-col>
 
-                    </v-row>
-                    <v-row dense>
-                        <v-col cols="12" sm="12" md="12" v-if="usuarios">
-                            <label for="observacao">Observação</label>
-                            <Editor
-                                licenseKey="gpl"
-                                v-model="alocacao.observacao"
-                            />
+                            </v-row>
+                            <v-row dense>
+                                <v-col cols="12" sm="12" md="12" v-if="usuarios">
+                                    <label for="observacao">Observação</label>
+                                    <Editor
+                                        :disabled="!props.canEdit"
+                                        licenseKey="gpl"
+                                        v-model="alocacao.observacao"
+                                    />
 
-                        </v-col>
-                    </v-row>
+                                </v-col>
+                            </v-row>
 
-                    <v-row dense>
-                        <v-col cols="12" sm="12" md="12" v-if="usuarios">
-                            <v-spacer></v-spacer>
-                            <v-btn type="submit" color="primary" variant="flat">Salvar</v-btn>
-                        </v-col>
-                    </v-row>
-                </v-form>
+                            <v-row dense>
+                                <v-col cols="12" sm="12" md="12" v-if="usuarios">
+                                    <v-spacer></v-spacer>
+                                    <v-btn :disabled="!props.canEdit" type="submit" color="primary" variant="flat">Salvar</v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-form>
+                    </v-col>
+                </v-row>
+
             </v-card-text>
         </v-card>
     </v-dialog>
