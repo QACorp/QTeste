@@ -11,7 +11,6 @@ use Spatie\LaravelData\Attributes\Validation\Required;
 
 class CheckpointDTO extends DTO
 {
-//Criar DTO com base no model Checkpoint.php
     public ?int $id;
     public ?int $projeto_id;
     public ?int $alocacao_id;

@@ -3,11 +3,14 @@
 namespace App\Modules\GestaoEquipe\Checkpoint\Controllers\API;
 
 use App\Modules\GestaoEquipe\Checkpoint\Contracts\Business\CheckpointBusinessContract;
+use App\Modules\GestaoEquipe\Checkpoint\DTOs\CheckpointDTO;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnauthorizedException;
 use App\System\Http\Controllers\Controller;
+use App\System\Utils\EquipeUtils;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 class CheckpointController extends Controller
@@ -63,7 +66,33 @@ class CheckpointController extends Controller
         }catch (NotFoundException | UnauthorizedException $e){
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
-
     }
-
+    public function salvar(Request $request)
+    {
+        if(!$idEquipe = $request->get('idEquipe')){
+            return response()->json(['message' => 'O id da equipe é obrigatório'], 400);
+        }
+        $checkpointDTO =  CheckpointDTO::from($request->all());
+        $checkpointDTO->equipe_id = $idEquipe;
+        $checkpointDTO->criador_user_id = Auth::guard('api')->user()->getAuthIdentifier();
+        try {
+            return response()->json($this->checkpointBusiness->create($checkpointDTO, $idEquipe), 200);
+        }catch (NotFoundException | UnauthorizedException $e){
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
+    }
+    public function listarCheckpointPorAlocacao(Request $request, int $idAlocacao)
+    {
+        if(!$idEquipe = $request->get('idEquipe')){
+            return response()->json(['message' => 'O id da equipe é obrigatório'], 400);
+        }
+        try {
+            return response()->json(
+                $this->checkpointBusiness
+                    ->listarCheckpointPorAlocacao($idEquipe, $idAlocacao),
+                200);
+        }catch (NotFoundException | UnauthorizedException $e){
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
+    }
 }

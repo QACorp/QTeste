@@ -19,11 +19,6 @@ const headers = [
     { title: 'Ações', key: 'id', align: 'end', sortable: false },
 ];
 const listUsuario = ref<UsuarioInterface[]>();
-onMounted(async () => {
-    //await loadItems({});
-});
-
-
 
 const loadItems = async (options: any) => {
     loading.value = true;

@@ -13,4 +13,5 @@ interface CheckpointRepositoryContract
     public function list(int $idEquipe): DataCollection;
     public function getCheckpoint(int $id): CheckpointDTO;
     public function getLastCheckpoint(int $idEquipe, int $idUsuario): ?CheckpointDTO;
+    public function listarCheckpointPorAlocacao(int $idEquipe, $idAlocacao): DataCollection;
 }

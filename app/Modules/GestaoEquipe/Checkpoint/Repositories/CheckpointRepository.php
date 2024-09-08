@@ -13,7 +13,9 @@ class CheckpointRepository implements CheckpointRepositoryContract
 
     public function create(CheckpointDTO $checkpointDTO, int $idEquipe): CheckpointDTO
     {
-        // TODO: Implement create() method.
+        $checkpoint = new Checkpoint($checkpointDTO->toArray());
+        $checkpoint->save();
+        return CheckpointDTO::from($checkpoint);
     }
 
     public function update(CheckpointDTO $checkpointDTO): CheckpointDTO
@@ -42,9 +44,21 @@ class CheckpointRepository implements CheckpointRepositoryContract
                                 ->where('equipe_id', $idEquipe)
                                 ->where('user_id', $idUsuario)
                                 ->orderBy('data', 'desc')
+                                ->orderBy('id', 'desc')
                                 ->with('projeto','user', 'criador', 'projeto.aplicacao', 'alocacao')
                                 ->first();
         return $checkpoint ? CheckpointDTO::from($checkpoint) : null;
     }
 
+    public function listarCheckpointPorAlocacao(int $idEquipe, $idAlocacao): DataCollection
+    {
+        $checkpoint = Checkpoint::select('checkpoints.*')
+            ->where('equipe_id', $idEquipe)
+            ->where('alocacao_id', $idAlocacao)
+            ->orderBy('data', 'desc')
+            ->orderBy('id', 'desc')
+            ->with('projeto','user', 'criador', 'projeto.aplicacao', 'alocacao')
+            ->get();
+        return CheckpointDTO::collection($checkpoint);
+    }
 }

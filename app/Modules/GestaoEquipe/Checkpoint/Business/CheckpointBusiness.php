@@ -12,6 +12,7 @@ use App\Modules\GestaoEquipe\Checkpoint\Enums\PermissionEnum;
 use App\Modules\GestaoEquipe\Alocacao\Enums\PermissionEnum as PermissionAlocacaoEnum;
 use App\System\Contracts\Business\EquipeBusinessContract;
 use App\System\Exceptions\NotFoundException;
+use App\System\Exceptions\UnauthorizedException;
 use App\System\Impl\BusinessAbstract;
 use Illuminate\Support\Facades\Auth;
 use Spatie\LaravelData\DataCollection;
@@ -31,7 +32,17 @@ class CheckpointBusiness extends BusinessAbstract implements CheckpointBusinessC
 
     public function create(CheckpointDTO $checkpointDTO, int $idEquipe): CheckpointDTO
     {
-        // TODO: Implement create() method.
+        $this->can(PermissionEnum::CRIAR_CHECKPOINT->value, 'api');
+        if(!$this->equipeBusiness->hasEquipe($idEquipe, Auth::user()->getAuthIdentifier())){
+            throw new NotFoundException('Equipe não encontrada.');
+        }
+        if(!$this->equipeBusiness->hasEquipe($checkpointDTO->equipe_id, $checkpointDTO->criador_user_id)){
+            throw new UnauthorizedException('Este usuário criador não pertence à equipe.');
+        }
+        if(!$this->equipeBusiness->hasEquipe($checkpointDTO->equipe_id, $checkpointDTO->user_id)){
+            throw new UnauthorizedException('Este usuário não pertence a equipe.');
+        }
+        return $this->checkpointRepository->create($checkpointDTO, $idEquipe);
     }
 
     public function update(CheckpointDTO $checkpointDTO): CheckpointDTO
@@ -88,5 +99,14 @@ class CheckpointBusiness extends BusinessAbstract implements CheckpointBusinessC
         }
 
         return $this->alocacaoRepository->listarAlocacoesPorData($idEquipe, $idUsuario, $data);
+    }
+
+    public function listarCheckpointPorAlocacao(int $idEquipe, $idAlocacao): DataCollection
+    {
+        $this->can(PermissionEnum::VER_CHECKPOINT->value, 'api');
+        if(!$this->equipeBusiness->hasEquipe($idEquipe, Auth::user()->getAuthIdentifier())){
+            throw new NotFoundException('Equipe não encontrada');
+        }
+        return $this->checkpointRepository->listarCheckpointPorAlocacao($idEquipe, $idAlocacao);
     }
 }

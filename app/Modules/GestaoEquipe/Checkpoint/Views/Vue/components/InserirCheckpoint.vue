@@ -6,7 +6,9 @@ import {getIdEquipe} from "../../../../../../../resources/js/APIUtils/BaseAPI";
 import moment from "moment";
 import {AlocacaoInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Alocacao.interface";
 import {ProjetoInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Projeto.interface";
+import {useToast} from "vue-toast-notification";
 
+const $toast = useToast();
 const props = defineProps({
   idUsuario: {
     type: Number,
@@ -39,7 +41,6 @@ watch(dialog, async () => {
     await findAlocacao(checkpoint.value.data);
 
   }
-
 });
 const updateAlocacao = () => {
   if(checkpoint.value.alocacao) {
@@ -74,8 +75,19 @@ const findAlocacao = async (data: string) => {
         console.log(error)
       })
 }
-const saveCheckpoint = () => {
-  console.log('salvar checkpoint');
+const saveCheckpoint = async () => {
+  await axiosApi.post(`checkpoint/?idEquipe=${getIdEquipe()}`, checkpoint.value)
+      .then(response => {
+        $toast.success('Checkpoint inserido com sucesso!', {
+          duration: 5000
+        });
+        dialog.value = false;
+      })
+      .catch(error => {
+        $toast.error(error.response.data.message, {
+          duration: 5000
+        });
+      })
 }
 </script>
 
@@ -141,7 +153,6 @@ const saveCheckpoint = () => {
                           {{ lastCheckPoint.descricao}}
                         </v-col>
                       </v-row>
-
                     </v-alert>
                   </v-timeline-item>
                 </v-timeline>
