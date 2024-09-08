@@ -52,9 +52,9 @@ class CheckpointController extends Controller
 
     }
 
-    public function listaAlocacaoPorUsuario(Request $request, int $idUsuario, string $data)
+    public function listaAlocacaoPorData(Request $request, int $idUsuario, string $data)
     {
-        $data = Carbon::make($data);
+        $data = Carbon::createFromFormat('Y-m-d', $data);
         if(!$idEquipe = $request->get('idEquipe')){
             return response()->json(['message' => 'O id da equipe é obrigatório'], 400);
         }

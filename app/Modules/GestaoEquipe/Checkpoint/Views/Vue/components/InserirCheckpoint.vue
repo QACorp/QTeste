@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import {onMounted, ref, watch} from "vue";
+import {onMounted, ref, watch, watchEffect} from "vue";
 import CheckpointInterface from "../Interfaces/Checkpoint.interface";
 import {axiosApi} from "../../../../../../../resources/js/app";
 import {getIdEquipe} from "../../../../../../../resources/js/APIUtils/BaseAPI";
 import moment from "moment";
-import {NaturezaEnum} from "../../../../Alocacao/Views/Vue/Enums/Natureza.enum";
+import {AlocacaoInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Alocacao.interface";
 import {ProjetoInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Projeto.interface";
 
 const props = defineProps({
@@ -17,6 +17,7 @@ const dialog = ref(false);
 const lastCheckPoint = ref<CheckpointInterface>({} as CheckpointInterface);
 const checkpoint = ref<CheckpointInterface>({} as CheckpointInterface);
 const projetos = ref<ProjetoInterface>([]);
+const alocacoes = ref<AlocacaoInterface>([]);
 
 watch(dialog, async () => {
   if(dialog.value){
@@ -30,14 +31,49 @@ watch(dialog, async () => {
         })
         .catch(error => {
           console.log(error)
-        })
+        });
     checkpoint.value = {} as CheckpointInterface;
     checkpoint.value.data = moment().format('YYYY-MM-DD');
     checkpoint.value.user_id = props.idUsuario;
     checkpoint.value.compareceu = false;
+    await findAlocacao(checkpoint.value.data);
+
   }
 
 });
+const updateAlocacao = () => {
+  if(checkpoint.value.alocacao) {
+    checkpoint.value.alocacao_id = checkpoint.value.alocacao.id;
+    checkpoint.value.projeto_id = checkpoint.value.alocacao.projeto_id;
+    checkpoint.value.tarefa = checkpoint.value.alocacao.tarefa;
+    checkpoint.value.projeto = projetos.value.find(projeto => projeto.id == checkpoint.value.alocacao.projeto_id);
+  }else {
+    checkpoint.value.alocacao_id = null;
+    checkpoint.value.projeto_id = null;
+    checkpoint.value.tarefa = null;
+    checkpoint.value.projeto = null;
+  }
+
+}
+
+watchEffect(async  () => {
+  if(dialog.value == true){
+    await findAlocacao(checkpoint.value.data);
+
+  }
+
+})
+
+const findAlocacao = async (data: string) => {
+  if(!data) return;
+  await axiosApi.get(`checkpoint/alocacao/usuario/${props.idUsuario}/data/${data}?idEquipe=${getIdEquipe()}`)
+      .then(response => {
+        alocacoes.value = response.data;
+      })
+      .catch(error => {
+        console.log(error)
+      })
+}
 const saveCheckpoint = () => {
   console.log('salvar checkpoint');
 }
@@ -88,9 +124,11 @@ const saveCheckpoint = () => {
                         :value="true"
                     >
                       <v-row class="mb-0">
-                        <v-col cols="12" class="mb-0 pb-0">
-                          <span class="font-italic text-xs text-black"> Por {{ lastCheckPoint.criador.name }}</span>
+                        <v-col cols="12" class="mb-0 pb-0" >
+                          <span v-if="lastCheckPoint.criador != null" class="font-italic text-xs text-black"> Por {{ lastCheckPoint.criador.name }}</span>
+                          <v-skeleton-loader v-else width="100" height="10"></v-skeleton-loader>
                         </v-col>
+
                         <v-col cols="2" class="mt-0" v-if="lastCheckPoint.tarefa">
                           <span class="font-italic text-xs text-black" title="Tarefa">  {{ lastCheckPoint.tarefa }}</span>
                         </v-col>
@@ -114,7 +152,7 @@ const saveCheckpoint = () => {
           <v-col cols="6">
             <v-form validate-on="blur" @submit.prevent="saveCheckpoint">
               <v-row dense>
-                <v-col cols="8" sm="12" md="8">
+                <v-col cols="6" sm="12" md="6">
                   <v-text-field
                       v-model="checkpoint.data"
                       label="Data"
@@ -126,16 +164,28 @@ const saveCheckpoint = () => {
                       required
                   ></v-text-field>
                 </v-col>
-                <v-col cols="4" sm="12" md="4">
-                  <v-switch
-                      label="Compareceu"
-                      v-model="checkpoint.compareceu"
-                      :false-value="false"
-                      :true-value="true"
-                      color="primary"
-                      inset
-                  ></v-switch>
+                <v-col cols="6" sm="12" md="6">
+                  <v-select
+                      v-model="checkpoint.alocacao"
+                      @update:modelValue="updateAlocacao()"
+                      :items="alocacoes"
+
+                      no-data-text="Nenhuma alocação encontrada para esta data"
+                      return-object
+                      clearable
+                      item-value="id"
+                      label="Alocação"
+                  >
+                    <template v-slot:item="{ props, item }">
+                      <v-list-item v-bind="props" :title="`${moment(item.raw.inicio).format('DD/MM/YYYY')} - ${moment(item.raw.termino).format('DD/MM/YYYY')}`"></v-list-item>
+                    </template>
+                    <template v-slot:selection="{ props, item }">
+                      <span class="">{{ moment(item.raw.inicio).format('DD/MM/YYYY') }} - {{ moment(item.raw.termino).format('DD/MM/YYYY')  }}</span>
+                    </template>
+
+                  </v-select>
                 </v-col>
+
               </v-row>
               <v-row dense>
                 <v-col cols="10" sm="12" md="10">
@@ -144,6 +194,7 @@ const saveCheckpoint = () => {
                       @update:modelValue="checkpoint.projeto_id = checkpoint.projeto.id"
                       :items="projetos"
                       item-title="nome"
+                      no-data-text="Nenhum projeto encontrado"
                       return-object
                       clearable
                       item-value="id"
@@ -156,8 +207,19 @@ const saveCheckpoint = () => {
                       v-model="checkpoint.tarefa"
                       label="Tarefa"
                       size="large"
-
                   ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row dense>
+                <v-col cols="4" sm="12" md="4">
+                  <v-switch
+                      label="Compareceu"
+                      v-model="checkpoint.compareceu"
+                      :false-value="false"
+                      :true-value="true"
+                      color="primary"
+                      inset
+                  ></v-switch>
                 </v-col>
               </v-row>
               <v-row dense>
