@@ -88,9 +88,9 @@ class ProjetoBusiness extends BusinessAbstract implements ProjetoBusinessContrac
         return $this->projetoRepository->inserir($projetoDTO);
     }
 
-    public function buscarPorIdProjeto(int $idProjeto, int $idEquipe): ?ProjetoDTO
+    public function buscarPorIdProjeto(int $idProjeto, int $idEquipe, string $guard = 'web'): ?ProjetoDTO
     {
-        $this->can(PermissionEnum::LISTAR_PROJETO->value);
+        $this->can(PermissionEnum::LISTAR_PROJETO->value, $guard);
         $projeto = $this->projetoRepository->buscarPorId($idProjeto, $idEquipe);
         if($projeto == null)
             throw new NotFoundException();

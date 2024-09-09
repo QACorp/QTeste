@@ -78,6 +78,7 @@ class CheckpointController extends Controller
         try {
             return response()->json($this->checkpointBusiness->create($checkpointDTO, $idEquipe), 200);
         }catch (NotFoundException | UnauthorizedException $e){
+
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
     }

@@ -10,22 +10,27 @@ use App\Modules\GestaoEquipe\Checkpoint\Contracts\Respositories\ProjetoRepositor
 use App\Modules\GestaoEquipe\Checkpoint\DTOs\CheckpointDTO;
 use App\Modules\GestaoEquipe\Checkpoint\Enums\PermissionEnum;
 use App\Modules\GestaoEquipe\Alocacao\Enums\PermissionEnum as PermissionAlocacaoEnum;
+use App\Modules\Projetos\Contracts\Business\ObservacaoBusinessContract;
+use App\Modules\Projetos\DTOs\ObservacaoDTO;
 use App\System\Contracts\Business\EquipeBusinessContract;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnauthorizedException;
 use App\System\Impl\BusinessAbstract;
+use App\System\Traits\TransactionDatabase;
 use Illuminate\Support\Facades\Auth;
 use Spatie\LaravelData\DataCollection;
 use Spatie\LaravelData\PaginatedDataCollection;
 use Illuminate\Support\Carbon;
 class CheckpointBusiness extends BusinessAbstract implements CheckpointBusinessContract
 {
+    use TransactionDatabase;
     public function __construct(
         private readonly CheckpointRepositoryContract $checkpointRepository,
         private readonly UserBusinessContract $userBusiness,
         private readonly EquipeBusinessContract $equipeBusiness,
         private readonly ProjetoRepositoryContract $projetoRepository,
-        private readonly AlocacaoRepositoryContract $alocacaoRepository
+        private readonly AlocacaoRepositoryContract $alocacaoRepository,
+        private readonly ObservacaoBusinessContract $observacaoBusiness
     )
     {
     }
@@ -42,7 +47,30 @@ class CheckpointBusiness extends BusinessAbstract implements CheckpointBusinessC
         if(!$this->equipeBusiness->hasEquipe($checkpointDTO->equipe_id, $checkpointDTO->user_id)){
             throw new UnauthorizedException('Este usuário não pertence a equipe.');
         }
-        return $this->checkpointRepository->create($checkpointDTO, $idEquipe);
+        try {
+            $this->startTransaction();
+            $checkpointDTO = $this->checkpointRepository->create($checkpointDTO, $idEquipe);
+            if($checkpointDTO->projeto_id){
+                $this->createOberservacao($checkpointDTO);
+            }
+            $this->commit();
+        }catch (NotFoundException | UnauthorizedException $e){
+            $this->rollback();
+            throw $e;
+        }
+
+
+        return $checkpointDTO;
+    }
+    private function createOberservacao(CheckpointDTO $checkpointDTO): bool
+    {
+        $observacaoDTO = ObservacaoDTO::from([
+                'observacao' => $checkpointDTO->descricao,
+                'projeto_id' => $checkpointDTO->projeto_id,
+                'user_id' => $checkpointDTO->criador_user_id
+        ]);
+        $this->observacaoBusiness->salvar($observacaoDTO, $checkpointDTO->equipe_id, 'api');
+        return true;
     }
 
     public function update(CheckpointDTO $checkpointDTO): CheckpointDTO
