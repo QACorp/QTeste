@@ -58,8 +58,6 @@ class CheckpointBusiness extends BusinessAbstract implements CheckpointBusinessC
             $this->rollback();
             throw $e;
         }
-
-
         return $checkpointDTO;
     }
     private function createOberservacao(CheckpointDTO $checkpointDTO): bool
