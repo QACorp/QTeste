@@ -4,6 +4,8 @@ namespace App\Modules\GestaoEquipe\Alocacao\Controllers\Api;
 
 use App\Modules\GestaoEquipe\Alocacao\Contracts\Business\AlocacaoBusinessContract;
 use App\Modules\GestaoEquipe\Alocacao\DTOs\AlocacaoDTO;
+use App\Modules\GestaoEquipe\Alocacao\DTOs\FiltroConsultaAlocacaoDTO;
+use App\Modules\Retrabalhos\DTOs\FiltrosDTO;
 use App\System\Exceptions\ConflictException;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnauthorizedException;
@@ -54,7 +56,8 @@ class AlocacaoController extends Controller
             if(!$request->get('idEquipe')){
                 return response()->json(['message' => 'Equipe não informada'], 422);
             }
-            return $this->alocacaoBusiness->listarAlocacoes($request->get('idEquipe'));
+            $filtro = FiltroConsultaAlocacaoDTO::from($request->only('idUsuario', 'idProjeto', 'idAplicacao', 'dataInicio', 'dataTermino'));
+            return $this->alocacaoBusiness->listarAlocacoes($request->get('idEquipe'), $filtro);
         }catch (UnauthorizedException $e){
             return response()->json(['message' => $e->getMessage()], $e->getStatusCode());
         }

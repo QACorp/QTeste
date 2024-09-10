@@ -9,9 +9,11 @@ use App\Modules\Projetos\DTOs\ProjetoDTO;
 use App\Modules\Projetos\Requests\ProjetosPostRequest;
 use App\Modules\Projetos\Requests\ProjetosPutRequest;
 use App\Modules\Projetos\Enums\PermissionEnum;
+use App\System\Contracts\Business\EquipeBusinessContract;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Impl\BusinessAbstract;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Spatie\LaravelData\DataCollection;
 
@@ -19,16 +21,20 @@ class ProjetoBusiness extends BusinessAbstract implements ProjetoBusinessContrac
 {
     public function __construct(
         private readonly ProjetoRepositoryContract $projetoRepository,
-        private readonly AplicacaoBusinessContract $aplicacaoBusiness
+        private readonly AplicacaoBusinessContract $aplicacaoBusiness,
+        private readonly EquipeBusinessContract $equipeBusiness
     )
     {
     }
 
-    public function buscarTodosPorAplicacao(int $aplicacaoId, int $idEquipe): DataCollection
+    public function buscarTodosPorAplicacao(int $aplicacaoId, int $idEquipe, string $guard = 'web'): DataCollection
     {
-        $this->can(PermissionEnum::LISTAR_PROJETO->value);
+        $this->can(PermissionEnum::LISTAR_PROJETO->value, $guard);
+        if(!$this->equipeBusiness->hasEquipe($idEquipe, Auth::guard($guard)->user()->getAuthIdentifier())){
+            throw new NotFoundException();
+        }
         try {
-            $this->aplicacaoBusiness->buscarPorId($aplicacaoId, $idEquipe);
+            $this->aplicacaoBusiness->buscarPorId($aplicacaoId, $idEquipe, $guard);
             return $this->projetoRepository->buscarTodosPorAplicacao($aplicacaoId, $idEquipe);
         }catch (NotFoundException $exception){
             throw $exception;
@@ -98,8 +104,12 @@ class ProjetoBusiness extends BusinessAbstract implements ProjetoBusinessContrac
         return $projeto;
     }
 
-    public function buscarTodosPorEquipe(int $idEquipe): DataCollection
+    public function buscarTodosPorEquipe(int $idEquipe, string $guard = 'web'): DataCollection
     {
+        $this->can(PermissionEnum::LISTAR_PROJETO->value, $guard);
+        if(!$this->equipeBusiness->hasEquipe($idEquipe, Auth::guard($guard)->user()->getAuthIdentifier())){
+            throw new NotFoundException();
+        }
         return $this->projetoRepository->buscarTodosPorEquipe($idEquipe);
     }
 }

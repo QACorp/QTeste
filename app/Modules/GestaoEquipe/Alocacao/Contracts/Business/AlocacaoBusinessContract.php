@@ -3,6 +3,7 @@
 namespace App\Modules\GestaoEquipe\Alocacao\Contracts\Business;
 
 use App\Modules\GestaoEquipe\Alocacao\DTOs\AlocacaoDTO;
+use App\Modules\GestaoEquipe\Alocacao\DTOs\FiltroConsultaAlocacaoDTO;
 use Illuminate\Support\Carbon;
 use Spatie\LaravelData\DataCollection;
 
@@ -14,7 +15,7 @@ interface AlocacaoBusinessContract
 
     public function excluirAlocacao(int $id): bool;
     public function consultarAlocacao(int $id, int $idEquipe): ?AlocacaoDTO;
-    public function listarAlocacoes(int $idEquipe): DataCollection;
+    public function listarAlocacoes(int $idEquipe, FiltroConsultaAlocacaoDTO $filtro = null): DataCollection;
     public function usuariosDisponiveis(int $idEquipe, Carbon $inicio, Carbon $termino): DataCollection;
     public function buscarProjetosVigentes(int $equipeId, Carbon $dataInicio, Carbon $dataFim): DataCollection;
     public function marcarAlocacaoComoConcluida(int $idAlocacao, int $idEquipe): AlocacaoDTO;

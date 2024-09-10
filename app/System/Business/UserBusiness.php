@@ -4,6 +4,7 @@ namespace App\System\Business;
 
 
 use App\Modules\Projetos\Models\CasoTesteExcelModel;
+use App\System\Contracts\Business\EquipeBusinessContract;
 use App\System\Contracts\Business\UserBusinessContract;
 use App\System\Contracts\Repository\UserRepositoryContract;
 use App\System\DTOs\EquipeDTO;
@@ -36,7 +37,8 @@ class UserBusiness extends BusinessAbstract implements UserBusinessContract
     const COLUNA_REGRA = 2;
     const COLUNA_EQUIPE = 3;
     public function __construct(
-        private readonly UserRepositoryContract $userRepository
+        private readonly UserRepositoryContract $userRepository,
+        private readonly EquipeBusinessContract $equipeBusiness
     )
     {
     }
@@ -165,8 +167,11 @@ class UserBusiness extends BusinessAbstract implements UserBusinessContract
         return $this->userRepository->buscarUsuario($filter);
     }
 
-    public function buscarUsuariosPorEquipe(int $idEquipe): DataCollection
+    public function buscarUsuariosPorEquipe(int $idEquipe, string $guard = 'web'): DataCollection
     {
+        if(!$this->equipeBusiness->hasEquipe($idEquipe, Auth::guard($guard)->user()->getAuthIdentifier())){
+            throw new NotFoundException();
+        }
         return $this->userRepository->buscarUsuariosPorEquipe($idEquipe);
     }
 }

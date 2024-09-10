@@ -4,6 +4,7 @@ namespace App\Modules\GestaoEquipe\Alocacao\Repositories;
 
 use App\Modules\GestaoEquipe\Alocacao\Contracts\Repositories\AlocacaoRepositoryContract;
 use App\Modules\GestaoEquipe\Alocacao\DTOs\AlocacaoDTO;
+use App\Modules\GestaoEquipe\Alocacao\DTOs\FiltroConsultaAlocacaoDTO;
 use App\Modules\GestaoEquipe\Alocacao\Models\Alocacao;
 use App\Modules\GestaoEquipe\Alocacao\Models\User;
 use App\System\DTOs\UserDTO;
@@ -49,17 +50,37 @@ class AlocacaoRepository extends BaseRepository implements AlocacaoRepositoryCon
     }
     private function getQUeryBuilderSelectAlocacao(int $idEquipe): Builder
     {
-        return Alocacao::where('equipe_id', $idEquipe)
+        return Alocacao::select('alocacoes.*')
+            ->where('equipe_id', $idEquipe)
             ->where('concluida', null)
             ->with(['projeto', 'user', 'user.empresa','equipe', 'projeto.aplicacao'])
             ->orderBy('inicio', 'desc');
     }
 
-    public function listarAlocacoes(int $idEquipe): DataCollection
+    public function listarAlocacoes(int $idEquipe, FiltroConsultaAlocacaoDTO $filtro = null): DataCollection
     {
         $alocacoes = $this->getQUeryBuilderSelectAlocacao($idEquipe)
-                        ->get();
-        return AlocacaoDTO::collection($alocacoes);
+            ->leftJoin('projetos.projetos as projetos', 'projetos.id', '=', 'alocacoes.projeto_id');
+
+        if($filtro && $filtro->idUsuario){
+            $alocacoes->where('user_id', $filtro->idUsuario);
+        }
+        if($filtro && $filtro->idProjeto){
+            $alocacoes->where('projeto_id', $filtro->idProjeto);
+        }
+        if($filtro && $filtro->idAplicacao){
+            $alocacoes->where('projetos.aplicacao_id', $filtro->idAplicacao);
+//            $alocacoes->whereHas('projeto', function ($query) use ($filtro){
+//                $query->where('aplicacao_id', $filtro->idAplicacao);
+//            });
+        }
+        if($filtro && $filtro->dataInicio){
+            $alocacoes->where('inicio', '>=', $filtro->dataInicio);
+        }
+        if($filtro && $filtro->dataTermino){
+            $alocacoes->where('termino', '<=', $filtro->dataTermino);
+        }
+        return AlocacaoDTO::collection($alocacoes->get());
     }
 
     public function listarAlocacoesPorUsuario(int $idEquipe, int $idUsuario): DataCollection

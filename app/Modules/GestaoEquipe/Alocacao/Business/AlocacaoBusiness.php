@@ -6,6 +6,7 @@ use App\Modules\GestaoEquipe\Alocacao\Contracts\Business\AlocacaoBusinessContrac
 use App\Modules\GestaoEquipe\Alocacao\Contracts\Repositories\AlocacaoRepositoryContract;
 use App\Modules\GestaoEquipe\Alocacao\Contracts\Repositories\ProjetoRepositoryContract;
 use App\Modules\GestaoEquipe\Alocacao\DTOs\AlocacaoDTO;
+use App\Modules\GestaoEquipe\Alocacao\DTOs\FiltroConsultaAlocacaoDTO;
 use App\Modules\GestaoEquipe\Alocacao\Enums\PermissionEnum;
 use App\System\Contracts\Business\EquipeBusinessContract;
 use App\System\Exceptions\ConflictException;
@@ -86,17 +87,18 @@ class AlocacaoBusiness extends BusinessAbstract implements AlocacaoBusinessContr
         return $this->alocacaoRepository->consultarAlocacao($id, $idEquipe);
     }
 
-    public function listarAlocacoes(int $idEquipe): DataCollection
+    public function listarAlocacoes(int $idEquipe, FiltroConsultaAlocacaoDTO $filtro = null): DataCollection
     {
+
         if(!$this->equipeBusiness->hasEquipe($idEquipe,Auth::user()->getAuthIdentifier())){
             throw new NotFoundException();
         }
         if($this->canDo(PermissionEnum::VER_ALOCACAO->value,'api')){
-            return $this->alocacaoRepository->listarAlocacoes($idEquipe);
+            return $this->alocacaoRepository->listarAlocacoes($idEquipe, $filtro);
         }
-        if($this->canDo(PermissionEnum::VER_MINHA_ALOCACAO->value, 'api')){
-            return $this->alocacaoRepository->listarAlocacoes($idEquipe);
-        }
+//        if($this->canDo(PermissionEnum::VER_MINHA_ALOCACAO->value, 'api')){
+//            return $this->alocacaoRepository->listarAlocacoes($idEquipe, $filtro);
+//        }
         throw new UnauthorizedException(401, 'Sem permissão para acessar alocacoes');
     }
 
