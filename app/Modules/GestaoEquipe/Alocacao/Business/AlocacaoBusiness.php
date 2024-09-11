@@ -7,6 +7,7 @@ use App\Modules\GestaoEquipe\Alocacao\Contracts\Repositories\AlocacaoRepositoryC
 use App\Modules\GestaoEquipe\Alocacao\Contracts\Repositories\ProjetoRepositoryContract;
 use App\Modules\GestaoEquipe\Alocacao\DTOs\AlocacaoDTO;
 use App\Modules\GestaoEquipe\Alocacao\DTOs\FiltroConsultaAlocacaoDTO;
+use App\Modules\GestaoEquipe\Alocacao\Enums\NaturezaEnum;
 use App\Modules\GestaoEquipe\Alocacao\Enums\PermissionEnum;
 use App\System\Contracts\Business\EquipeBusinessContract;
 use App\System\Exceptions\ConflictException;
@@ -61,6 +62,9 @@ class AlocacaoBusiness extends BusinessAbstract implements AlocacaoBusinessContr
             $this->alocacaoRepository->hasAlocacaoInDate($alocacao->user_id, $alocacao->equipe_id, $dados->inicio, $dados->termino, $alocacao->id))
         {
             throw new ConflictException( 'Já existe uma alocação nesse período para este usuário',409);
+        }
+        if($dados->natureza->value == NaturezaEnum::SUSTENTACAO->value){
+            $dados->projeto_id = null;
         }
         return $this->alocacaoRepository->alterarAlocacao($id, $dados);
     }
