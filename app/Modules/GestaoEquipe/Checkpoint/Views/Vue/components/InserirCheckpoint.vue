@@ -7,11 +7,12 @@ import moment from "moment";
 import {AlocacaoInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Alocacao.interface";
 import {ProjetoInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Projeto.interface";
 import {useToast} from "vue-toast-notification";
+import {UsuarioInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Usuario.interface";
 
 const $toast = useToast();
 const props = defineProps({
-  idUsuario: {
-    type: Number,
+  usuario: {
+    type: Object as UsuarioInterface,
     required: true
   }
 });
@@ -22,8 +23,9 @@ const projetos = ref<ProjetoInterface>([]);
 const alocacoes = ref<AlocacaoInterface>([]);
 
 watch(dialog, async () => {
+
   if(dialog.value){
-    await axiosApi.get(`checkpoint/ultimo/${props.idUsuario}?idEquipe=${getIdEquipe()}`)
+    await axiosApi.get(`checkpoint/ultimo/${props.usuario.id}?idEquipe=${getIdEquipe()}`)
         .then(response => {
           lastCheckPoint.value = response.data;
         });
@@ -36,7 +38,7 @@ watch(dialog, async () => {
         });
     checkpoint.value = {} as CheckpointInterface;
     checkpoint.value.data = moment().format('YYYY-MM-DD');
-    checkpoint.value.user_id = props.idUsuario;
+    checkpoint.value.user_id = props.usuario.id;
     checkpoint.value.compareceu = false;
     await findAlocacao(checkpoint.value.data);
 
@@ -67,7 +69,7 @@ watchEffect(async  () => {
 
 const findAlocacao = async (data: string) => {
   if(!data) return;
-  await axiosApi.get(`checkpoint/alocacao/usuario/${props.idUsuario}/data/${data}?idEquipe=${getIdEquipe()}`)
+  await axiosApi.get(`checkpoint/alocacao/usuario/${props.usuario.id}/data/${data}?idEquipe=${getIdEquipe()}`)
       .then(response => {
         alocacoes.value = response.data;
       })
@@ -118,11 +120,16 @@ const saveCheckpoint = async () => {
       </v-toolbar>
       <v-card-text>
         <v-row>
+          <v-col cols="12" md="12" sm="12" class="border-1">
+            <span>Colaborador: </span><span>{{ usuario.name }}</span>
+          </v-col>
+        </v-row>
+        <v-row>
           <v-col cols="6">
             <v-card>
               <v-card-title>Último checkpoint</v-card-title>
               <v-card-text>
-                <v-timeline side="end">
+                <v-timeline side="end" v-if="lastCheckPoint.descricao">
 
                   <v-timeline-item
                       dot-color="primary"

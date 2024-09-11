@@ -55,6 +55,7 @@ onMounted(() => {
 
 })
 const findAlocacoes = () => {
+    alocacoes.value = null;
     axiosApi.get(`alocacao?idEquipe=${getIdEquipe()}${prepareParameters()}`)
         .then(response => {
             alocacoes.value = response.data;
@@ -139,6 +140,8 @@ const findProjetos = () => {
                 :items="aplicacoes"
                 item-title="nome"
                 return-object
+                clearable
+                @on-click:clear="() => {filtroProjeto = null; projetos = []}"
                 no-data-text="Nenhuma aplicação na equipe"
                 item-value="id"
                 label="Aplicação"
@@ -150,7 +153,9 @@ const findProjetos = () => {
                 v-model="filtroProjeto"
                 :items="projetos"
                 item-title="nome"
+                clearable
                 return-object
+                :disabled="!projetos.length"
                 no-data-text="Nenhum projeto para esta aplicação"
                 item-value="id"
                 label="Projeto"
@@ -158,13 +163,19 @@ const findProjetos = () => {
             ></v-combobox>
         </v-col>
         <v-col cols="2" md="2" sm="12">
-            <v-text-field type="date" v-model="filtroInicio" label="Data Inicio"></v-text-field>
+            <v-text-field clearable type="date" v-model="filtroInicio" label="Data Inicio"></v-text-field>
         </v-col>
         <v-col cols="2" md="2" sm="12">
-            <v-text-field type="date" v-model="filtroTermino" label="Data término"></v-text-field>
+            <v-text-field clearable type="date" v-model="filtroTermino" label="Data término"></v-text-field>
         </v-col>
         <v-col cols="1" md="1" sm="12">
-            <v-btn @click="findAlocacoes()"> <v-icon>mdi-find-replace</v-icon></v-btn>
+            <v-btn
+                @click="findAlocacoes()"
+                density="default"
+                variant="tonal"
+                color="primary"
+                icon="mdi-find-replace"
+            ></v-btn>
         </v-col>
     </v-row>
     <v-row>

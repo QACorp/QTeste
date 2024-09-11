@@ -11,6 +11,7 @@ use App\System\DTOs\UserDTO;
 use App\System\Impl\BaseRepository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\DataCollection;
 
 class AlocacaoRepository extends BaseRepository implements AlocacaoRepositoryContract
@@ -75,10 +76,10 @@ class AlocacaoRepository extends BaseRepository implements AlocacaoRepositoryCon
 //            });
         }
         if($filtro && $filtro->dataInicio){
-            $alocacoes->where('inicio', '>=', $filtro->dataInicio);
+            $alocacoes->where('alocacoes.inicio', '>=', $filtro->dataInicio);
         }
         if($filtro && $filtro->dataTermino){
-            $alocacoes->where('termino', '<=', $filtro->dataTermino);
+            $alocacoes->where('alocacoes.termino', '<=',$filtro->dataTermino);
         }
         return AlocacaoDTO::collection($alocacoes->get());
     }

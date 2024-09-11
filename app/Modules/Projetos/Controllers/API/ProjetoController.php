@@ -24,7 +24,7 @@ class ProjetoController extends Controller
     }
     public function listarProjetosPorAplicacao(int $idEquipe, int $idAplicacao){
         try{
-            return response()->json($this->projetoBusiness->buscarTodosPorAplicacao($idEquipe, $idAplicacao, 'api'));
+            return response()->json($this->projetoBusiness->buscarTodosPorAplicacao($idAplicacao, $idEquipe, 'api'));
         }catch (UnauthorizedException | NotFoundException $e){
             return response()->json(['message' => $e->getMessage()], $e->getStatusCode());
         }

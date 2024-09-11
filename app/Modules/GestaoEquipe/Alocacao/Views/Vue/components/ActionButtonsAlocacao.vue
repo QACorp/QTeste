@@ -23,7 +23,7 @@ const props = defineProps({
                 :alocacao-id="props.alocacao.id"
             />
             <finish-alocacao v-if="helperStore.finishAlocacao === true" :alocacao-id="props.alocacao.id"/>
-            <inserir-checkpoint :id-usuario="props.alocacao.user_id" v-if="!props.alocacao.concluida"/>
+            <inserir-checkpoint :usuario="props.alocacao.user" v-if="!props.alocacao.concluida"/>
         </v-col>
     </v-row>
 </template>
