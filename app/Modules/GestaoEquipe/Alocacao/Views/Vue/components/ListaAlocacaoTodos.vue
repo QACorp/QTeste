@@ -8,7 +8,6 @@ import {axiosApi} from "../../../../../../../resources/js/app";
 import {getIdEquipe} from "../../../../../../../resources/js/APIUtils/BaseAPI";
 import {ProjetoInterface} from "../Interfaces/Projeto.interface";
 import {UsuarioInterface} from "../Interfaces/Usuario.interface";
-import axios from "axios";
 import {AplicacaoInterface} from "../../../../../Retrabalhos/Views/Vue/Interfaces/Aplicacao.interface";
 
 const props = defineProps({

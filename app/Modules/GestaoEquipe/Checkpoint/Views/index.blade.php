@@ -20,7 +20,13 @@
         <div class="row">
             <div class="card">
                 <div class="card-body">
-                    <lista-usuarios />
+                    @can(\App\Modules\GestaoEquipe\Checkpoint\Enums\PermissionEnum::VER_CHECKPOINT->value)
+                        <lista-usuarios  />
+                    @else
+                        <div class="alert alert-danger" role="alert">
+                            Você não tem permissão para acessar essa página.
+                        </div>
+                    @endcan
                 </div>
             </div>
         </div>

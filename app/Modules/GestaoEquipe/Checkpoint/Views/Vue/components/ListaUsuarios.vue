@@ -1,10 +1,20 @@
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
+import {onBeforeMount, onMounted, ref} from "vue";
 import {UsuarioInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Usuario.interface";
 import {axiosApi} from "../../../../../../../resources/js/app";
 import {getIdEquipe} from "../../../../../../../resources/js/APIUtils/BaseAPI";
 import InserirCheckpoint from "./InserirCheckpoint.vue";
-
+import {helperStore} from "../../../../Alocacao/Views/Vue/HelperStore";
+const props = defineProps({
+    canInsert: {
+        type: Boolean,
+        required: true,
+        default: false
+    }
+});
+onBeforeMount(() => {
+    helperStore.insertCheckpoint = props.canInsert;
+})
 const itemsPerPage = ref(10);
 const search = ref('');
 const loading = ref<boolean>(true);
@@ -46,7 +56,7 @@ const loadItems = async (options: any) => {
         <template v-slot:item="{ item }">
             <tr>
                 <td class="w-100">{{ item.name }}</td>
-                <td class="w-auto"><inserir-checkpoint :usuario="item"/></td>
+                <td class="w-auto"><inserir-checkpoint v-if="helperStore.insertCheckpoint" :usuario="item"/></td>
             </tr>
 
         </template>
