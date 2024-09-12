@@ -16,7 +16,8 @@ class UserRepository extends \App\System\Repositorys\UserRepository implements U
     {
         $buscar = User::join('users_equipes as ue', 'ue.user_id', '=', 'users.id')
                         ->where('ue.equipe_id', $idEquipe)
-                        ->where('id', '<>', Auth::user()->getAuthIdentifier());
+                        ->where('id', '<>', Auth::user()->getAuthIdentifier())
+                        ->where('active', true);
         if($page && $limit){
             return UserDTO::collection($buscar->paginate($limit, ['*'], 'page', $page));
         }
