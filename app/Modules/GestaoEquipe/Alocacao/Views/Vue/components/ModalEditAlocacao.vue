@@ -244,10 +244,13 @@ const findCheckpoints = async () => {
                                         v-model="alocacao.natureza"
                                         :rules="[value => !alocacao.natureza ?  'Selecione a natureza da alocação' : true]"
                                         :items="[
-                                    NaturezaEnum.SUSTENTACAO,
-                                    NaturezaEnum.MELHORIA,
-                                    NaturezaEnum.PROJETO
-                                ]"
+                                                    NaturezaEnum.SUSTENTACAO,
+                                                    NaturezaEnum.MELHORIA,
+                                                    NaturezaEnum.PROJETO,
+                                                    NaturezaEnum.FERIAS,
+                                                    NaturezaEnum.LICENCA,
+                                                    NaturezaEnum.AFASTAMENTO
+                                                ]"
                                         label="Natureza da alocação"
                                         required
                                         :disabled="!props.canEdit"

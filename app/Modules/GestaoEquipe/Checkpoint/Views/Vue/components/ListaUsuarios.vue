@@ -43,8 +43,12 @@ const loadItems = async (options: any) => {
         loading-text="Carregando..."
         @update:options="loadItems"
     >
-        <template v-slot:item="{ value }">
-            <inserir-checkpoint :usuario="value"/>
+        <template v-slot:item="{ item }">
+            <tr>
+                <td class="w-100">{{ item.name }}</td>
+                <td class="w-auto"><inserir-checkpoint :usuario="item"/></td>
+            </tr>
+
         </template>
     </v-data-table-server>
 </template>

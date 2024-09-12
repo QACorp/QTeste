@@ -60,8 +60,8 @@ const updateAlocacao = () => {
 }
 
 watchEffect(async  () => {
-  if(dialog.value == true){
-    await findAlocacao(checkpoint.value.data);
+  if(dialog.value){
+    //await findAlocacao(checkpoint.value.data);
 
   }
 

@@ -27,11 +27,17 @@ const defineBackgroud = (days: number)=>{
         return 'bg-success';
     }
 }
+const isAusencia = (alocacao: AlocacaoInterface):boolean => {
+    return alocacao.natureza === NaturezaEnum.AFASTAMENTO ||
+        alocacao.natureza === NaturezaEnum.LICENCA ||
+        alocacao.natureza === NaturezaEnum.FERIAS;
+
+}
 </script>
 
 <template>
     <v-card
-        :class="defineBackgroud(diffDate(alocacao.termino))"
+        :class="isAusencia(alocacao) ? 'bg-primary' : defineBackgroud(diffDate(alocacao.termino))"
 
     >
         <v-card-title>

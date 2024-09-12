@@ -156,7 +156,10 @@ const findProjetos = () => {
                                 :items="[
                                     NaturezaEnum.SUSTENTACAO,
                                     NaturezaEnum.MELHORIA,
-                                    NaturezaEnum.PROJETO
+                                    NaturezaEnum.PROJETO,
+                                    NaturezaEnum.FERIAS,
+                                    NaturezaEnum.LICENCA,
+                                    NaturezaEnum.AFASTAMENTO
                                 ]"
                                 label="Natureza da alocação"
                                 required
