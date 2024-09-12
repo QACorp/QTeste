@@ -14,7 +14,8 @@ const props = defineProps({
   usuario: {
     type: Object as UsuarioInterface,
     required: true
-  }
+  },
+
 });
 const dialog = ref(false);
 const lastCheckPoint = ref<CheckpointInterface>({} as CheckpointInterface);

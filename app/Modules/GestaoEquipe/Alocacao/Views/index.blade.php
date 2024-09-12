@@ -1,6 +1,6 @@
 @php
     use App\Modules\GestaoEquipe\Alocacao\Enums\PermissionEnum;
-    use App\System\Enums\AuthEnum;
+    use App\Modules\GestaoEquipe\Checkpoint\Enums\PermissionEnum as CheckpointPermissionEnum;
 @endphp
 @extends('adminlte::page')
 @section('plugins.Datatables', true)
@@ -31,6 +31,7 @@
                     <lista-alocacao-todos
                         :edit-alocacao="{{ Auth::guard('web')->user()->can(PermissionEnum::EDITAR_ALOCACAO->value) == true ? 'true' : 'false' }}"
                         :finish-alocacao="{{ Auth::guard('web')->user()->can(PermissionEnum::CONCLUIR_ALOCACAO->value) == true ? 'true' : 'false' }}"
+                        :insert-checkpoint="{{ Auth::guard('web')->user()->can(CheckpointPermissionEnum::CRIAR_CHECKPOINT->value) == true ? 'true' : 'false' }}"
                     >
                     </lista-alocacao-todos>
                     @elseif(Auth::guard('web')->user()->can(PermissionEnum::VER_MINHA_ALOCACAO->value))

@@ -20,6 +20,11 @@ const props = defineProps({
         type: Boolean,
         required: false,
         default: false
+    },
+    insertCheckpoint: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 })
 
@@ -36,6 +41,7 @@ const filtroAplicacao = ref<AplicacaoInterface>();
 onBeforeMount(() => {
     helperStore.editAlocacao = props.editAlocacao;
     helperStore.finishAlocacao = props.finishAlocacao;
+    helperStore.insertCheckpoint = props.insertCheckpoint;
 })
 watch(filtroAplicacao, (newValue, oldValue) => {
     if(oldValue !== filtroAplicacao.value) {

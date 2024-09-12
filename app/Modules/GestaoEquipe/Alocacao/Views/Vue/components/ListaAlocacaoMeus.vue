@@ -7,8 +7,6 @@ import {helperStore} from "../HelperStore";
 import {getIdEquipe} from "../../../../../../../resources/js/APIUtils/BaseAPI";
 import {axiosApi} from "../../../../../../../resources/js/app";
 
-const props = defineProps({})
-
 const alocacoes = ref<AlocacaoInterface[]>(null);
 
 onBeforeMount(() => {

@@ -55,7 +55,7 @@ class AlocacaoRepository extends BaseRepository implements AlocacaoRepositoryCon
             ->where('equipe_id', $idEquipe)
             ->where('concluida', null)
             ->with(['projeto', 'user', 'user.empresa','equipe', 'projeto.aplicacao'])
-            ->orderBy('inicio', 'desc');
+            ->orderBy('inicio', 'ASC');
     }
 
     public function listarAlocacoes(int $idEquipe, FiltroConsultaAlocacaoDTO $filtro = null): DataCollection

@@ -1,6 +1,5 @@
 @php
-    use App\Modules\GestaoEquipe\Alocacao\Enums\PermissionEnum;
-    use App\System\Enums\AuthEnum;
+    use App\Modules\GestaoEquipe\Checkpoint\Enums\PermissionEnum;
 @endphp
 @extends('adminlte::page')
 @section('plugins.Datatables', true)
@@ -20,8 +19,8 @@
         <div class="row">
             <div class="card">
                 <div class="card-body">
-                    @can(\App\Modules\GestaoEquipe\Checkpoint\Enums\PermissionEnum::VER_CHECKPOINT->value)
-                        <lista-usuarios  />
+                    @can(PermissionEnum::VER_CHECKPOINT->value)
+                        <lista-usuarios :can-insert="{{ Auth::guard('web')->user()->can(PermissionEnum::CRIAR_CHECKPOINT->value) == true ? 'true' : 'false' }}">
                     @else
                         <div class="alert alert-danger" role="alert">
                             Você não tem permissão para acessar essa página.
