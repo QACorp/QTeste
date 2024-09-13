@@ -55,8 +55,9 @@ class AlocacaoBusiness extends BusinessAbstract implements AlocacaoBusinessContr
         if(!$this->equipeBusiness->hasEquipe($dados->equipe_id, $dados->user_id)){
             throw new NotFoundException();
         }
-        if(!$dados->concluida && ($alocacao->concluida || $alocacao->termino->lessThanOrEqualTo(Carbon::now()))){
-            throw new ConflictException('Alocação já concluída ou vencida', 409);
+
+        if($alocacao->concluida || $alocacao->termino->isBefore(Carbon::create(date('Y-m-d')))){
+            throw new ConflictException(' Alocação já concluída ou vencida', 409);
         }
         if( $this->hasAlteracao($dados, $alocacao) &&
             $this->alocacaoRepository->hasAlocacaoInDate($alocacao->user_id, $alocacao->equipe_id, $dados->inicio, $dados->termino, $alocacao->id))
