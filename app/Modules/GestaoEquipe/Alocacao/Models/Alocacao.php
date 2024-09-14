@@ -57,7 +57,10 @@ class Alocacao extends Model
     }
     public function newQuery(): Builder
     {
-        return parent::newQuery()
-            ->where('alocacoes.empresa_id', Auth::user()->empresa_id);
+        if(Auth::user()) {
+            return parent::newQuery()
+                ->where('alocacoes.empresa_id', Auth::user()->empresa_id);
+        }
+        return parent::newQuery();
     }
 }

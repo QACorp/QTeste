@@ -15,6 +15,7 @@ use App\Modules\Projetos\Business\PlanoTesteBusiness;
 use App\Modules\Projetos\Business\PlanoTesteExecucaoBusiness;
 use App\Modules\Projetos\Business\PlanoTesteMaisExecutadoBusiness;
 use App\Modules\Projetos\Business\ProjetoBusiness;
+use App\Modules\Projetos\Business\TarefaBusiness;
 use App\Modules\Projetos\Business\TestesMaisExecutadosBusiness;
 use App\Modules\Projetos\Business\TotaisTestesBusiness;
 use App\Modules\Projetos\Business\UsuarioComMaisExecucoesBusiness;
@@ -42,6 +43,7 @@ use App\Modules\Projetos\Contracts\Business\PlanoTesteBusinessContract;
 use App\Modules\Projetos\Contracts\Business\PlanoTesteExecucaoBusinessContract;
 use App\Modules\Projetos\Contracts\Business\PlanoTesteMaisExecutadoBusinessContract;
 use App\Modules\Projetos\Contracts\Business\ProjetoBusinessContract;
+use App\Modules\Projetos\Contracts\Business\TarefaBusinessContract;
 use App\Modules\Projetos\Contracts\Business\TestesMaisExecutadosBusinessContract;
 use App\Modules\Projetos\Contracts\Business\TotaisTestesBusinessContract;
 use App\Modules\Projetos\Contracts\Business\UsuarioComMaisExecucoesBusinessContract;
@@ -58,6 +60,7 @@ use App\Modules\Projetos\Contracts\Repository\PlanoTesteExecucaoRepositoryContra
 use App\Modules\Projetos\Contracts\Repository\PlanoTesteMaisExecutadoRepositoryContract;
 use App\Modules\Projetos\Contracts\Repository\PlanoTesteRepositoryContract;
 use App\Modules\Projetos\Contracts\Repository\ProjetoRepositoryContract;
+use App\Modules\Projetos\Contracts\Repository\TarefaRepositoryContract;
 use App\Modules\Projetos\Contracts\Repository\TestesMaisExecutadosRepositoryContract;
 use App\Modules\Projetos\Contracts\Repository\TotaisTestesRepositoryContract;
 use App\Modules\Projetos\Contracts\Repository\UsuarioComMaisExecucoesRepositoryContract;
@@ -74,6 +77,7 @@ use App\Modules\Projetos\Repositorys\PlanoTesteExecucaoRepository;
 use App\Modules\Projetos\Repositorys\PlanoTesteMaisExecutadoRepository;
 use App\Modules\Projetos\Repositorys\PlanoTesteRepository;
 use App\Modules\Projetos\Repositorys\ProjetoRepository;
+use App\Modules\Projetos\Repositorys\TarefaRepository;
 use App\Modules\Projetos\Repositorys\TestesMaisExecutadosRepository;
 use App\Modules\Projetos\Repositorys\TotaisTestesRepository;
 use App\Modules\Projetos\Repositorys\UsuarioComMaisExecucoesRepository;
@@ -118,7 +122,9 @@ class ProjetosServiceProvider extends ServiceProviderAbstract
         CoberturaTestesBusinessContract::class => CoberturaTestesBusiness::class,
         CoberturaTestesRepositoryContract::class => CoberturaTestesRepository::class,
         GraficoExecucoesTestesMensaisRepositoryContract::class => GraficoExecucoesTestesMensaisRepository::class,
-        GraficoExecucoesTestesMensaisBusinessContract::class => GraficoExecucoesTestesMensaisBusiness::class
+        GraficoExecucoesTestesMensaisBusinessContract::class => GraficoExecucoesTestesMensaisBusiness::class,
+        TarefaBusinessContract::class => TarefaBusiness::class,
+        TarefaRepositoryContract::class => TarefaRepository::class,
     ];
     /**
      * Register services.
