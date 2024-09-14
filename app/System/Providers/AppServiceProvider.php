@@ -31,6 +31,10 @@ use App\System\Repositorys\UserRepository;
 use App\System\Services\Mail\DTOs\MailDTO;
 use App\System\Services\Mail\QTesteMail;
 use App\System\Traits\Configuracao;
+use App\System\Utils\RequestGuard;
+use App\System\Utils\RequestGuardApi;
+use App\System\Utils\RequestGuardWeb;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Blade;
@@ -66,6 +70,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->app->singleton(RequestGuard::class, function (Application $app) {
+            if(request()->is('api/*')){
+                return new RequestGuardApi();
+            }else{
+                return new RequestGuardWeb();
+            }
+        });
         MenuConfig::configureMenuModule();
 
         Blade::component('delete-modal', DeleteModal::class);

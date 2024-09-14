@@ -19,7 +19,9 @@ use App\System\Requests\UploadPostRequest;
 use App\System\Requests\UserPostRequest;
 use App\System\Requests\UserPutRequest;
 use App\System\Traits\EquipeTools;
+use App\System\Traits\RequestGuardTraits;
 use App\System\Traits\Validation;
+use App\System\Utils\RequestGuard;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -31,7 +33,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class UserBusiness extends BusinessAbstract implements UserBusinessContract
 {
-    use Validation, EquipeTools;
+    use Validation, EquipeTools, RequestGuardTraits;
     const COLUNA_NAME = 0;
     const COLUNA_EMAIL = 1;
     const COLUNA_REGRA = 2;
@@ -48,13 +50,13 @@ class UserBusiness extends BusinessAbstract implements UserBusinessContract
         $this->can(PermissionEnum::LISTAR_USUARIO->value);
         return $this->userRepository->buscarTodos();
     }
-    private function canFindUser(int $userId): bool
+    private function canFindUser(int $userId, string $guard = 'web'): bool
     {
-        return $this->canDo(PermissionEnum::LISTAR_USUARIO->value) || $this->isMe($userId);
+        return $this->canDo(PermissionEnum::LISTAR_USUARIO->value, $guard) || $this->isMe($userId);
     }
     public function buscarPorId(int $userId): ?UserDTO
     {
-        if(!$this->canFindUser($userId)){
+        if(!$this->canFindUser($userId, $this->getGuard())){
             throw new UnauthorizedException(403, 'Você não tem permissão para visualizar este usuário.');
         }
         return $this->userRepository->buscarPorId($userId);

@@ -15,6 +15,7 @@ use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnauthorizedException;
 use App\System\Impl\BusinessAbstract;
 use App\System\Utils\EquipeUtils;
+use App\System\Utils\RequestGuard;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Spatie\LaravelData\DataCollection;
@@ -24,7 +25,8 @@ class AlocacaoBusiness extends BusinessAbstract implements AlocacaoBusinessContr
     public function __construct(
         private readonly AlocacaoRepositoryContract $alocacaoRepository,
         private readonly EquipeBusinessContract $equipeBusiness,
-        private readonly ProjetoRepositoryContract $projetoRepository
+        private readonly ProjetoRepositoryContract $projetoRepository,
+        private readonly RequestGuard $requestGuard
     )
     {
 
@@ -101,9 +103,7 @@ class AlocacaoBusiness extends BusinessAbstract implements AlocacaoBusinessContr
         if($this->canDo(PermissionEnum::VER_ALOCACAO->value,'api')){
             return $this->alocacaoRepository->listarAlocacoes($idEquipe, $filtro);
         }
-//        if($this->canDo(PermissionEnum::VER_MINHA_ALOCACAO->value, 'api')){
-//            return $this->alocacaoRepository->listarAlocacoes($idEquipe, $filtro);
-//        }
+
         throw new UnauthorizedException(401, 'Sem permissão para acessar alocacoes');
     }
 

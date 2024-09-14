@@ -50,6 +50,7 @@ class CheckpointBusiness extends BusinessAbstract implements CheckpointBusinessC
         try {
             $this->startTransaction();
             $checkpointDTO = $this->checkpointRepository->create($checkpointDTO, $idEquipe);
+            $checkpointDTO->user = $this->userBusiness->buscarPorId($checkpointDTO->user_id);
             if($checkpointDTO->projeto_id){
                 $this->createOberservacao($checkpointDTO);
             }
@@ -63,16 +64,16 @@ class CheckpointBusiness extends BusinessAbstract implements CheckpointBusinessC
     private function createOberservacao(CheckpointDTO $checkpointDTO): bool
     {
         $observacaoDTO = ObservacaoDTO::from([
-                'observacao' => $this->createDescricaoObservacao($checkpointDTO->descricao),
+                'observacao' => $this->createDescricaoObservacao($checkpointDTO),
                 'projeto_id' => $checkpointDTO->projeto_id,
                 'user_id' => $checkpointDTO->criador_user_id
         ]);
         $this->observacaoBusiness->salvar($observacaoDTO, $checkpointDTO->equipe_id, 'api');
         return true;
     }
-    private function createDescricaoObservacao(string $descricao):string
+    private function createDescricaoObservacao(CheckpointDTO $checkpointDTO):string
     {
-        return $descricao."\r\n[obs]Observação criada através de um checkpoint.[/obs]";
+        return $checkpointDTO->descricao."\r\n[obs]Observação criada através de um checkpoint.[".$checkpointDTO->user->name."][/obs]";
     }
 
     public function update(CheckpointDTO $checkpointDTO): CheckpointDTO

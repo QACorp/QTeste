@@ -8,6 +8,8 @@ import {AlocacaoInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Aloca
 import {ProjetoInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Projeto.interface";
 import {useToast} from "vue-toast-notification";
 import {UsuarioInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Usuario.interface";
+import CheckpointTimelineItem from "./CheckpointTimelineItem.vue";
+import Editor from "@tinymce/tinymce-vue";
 
 const $toast = useToast();
 const props = defineProps({
@@ -26,21 +28,21 @@ const alocacoes = ref<AlocacaoInterface>([]);
 watch(dialog, async () => {
 
   if(dialog.value){
-    await axiosApi.get(`checkpoint/ultimo/${props.usuario.id}?idEquipe=${getIdEquipe()}`)
+    checkpoint.value = {} as CheckpointInterface;
+    checkpoint.value.data = moment().format('YYYY-MM-DD');
+    checkpoint.value.user_id = props.usuario.id;
+    checkpoint.value.compareceu = false;
+    axiosApi.get(`checkpoint/ultimo/${props.usuario.id}?idEquipe=${getIdEquipe()}`)
         .then(response => {
           lastCheckPoint.value = response.data;
         });
-    await axiosApi.get(`checkpoint/projetos?idEquipe=${getIdEquipe()}`)
+    axiosApi.get(`checkpoint/projetos?idEquipe=${getIdEquipe()}`)
         .then(response => {
           projetos.value = response.data;
         })
         .catch(error => {
           console.log(error)
         });
-    checkpoint.value = {} as CheckpointInterface;
-    checkpoint.value.data = moment().format('YYYY-MM-DD');
-    checkpoint.value.user_id = props.usuario.id;
-    checkpoint.value.compareceu = false;
     await findAlocacao(checkpoint.value.data);
 
   }
@@ -131,38 +133,8 @@ const saveCheckpoint = async () => {
               <v-card-title>Último checkpoint</v-card-title>
               <v-card-text>
                 <v-timeline side="end" v-if="lastCheckPoint.descricao">
+                  <CheckpointTimelineItem :checkpoint="lastCheckPoint" />
 
-                  <v-timeline-item
-                      dot-color="primary"
-                      size="small"
-                  >
-                    <template v-slot:opposite>
-                      <span class="font-weight-bold">{{ moment(lastCheckPoint.data).format('DD/MM/YYYY') }}</span>
-                    </template>
-                    <v-alert
-                        variant="tonal"
-                        :value="true"
-                    >
-                      <v-row class="mb-0">
-                        <v-col cols="12" class="mb-0 pb-0" >
-                          <span v-if="lastCheckPoint.criador != null" class="font-italic text-xs text-black"> Por {{ lastCheckPoint.criador.name }}</span>
-                          <v-skeleton-loader v-else width="100" height="10"></v-skeleton-loader>
-                        </v-col>
-
-                        <v-col cols="2" class="mt-0" v-if="lastCheckPoint.tarefa">
-                          <span class="font-italic text-xs text-black" title="Tarefa">  {{ lastCheckPoint.tarefa }}</span>
-                        </v-col>
-                        <v-col cols="10" class="mt-0" v-if="lastCheckPoint.projeto">
-                          <span class="font-italic text-xs text-black" title="Projeto"> {{ lastCheckPoint.projeto.nome }}</span>
-                        </v-col>
-                      </v-row>
-                      <v-row class="p-0 mt-0">
-                        <v-col cols="12">
-                          {{ lastCheckPoint.descricao}}
-                        </v-col>
-                      </v-row>
-                    </v-alert>
-                  </v-timeline-item>
                 </v-timeline>
               </v-card-text>
 
@@ -243,15 +215,13 @@ const saveCheckpoint = async () => {
               </v-row>
               <v-row dense>
                 <v-col cols="12" sm="12" md="12">
-                  <v-textarea
-                      v-model="checkpoint.descricao"
-                      label="Descrição"
-                      size="large"
-                      :rules="[
-                          value => !checkpoint.descricao ? 'Informe a descrição' : true
-                      ]"
+                  <label for="descricao">Descrição</label>
+                  <Editor
                       required
-                  ></v-textarea>
+                      licenseKey="gpl"
+                      v-model="checkpoint.descricao"
+                  />
+
                 </v-col>
               </v-row>
               <v-row dense>
