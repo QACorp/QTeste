@@ -30,7 +30,7 @@ const props = defineProps({
                 </v-col>
 
                 <v-col cols="2" class="mt-0" v-if="checkpoint.tarefa">
-                    <span class="font-italic text-xs text-black" title="Tarefa">  {{ checkpoint.tarefa }}</span>
+                    <span class="font-italic text-xs text-black" :title="checkpoint.tarefa.titulo">  {{ checkpoint.tarefa.tarefa }}</span>
                 </v-col>
                 <v-col cols="10" class="mt-0" v-if="checkpoint.projeto">
                     <span class="font-italic text-xs text-black" title="Projeto"> {{ checkpoint.projeto.nome }}</span>

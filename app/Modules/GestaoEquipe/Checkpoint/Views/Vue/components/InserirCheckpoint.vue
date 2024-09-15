@@ -10,6 +10,7 @@ import {useToast} from "vue-toast-notification";
 import {UsuarioInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Usuario.interface";
 import CheckpointTimelineItem from "./CheckpointTimelineItem.vue";
 import Editor from "@tinymce/tinymce-vue";
+import TFieldTarefas from "../../../../../Projetos/Views/Vue/components/TFieldTarefas.vue";
 
 const $toast = useToast();
 const props = defineProps({
@@ -194,11 +195,7 @@ const saveCheckpoint = async () => {
                   ></v-select>
                 </v-col>
                 <v-col cols="2" sm="12" md="2">
-                  <v-text-field
-                      v-model="checkpoint.tarefa"
-                      label="Tarefa"
-                      size="large"
-                  ></v-text-field>
+                  <TFieldTarefas v-model="checkpoint.tarefa_id" />
                 </v-col>
               </v-row>
               <v-row dense>

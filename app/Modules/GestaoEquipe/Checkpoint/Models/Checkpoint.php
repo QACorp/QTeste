@@ -4,6 +4,7 @@ namespace App\Modules\GestaoEquipe\Checkpoint\Models;
 
 use App\Modules\GestaoEquipe\Alocacao\Models\Alocacao;
 use App\Modules\Projetos\Models\Projeto;
+use App\Modules\Projetos\Models\Tarefa;
 use App\System\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,7 +24,7 @@ class Checkpoint extends Model
         'user_id',
         'descricao',
         'data',
-        'tarefa',
+        'tarefa_id',
         'compareceu',
         'equipe_id',
         'alocacao_id'
@@ -37,6 +38,10 @@ class Checkpoint extends Model
     protected $casts = [
         'compareceu' => 'boolean'
     ];
+    public function tarefa(): BelongsTo
+    {
+        return $this->belongsTo(Tarefa::class, 'tarefa_id');
+    }
     public function projeto(): BelongsTo
     {
         return $this->belongsTo(Projeto::class, 'projeto_id');
@@ -57,9 +62,13 @@ class Checkpoint extends Model
 
     public function newQuery(): Builder
     {
-        return parent::newQuery()
-            ->join('users as criador', 'criador.id', '=', 'checkpoints.criador_user_id')
-            ->where('criador.empresa_id', Auth::user()->empresa_id);
+        if(Auth::user()){
+            return parent::newQuery()
+                ->join('users as criador', 'criador.id', '=', 'checkpoints.criador_user_id')
+                ->where('criador.empresa_id', Auth::user()->empresa_id);
+
+        }
+        return parent::newQuery();
     }
 
 }

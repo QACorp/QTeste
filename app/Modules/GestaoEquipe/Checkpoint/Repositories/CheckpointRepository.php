@@ -45,7 +45,7 @@ class CheckpointRepository implements CheckpointRepositoryContract
                                 ->where('user_id', $idUsuario)
                                 ->orderBy('data', 'desc')
                                 ->orderBy('id', 'desc')
-                                ->with('projeto','user', 'criador', 'projeto.aplicacao', 'alocacao')
+                                ->with('projeto','user', 'criador', 'projeto.aplicacao', 'alocacao', 'tarefa')
                                 ->first();
         return $checkpoint ? CheckpointDTO::from($checkpoint) : null;
     }
@@ -57,7 +57,7 @@ class CheckpointRepository implements CheckpointRepositoryContract
             ->where('alocacao_id', $idAlocacao)
             ->orderBy('data', 'desc')
             ->orderBy('id', 'desc')
-            ->with('projeto','user', 'criador', 'projeto.aplicacao', 'alocacao')
+            ->with('projeto','user', 'criador', 'projeto.aplicacao', 'alocacao', 'tarefa')
             ->get();
         return CheckpointDTO::collection($checkpoint);
     }

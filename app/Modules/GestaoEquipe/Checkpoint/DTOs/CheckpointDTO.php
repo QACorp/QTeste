@@ -4,6 +4,7 @@ namespace App\Modules\GestaoEquipe\Checkpoint\DTOs;
 
 use App\Modules\GestaoEquipe\Alocacao\DTOs\AlocacaoDTO;
 use App\Modules\Projetos\DTOs\ProjetoDTO;
+use App\Modules\Projetos\DTOs\TarefaDTO;
 use App\System\DTOs\UserDTO;
 use App\System\Utils\DTO;
 use Illuminate\Support\Carbon;
@@ -19,14 +20,15 @@ class CheckpointDTO extends DTO
     #[Required]
     public ?int $user_id;
     #[Required]
-    public ?string $descricao;
-    #[Required]
     public ?Carbon $data;
-    public ?string $tarefa;
+    public ?int $tarefa_id;
+    public ?TarefaDTO $tarefa;
     public ?ProjetoDTO $projeto;
     public ?UserDTO $user;
     public ?UserDTO $criador;
     public ?AlocacaoDTO $alocacao;
+    #[Required]
+    public ?string $descricao;
 
     public ?bool $compareceu = false;
 

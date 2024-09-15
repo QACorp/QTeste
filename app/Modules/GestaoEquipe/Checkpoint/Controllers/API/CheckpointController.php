@@ -7,6 +7,7 @@ use App\Modules\GestaoEquipe\Checkpoint\DTOs\CheckpointDTO;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnauthorizedException;
 use App\System\Http\Controllers\Controller;
+use App\System\Traits\RequestGuardTraits;
 use App\System\Utils\EquipeUtils;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CheckpointController extends Controller
 {
+    use RequestGuardTraits;
     public function __construct(
         private readonly CheckpointBusinessContract $checkpointBusiness,
 
@@ -74,8 +76,12 @@ class CheckpointController extends Controller
         }
         $checkpointDTO =  CheckpointDTO::from($request->all());
         $checkpointDTO->equipe_id = $idEquipe;
-        $checkpointDTO->criador_user_id = Auth::guard('api')->user()->getAuthIdentifier();
+        $checkpointDTO->criador_user_id = Auth::guard($this->getGuard())->user()->getAuthIdentifier();
+
         try {
+            if(!$checkpointDTO->descricao){
+                return response()->json(['message' => 'A descrição é obrigatória'], 400);
+            }
             return response()->json($this->checkpointBusiness->create($checkpointDTO, $idEquipe), 200);
         }catch (NotFoundException | UnauthorizedException $e){
             return response()->json(['message' => $e->getMessage()], $e->getCode());

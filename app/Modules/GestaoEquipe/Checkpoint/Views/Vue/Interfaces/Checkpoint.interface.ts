@@ -1,6 +1,7 @@
 import {ProjetoInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Projeto.interface";
 import {UsuarioInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Usuario.interface";
 import {AlocacaoInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Alocacao.interface";
+import {TarefaInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Tarefa.interface";
 
 export default interface CheckpointInterface {
     id: number,
@@ -11,7 +12,8 @@ export default interface CheckpointInterface {
     alocacao_id: number,
     descricao: string,
     data: string,
-    tarefa: string,
+    tarefa_id: number,
+    tarefa: TarefaInterface,
     compareceu: boolean,
     projeto: ProjetoInterface,
     user: UsuarioInterface,
