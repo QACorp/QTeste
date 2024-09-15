@@ -1,3 +1,5 @@
+import {TarefaInterface} from "./Tarefa.interface";
+
 export interface AlocacaoInterface{
     id: number,
     projeto_id: number,
@@ -7,9 +9,10 @@ export interface AlocacaoInterface{
     inicio: string,
     termino: string,
     concluida: string,
-    tarefa: string,
+    tarefa_id: number,
     natureza: string,
     observacao: string,
+    tarefa: TarefaInterface,
     "user": {
         id: number,
         name: string,

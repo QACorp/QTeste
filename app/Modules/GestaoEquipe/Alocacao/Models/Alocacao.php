@@ -4,6 +4,7 @@ namespace App\Modules\GestaoEquipe\Alocacao\Models;
 
 use App\Modules\GestaoEquipe\Alocacao\Enums\NaturezaEnum;
 use App\Modules\Projetos\Models\Projeto;
+use App\Modules\Projetos\Models\Tarefa;
 use App\System\Models\Empresa;
 use App\System\Models\Equipe;
 use App\System\Models\User;
@@ -26,7 +27,7 @@ class Alocacao extends Model
         'inicio',
         'termino',
         'concluida',
-        'tarefa',
+        'tarefa_id',
         'natureza',
         'observacao'
     ];
@@ -42,6 +43,10 @@ class Alocacao extends Model
     public function projeto(): BelongsTo
     {
         return $this->belongsTo(Projeto::class);
+    }
+    public function tarefa(): BelongsTo
+    {
+        return $this->belongsTo(Tarefa::class);
     }
     public function user(): BelongsTo
     {

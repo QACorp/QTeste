@@ -42,7 +42,7 @@ class AlocacaoRepository extends BaseRepository implements AlocacaoRepositoryCon
     {
         $alocacao = Alocacao::where('equipe_id', $idEquipe)
             ->where('id', $id)
-            ->with(['projeto', 'user', 'user.empresa','equipe', 'projeto.aplicacao'])
+            ->with(['projeto', 'user', 'user.empresa','equipe', 'projeto.aplicacao', 'tarefa'])
             ->first();
         if($alocacao) {
             return AlocacaoDTO::from($alocacao);
@@ -54,7 +54,7 @@ class AlocacaoRepository extends BaseRepository implements AlocacaoRepositoryCon
         return Alocacao::select('alocacoes.*')
             ->where('equipe_id', $idEquipe)
             ->where('concluida', null)
-            ->with(['projeto', 'user', 'user.empresa','equipe', 'projeto.aplicacao'])
+            ->with(['projeto', 'user', 'user.empresa','equipe', 'projeto.aplicacao','tarefa'])
             ->orderBy('inicio', 'ASC');
     }
 

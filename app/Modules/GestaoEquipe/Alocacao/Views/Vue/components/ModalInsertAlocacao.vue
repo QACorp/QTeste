@@ -12,6 +12,7 @@ import {SubmitEventPromise} from "vuetify";
 import {UsuarioInterface} from "../../../../../Retrabalhos/Views/Vue/Interfaces/Usuario.interface";
 import {axiosApi} from "../../../../../../../resources/js/app";
 import {getIdEquipe} from "../../../../../../../resources/js/APIUtils/BaseAPI";
+import TFieldTarefas from "../../../../../Projetos/Views/Vue/components/TFieldTarefas.vue";
 
 
 const dialog = ref<boolean>(false);
@@ -141,12 +142,7 @@ const findProjetos = () => {
                             ></v-select>
                         </v-col>
                         <v-col cols="12" sm="3" md="3" v-if="usuarios">
-                            <v-text-field
-                                type="text"
-                                v-model="alocacao.tarefa"
-                                label="Tarefa"
-                                size="large"
-                            ></v-text-field>
+                            <TFieldTarefas v-model="alocacao.tarefa_id" label="Tarefa" size="large" required/>
                         </v-col>
                         <v-col cols="12" sm="3" md="3" v-if="usuarios">
                             <v-select

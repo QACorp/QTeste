@@ -19,7 +19,7 @@ const diffDate = (data: string): number =>
 }
 
 const defineBackgroud = (days: number)=>{
-    if(days <= 7){
+    if(days <= 5){
         return 'bg-danger';
     }else if(days <= 14) {
         return 'bg-warning';
@@ -51,10 +51,10 @@ const isAusencia = (alocacao: AlocacaoInterface):boolean => {
                         {{ alocacao.natureza }}
                         <UseClipboard
                             v-slot="{ copy, copied }"
-                            :source="alocacao.tarefa"
+                            :source="alocacao.tarefa.tarefa"
                             v-if="alocacao.tarefa !== null">
-                               [<span @click="copy()">
-                                    <span v-if="!copied">{{ alocacao.tarefa }}</span>
+                               [<span @click="copy()" class="cursor-pointer">
+                                    <span v-if="!copied" :title="alocacao.tarefa.titulo">{{ alocacao.tarefa.tarefa }}</span>
                                     <span v-else>Copiado!</span>
                                     <v-icon size="sm">mdi-content-copy</v-icon>
                                 </span>]

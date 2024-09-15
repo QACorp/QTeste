@@ -4,6 +4,7 @@ namespace App\Modules\GestaoEquipe\Alocacao\DTOs;
 
 use App\Modules\GestaoEquipe\Alocacao\Enums\NaturezaEnum;
 use App\Modules\Projetos\DTOs\ProjetoDTO;
+use App\Modules\Projetos\DTOs\TarefaDTO;
 use App\System\DTOs\EquipeDTO;
 use App\System\DTOs\UserDTO;
 use App\System\Utils\DTO;
@@ -26,7 +27,8 @@ class AlocacaoDTO extends DTO
     #[Required]
     public ?Carbon $termino;
     public ?Carbon $concluida;
-    public ?string $tarefa;
+    public ?int $tarefa_id;
+    public ?TarefaDTO $tarefa;
     #[Required]
     public ?NaturezaEnum $natureza;
     public ?string $observacao;

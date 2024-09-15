@@ -13,6 +13,7 @@ import {axiosApi} from "../../../../../../../resources/js/app";
 import {UsuarioInterface} from "../../../../../Retrabalhos/Views/Vue/Interfaces/Usuario.interface";
 import CheckpointInterface from "../../../../Checkpoint/Views/Vue/Interfaces/Checkpoint.interface";
 import CheckpointTimelineItem from "../../../../Checkpoint/Views/Vue/components/CheckpointTimelineItem.vue";
+import TFieldTarefas from "../../../../../Projetos/Views/Vue/components/TFieldTarefas.vue";
 
 const props = defineProps({
     alocacaoId: {
@@ -36,7 +37,6 @@ watch(dialog, async (newValue) => {
         await axiosApi.get(`alocacao/${props.alocacaoId}?idEquipe=${getIdEquipe()}`)
             .then(response => {
                 alocacao.value = response.data;
-
                 if(
                     alocacao.value.natureza === NaturezaEnum.PROJETO &&
                     alocacao.value.inicio &&
@@ -49,7 +49,6 @@ watch(dialog, async (newValue) => {
                 $toast.error(error.response.data.message);
             });
         await findCheckpoints();
-
 
     }
 });
@@ -199,13 +198,7 @@ const findCheckpoints = async () => {
                                     ></v-select>
                                 </v-col>
                                 <v-col cols="12" sm="3" md="3" v-if="usuarios">
-                                    <v-text-field
-                                        type="text"
-                                        v-model="alocacao.tarefa"
-                                        label="Tarefa"
-                                        :disabled="!props.canEdit"
-                                        size="large"
-                                    ></v-text-field>
+                                    <TFieldTarefas v-model="alocacao.tarefa_id" :tarefa="alocacao.tarefa?.tarefa" :disabled="!props.canEdit" label="Tarefa" size="large"/>
                                 </v-col>
                                 <v-col cols="12" sm="3" md="3" v-if="usuarios">
                                     <v-select
