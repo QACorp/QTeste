@@ -18,7 +18,7 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-body" id="vue">
+                <div class="card-body">
 
                     <form-inserir-retrabalho
                         :errors="{{ json_encode($errors->getMessages()) }}"

@@ -34,7 +34,7 @@
                         bordered
                         data-page-length='100'
                         striped >
-                        @forelse($retrabalhos as $retrabalho)
+                        @foreach($retrabalhos as $retrabalho)
                             <tr>
                                 <td>{{ $retrabalho->id }}</td>
                                 <td>{{ $retrabalho->data->format('d/m/Y') }}</td>
@@ -66,11 +66,8 @@
 
                                 </td>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="7">Nenhum registro encontrado</td>
-                            </tr>
-                        @endforelse
+
+                        @endforeach
                     </x-adminlte-datatable>
                 </div>
             </div>

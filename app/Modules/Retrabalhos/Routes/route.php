@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => ''],function () {
     Route::get('/', [RetrabalhosController::class, 'index'])->name('retrabalhos.index');
-    Route::get('/inserir', [RetrabalhosController::class, 'inserir'])->name('retrabalhos.inserir');
+    Route::middleware(['vue'])->get('/inserir', [RetrabalhosController::class, 'inserir'])->name('retrabalhos.inserir');
     Route::get('/show/{idRetrabalho}', [RetrabalhosController::class, 'mostrarProvidencia'])->name('retrabalhos.providencia.index');
-    Route::get('/alterar/{idRetrabalho}', [RetrabalhosController::class, 'alterar'])->name('retrabalhos.alterar.index');
+    Route::middleware(['vue'])->get('/alterar/{idRetrabalho}', [RetrabalhosController::class, 'alterar'])->name('retrabalhos.alterar.index');
     Route::put('/alterar/{idRetrabalho}', [RetrabalhosController::class, 'editar'])->name('retrabalhos.editar');
     Route::post('/inserir', [RetrabalhosController::class, 'salvar'])->name('retrabalhos.salvar');
     Route::delete('/remover/{idRetrabalho}', [RetrabalhosController::class, 'excluir'])->name('retrabalhos.remover');
