@@ -11,6 +11,7 @@ import {getError, hasError} from "../../../../../../resources/js/ErrorHelper";
 import FormInserirCasoTeste from "./FormInserirCasoTeste.vue";
 import {CasoTesteInterface} from "../Interfaces/CasoTeste.interface";
 import {TipoRetrabalhoEnum} from "../Enums/TipoRetrabalho.enum";
+import {LoaderStore} from "../../../../../../resources/js/GlobalStore/LoaderStore";
 
 const props = defineProps({
     actionForm: {
@@ -65,43 +66,50 @@ const getShowError = (field) => {
     return getError(field, props.errors);
 }
 const populaTiposRetrabalho = async () => {
+    LoaderStore.showLoader = true;
     await axios.get(import.meta.env.VITE_APP_URL+'/retrabalhos/consultas/tipos').then((res) => {
         listaTiposRetrabalho.value = res.data;
         if (retrabalho.value.tipo_retrabalho_id) {
             retrabalho.value.tipo_retrabalho =
                 listaTiposRetrabalho.value.find((item: TipoRetrabalhoInterface) => item.id == retrabalho.value.tipo_retrabalho_id);
         }
-    })
+    });
+    LoaderStore.showLoader = false;
 }
 const populaUsuarios = async () => {
+    LoaderStore.showLoader = true;
     await axios.get(import.meta.env.VITE_APP_URL+'/retrabalhos/consultas/usuarios').then((res) => {
         listaUsuarios.value = res.data;
         if (retrabalho.value.usuario_id) {
             retrabalho.value.usuario =
                 listaUsuarios.value.find((item: UsuarioInterface) => item.id == retrabalho.value.usuario_id);
         }
-    })
+    });
+    LoaderStore.showLoader = false;
 }
 
 const populaAplicacoes = async () => {
+    LoaderStore.showLoader = true;
     await axios.get(import.meta.env.VITE_APP_URL+'/projetos/consultas/aplicacoes').then((res) => {
         listaAplicacoes.value = res.data;
         if (retrabalho.value.aplicacao_id) {
             retrabalho.value.aplicacao =
                 listaAplicacoes.value.find((item: AplicacaoInterface) => item.id == retrabalho.value.aplicacao_id);
         }
-
-    })
+    });
+    LoaderStore.showLoader = false;
 }
 
 const populaProjetos = async (idAplicacao:number) => {
+    LoaderStore.showLoader = true;
     await axios.get(import.meta.env.VITE_APP_URL+`/projetos/consultas/aplicacoes/${idAplicacao}/projetos`).then((res) => {
         listaProjetos.value = res.data;
         if (retrabalho.value.projeto_id) {
             retrabalho.value.projeto =
                 listaProjetos.value.find((item: ProjetoInterface) => item.id == retrabalho.value.projeto_id);
         }
-    })
+    });
+    LoaderStore.showLoader = false;
 }
 
 const populaCasosTeste = async (term:string) => {
@@ -128,10 +136,10 @@ const populaCasosTeste = async (term:string) => {
             retrabalho.value.caso_teste =
                 listaCasosTeste.value.find((item: CasoTesteInterface) => item.caso_teste_id == retrabalho.value.caso_teste.caso_teste_id);
         }
-    })
+    });
 }
 const populaCasosTestePorId = async (idCasoTeste:number) => {
-
+    LoaderStore.showLoader = true;
     await axios.get(import.meta.env.VITE_APP_URL+`/projetos/consultas/casos-testes/${idCasoTeste}`).then((res) => {
         listaCasosTeste.value = [res.data];
         listaCasosTeste.value = listaCasosTeste.value.map((item: any) => {
@@ -151,13 +159,14 @@ const populaCasosTestePorId = async (idCasoTeste:number) => {
                     return item.caso_teste_id === retrabalho.value.caso_teste.caso_teste_id;
                 });
         }
-    })
+    });
+    LoaderStore.showLoader = false;
 }
 
 onMounted( async () => {
-    populaTiposRetrabalho();
-    populaAplicacoes();
-    populaUsuarios();
+    await populaTiposRetrabalho();
+    await populaAplicacoes();
+    await populaUsuarios();
 
     if (retrabalho.value.caso_teste?.caso_teste_id) {
         await populaCasosTestePorId(retrabalho.value.caso_teste.caso_teste_id);
