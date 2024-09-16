@@ -198,7 +198,9 @@ return [
 
         App\Modules\Projetos\Providers\ProjetosServiceProvider::class,
         App\Modules\Retrabalhos\Providers\RetrabalhosServiceProvider::class,
-        App\Modules\GestaoEquipe\Providers\GestaoEquipeServiceProvider::class
+        App\Modules\GestaoEquipe\Providers\GestaoEquipeServiceProvider::class,
+        App\Modules\GestaoEquipe\Alocacao\Providers\AlocacaoServiceProvider::class,
+        App\Modules\GestaoEquipe\Checkpoint\Providers\CheckpointServiceProvider::class,
 
 
     ],

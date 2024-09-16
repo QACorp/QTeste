@@ -140,7 +140,7 @@
                                     </div>
 
                                     <p>
-                                        {{ $observacao->observacao }}
+                                        {!! str_replace(['[obs]', '[/obs]'],['<cite>','</cite>'],nl2br(strip_tags($observacao->observacao))) !!}
                                     </p>
                                 </div>
 
