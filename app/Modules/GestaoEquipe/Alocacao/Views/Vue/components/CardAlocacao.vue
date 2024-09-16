@@ -33,6 +33,9 @@ const isAusencia = (alocacao: AlocacaoInterface):boolean => {
         alocacao.natureza === NaturezaEnum.FERIAS;
 
 }
+const getUrlProjeto = () => {
+    return `${import.meta.env.VITE_APP_URL}/projetos/aplicacoes/${props.alocacao.projeto.aplicacao_id}/projetos/${props.alocacao.projeto_id}/editar`;
+}
 </script>
 
 <template>
@@ -41,6 +44,7 @@ const isAusencia = (alocacao: AlocacaoInterface):boolean => {
 
     >
         <v-card-title>
+
             <v-row>
                 <v-col md="12"><span :title="alocacao.user.name">{{ alocacao.user.name }}</span></v-col>
             </v-row>
@@ -48,7 +52,8 @@ const isAusencia = (alocacao: AlocacaoInterface):boolean => {
         <v-card-subtitle>
             <span >{{ alocacao.equipe.nome }}</span> -
             <span :class="[alocacao.projeto_id || alocacao.natureza === NaturezaEnum.MELHORIA ? 'cursor-pointer': '']">
-                        {{ alocacao.natureza }}
+                        <a class="text-light text-decoration-none" target="_blank" v-if="alocacao.natureza === NaturezaEnum.PROJETO" :href="getUrlProjeto()">{{ alocacao.natureza }}<v-icon size="sm">mdi-open-in-new</v-icon></a>
+                        <span v-else>{{ alocacao.natureza }}</span>
                         <UseClipboard
                             v-slot="{ copy, copied }"
                             :source="alocacao.tarefa.tarefa"

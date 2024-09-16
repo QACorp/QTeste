@@ -123,11 +123,7 @@ const saveCheckpoint = async () => {
         ></v-btn>
       </v-toolbar>
       <v-card-text>
-        <v-row>
-          <v-col cols="12" md="12" sm="12" class="border-1">
-            <span>Colaborador: </span><span>{{ usuario.name }}</span>
-          </v-col>
-        </v-row>
+
         <v-row>
           <v-col cols="6">
             <v-card>
@@ -142,6 +138,11 @@ const saveCheckpoint = async () => {
             </v-card>
           </v-col>
           <v-col cols="6">
+              <v-row class=" mb-3">
+                  <v-col cols="12" md="12" sm="12" class="border-black border-b-thin">
+                      <span class="text-gray-dark font-weight-bold">Colaborador: </span><span class="text-gray-dark">{{ usuario.name }}</span>
+                  </v-col>
+              </v-row>
             <v-form validate-on="blur" @submit.prevent="saveCheckpoint">
               <v-row dense>
                 <v-col cols="6" sm="12" md="6">
