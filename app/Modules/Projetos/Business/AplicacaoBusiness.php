@@ -29,10 +29,10 @@ class AplicacaoBusiness extends BusinessAbstract implements AplicacaoBusinessCon
     {
     }
 
-    public function buscarTodos(int $idEquipe): DataCollection
+    public function buscarTodos(int $idEquipe, string $guard = 'web'): DataCollection
     {
-        $this->can(PermissionEnum::LISTAR_APLICACAO->value);
-        if(!$this->userMembroEquipe($idEquipe)){
+        $this->can(PermissionEnum::LISTAR_APLICACAO->value, $guard);
+        if(!$this->userMembroEquipe($idEquipe, $guard)){
            throw new UnauthorizedException(403);
         }
         return  $this->aplicacaoRepository->buscarTodos($idEquipe);
@@ -46,10 +46,10 @@ class AplicacaoBusiness extends BusinessAbstract implements AplicacaoBusinessCon
         return $this->aplicacaoRepository->salvar($aplicacaoDTO);
     }
 
-    public function buscarPorId(int $id, int $idEquipe): AplicacaoDTO
+    public function buscarPorId(int $id, int $idEquipe, string $guard = 'web'): AplicacaoDTO
     {
-        $this->can(PermissionEnum::LISTAR_APLICACAO->value);
-        if(!$this->userMembroEquipe($idEquipe)){
+        $this->can(PermissionEnum::LISTAR_APLICACAO->value, $guard);
+        if(!$this->userMembroEquipe($idEquipe, $guard)){
             throw new UnauthorizedException(403);
         }
         return $this->aplicacaoRepository->buscarPorId($id, $idEquipe) ?? throw new NotFoundException();

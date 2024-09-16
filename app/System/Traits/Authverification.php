@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Auth;
 
 trait Authverification
 {
-    private function userMembroEquipe(int $equipeId):bool
+    private function userMembroEquipe(int $equipeId, string $guard = 'web'):bool
     {
 
-        return Auth::user()->equipes()->where('id', $equipeId)->first() != null;
+        return Auth::guard($guard)->user()->equipes()->where('id', $equipeId)->first() != null;
     }
 
     private function loginApi(Request $request):?string

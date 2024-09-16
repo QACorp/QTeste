@@ -1,5 +1,6 @@
 <?php
 
+use App\System\Http\Controllers\API\UserController;
 use App\System\Http\Controllers\AuthApiController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,4 +22,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
     Route::post('refresh', [AuthApiController::class,'refresh']);
     Route::post('me', [AuthApiController::class, 'me']);
 
+});
+Route::group(['middleware' => ['api', 'auth:api'], 'prefix' => 'user'], function () {
+    Route::get('/equipe/{idEquipe}', [UserController::class, 'getUserByEquipe']);
 });

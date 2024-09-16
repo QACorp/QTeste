@@ -6,7 +6,7 @@ use Spatie\Permission\Exceptions\UnauthorizedException as ACLUnauthorizationExce
 
 class UnauthorizedException extends ACLUnauthorizationException
 {
-    public function __construct(int $statusCode, string $message = '', \Throwable $previous = null, array $headers = [], int $code = 0)
+    public function __construct(int $statusCode, string $message = 'Acesso negado', \Throwable $previous = null, array $headers = [], int $code = 0)
     {
         parent::__construct($statusCode, $message, $previous, $headers, $code);
     }

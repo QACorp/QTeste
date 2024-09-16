@@ -9,8 +9,8 @@ use Spatie\LaravelData\DataCollection;
 
 interface AplicacaoBusinessContract
 {
-    public function buscarTodos(int $idEquipe):DataCollection;
-    public function buscarPorId(int $id, int $idEquipe):AplicacaoDTO;
+    public function buscarTodos(int $idEquipe, string $guard = 'web'):DataCollection;
+    public function buscarPorId(int $id, int $idEquipe, string $guard = 'web'):AplicacaoDTO;
     public function salvar(AplicacaoDTO $aplicacaoDTO, AplicacoesPostRequest $aplicacoesPostRequest = new AplicacoesPostRequest()):AplicacaoDTO;
 
     public function alterar(AplicacaoDTO $aplicacaoDTO, int $equipeId, AplicacoesPutRequest $aplicacoesPutRequest = new AplicacoesPutRequest()): AplicacaoDTO;
