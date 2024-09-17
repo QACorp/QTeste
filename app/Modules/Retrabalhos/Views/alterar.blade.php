@@ -35,7 +35,7 @@
                             projeto_id: {{old('projeto_id', $retrabalho->projeto_id)  ?? 'null'}},
                             aplicacao_id: {{old('aplicacao_id', $retrabalho->aplicacao_id)  ?? 'null'}},
                             caso_teste_id: {{old('caso_teste_id', $retrabalho->caso_teste_id)  ?? 'null'}},
-                            numero_tarefa: '{{old('numero_tarefa', $retrabalho->numero_tarefa)}}',
+                            numero_tarefa: '{{old('tarefa_id', $retrabalho->tarefa_id)}}',
                             criticidade: '{{ old('criticidade', $retrabalho->criticidade) }}',
                             caso_teste: {
                                 titulo_caso_teste: '{{str_replace("\r\n", '\r\n', old('titulo_caso_teste', $retrabalho->titulo_caso_teste))}}',

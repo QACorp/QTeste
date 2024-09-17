@@ -20,7 +20,7 @@ return [
                 'can'   => [PermissionEnumAlocacao::VER_ALOCACAO->value, PermissionEnumAlocacao::VER_MINHA_ALOCACAO->value],
             ],
             [
-                'text' => 'Checkpoints',
+                'text' => 'Equipe',
                 'route'  => 'gestao-equipe.checkpoint.index',
                 'icon'  => 'fas fa-users',
                 'active' => ['checkpoint/*'],

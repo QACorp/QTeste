@@ -21,15 +21,17 @@ use App\System\Impl\BusinessAbstract;
 use App\System\Services\Mail\DTOs\MailDTO;
 use App\System\Services\Mail\QTesteMail;
 use App\System\Traits\Configuracao;
+use App\System\Traits\RequestGuardTraits;
 use App\System\Traits\TransactionDatabase;
 use App\System\Traits\Validation;
+use Illuminate\Auth\GuardHelpers;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
 use Spatie\LaravelData\DataCollection;
 
 class RetrabalhoBusiness extends BusinessAbstract implements RetrabalhoBusinessContract
 {
-    use TransactionDatabase, Configuracao;
+    use TransactionDatabase, Configuracao, RequestGuardTraits;
     public function __construct(
         private readonly RetrabalhoRepositoryContract $retrabalhoRepository,
         private readonly TipoRetrabalhoBusinessContract $tipoRetrabalhoBusiness,
@@ -41,7 +43,7 @@ class RetrabalhoBusiness extends BusinessAbstract implements RetrabalhoBusinessC
 
     public function salvar(RetrabalhoCasoTesteDTO $retrabalhoCasoTesteDTO, int $idEquipe): RetrabalhoCasoTesteDTO
     {
-        $this->can(PermissionEnum::INSERIR_RETRABALHO->value);
+        $this->can(PermissionEnum::INSERIR_RETRABALHO->value, $this->getGuard());
         $tipoRetrabalho = $this->tipoRetrabalhoBusiness->getTipoRetrabalhoPorId($retrabalhoCasoTesteDTO->tipo_retrabalho_id);
         if(!$tipoRetrabalho){
             throw new NotFoundException("Tipo de retrabalho não encontrado.");
@@ -90,7 +92,7 @@ class RetrabalhoBusiness extends BusinessAbstract implements RetrabalhoBusinessC
     }
     public function buscarPorId(int $idRetrabalho, ?int $idUsuario): ?RetrabalhoCasoTesteDTO
     {
-        $this->can(PermissionEnum::LISTAR_RETRABALHO->value);
+        $this->can(PermissionEnum::LISTAR_RETRABALHO->value, $this->getGuard());
         $retrabalho = $this->retrabalhoRepository->buscarPorId($idRetrabalho);
         if(!$retrabalho){
             throw new NotFoundException("Retrabalho não encontrado.");
@@ -107,20 +109,20 @@ class RetrabalhoBusiness extends BusinessAbstract implements RetrabalhoBusinessC
 
     public function buscarTodosPorEquipe(int $idEquipe): DataCollection
     {
-        $this->can(PermissionEnum::VER_TODOS_RETRABALHOS->value);
+        $this->can(PermissionEnum::VER_TODOS_RETRABALHOS->value, $this->getGuard());
         return $this->retrabalhoRepository->buscarTodosPorEquipe($idEquipe);
     }
 
     public function buscarTodosPorUsuario(int $idUsuario): DataCollection
     {
-        $this->can(PermissionEnum::LISTAR_RETRABALHO->value);
+        $this->can(PermissionEnum::LISTAR_RETRABALHO->value, $this->getGuard());
         return $this->retrabalhoRepository->buscarTodosPorUsuario($idUsuario);
     }
 
     public function buscarRetrabalho(int $idEquipe, int $idUsuario): DataCollection
     {
 
-        if($this->canDo(PermissionEnum::VER_TODOS_RETRABALHOS->value)){
+        if($this->canDo(PermissionEnum::VER_TODOS_RETRABALHOS->value, $this->getGuard())){
             return $this->buscarTodosPorEquipe($idEquipe);
         }
         $this->can(PermissionEnum::LISTAR_RETRABALHO->value);
@@ -129,10 +131,10 @@ class RetrabalhoBusiness extends BusinessAbstract implements RetrabalhoBusinessC
 
     public function canAlterarRetrabalho(RetrabalhoCasoTesteDTO $retrabalhoDTO, int $idUsuario): bool
     {
-        if($this->canDo(PermissionEnum::ALTERAR_TODOS_RETRABALHOS->value)){
+        if($this->canDo(PermissionEnum::ALTERAR_TODOS_RETRABALHOS->value, $this->getGuard())){
             return true;
         }
-        if($this->canDo(PermissionEnum::ALTERAR_RETRABALHO->value)){
+        if($this->canDo(PermissionEnum::ALTERAR_RETRABALHO->value, $this->getGuard())){
             return $retrabalhoDTO->usuario_criador_id == $idUsuario;
         }
 
@@ -141,10 +143,10 @@ class RetrabalhoBusiness extends BusinessAbstract implements RetrabalhoBusinessC
     }
     public function canRemoverRetrabalho(RetrabalhoCasoTesteDTO $retrabalhoDTO, int $idUsuario): bool
     {
-        if($this->canDo(PermissionEnum::REMOVER_TODOS_RETRABALHOS->value)){
+        if($this->canDo(PermissionEnum::REMOVER_TODOS_RETRABALHOS->value, $this->getGuard())){
             return true;
         }
-        if($this->canDo(PermissionEnum::REMOVER_RETRABALHO->value)){
+        if($this->canDo(PermissionEnum::REMOVER_RETRABALHO->value, $this->getGuard())){
             return $retrabalhoDTO->usuario_criador_id == $idUsuario;
         }
         return false;
@@ -152,7 +154,7 @@ class RetrabalhoBusiness extends BusinessAbstract implements RetrabalhoBusinessC
 
     public function canVerRetrabalho(RetrabalhoCasoTesteDTO $retrabalhoDTO, int $idUsuario): bool
     {
-        if($this->canDo(PermissionEnum::VER_TODOS_RETRABALHOS->value)){
+        if($this->canDo(PermissionEnum::VER_TODOS_RETRABALHOS->value, $this->getGuard())){
             return true;
         }
         return $retrabalhoDTO->usuario_criador_id == $idUsuario || $retrabalhoDTO->usuario_id == $idUsuario;

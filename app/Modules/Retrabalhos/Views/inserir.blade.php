@@ -33,7 +33,7 @@
                             projeto_id: {{ old('projeto_id', null)  ?? 'null' }},
                             aplicacao_id: {{ old('aplicacao_id', null)  ?? 'null' }},
                             caso_teste_id: {{ old('caso_teste_id', null)  ?? 'null' }},
-                            numero_tarefa: '{{ old('numero_tarefa', '') }}',
+                            tarefa_id: '{{ old('tarefa_id', '') }}',
                             criticidade: '{{ old('criticidade', '') }}',
                             caso_teste: {
                                 titulo_caso_teste: '{{ str_replace("\r\n", '\r\n', old('titulo_caso_teste', '')) }}',

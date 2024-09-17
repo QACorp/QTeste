@@ -12,6 +12,7 @@ import FormInserirCasoTeste from "./FormInserirCasoTeste.vue";
 import {CasoTesteInterface} from "../Interfaces/CasoTeste.interface";
 import {TipoRetrabalhoEnum} from "../Enums/TipoRetrabalho.enum";
 import {LoaderStore} from "../../../../../../resources/js/GlobalStore/LoaderStore";
+import TFieldTarefas from "../../../../Projetos/Views/Vue/components/TFieldTarefas.vue";
 
 const props = defineProps({
     actionForm: {
@@ -293,15 +294,7 @@ watch(caso_teste, (new_caso_teste, old_caso_teste) => {
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <v-text-field
-                                v-model="retrabalho.numero_tarefa"
-                                label="Tarefa"
-                                name="numero_tarefa"
-                                id="numero_tarefa"
-                                variant="solo"
-                                :error="shouldShowError('numero_tarefa')"
-                                :error-messages="getShowError('numero_tarefa')"
-                            ></v-text-field>
+                           <TFieldTarefas v-model="retrabalho.tarefa_id" :tarefa="retrabalho.tarefa?.tarefa"/>
                         </div>
                     </div>
                     <div class="col-md-5">
