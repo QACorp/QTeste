@@ -352,8 +352,8 @@ const saveRetrabalho = async (submitEventPromise: SubmitEventPromise) => {
                                 label="Caso de teste"
                                 :items="listaCasosTeste"
                                 @update:modelValue="() => {
-                                    retrabalho.caso_teste_id = casoTeste.id;
-                                    retrabalho.caso_teste = casoTeste;
+                                    retrabalho.caso_teste_id = casoTeste?.id;
+                                    retrabalho.caso_teste = casoTeste ?? {} as CasoTesteInterface;
                                 }"
                                 variant="solo"
                                 return-object
