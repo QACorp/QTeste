@@ -25,6 +25,7 @@ use Spatie\LaravelData\Support\Validation\ValidationContext;
 class RetrabalhoCasoTesteDTO extends DTO
 {
     public ?int $id;
+    #[Required]
     public ?string $descricao;
     #[WithCast(CastCarbonDate::class)]
     public ?Carbon $data;
@@ -63,6 +64,8 @@ class RetrabalhoCasoTesteDTO extends DTO
     #[WithoutValidation]
     #[WithCast(User::class)]
     public ?UserDTO $usuario_criador;
+
+    public ?TipoRetrabalhoDTO $tipo_retrabalho;
 
     public ?string $titulo_caso_teste;
     public ?string $requisito_caso_teste;

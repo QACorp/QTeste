@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onMounted, PropType, ref, watch, watchEffect} from "vue";
+import {onMounted, ref, watchEffect} from "vue";
 import {TipoRetrabalhoInterface} from "../Interfaces/TipoRetrabalho.interface";
 import axios from "axios";
 import {RetrabalhoInterface} from "../Interfaces/Retrabalho.interface";
@@ -7,41 +7,24 @@ import {AplicacaoInterface} from "../Interfaces/Aplicacao.interface";
 import {ProjetoInterface} from "../Interfaces/Projeto.interface";
 import {UsuarioInterface} from "../Interfaces/Usuario.interface";
 import moment from "moment";
-import {getError, hasError} from "../../../../../../resources/js/ErrorHelper";
 import FormInserirCasoTeste from "./FormInserirCasoTeste.vue";
 import {CasoTesteInterface} from "../Interfaces/CasoTeste.interface";
 import {TipoRetrabalhoEnum} from "../Enums/TipoRetrabalho.enum";
 import {LoaderStore} from "../../../../../../resources/js/GlobalStore/LoaderStore";
 import TFieldTarefas from "../../../../Projetos/Views/Vue/components/TFieldTarefas.vue";
+import {axiosApi} from "../../../../../../resources/js/app";
+import {getIdEquipe} from "../../../../../../resources/js/APIUtils/BaseAPI";
+import {useToast} from "vue-toast-notification";
+import {SubmitEventPromise} from "vuetify";
 
 const props = defineProps({
-    actionForm: {
-        type: String,
-        required: true
-    },
-    csrf: {
-        type: String,
-        required: true
-    },
-    errors: {
-        type: Array,
+    idRetrabalho: {
+        type: Number,
         required: false,
         default: null
-    },
-    retrabalho: {
-        type: Object as PropType<RetrabalhoInterface>,
-        required: true
 
     },
-    criticidades: {
-        type: Array,
-        required: true
-    },
-    method:{
-        type: String,
-        required: true,
-        default: 'POST'
-    }
+
 });
 const loading = ref(false);
 const noDataText = ref<string>('Digite para iniciar a busca');
@@ -50,22 +33,25 @@ const listaAplicacoes = ref<AplicacaoInterface[]>([]);
 const listaProjetos = ref<ProjetoInterface[]>([]);
 const listaUsuarios = ref<UsuarioInterface[]>([]);
 const listaCasosTeste = ref<CasoTesteInterface[]>([]);
-
-const retrabalho = ref<RetrabalhoInterface>(props.retrabalho);
-retrabalho.value.tipo_retrabalho = null;
-retrabalho.value.aplicacao = null;
-retrabalho.value.projeto = null;
-retrabalho.value.usuario = null;
-retrabalho.value.criticidade = retrabalho.value.criticidade == '' ? null : retrabalho.value.criticidade;
+const listaCriticidades = ref<string[]>([]);
+const casoTeste = ref<CasoTesteInterface>(null);
+const retrabalho = ref<RetrabalhoInterface>({} as RetrabalhoInterface);
+retrabalho.value.caso_teste = {} as CasoTesteInterface;
 retrabalho.value.data = retrabalho.value.data ? retrabalho.value.data : moment().format('YYYY-MM-DD');
 
-const caso_teste = ref<CasoTesteInterface>(props.retrabalho.caso_teste?.caso_teste_id ? props.retrabalho.caso_teste : null);
-const shouldShowError = (field) => {
-    return hasError(field, props.errors);
+const $toast = useToast();
+const findCriticidades = async () => {
+    LoaderStore.showLoader = true;
+    axiosApi.get(`/retrabalhos/criticidade`).then((res) => {
+        listaCriticidades.value = res.data.map((item) => {
+            return {name: item, value: item}
+        });
+    });
+    LoaderStore.showLoader = false;
 }
-const getShowError = (field) => {
-    return getError(field, props.errors);
-}
+
+
+
 const populaTiposRetrabalho = async () => {
     LoaderStore.showLoader = true;
     await axios.get(import.meta.env.VITE_APP_URL+'/retrabalhos/consultas/tipos').then((res) => {
@@ -121,7 +107,6 @@ const populaCasosTeste = async (term:string) => {
         listaCasosTeste.value = res.data;
         listaCasosTeste.value = listaCasosTeste.value.map((item: any) => {
             return {
-                caso_teste_id: item.id,
                 titulo_caso_teste: item.titulo,
                 cenario_caso_teste: item.cenario,
                 requisito_caso_teste: item.requisito,
@@ -153,25 +138,46 @@ const populaCasosTestePorId = async (idCasoTeste:number) => {
                 resultado_esperado_caso_teste: item.resultado_esperado,
                 id: item.id
             }
-        })
-        if (retrabalho.value.caso_teste.caso_teste_id) {
-            retrabalho.value.caso_teste =
+        });
+        // casoTeste.value = retrabalho.value.caso_teste;
+        if (retrabalho.value.caso_teste.id) {
+            casoTeste.value =
                 listaCasosTeste.value.find((item: CasoTesteInterface) => {
-                    return item.caso_teste_id === retrabalho.value.caso_teste.caso_teste_id;
+                    return item.caso_teste_id === retrabalho.value.caso_teste.id;
                 });
+            retrabalho.value.caso_teste = casoTeste.value
         }
     });
     LoaderStore.showLoader = false;
 }
+const findRetrabalho = async () => {
+    LoaderStore.showLoader = true;
+    await axiosApi.get(`/retrabalhos/${props.idRetrabalho}`)
+        .then((res) => {
+            retrabalho.value = res.data;
 
+            retrabalho.value.data = moment(retrabalho.value.data).format('YYYY-MM-DD');
+            if (retrabalho.value.caso_teste?.caso_teste_id) {
+                populaCasosTestePorId(retrabalho.value.caso_teste.caso_teste_id);
+            }
+        });
+
+    LoaderStore.showLoader = false;
+}
 onMounted( async () => {
     await populaTiposRetrabalho();
     await populaAplicacoes();
     await populaUsuarios();
+    await findCriticidades();
+    if(props.idRetrabalho){
+        await findRetrabalho();
+        if (!retrabalho.value.caso_teste){
+            retrabalho.value.caso_teste = {} as CasoTesteInterface;
+        }
+    }
+    if (retrabalho.value.caso_teste_id) {
+        await populaCasosTestePorId(retrabalho.value.caso_teste_id);
 
-    if (retrabalho.value.caso_teste?.caso_teste_id) {
-        await populaCasosTestePorId(retrabalho.value.caso_teste.caso_teste_id);
-        caso_teste.value = retrabalho.value.caso_teste;
     }
 
 
@@ -181,27 +187,55 @@ watchEffect(()  => {
         populaProjetos(retrabalho.value.aplicacao.id);
     }
 });
-watch(caso_teste, (new_caso_teste, old_caso_teste) => {
-    if(new_caso_teste  && new_caso_teste?.id !== null){
-        retrabalho.value.caso_teste = new_caso_teste;
+const saveRetrabalho = async (submitEventPromise: SubmitEventPromise) => {
+    const {valid, errors} = await submitEventPromise;
+    if (!valid) return;
+    retrabalho.value.titulo_caso_teste = retrabalho.value.caso_teste.titulo_caso_teste;
+    retrabalho.value.requisito_caso_teste = retrabalho.value.caso_teste.requisito_caso_teste;
+    retrabalho.value.cenario_caso_teste = retrabalho.value.caso_teste.cenario_caso_teste;
+    retrabalho.value.teste_caso_teste = retrabalho.value.caso_teste.teste_caso_teste;
+    retrabalho.value.resultado_esperado_caso_teste = retrabalho.value.caso_teste.resultado_esperado_caso_teste;
+    LoaderStore.showLoader = true;
+    if(!retrabalho.value.id) {
+        await axiosApi.post(`/retrabalhos/?idEquipe=${getIdEquipe()}`, retrabalho.value)
+            .then((res) => {
+                $toast.success("Retrabalho inserido com sucesso!");
+                window.location.href = `./show/${res.data.id}`;
+            })
+            .catch((error) => {
+                $toast.error(error.response.data.message);
+            })
+    }else{
+        await axiosApi.put(`/retrabalhos/${retrabalho.value.id}?idEquipe=${getIdEquipe()}`, retrabalho.value)
+            .then((res) => {
+                $toast.success("Retrabalho alterado com sucesso!");
+                window.location.href = `../show/${res.data.id}`;
+            })
+            .catch((error) => {
+                $toast.error(error.response.data.message);
+            })
     }
-})
+    LoaderStore.showLoader = false;
+
+
+}
 
 </script>
 
 <template>
-    <form id="form-rework" :action="actionForm" method="POST" autocomplete="off">
-        <input type="hidden" name="_method" :value="method">
-        <input type="hidden" name="_token" :value="csrf">
+    <v-form ref="form" validate-on="blur" @submit.prevent="saveRetrabalho">
         <div class="row">
             <div class="col-md-6 border-e-sm">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <input type="hidden" :value="retrabalho.tipo_retrabalho?.id" name="tipo_retrabalho_id" />
-                            <v-combobox
+                             <v-combobox
                                 v-model="retrabalho.tipo_retrabalho"
+                                @update:modelValue="retrabalho.tipo_retrabalho_id = retrabalho.tipo_retrabalho.id"
                                 label="Tipo de retrabalho"
+                                :rules="[
+                                        value => !retrabalho.tipo_retrabalho ? 'Selecione um tipo de retrabalho' : true
+                                     ]"
                                 :items="listaTiposRetrabalho"
                                 variant="solo"
                                 :return-object="true"
@@ -209,27 +243,26 @@ watch(caso_teste, (new_caso_teste, old_caso_teste) => {
                                 item-value="id"
                                 id="_tipo_retrabalho"
                                 name="_tipo_retrabalho"
-                                :error="shouldShowError('tipo_retrabalho_id')"
-                                :error-messages="getShowError('tipo_retrabalho_id')"
                             >
                             </v-combobox>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <input type="hidden" :value="retrabalho.usuario?.id" name="usuario_id" />
                             <v-combobox
                                 v-model="retrabalho.usuario"
                                 label="Desenvolvedor"
                                 :items="listaUsuarios"
+                                @update:modelValue="retrabalho.usuario_id = retrabalho.usuario.id"
                                 variant="solo"
                                 :return-object="true"
+                                :rules="[
+                                        value => !retrabalho.usuario ? 'Selecione um usuário' : true
+                                     ]"
                                 item-title="name"
                                 item-value="id"
                                 id="_usuario"
                                 name="_usuario"
-                                :error="shouldShowError('usuario_id')"
-                                :error-messages="getShowError('usuario_id')"
                             >
                             </v-combobox>
                         </div>
@@ -239,39 +272,34 @@ watch(caso_teste, (new_caso_teste, old_caso_teste) => {
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <input type="hidden" :value="retrabalho.aplicacao?.id" name="aplicacao_id" />
                             <v-combobox
                                 v-model="retrabalho.aplicacao"
                                 label="Aplicação"
                                 :items="listaAplicacoes"
+                                @update:modelValue="retrabalho.aplicacao_id = retrabalho.aplicacao.id"
                                 variant="solo"
                                 :return-object="true"
                                 item-title="nome"
                                 item-value="id"
-                                id="_aplicacao"
-                                name="_aplicacao"
-                                :error="shouldShowError('aplicacao_id')"
-                                :error-messages="getShowError('aplicacao_id')"
+                                :rules="[
+                                        value => !retrabalho.aplicacao ? 'Selecione uma aplicação' : true
+                                     ]"
                             >
                             </v-combobox>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <input type="hidden" :value="retrabalho.projeto?.id" name="projeto_id" />
                             <v-combobox
                                 v-model="retrabalho.projeto"
                                 label="Projeto"
                                 :items="listaProjetos"
+                                @update:modelValue="retrabalho.projeto_id = retrabalho.projeto.id"
                                 variant="solo"
                                 :return-object="true"
                                 item-title="nome"
                                 item-value="id"
-                                id="_projeto"
-                                name="_projeto"
                                 :disabled="retrabalho.aplicacao === null"
-                                :error="shouldShowError('projeto_id')"
-                                :error-messages="getShowError('projeto_id')"
                             >
                             </v-combobox>
                         </div>
@@ -287,31 +315,30 @@ watch(caso_teste, (new_caso_teste, old_caso_teste) => {
                                 variant="solo"
                                 id="data"
                                 type="date"
-                                :error="shouldShowError('data')"
-                                :error-messages="getShowError('data')"
+                                :rules="[
+                                        value => !retrabalho.data ? 'Preencha a data.' : true
+                                     ]"
                             />
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                           <TFieldTarefas v-model="retrabalho.tarefa_id" :tarefa="retrabalho.tarefa?.tarefa"/>
+                           <TFieldTarefas :key="retrabalho.tarefa?.tarefa" v-model="retrabalho.tarefa_id" :tarefa="retrabalho.tarefa?.tarefa" />
                         </div>
                     </div>
                     <div class="col-md-5">
                         <div class="form-group">
-                            <input type="hidden" :value="retrabalho.criticidade" name="criticidade" />
                             <v-combobox
                                 v-model="retrabalho.criticidade"
                                 label="Criticidade"
-                                :items="props.criticidades"
+                                :items="listaCriticidades"
                                 variant="solo"
-                                :return-object="true"
+                                :rules="[
+                                        value => !retrabalho.criticidade ? 'Selecione uma criticidade.' : true
+                                     ]"
+                                :return-object="false"
                                 item-title="name"
-                                item-value="id"
-                                id="_criticidade"
-                                name="_criticidade"
-                                :error="shouldShowError('criticidade')"
-                                :error-messages="getShowError('criticidade')"
+                                item-value="value"
                             >
                             </v-combobox>
                         </div>
@@ -320,25 +347,38 @@ watch(caso_teste, (new_caso_teste, old_caso_teste) => {
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <input type="hidden" :value="retrabalho.caso_teste?.caso_teste_id" name="caso_teste_id" />
                             <v-autocomplete
-                                v-model="caso_teste"
+                                v-model="casoTeste"
                                 label="Caso de teste"
                                 :items="listaCasosTeste"
+                                @update:modelValue="() => {
+                                    retrabalho.caso_teste_id = casoTeste.id;
+                                    retrabalho.caso_teste = casoTeste;
+                                }"
                                 variant="solo"
                                 return-object
                                 :no-data-text="noDataText"
                                 hint="Digite pelo menos 3 letras para para começar a filtrar"
                                 item-title="titulo_caso_teste"
-                                item-value="caso_teste_id"
+                                item-value="id"
                                 :clearable="true"
-                                id="_caso_teste"
-                                name="_caso_teste"
                                 @click:clear="retrabalho.caso_teste = {} as CasoTesteInterface"
                                 @update:search="populaCasosTeste"
                                 v-if="retrabalho.tipo_retrabalho?.tipo === TipoRetrabalhoEnum.FUNCIONAL"
-                                :error="shouldShowError('caso_teste_id')"
-                                :error-messages="getShowError('caso_teste_id')"
+                                :rules="[
+                                        (value) => {
+                                            if(retrabalho.tipo_retrabalho?.tipo === TipoRetrabalhoEnum.FUNCIONAL &&
+                                                (!retrabalho.caso_teste?.id && (
+                                                    !retrabalho.caso_teste.teste_caso_teste ||
+                                                    !retrabalho.caso_teste.cenario_caso_teste ||
+                                                    !retrabalho.caso_teste.requisito_caso_teste ||
+                                                    !retrabalho.caso_teste.resultado_esperado_caso_teste ||
+                                                    !retrabalho.caso_teste.titulo_caso_teste))){
+                                                return 'Selecione um caso de teste';
+                                            }
+                                            return true;
+                                        }
+                                     ]"
                             >
                             </v-autocomplete>
                         </div>
@@ -352,8 +392,9 @@ watch(caso_teste, (new_caso_teste, old_caso_teste) => {
                                 label="Descrição"
                                 name="descricao"
                                 id="descricao"
-                                :error="shouldShowError('descricao')"
-                                :error-messages="getShowError('descricao')"
+                                :rules="[
+                                        value => !retrabalho.descricao ? 'Digite uma descrição.' : true
+                                     ]"
                             ></v-textarea>
                         </div>
                     </div>
@@ -364,8 +405,7 @@ watch(caso_teste, (new_caso_teste, old_caso_teste) => {
                             <v-btn
                                 color="primary"
                                 type="submit"
-                                :loading="loading"
-                                @click="loading = true"
+                                :loading="LoaderStore.showLoader"
                             >
                                 Salvar
                             </v-btn>
@@ -378,13 +418,14 @@ watch(caso_teste, (new_caso_teste, old_caso_teste) => {
 
                 <form-inserir-caso-teste
                     v-model="retrabalho.caso_teste"
+                    :retrabalho="retrabalho"
+                    :key="retrabalho.caso_teste.id"
                     v-if="retrabalho.tipo_retrabalho?.tipo === TipoRetrabalhoEnum.FUNCIONAL"
-                    :errors="props.errors"
                 />
             </div>
         </div>
 
-    </form>
+    </v-form>
 </template>
 
 <style scoped>

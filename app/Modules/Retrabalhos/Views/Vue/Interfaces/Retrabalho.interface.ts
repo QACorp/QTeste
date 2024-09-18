@@ -23,6 +23,11 @@ export interface RetrabalhoInterface {
     projeto: ProjetoInterface | null,
     usuario: UsuarioInterface | null,
     caso_teste: CasoTesteInterface | null,
-    tarefa: TarefaInterface
+    tarefa: TarefaInterface,
+    titulo_caso_teste: string,
+    requisito_caso_teste: string
+    cenario_caso_teste: string
+    teste_caso_teste: string
+    resultado_esperado_caso_teste: string
 
 }

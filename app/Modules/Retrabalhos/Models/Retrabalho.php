@@ -49,7 +49,8 @@ class Retrabalho extends Model
         'caso_teste',
         'usuario_criador',
         'criticidade',
-        'tarefa'
+        'tarefa',
+        'tipo_retrabalho'
     ];
     protected $casts = [
         'data' => 'date'

@@ -38,7 +38,7 @@
                             <tr>
                                 <td>{{ $retrabalho->id }}</td>
                                 <td>{{ $retrabalho->data->format('d/m/Y') }}</td>
-                                <td>{{ $retrabalho->numero_tarefa }}</td>
+                                <td>{{ $retrabalho->tarefa->tarefa }}</td>
                                 <td>{{ $retrabalho->usuario->name }}</td>
                                 <td>{{ $retrabalho->usuario_criador->name }}</td>
                                 <td>{{ $retrabalho->criticidade }}</td>

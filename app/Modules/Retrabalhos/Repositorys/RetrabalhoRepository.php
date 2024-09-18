@@ -47,14 +47,16 @@ class RetrabalhoRepository implements RetrabalhoRepositoryContract
 
     public function remover(int $idRetrabalho): bool
     {
-        return Retrabalho::find($idRetrabalho)->delete();
+        return Retrabalho::select('retrabalhos.*')->where('retrabalhos.id',$idRetrabalho)->first()->delete();
     }
 
     public function editar(RetrabalhoCasoTesteDTO $retrabalhoCasoTesteDTO): RetrabalhoCasoTesteDTO
     {
-        $retrabalho = Retrabalho::find($retrabalhoCasoTesteDTO->id);
+        $retrabalho = Retrabalho::select('retrabalhos.*')->where('retrabalhos.id',$retrabalhoCasoTesteDTO->id)->first();
         $retrabalho->fill($retrabalhoCasoTesteDTO->toArray());
         $retrabalho->save();
+        $retrabalho->load(['caso_teste', 'aplicacao', 'tipo_retrabalho', 'projeto', 'usuario', 'usuario_criador', 'tarefa']);
+
         return RetrabalhoCasoTesteDTO::from($retrabalho);
     }
 

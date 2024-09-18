@@ -13,10 +13,12 @@ use App\Modules\Retrabalhos\Enums\PermissionEnum;
 use App\Modules\Retrabalhos\Enums\TipoRetrabalhoEnum;
 use App\Modules\Retrabalhos\Mails\CadastroRetrabalho;
 use App\Modules\Retrabalhos\Rules\IdCasoTesteOuCasoTesteRule;
+use App\System\Contracts\Business\EquipeBusinessContract;
 use App\System\Contracts\Business\UserBusinessContract;
 use App\System\DTOs\EquipeDTO;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnauthorizedException;
+use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Impl\BusinessAbstract;
 use App\System\Services\Mail\DTOs\MailDTO;
 use App\System\Services\Mail\QTesteMail;
@@ -36,11 +38,16 @@ class RetrabalhoBusiness extends BusinessAbstract implements RetrabalhoBusinessC
         private readonly RetrabalhoRepositoryContract $retrabalhoRepository,
         private readonly TipoRetrabalhoBusinessContract $tipoRetrabalhoBusiness,
         private readonly CasoTesteBusinessContract $casoTesteBusiness,
-        private readonly UserBusinessContract $userBusiness
+        private readonly UserBusinessContract $userBusiness,
+        private readonly EquipeBusinessContract $equipeBusiness
     )
     {
     }
 
+    /**
+     * @throws NotFoundException
+     * @throws UnprocessableEntityException
+     */
     public function salvar(RetrabalhoCasoTesteDTO $retrabalhoCasoTesteDTO, int $idEquipe): RetrabalhoCasoTesteDTO
     {
         $this->can(PermissionEnum::INSERIR_RETRABALHO->value, $this->getGuard());
@@ -85,8 +92,13 @@ class RetrabalhoBusiness extends BusinessAbstract implements RetrabalhoBusinessC
                 'equipes' => EquipeDTO::collection([['id' => $idEquipe]])
 
             ]);
-            $casoTesteDTO = $this->casoTesteBusiness->inserirCasoTeste($casoTesteDTO, $idEquipe);
-            return $casoTesteDTO;
+            try {
+                $casoTesteDTO = $this->casoTesteBusiness->inserirCasoTeste($casoTesteDTO, $idEquipe);
+                return $casoTesteDTO;
+            }catch (UnprocessableEntityException $e){
+                throw $e;
+            }
+
         }
         return null;
     }
@@ -107,9 +119,12 @@ class RetrabalhoBusiness extends BusinessAbstract implements RetrabalhoBusinessC
         return $retrabalho;
     }
 
-    public function buscarTodosPorEquipe(int $idEquipe): DataCollection
+    public function buscarTodosPorEquipe(int $idEquipe, int $idUsuario): DataCollection
     {
         $this->can(PermissionEnum::VER_TODOS_RETRABALHOS->value, $this->getGuard());
+        if(!$this->equipeBusiness->hasEquipe($idEquipe, $idUsuario)){
+            throw new UnauthorizedException(401,'Você não tem acesso a essa página');
+        }
         return $this->retrabalhoRepository->buscarTodosPorEquipe($idEquipe);
     }
 
@@ -122,8 +137,8 @@ class RetrabalhoBusiness extends BusinessAbstract implements RetrabalhoBusinessC
     public function buscarRetrabalho(int $idEquipe, int $idUsuario): DataCollection
     {
 
-        if($this->canDo(PermissionEnum::VER_TODOS_RETRABALHOS->value, $this->getGuard())){
-            return $this->buscarTodosPorEquipe($idEquipe);
+        if($this->canDo(PermissionEnum::VER_TODOS_RETRABALHOS->value)){
+            return $this->buscarTodosPorEquipe($idEquipe, $idUsuario);
         }
         $this->can(PermissionEnum::LISTAR_RETRABALHO->value);
         return $this->buscarTodosPorUsuario($idUsuario);
@@ -169,11 +184,18 @@ class RetrabalhoBusiness extends BusinessAbstract implements RetrabalhoBusinessC
         if($this->canRemoverRetrabalho($retrabalho, $idUsuario)){
             return $this->retrabalhoRepository->remover($retrabalho->id);
         }
-        throw new UnauthorizedException();
+        throw new UnauthorizedException('Acesso negado');
     }
 
+    /**
+     * @throws NotFoundException
+     * @throws UnprocessableEntityException
+     */
     public function editar(RetrabalhoCasoTesteDTO $retrabalhoCasoTesteDTO, int $idUsuario, int $idEquipe): RetrabalhoCasoTesteDTO
     {
+        if(!$this->equipeBusiness->hasEquipe($idEquipe, $idUsuario)){
+            throw new NotFoundException('Registro não encontrado');
+        }
         $tipoRetrabalho = $this->tipoRetrabalhoBusiness->getTipoRetrabalhoPorId($retrabalhoCasoTesteDTO->tipo_retrabalho_id);
         if(!$tipoRetrabalho){
             throw new NotFoundException("Tipo de retrabalho não encontrado.");
@@ -183,15 +205,19 @@ class RetrabalhoBusiness extends BusinessAbstract implements RetrabalhoBusinessC
             throw new UnauthorizedException('Acesso negado');
         }
         $retrabalhoCasoTesteDTO->usuario_criador_id = $retrabalho->usuario_criador_id;
-        if($tipoRetrabalho->tipo->value == TipoRetrabalhoEnum::FUNCIONAL->value) {
-            $this->startTransaction();
-            $casoTeste = $this->inserirOuBuscar($retrabalhoCasoTesteDTO, $idEquipe);
-            $retrabalhoCasoTesteDTO->caso_teste_id = $casoTeste->id;
+        try{
+            if($tipoRetrabalho->tipo->value == TipoRetrabalhoEnum::FUNCIONAL->value) {
+                $this->startTransaction();
+                $casoTeste = $this->inserirOuBuscar($retrabalhoCasoTesteDTO, $idEquipe);
+                $retrabalhoCasoTesteDTO->caso_teste_id = $casoTeste->id;
+            }
+            $this->commit();
+        }catch (UnprocessableEntityException $e){
+            $this->rollback();
+            throw $e;
         }
-        $this->commit();
+
         return $this->retrabalhoRepository->editar($retrabalhoCasoTesteDTO);
-
-
     }
     private function inserirOuBuscar(RetrabalhoCasoTesteDTO $retrabalhoCasoTesteDTO, int $idEquipe): CasoTesteDTO
     {
