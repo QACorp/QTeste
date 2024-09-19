@@ -14,7 +14,7 @@
 @stop
 
 @section('content')
-    <div class="row" id="vue">
+    <div class="row">
 
         <div class="row">
             <div class="card">

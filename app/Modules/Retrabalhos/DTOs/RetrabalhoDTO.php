@@ -2,12 +2,11 @@
 
 namespace App\Modules\Retrabalhos\DTOs;
 
+use App\Modules\Projetos\DTOs\TarefaDTO;
 use App\Modules\Retrabalhos\Enums\CriticidadeEnum;
 use App\System\Casts\CastCarbonDate;
 use App\System\Utils\DTO;
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Carbon;
-use Illuminate\Validation\Validator;
 use Spatie\LaravelData\Attributes\WithCast;
 use Spatie\LaravelData\Support\Validation\ValidationContext;
 
@@ -19,7 +18,8 @@ class RetrabalhoDTO extends DTO
     #[WithCast(CastCarbonDate::class)]
     public ?Carbon $data;
     public ?string $motivo_exclusao;
-    public ?int $numero_tarefa;
+    public ?int $tarefa_id;
+    public ?TarefaDTO $tarefa;
     public ?int $tipo_retrabalho_id;
     public ?int $usuario_criador_id;
     public ?int $usuario_id;

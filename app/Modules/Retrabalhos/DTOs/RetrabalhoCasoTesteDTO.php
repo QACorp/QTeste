@@ -4,6 +4,7 @@ namespace App\Modules\Retrabalhos\DTOs;
 
 use App\Modules\Projetos\DTOs\AplicacaoDTO;
 use App\Modules\Projetos\DTOs\CasoTesteDTO;
+use App\Modules\Projetos\DTOs\TarefaDTO;
 use App\Modules\Projetos\Models\Aplicacao;
 use App\Modules\Projetos\Models\CasoTeste;
 use App\Modules\Retrabalhos\Contracts\Business\TipoRetrabalhoBusinessContract;
@@ -24,12 +25,13 @@ use Spatie\LaravelData\Support\Validation\ValidationContext;
 class RetrabalhoCasoTesteDTO extends DTO
 {
     public ?int $id;
+    #[Required]
     public ?string $descricao;
     #[WithCast(CastCarbonDate::class)]
     public ?Carbon $data;
     public ?string $motivo_exclusao;
     #[Required]
-    public ?int $numero_tarefa;
+    public ?int $tarefa_id;
     #[Required]
     public ?int $tipo_retrabalho_id;
 
@@ -46,7 +48,7 @@ class RetrabalhoCasoTesteDTO extends DTO
 
     #[Required]
     public ?CriticidadeEnum $criticidade;
-
+    public ?TarefaDTO $tarefa;
     #[WithoutValidation]
     #[WithCast(CasoTeste::class)]
     public ?CasoTesteDTO $caso_teste;
@@ -62,6 +64,8 @@ class RetrabalhoCasoTesteDTO extends DTO
     #[WithoutValidation]
     #[WithCast(User::class)]
     public ?UserDTO $usuario_criador;
+
+    public ?TipoRetrabalhoDTO $tipo_retrabalho;
 
     public ?string $titulo_caso_teste;
     public ?string $requisito_caso_teste;

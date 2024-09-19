@@ -4,6 +4,11 @@ namespace App\System\Impl;
 
 use App\System\Exceptions\InvalidServiceProviderClassException;
 use App\System\Exceptions\ModuleNotFoundException;
+use App\System\Utils\RequestGuard;
+use App\System\Utils\RequestGuardApi;
+use App\System\Utils\RequestGuardWeb;
+use App\System\Utils\VueHandler;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -25,6 +30,7 @@ abstract class ServiceProviderAbstract extends ServiceProvider
     public function boot(): void
     {
         $this->addConfigFiles();
+
 
         //dd(dirname(static::$module_path. '/Views',3));
         View::addNamespace(static::$view_namespace, $this->moduleDir. '/Views');

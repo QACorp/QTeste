@@ -6,16 +6,13 @@ namespace App\Modules\Retrabalhos\Controllers;
 use App\Modules\Retrabalhos\Contracts\Business\RetrabalhoBusinessContract;
 use App\Modules\Retrabalhos\DTOs\RetrabalhoCasoTesteDTO;
 use App\Modules\Retrabalhos\Enums\PermissionEnum;
-use App\System\DTOs\EquipeDTO;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnauthorizedException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Http\Controllers\Controller;
 use App\System\Traits\EquipeTools;
 use App\System\Utils\EquipeUtils;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
 
 
 class RetrabalhosController extends Controller
@@ -72,14 +69,13 @@ class RetrabalhosController extends Controller
     {
         $retrabalhoDTO->id = $idRetrabalho;
 
-
         try{
-
             $this->retrabalhoBusiness->editar(
                 $retrabalhoDTO,
                 Auth::user()->getAuthIdentifier(),
                 EquipeUtils::equipeUsuarioLogado()
             );
+
             return redirect()->route('retrabalhos.index')
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Retrabalho alterado com sucesso']]);
         }catch (UnauthorizedException | NotFoundException $e){
@@ -105,8 +101,10 @@ class RetrabalhosController extends Controller
             return redirect()->route('retrabalhos.providencia.index', $retrabalho->id)
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Retrabalho inserido com sucesso']]);
         }catch (UnauthorizedException | NotFoundException $e){
+            dd($e);
             return redirect()->back()->withErrors($e->getMessage())->withInput();
         }catch (UnprocessableEntityException $e){
+            dd($e);
             return redirect()->back()->withErrors($e->getValidator())->withInput();
         }
     }

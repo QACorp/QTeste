@@ -44,7 +44,7 @@ return [
                         'text' => 'Casos de teste',
                         'icon'  => 'fas fa-cubes',
                         'key' => 'casos_teste_index',
-                        'active' => ['projetos/casos-teste/*'],
+                        'active' => ['projetos/casos-teste','projetos/casos-6teste/*'],
                         'submenu' => [
                             [
                                 'text' => 'Listar',
