@@ -34,7 +34,7 @@
             bordered
 
             striped>
-            @forelse($retrabalhos as $retrabalho)
+            @foreach($retrabalhos as $retrabalho)
                 <tr>
                     <td>{{ $retrabalho->id }}</td>
                     <td>{{ $retrabalho->numero_tarefa }}</td>
@@ -43,11 +43,7 @@
                     <td>{{ $retrabalho->nome_aplicacao }}</td>
                     <td>{{ $retrabalho->nome_projeto }}</td>
                 </tr>
-            @empty
-                <tr>
-                    <td colspan="6">Nenhum registro encontrado</td>
-                </tr>
-            @endforelse
+            @endforeach
         </x-adminlte-datatable>
     </div>
 @endsection

@@ -74,7 +74,7 @@ class RelatorioRepository implements RelatorioRepositoryContract
                                                      e.empresa_id = :empresa_id)::numeric as retrabalhos_analise,
 
                                                 (SELECT
-                                                     COUNT(DISTINCT (r.numero_tarefa))
+                                                     COUNT(DISTINCT (r.tarefa_id))
                                                  FROM projetos.retrabalhos r
                                                           JOIN projetos.aplicacoes a ON r.aplicacao_id = a.id
                                                           JOIN projetos.aplicacoes_equipes ae ON a.id = ae.aplicacao_id
@@ -118,7 +118,8 @@ class RelatorioRepository implements RelatorioRepositoryContract
         ];
         $relatorio = DB::select("WITH retrabalhos AS (
                                             SELECT
-                                                DISTINCT (rt.numero_tarefa),
+                                                DISTINCT (rt.tarefa_id),
+                                                t.tarefa,
                                                 (SELECT
                                                      COUNT(r.id)
                                                  FROM projetos.retrabalhos r
@@ -126,7 +127,7 @@ class RelatorioRepository implements RelatorioRepositoryContract
                                                           JOIN projetos.aplicacoes_equipes ae ON a.id = ae.aplicacao_id
                                                           JOIN equipes e ON ae.equipe_id = e.id
                                                  WHERE
-                                                     r.numero_tarefa = rt.numero_tarefa AND
+                                                     r.tarefa_id = rt.tarefa_id AND
                                                      r.deleted_at IS NULL AND
                                                      r.data between :dataInicio and :dataFim AND
                                                      ae.equipe_id = ape.equipe_id AND
@@ -139,7 +140,7 @@ class RelatorioRepository implements RelatorioRepositoryContract
                                                           JOIN equipes e ON ae.equipe_id = e.id
                                                           JOIN projetos.tipos_retrabalhos tr ON r.tipo_retrabalho_id = tr.id
                                                  WHERE
-                                                     r.numero_tarefa = rt.numero_tarefa AND
+                                                     r.tarefa_id = rt.tarefa_id AND
                                                      tr.tipo = 'Funcional' AND
                                                      r.data between :dataInicio and :dataFim AND
                                                      r.deleted_at IS NULL AND
@@ -153,7 +154,7 @@ class RelatorioRepository implements RelatorioRepositoryContract
                                                           JOIN equipes e ON ae.equipe_id = e.id
                                                           JOIN projetos.tipos_retrabalhos tr ON r.tipo_retrabalho_id = tr.id
                                                  WHERE
-                                                     r.numero_tarefa = rt.numero_tarefa AND
+                                                     r.tarefa_id = rt.tarefa_id AND
                                                      tr.tipo = 'Análise de código' AND
                                                      r.data between :dataInicio and :dataFim AND
                                                      r.deleted_at IS NULL AND
@@ -163,6 +164,7 @@ class RelatorioRepository implements RelatorioRepositoryContract
 
                                             FROM
                                                 projetos.retrabalhos rt
+                                                         JOIN projetos.tarefas t ON rt.tarefa_id = t.id
                                                          JOIN projetos.aplicacoes a ON rt.aplicacao_id = a.id
                                                          JOIN projetos.aplicacoes_equipes ape ON a.id = ape.aplicacao_id
                                                          JOIN equipes e ON ape.equipe_id = e.id
@@ -235,7 +237,7 @@ class RelatorioRepository implements RelatorioRepositoryContract
                                                      ae.equipe_id = ape.equipe_id AND
                                                      e.empresa_id = :empresa_id)::numeric as retrabalhos_analise,
                                             (SELECT
-                                                 COUNT(DISTINCT (r.numero_tarefa))
+                                                 COUNT(DISTINCT (r.tarefa_id))
                                              FROM projetos.retrabalhos r
                                                       JOIN projetos.aplicacoes a ON r.aplicacao_id = a.id
                                                       JOIN projetos.aplicacoes_equipes ae ON a.id = ae.aplicacao_id
@@ -277,7 +279,7 @@ class RelatorioRepository implements RelatorioRepositoryContract
         ];
         $relatorio = DB::select("SELECT
                                             DISTINCT retrabalhos.id,
-                                            retrabalhos.numero_tarefa,
+                                            retrabalhos.tarefa_id,
                                             retrabalhos.data,
                                             aplicacoes.nome as nome_aplicacao,
                                             projetos.nome as nome_projeto,
@@ -308,18 +310,18 @@ class RelatorioRepository implements RelatorioRepositoryContract
         ];
         $relatorio = DB::select("SELECT
                                             DISTINCT retrabalhos.id,
-                                            retrabalhos.numero_tarefa,
+                                            retrabalhos.tarefa_id,
                                             retrabalhos.data,
                                             aplicacoes.nome as nome_aplicacao,
                                             projetos.nome as nome_projeto,
                                             users.name as nome
                                         FROM
                                             projetos.retrabalhos
+                                                JOIN users ON retrabalhos.usuario_id = users.id
                                                 JOIN projetos.aplicacoes ON retrabalhos.aplicacao_id = aplicacoes.id
                                                 JOIN projetos.aplicacoes_equipes ON aplicacoes.id = aplicacoes_equipes.aplicacao_id
                                                 JOIN equipes e ON aplicacoes_equipes.equipe_id = e.id AND e.empresa_id = users.empresa_id
                                                 LEFT JOIN projetos.projetos ON retrabalhos.projeto_id = projetos.id
-                                                JOIN users ON retrabalhos.usuario_id = users.id
                                         WHERE
                                             retrabalhos.usuario_criador_id = :idUsuario AND
                                             retrabalhos.deleted_at IS NULL AND
