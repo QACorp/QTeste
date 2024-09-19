@@ -4,17 +4,18 @@ import {getError, hasError} from "../../../../../../resources/js/ErrorHelper";
 import {watch, watchEffect} from "vue";
 import {types} from "sass";
 import Boolean = types.Boolean;
+import {RetrabalhoInterface} from "../Interfaces/Retrabalho.interface";
 
 const props = defineProps({
-    errors: {
-        type: Object,
-        required: true,
-    },
+  retrabalho: {
+    type: Object as () => RetrabalhoInterface,
+    required: true
+  }
 });
 const casoTeste = defineModel<CasoTesteInterface>();
 
 const isDisable = ():boolean => {
-    return (casoTeste.value && casoTeste.value?.caso_teste_id != null);
+    return (casoTeste.value && props.retrabalho.caso_teste_id != null);
 }
 
 </script>
@@ -30,8 +31,9 @@ const isDisable = ():boolean => {
                     label="Título"
                     name="titulo_caso_teste"
                     id="titulo_caso_teste"
-                    :error="hasError('titulo_caso_teste', errors)"
-                    :error-messages="getError('titulo_caso_teste', errors)"
+                    :rules="[
+                               value => props.retrabalho.caso_teste_id == null && !casoTeste.titulo_caso_teste ? 'Digite o titulo' : true
+                            ]"
                 ></v-text-field>
             </div>
         </div>
@@ -45,8 +47,9 @@ const isDisable = ():boolean => {
                     label="Requisito"
                     name="requisito_caso_teste"
                     id="requisito_caso_teste"
-                    :error="hasError('requisito_caso_teste', errors)"
-                    :error-messages="getError('requisito_caso_teste', errors)"
+                    :rules="[
+                               value => props.retrabalho.caso_teste_id == null && !casoTeste.requisito_caso_teste ? 'Descreva o requisito.' : true
+                            ]"
                 ></v-text-field>
             </div>
         </div>
@@ -60,8 +63,9 @@ const isDisable = ():boolean => {
                     label="Cenário"
                     name="cenario_caso_teste"
                     id="cenario_caso_teste"
-                    :error="hasError('cenario_caso_teste', errors)"
-                    :error-messages="getError('cenario_caso_teste', errors)"
+                    :rules="[
+                               value => props.retrabalho.caso_teste_id == null && !casoTeste.cenario_caso_teste ? 'Descreva o cenário' : true
+                            ]"
                 ></v-textarea>
             </div>
         </div>
@@ -75,8 +79,9 @@ const isDisable = ():boolean => {
                     :disabled="isDisable()"
                     name="teste_caso_teste"
                     id="teste_caso_teste"
-                    :error="hasError('teste_caso_teste', errors)"
-                    :error-messages="getError('teste_caso_teste', errors)"
+                    :rules="[
+                               value => props.retrabalho.caso_teste_id == null && !casoTeste.teste_caso_teste ? 'Digite o teste' : true
+                            ]"
                 ></v-textarea>
             </div>
         </div>
@@ -90,8 +95,9 @@ const isDisable = ():boolean => {
                     label="Resultado esperado"
                     name="resultado_esperado_caso_teste"
                     id="resultado_esperado_caso_teste"
-                    :error="hasError('resultado_esperado_caso_teste', errors)"
-                    :error-messages="getError('resultado_esperado_caso_teste', errors)"
+                    :rules="[
+                               value => props.retrabalho.caso_teste_id == null && !casoTeste.resultado_esperado_caso_teste ? 'Digite um resultado esperado' : true
+                            ]"
                 ></v-textarea>
             </div>
         </div>

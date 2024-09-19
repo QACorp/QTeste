@@ -12,7 +12,7 @@ interface RetrabalhoBusinessContract
 
     public function buscarPorId(int $idRetrabalho, ?int $idUsuario): ?RetrabalhoCasoTesteDTO;
 
-    public function buscarTodosPorEquipe(int $idEquipe):DataCollection;
+    public function buscarTodosPorEquipe(int $idEquipe, int $idUsuario):DataCollection;
     public function buscarTodosPorUsuario(int $idUsuario):DataCollection;
     public function buscarRetrabalho(int $idEquipe, int $idUsuario):DataCollection;
     public function canAlterarRetrabalho(RetrabalhoCasoTesteDTO $retrabalhoDTO, int $idUsuario): bool;

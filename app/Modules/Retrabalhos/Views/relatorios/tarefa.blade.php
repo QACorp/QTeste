@@ -36,7 +36,7 @@
             striped>
             @forelse($retrabalhos as $retrabalho)
                 <tr>
-                    <td>{{ $retrabalho->numero_tarefa }}</td>
+                    <td>{{ $retrabalho->tarefa }}</td>
                     <td>{{ $retrabalho->retrabalhos }}</td>
                     <td>{{ $retrabalho->retrabalhos_analise }}</td>
                     <td>{{ $retrabalho->proporcao_retrabalho_analise }}</td>

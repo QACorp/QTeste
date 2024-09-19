@@ -79,7 +79,7 @@ const salvarTarefa = async () => {
                 <v-row>
                     <v-col cols="12" sm="12" md="12">
                         <p>Tarefa ainda não existe, digite o título para criá-la.</p>
-                        <v-text-field v-model="titulo" label="Título"></v-text-field>
+                        <v-text-field v-model="titulo" name="tarefa_id" label="Título"></v-text-field>
                     </v-col>
                 </v-row>
                 <v-row>

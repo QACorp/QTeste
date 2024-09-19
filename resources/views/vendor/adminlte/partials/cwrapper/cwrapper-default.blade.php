@@ -1,3 +1,7 @@
+@php
+    use App\System\Utils\VueHandler;
+    use Illuminate\Support\Facades\App;
+@endphp
 @inject('layoutHelper', 'JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper')
 @inject('preloaderHelper', 'JeroenNoten\LaravelAdminLte\Helpers\preloaderHelper')
 
@@ -26,11 +30,12 @@
 
     {{-- Main Content --}}
     <div class="content" id="app">
+
         <div class="{{ config('adminlte.classes_content') ?: $def_container_class }}">
 
             @if(session()->has(\App\System\Http\Controllers\Controller::MESSAGE_KEY_SUCCESS))
                 @foreach(session()->get(\App\System\Http\Controllers\Controller::MESSAGE_KEY_SUCCESS) as $message)
-                    <x-adminlte-alert theme="success" title="Sucesso"    dismissable>
+                    <x-adminlte-alert theme="success" title="Sucesso" dismissable>
                         {{ $message }}
                     </x-adminlte-alert>
                 @endforeach
@@ -49,8 +54,19 @@
                     </x-adminlte-alert>
                 @endforeach
             @endif
-            @stack('content')
-            @yield('content')
+            @if(App::make(VueHandler::class)->hasVue())
+            <div id="vue">
+                <Preloader></Preloader>
+                @stack('content')
+                @yield('content')
+            </div>
+            @else
+                <div>
+                    @stack('content')
+                    @yield('content')
+                </div>
+            @endif
+
         </div>
     </div>
 

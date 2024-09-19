@@ -38,7 +38,7 @@ trait Configuracao
         $configuracaoBusiness = $this->getConfiguracaoBusiness();
         $configuracoes =  $configuracaoBusiness->buscarPorConfiguracaoPorPrefixo($prefixo);
         $configuracoes->each(function($item){
-            if($item->valor_criptografado){
+            if($item->valor_criptografado && $item->valor){
                 $item->valor = Crypt::decryptString($item->valor);
             }
         });

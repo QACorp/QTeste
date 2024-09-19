@@ -4,6 +4,7 @@ namespace App\System\Http;
 
 
 use App\System\Http\Middleware\ManagerApiTokenSession;
+use App\System\Http\Middleware\Vue;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -24,6 +25,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\System\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+
 
     ];
 
@@ -72,6 +74,7 @@ class Kernel extends HttpKernel
         'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
         'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
+        'vue' => \App\System\Http\Middleware\Vue::class
 
     ];
 }

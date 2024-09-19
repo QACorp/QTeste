@@ -5,6 +5,7 @@ import {axiosApi} from "../../../../../../../resources/js/app";
 import {getIdEquipe} from "../../../../../../../resources/js/APIUtils/BaseAPI";
 import InserirCheckpoint from "./InserirCheckpoint.vue";
 import {helperStore} from "../../../../Alocacao/Views/Vue/HelperStore";
+import {LoaderStore} from "../../../../../../../resources/js/GlobalStore/LoaderStore";
 const props = defineProps({
     canInsert: {
         type: Boolean,
@@ -32,12 +33,14 @@ const listUsuario = ref<UsuarioInterface[]>();
 
 const loadItems = async (options: any) => {
     loading.value = true;
+    LoaderStore.showLoader = true;
     await axiosApi.get(`checkpoint/usuarios?idEquipe=${getIdEquipe()}&page=${options.page}&limit=${options.itemsPerPage}&search=${options.search}`)
         .then(response => {
             listUsuario.value = response.data.data;
             loading.value = false;
             totalItems.value = response.data.meta.total;
         });
+    LoaderStore.showLoader = false;
 };
 </script>
 

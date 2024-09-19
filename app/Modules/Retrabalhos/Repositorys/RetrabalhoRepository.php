@@ -17,7 +17,7 @@ class RetrabalhoRepository implements RetrabalhoRepositoryContract
         $retrabalho = new Retrabalho($retrabalhoCasoTesteDTO->toArray());
         $retrabalho->save();
         $retrabalho->refresh();
-        $retrabalho->load(['caso_teste', 'aplicacao', 'tipo_retrabalho', 'projeto', 'usuario']);
+        $retrabalho->load(['caso_teste', 'aplicacao', 'tipo_retrabalho', 'projeto', 'usuario', 'tarefa']);
         return RetrabalhoCasoTesteDTO::from($retrabalho);
     }
 
@@ -30,14 +30,15 @@ class RetrabalhoRepository implements RetrabalhoRepositoryContract
             'tipo_retrabalho',
             'projeto',
             'usuario',
-            'usuario_criador'
+            'usuario_criador',
+            'tarefa'
         ])->find($idRetrabalho);
         return $retrabalho ? RetrabalhoCasoTesteDTO::from($retrabalho) : null;
     }
 
     public function buscarTodosPorEquipe(int $idEquipe): DataCollection
     {
-        $retrabalhos = Retrabalho::with(['caso_teste', 'aplicacao', 'tipo_retrabalho', 'projeto', 'usuario', 'usuario_criador'])
+        $retrabalhos = Retrabalho::with(['caso_teste', 'aplicacao', 'tipo_retrabalho', 'projeto', 'usuario', 'usuario_criador', 'tarefa'])
             ->addSelect('retrabalhos.*')
             ->where('aplicacoes_equipes.equipe_id',$idEquipe)
             ->get();
@@ -46,20 +47,22 @@ class RetrabalhoRepository implements RetrabalhoRepositoryContract
 
     public function remover(int $idRetrabalho): bool
     {
-        return Retrabalho::find($idRetrabalho)->delete();
+        return Retrabalho::select('retrabalhos.*')->where('retrabalhos.id',$idRetrabalho)->first()->delete();
     }
 
     public function editar(RetrabalhoCasoTesteDTO $retrabalhoCasoTesteDTO): RetrabalhoCasoTesteDTO
     {
-        $retrabalho = Retrabalho::find($retrabalhoCasoTesteDTO->id);
+        $retrabalho = Retrabalho::select('retrabalhos.*')->where('retrabalhos.id',$retrabalhoCasoTesteDTO->id)->first();
         $retrabalho->fill($retrabalhoCasoTesteDTO->toArray());
         $retrabalho->save();
+        $retrabalho->load(['caso_teste', 'aplicacao', 'tipo_retrabalho', 'projeto', 'usuario', 'usuario_criador', 'tarefa']);
+
         return RetrabalhoCasoTesteDTO::from($retrabalho);
     }
 
     public function buscarTodosPorUsuario(int $idUsuario): DataCollection
     {
-        $retrabalhos = Retrabalho::with(['caso_teste', 'aplicacao', 'tipo_retrabalho', 'projeto', 'usuario', 'usuario_criador'])
+        $retrabalhos = Retrabalho::with(['caso_teste', 'aplicacao', 'tipo_retrabalho', 'projeto', 'usuario', 'usuario_criador', 'tarefa'])
             ->addSelect('retrabalhos.*')
             ->where('retrabalhos.usuario_id',$idUsuario)
             ->orWhere('usuario_criador_id', $idUsuario)

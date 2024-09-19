@@ -12,7 +12,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <p>O retrabalho foi cadastrado com sucesso, segue a providência para utilizar ao devolver a tarefa <strong>{{ $retrabalho->numero_tarefa }}</strong> para o desenvolvedor</p>
+                        <p>O retrabalho foi cadastrado com sucesso, segue a providência para utilizar ao devolver a tarefa <strong>{{ $retrabalho->tarefa->tarefa }}    </strong> para o desenvolvedor</p>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
