@@ -1,4 +1,4 @@
-FROM dunglas/frankenphp
+FROM dunglas/frankenphp:1-php8.3.11-bookworm
 
 # Be sure to replace "your-domain-name.example.com" by your domain name
 ENV SERVER_NAME=:80
@@ -16,6 +16,14 @@ ARG APP_ENV=local
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 COPY . /app
 COPY ./docker/caddy/Caddyfile /etc/caddy/Caddyfile
+
+RUN apt install curl ca-certificates && \
+    install -d /usr/share/postgresql-common/pgdg && \
+    curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc && \
+    sh -c 'echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt bookworm-pgdg main" > /etc/apt/sources.list.d/pgdg.list' && \
+    apt update && \
+    DEBIAN_FRONTEND=noninteractive apt -y install postgresql-client-16
+
 
 RUN apt-get update && apt-get -y upgrade && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \

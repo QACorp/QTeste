@@ -34,14 +34,19 @@ use App\System\Traits\Configuracao;
 use App\System\Utils\RequestGuard;
 use App\System\Utils\RequestGuardApi;
 use App\System\Utils\RequestGuardWeb;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
+use League\Flysystem\Filesystem;
 use ReflectionClass;
+use Spatie\Dropbox\Client;
+use Spatie\FlysystemDropbox\DropboxAdapter;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -70,6 +75,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Storage::extend('dropbox', function (Application $app, array $config) {
+            $adapter = new DropboxAdapter(new Client(
+                $config['authorization_token']
+            ));
+
+            return new FilesystemAdapter(
+                new Filesystem($adapter, $config),
+                $adapter,
+                $config
+            );
+        });
         $this->app->singleton(RequestGuard::class, function (Application $app) {
             if(request()->is('api/*')){
                 return new RequestGuardApi();
