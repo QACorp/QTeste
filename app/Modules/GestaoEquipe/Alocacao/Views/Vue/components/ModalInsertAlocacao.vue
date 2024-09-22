@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {defineProps, ref, watch, onMounted} from "vue";
+import {ref, watch} from "vue";
 import {AlocacaoInterface} from "../Interfaces/Alocacao.interface";
 import {NaturezaEnum} from "../Enums/Natureza.enum";
 import {ProjetoInterface} from "../Interfaces/Projeto.interface";
