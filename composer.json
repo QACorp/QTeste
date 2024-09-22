@@ -21,6 +21,8 @@
         "maatwebsite/excel": "^3.1",
         "openai-php/client": "^0.10.1",
         "psr/simple-cache": "^2.0",
+        "spatie/flysystem-dropbox": "^3.0",
+        "spatie/laravel-backup": "^9.0",
         "spatie/laravel-data": "^3.2",
         "spatie/laravel-permission": "^5.10",
         "tymon/jwt-auth": "^2.1"
