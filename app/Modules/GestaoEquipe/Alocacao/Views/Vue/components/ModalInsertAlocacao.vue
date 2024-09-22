@@ -13,6 +13,7 @@ import {UsuarioInterface} from "../../../../../Retrabalhos/Views/Vue/Interfaces/
 import {axiosApi} from "../../../../../../../resources/js/app";
 import {getIdEquipe} from "../../../../../../../resources/js/APIUtils/BaseAPI";
 import TFieldTarefas from "../../../../../Projetos/Views/Vue/components/TFieldTarefas.vue";
+import {LoaderStore} from "../../../../../../../resources/js/GlobalStore/LoaderStore";
 
 
 const dialog = ref<boolean>(false);
@@ -25,10 +26,11 @@ const findUsers = () => {
     alocacao.value.user = null;
     alocacao.value.user_id = null;
     usuarios.value = null;
-
+    LoaderStore.showLoader = true;
     axiosApi.get(`alocacao/usuarios-disponiveis/${alocacao.value.inicio}/${alocacao.value.termino}/?idEquipe=${getIdEquipe()}`)
         .then(response => {
             usuarios.value = response.data;
+            LoaderStore.showLoader = false;
         })
         .catch(error => {
             console.log(error)
@@ -44,8 +46,10 @@ const saveAlocacao = async (submitEventPromise: SubmitEventPromise) => {
     const {valid, errors} = await submitEventPromise;
     if (!valid) return;
     alocacao.value.equipe_id = parseInt(getIdEquipe());
+    LoaderStore.showLoader = true;
     axiosApi.post(`alocacao`, alocacao.value)
         .then(response => {
+            LoaderStore.showLoader = false;
             $toast.success('Alocação inserida com sucesso!', {
                 duration: 5000
             });
@@ -62,9 +66,11 @@ const saveAlocacao = async (submitEventPromise: SubmitEventPromise) => {
 }
 
 const findProjetos = () => {
+    LoaderStore.showLoader = true;
     axiosApi.get(`alocacao/projetos-disponiveis/${alocacao.value.inicio}/${alocacao.value.termino}/?idEquipe=${getIdEquipe()}`)
         .then(response => {
             projetos.value = response.data;
+            LoaderStore.showLoader = false;
         })
         .catch(error => {
             console.log(error)
