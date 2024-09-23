@@ -14,6 +14,7 @@ import {UsuarioInterface} from "../../../../../Retrabalhos/Views/Vue/Interfaces/
 import CheckpointInterface from "../../../../Checkpoint/Views/Vue/Interfaces/Checkpoint.interface";
 import CheckpointTimelineItem from "../../../../Checkpoint/Views/Vue/components/CheckpointTimelineItem.vue";
 import TFieldTarefas from "../../../../../Projetos/Views/Vue/components/TFieldTarefas.vue";
+import {LoaderStore} from "../../../../../../../resources/js/GlobalStore/LoaderStore";
 
 const props = defineProps({
     alocacaoId: {
@@ -34,6 +35,7 @@ const checkpoints = ref<CheckpointInterface[]>(null)
 const $toast = useToast();
 watch(dialog, async (newValue) => {
     if(dialog){
+        LoaderStore.showLoader = true;
         await axiosApi.get(`alocacao/${props.alocacaoId}?idEquipe=${getIdEquipe()}`)
             .then(response => {
                 alocacao.value = response.data;
@@ -49,22 +51,27 @@ watch(dialog, async (newValue) => {
                 $toast.error(error.response.data.message);
             });
         await findCheckpoints();
+        LoaderStore.showLoader = false;
 
     }
 });
 
 const findUsers = () => {
+    LoaderStore.showLoader = true;
     axiosApi.get(`alocacao/usuarios-disponiveis/${alocacao.value.inicio}/${alocacao.value.termino}/?idEquipe=${getIdEquipe()}`)
         .then(response => {
             usuarios.value = response.data;
             usuarios.value.push(alocacao.value.user as UsuarioInterface);
+            LoaderStore.showLoader = false;
         })
         .catch(error => {
+            LoaderStore.showLoader = false;
             console.log(error)
         })
 }
 
 const saveAlocacao = () => {
+    LoaderStore.showLoader = true;
     axiosApi.put(`alocacao/${props.alocacaoId}`, alocacao.value)
         .then(response => {
             $toast.success('Alocação alterada com sucesso!',{
@@ -72,27 +79,35 @@ const saveAlocacao = () => {
             });
             helperStore.refreshAlocacao = true;
             dialog.value = false;
+            LoaderStore.showLoader = false;
         })
         .catch(error => {
+            LoaderStore.showLoader = false;
             $toast.error(error.response.data.message);
         })
 }
 
 const findProjetos = () => {
+    LoaderStore.showLoader = true;
     axiosApi.get(`alocacao/projetos-disponiveis/${alocacao.value.inicio}/${alocacao.value.termino}/?idEquipe=${getIdEquipe()}`)
         .then(response => {
             projetos.value = response.data;
+            LoaderStore.showLoader = false;
         })
         .catch(error => {
+            LoaderStore.showLoader = false;
             $toast.error(error.response.data.message);
         })
 }
 const findCheckpoints = async () => {
+    //LoaderStore.showLoader = true;
     await axiosApi.get(`checkpoint/alocacao/${props.alocacaoId}?idEquipe=${getIdEquipe()}`)
         .then(response => {
             checkpoints.value = response.data;
+            //LoaderStore.showLoader = false;
         })
         .catch(error => {
+            //LoaderStore.showLoader = false;
             $toast.error(error.response.data.message);
         })
 }
