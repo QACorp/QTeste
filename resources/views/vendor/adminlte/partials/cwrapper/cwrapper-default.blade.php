@@ -56,7 +56,7 @@
             @endif
             @if(App::make(VueHandler::class)->hasVue())
             <div id="vue">
-                <Preloader></Preloader>
+                <Preloader style="z-index: 9999;"></Preloader>
                 @stack('content')
                 @yield('content')
             </div>

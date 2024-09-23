@@ -25,6 +25,7 @@ export const axiosApi = axios.create({
 axiosApi.interceptors.response.use(function (response) {
     return response;
 }, function (error) {
+    LoaderStore.showLoader = false;
     return Promise.reject(error);
 });
 

@@ -37,67 +37,68 @@ watch(dialog, async (newValue) => {
     if(dialog){
         LoaderStore.showLoader = true;
         await axiosApi.get(`alocacao/${props.alocacaoId}?idEquipe=${getIdEquipe()}`)
-            .then(response => {
+            .then(async response => {
+                LoaderStore.showLoader = false;
                 alocacao.value = response.data;
                 if(
                     alocacao.value.natureza === NaturezaEnum.PROJETO &&
                     alocacao.value.inicio &&
                     alocacao.value.termino){
-                    findProjetos();
+                    await findProjetos();
                 }
-                findUsers();
+                await findUsers();
             })
             .catch(error => {
                 $toast.error(error.response.data.message);
             });
         await findCheckpoints();
-        LoaderStore.showLoader = false;
+
 
     }
 });
 
-const findUsers = () => {
+const findUsers = async () => {
     LoaderStore.showLoader = true;
     axiosApi.get(`alocacao/usuarios-disponiveis/${alocacao.value.inicio}/${alocacao.value.termino}/?idEquipe=${getIdEquipe()}`)
         .then(response => {
             usuarios.value = response.data;
             usuarios.value.push(alocacao.value.user as UsuarioInterface);
-            LoaderStore.showLoader = false;
+
         })
         .catch(error => {
-            LoaderStore.showLoader = false;
             console.log(error)
         })
+    LoaderStore.showLoader = false;
 }
 
-const saveAlocacao = () => {
+const saveAlocacao = async () => {
     LoaderStore.showLoader = true;
-    axiosApi.put(`alocacao/${props.alocacaoId}`, alocacao.value)
+    await axiosApi.put(`alocacao/${props.alocacaoId}`, alocacao.value)
         .then(response => {
             $toast.success('Alocação alterada com sucesso!',{
                 duration: 5000
             });
             helperStore.refreshAlocacao = true;
             dialog.value = false;
-            LoaderStore.showLoader = false;
+
         })
         .catch(error => {
-            LoaderStore.showLoader = false;
+
             $toast.error(error.response.data.message);
         })
+    LoaderStore.showLoader = false;
 }
 
-const findProjetos = () => {
+const findProjetos = async () => {
     LoaderStore.showLoader = true;
-    axiosApi.get(`alocacao/projetos-disponiveis/${alocacao.value.inicio}/${alocacao.value.termino}/?idEquipe=${getIdEquipe()}`)
+    await axiosApi.get(`alocacao/projetos-disponiveis/${alocacao.value.inicio}/${alocacao.value.termino}/?idEquipe=${getIdEquipe()}`)
         .then(response => {
             projetos.value = response.data;
-            LoaderStore.showLoader = false;
         })
         .catch(error => {
-            LoaderStore.showLoader = false;
             $toast.error(error.response.data.message);
-        })
+        });
+    LoaderStore.showLoader = false;
 }
 const findCheckpoints = async () => {
     //LoaderStore.showLoader = true;
