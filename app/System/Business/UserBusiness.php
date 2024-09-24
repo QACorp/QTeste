@@ -8,6 +8,7 @@ use App\System\Contracts\Business\EquipeBusinessContract;
 use App\System\Contracts\Business\UserBusinessContract;
 use App\System\Contracts\Repository\UserRepositoryContract;
 use App\System\DTOs\EquipeDTO;
+use App\System\DTOs\PermissionDTO;
 use App\System\DTOs\RoleDTO;
 use App\System\DTOs\UserDTO;
 use App\System\Enums\PermissionEnum;
@@ -175,5 +176,10 @@ class UserBusiness extends BusinessAbstract implements UserBusinessContract
             throw new NotFoundException();
         }
         return $this->userRepository->buscarUsuariosPorEquipe($idEquipe);
+    }
+
+    public function getPermissionsPorUsuarioLogado(): DataCollection
+    {
+        return PermissionDTO::collection(Auth::user()->getAllPermissions());
     }
 }

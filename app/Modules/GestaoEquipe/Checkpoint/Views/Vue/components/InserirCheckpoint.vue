@@ -52,6 +52,7 @@ watch(dialog, async () => {
   }
 });
 const updateAlocacao = () => {
+    console.log(checkpoint.value.alocacao);
   if(checkpoint.value.alocacao) {
     checkpoint.value.alocacao_id = checkpoint.value.alocacao.id;
     checkpoint.value.projeto_id = checkpoint.value.alocacao.projeto_id;
@@ -77,6 +78,7 @@ watchEffect(async  () => {
 const findAlocacao = async (data: string) => {
   if(!data) return;
   LoaderStore.showLoader = true;
+  checkpoint.value.alocacao = null;
   await axiosApi.get(`checkpoint/alocacao/usuario/${props.usuario.id}/data/${data}?idEquipe=${getIdEquipe()}`)
       .then(response => {
         alocacoes.value = response.data;
@@ -156,6 +158,7 @@ const saveCheckpoint = async () => {
                   <v-text-field
                       v-model="checkpoint.data"
                       label="Data"
+                      @blur="findAlocacao(checkpoint.data)"
                       type="date"
                       size="large"
                       :rules="[
@@ -169,7 +172,6 @@ const saveCheckpoint = async () => {
                       v-model="checkpoint.alocacao"
                       @update:modelValue="updateAlocacao()"
                       :items="alocacoes"
-
                       no-data-text="Nenhuma alocação encontrada para esta data"
                       return-object
                       clearable
@@ -203,7 +205,7 @@ const saveCheckpoint = async () => {
                   ></v-select>
                 </v-col>
                 <v-col cols="2" sm="12" md="2">
-                  <TFieldTarefas v-model="checkpoint.tarefa_id" />
+                  <TFieldTarefas v-model="checkpoint.tarefa_id" :key="checkpoint.tarefa?.tarefa" :tarefa="checkpoint.tarefa?.tarefa"/>
                 </v-col>
               </v-row>
               <v-row dense>
