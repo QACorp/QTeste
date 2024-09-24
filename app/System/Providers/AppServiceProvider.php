@@ -75,17 +75,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Storage::extend('dropbox', function (Application $app, array $config) {
-            $adapter = new DropboxAdapter(new Client(
-                $config['authorization_token']
-            ));
-
-            return new FilesystemAdapter(
-                new Filesystem($adapter, $config),
-                $adapter,
-                $config
-            );
-        });
         $this->app->singleton(RequestGuard::class, function (Application $app) {
             if(request()->is('api/*')){
                 return new RequestGuardApi();
