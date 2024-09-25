@@ -19,4 +19,5 @@ interface CheckpointBusinessContract
     public function getProjetos(int $idEquipe): DataCollection;
     public function listarAlocacoesPorData(int $idEquipe, int $idUsuario, Carbon $data): DataCollection;
     public function listarCheckpointPorAlocacao(int $idEquipe, $idAlocacao): DataCollection;
+    public function listarCheckpointsPorUsuario(int $idEquipe, int $idUsuario): DataCollection;
 }

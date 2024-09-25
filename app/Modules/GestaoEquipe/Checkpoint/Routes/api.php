@@ -12,4 +12,5 @@ Route::group(['prefix' => ''],function () {
     Route::get('/ultimo/{idUsuario}', [CheckpointController::class, 'listaUltimoCheckpoint']);
     Route::get('/projetos', [CheckpointController::class, 'listaProjetos']);
     Route::get('/alocacao/usuario/{idUsuario}/data/{data}', [CheckpointController::class, 'listaAlocacaoPorData']);
+    Route::get('/usuario/{idUsuario}', [CheckpointController::class, 'listaCheckpointsPorUsuario']);
 });

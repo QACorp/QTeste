@@ -69,6 +69,17 @@ class CheckpointController extends Controller
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
     }
+    public function listaCheckpointsPorUsuario(Request $request, int $idUsuario)
+    {
+        if(!$idEquipe = $request->get('idEquipe')){
+            return response()->json(['message' => 'O id da equipe é obrigatório'], 400);
+        }
+        try{
+            return response()->json($this->checkpointBusiness->listarCheckpointsPorUsuario($idEquipe, $idUsuario), 200);
+        }catch (NotFoundException | UnauthorizedException $e){
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
+    }
     public function salvar(Request $request)
     {
         if(!$idEquipe = $request->get('idEquipe')){

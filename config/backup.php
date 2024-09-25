@@ -7,7 +7,7 @@ return [
          * The name of this application. You can use this name to monitor
          * the backups.
          */
-        'name' => env('APP_NAME', 'laravel-backup'),
+        'name' => 'QTeste',
 
         'source' => [
             'files' => [
@@ -149,7 +149,7 @@ return [
              * The disk names on which the backups will be stored.
              */
             'disks' => [
-                'dropbox',
+                's3',
             ],
         ],
 
@@ -253,7 +253,7 @@ return [
     'monitor_backups' => [
         [
             'name' => env('APP_NAME', 'laravel-backup'),
-            'disks' => ['dropbox'],
+            'disks' => ['s3'],
             'health_checks' => [
                 \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumAgeInDays::class => 1,
                 \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumStorageInMegabytes::class => 5000,

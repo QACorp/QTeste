@@ -20,6 +20,8 @@ services:
             - traefik.http.services.${CONTAINER_NAME:-qteste}.loadbalancer.server.port=80
         restart: always
         entrypoint: ["/app/docker/entrypoint.sh"]
+        environment:
+          - TZ=America/Sao_Paulo
         ports:
           - ${PORT}:80
         networks:
@@ -34,6 +36,7 @@ services:
         environment:
             - CONTAINER_ROLE=scheduler
             - USERID=${USERID:-1001}
+            - TZ=America/Sao_Paulo
         networks:
             - traefik-public
   qteste_queue:
@@ -46,6 +49,7 @@ services:
         environment:
             - CONTAINER_ROLE=queue
             - USERID=${USERID:-1001}
+            - TZ=America/Sao_Paulo
         networks:
             - traefik-public
 

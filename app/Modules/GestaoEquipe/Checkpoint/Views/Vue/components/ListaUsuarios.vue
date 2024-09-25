@@ -6,6 +6,9 @@ import {getIdEquipe} from "../../../../../../../resources/js/APIUtils/BaseAPI";
 import InserirCheckpoint from "./InserirCheckpoint.vue";
 import {helperStore} from "../../../../Alocacao/Views/Vue/HelperStore";
 import {LoaderStore} from "../../../../../../../resources/js/GlobalStore/LoaderStore";
+import {PermissionStore} from "../../../../../../../resources/js/GlobalStore/PermissionStore";
+import {PermissionEnum as CheckpointPermissionEnum} from "../Enums/PermissionEnum";
+import VerCheckpoints from "./VerCheckpoints.vue";
 const props = defineProps({
     canInsert: {
         type: Boolean,
@@ -27,7 +30,7 @@ const headers = [
         sortable: false,
         key: 'name',
     },
-    { title: 'Ações', key: 'id', align: 'end', sortable: false },
+    { title: 'Ações', key: 'id', align: 'center', sortable: false },
 ];
 const listUsuario = ref<UsuarioInterface[]>();
 
@@ -58,8 +61,16 @@ const loadItems = async (options: any) => {
     >
         <template v-slot:item="{ item }">
             <tr>
-                <td class="w-100">{{ item.name }}</td>
-                <td class="w-auto"><inserir-checkpoint v-if="helperStore.insertCheckpoint" :usuario="item"/></td>
+                <td class="col-nome">{{ item.name }}</td>
+                <td class="col-acoes">
+                    <v-row>
+                        <v-col cols="12">
+                            <ver-checkpoints class="m" :usuario="item" v-if="PermissionStore.hasPermission(CheckpointPermissionEnum.VER_CHECKPOINT)"/>
+                            <inserir-checkpoint v-if="PermissionStore.hasPermission(CheckpointPermissionEnum.CRIAR_CHECKPOINT) " :usuario="item"/>
+
+                        </v-col>
+                    </v-row>
+                </td>
             </tr>
 
         </template>
@@ -67,5 +78,10 @@ const loadItems = async (options: any) => {
 </template>
 
 <style scoped>
-
+.col-nome{
+    width: 85%;
+}
+.col-acoes{
+    text-align: center;
+}
 </style>

@@ -22,4 +22,5 @@ interface UserBusinessContract
     public function importarArquivoParaUser(?UploadedFile $uploadedFile, array $equipes,UploadPostRequest $uploadPostRequest = new UploadPostRequest()): void;
     public function buscarUsuario(array $filter):DataCollection;
     public function buscarUsuariosPorEquipe(int $idEquipe, string $guard = 'web'):DataCollection;
+    public function getPermissionsPorUsuarioLogado():DataCollection;
 }

@@ -13,11 +13,12 @@ import * as directives from 'vuetify/directives'
 import '@mdi/font/css/materialdesignicons.css'
 import axios from "axios";
 import {LoaderStore} from "@/GlobalStore/LoaderStore";
+// import {PermissionStore} from "@/GlobalStore/PermissionStore";
 
 //axios.defaults.headers.common['Authorization'] = 'Bearer ' + document.querySelector("meta[name='api-token']").getAttribute('content');
 export const axiosApi = axios.create({
     headers: {
-        'Authorization': 'Bearer ' + document.querySelector("meta[name='api-token']").getAttribute('content')
+        'Authorization': 'Bearer ' + document.querySelector("meta[name='api-token']")?.getAttribute('content')
     },
     baseURL: import.meta.env.VITE_API_URL
 });
@@ -28,6 +29,16 @@ axiosApi.interceptors.response.use(function (response) {
     LoaderStore.showLoader = false;
     return Promise.reject(error);
 });
+if(document.querySelector("meta[name='api-token']")?.getAttribute('content')){
+     axiosApi.get('user/permissoes')
+        .then((response) => {
+            PermissionStore.permissions = response.data.map((item) => {
+                return item.name;
+            });
+        }).catch((error) => {
+            console.log(error);
+        });
+}
 
 
 const vuetify = createVuetify({
@@ -49,6 +60,7 @@ app.use(vuetify);
 //  import ExampleComponent from './../../app/Modules/GestaoProjetos/Views/Vue/components/SprintSelect.vue';
 //  app.component('SprintSelect', ExampleComponent);
 import Preloader from "@/components/Preloader.vue";
+import {PermissionStore} from "@/GlobalStore/PermissionStore";
 app.component('Preloader', Preloader);
 
 /**

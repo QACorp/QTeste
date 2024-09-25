@@ -6,6 +6,9 @@ import {helperStore} from "../HelperStore";
 import FinishAlocacao from "./FinishAlocacao.vue";
 import moment from "moment";
 import InserirCheckpoint from "../../../../Checkpoint/Views/Vue/components/InserirCheckpoint.vue";
+import {PermissionStore} from "../../../../../../../resources/js/GlobalStore/PermissionStore";
+import {PermissionEnum} from "../Enums/PermissionEnum";
+import {PermissionEnum as CheckpointPermissionEnum} from "../../../../Checkpoint/Views/Vue/Enums/PermissionEnum";
 const props = defineProps({
     alocacao: {
         type: Object as () => AlocacaoInterface,
@@ -19,11 +22,13 @@ const props = defineProps({
     <v-row class="px-2">
         <v-col md="12" >
             <modal-edit-alocacao
-                :can-edit="!props.alocacao.concluida && moment(props.alocacao.termino,'YYYY-MM-DD').isSameOrAfter(moment(new Date().setHours(0,0,0,0))) && helperStore.editAlocacao === true"
+                :can-edit="!props.alocacao.concluida &&
+                            moment(props.alocacao.termino,'YYYY-MM-DD').isSameOrAfter(moment(new Date().setHours(0,0,0,0))) &&
+                            PermissionStore.hasPermission(PermissionEnum.CRIAR_ALOCACAO)"
                 :alocacao-id="props.alocacao.id"
             />
-            <finish-alocacao v-if="helperStore.finishAlocacao === true" :alocacao-id="props.alocacao.id"/>
-            <inserir-checkpoint v-if="helperStore.insertCheckpoint || !props.alocacao.concluida" :usuario="props.alocacao.user"/>
+            <finish-alocacao v-if="PermissionStore.hasPermission(PermissionEnum.CONCLUIR_ALOCACAO)" :alocacao-id="props.alocacao.id"/>
+            <inserir-checkpoint v-if="PermissionStore.hasPermission(CheckpointPermissionEnum.CRIAR_CHECKPOINT) || !props.alocacao.concluida" :usuario="props.alocacao.user"/>
         </v-col>
     </v-row>
 </template>
