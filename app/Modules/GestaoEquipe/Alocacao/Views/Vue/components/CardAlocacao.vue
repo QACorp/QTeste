@@ -58,11 +58,20 @@ const getUrlProjeto = () => {
                             v-slot="{ copy, copied }"
                             :source="alocacao.tarefa.tarefa"
                             v-if="alocacao.tarefa !== null">
+
                                [<span @click="copy()" class="cursor-pointer">
-                                    <span v-if="!copied" :title="alocacao.tarefa.titulo">{{ alocacao.tarefa.tarefa }}</span>
+                                     <v-tooltip
+                                         v-if="alocacao.projeto_id !== null"
+                                         activator="parent"
+                                         location="bottom"
+                                     >
+                                        <span>{{ alocacao.tarefa.titulo }}</span>
+                                    </v-tooltip>
+                                    <span v-if="!copied">{{ alocacao.tarefa.tarefa }}</span>
                                     <span v-else>Copiado!</span>
                                     <v-icon size="sm">mdi-content-copy</v-icon>
                                 </span>]
+
                         </UseClipboard>
                         <v-tooltip
                             v-if="alocacao.projeto_id !== null"

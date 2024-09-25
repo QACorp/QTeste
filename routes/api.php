@@ -25,4 +25,5 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
 });
 Route::group(['middleware' => ['api', 'auth:api'], 'prefix' => 'user'], function () {
     Route::get('/equipe/{idEquipe}', [UserController::class, 'getUserByEquipe']);
+    Route::get('/permissoes', [UserController::class, 'getPermissions']);
 });

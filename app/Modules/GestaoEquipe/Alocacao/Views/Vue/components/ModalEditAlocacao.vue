@@ -15,6 +15,8 @@ import CheckpointInterface from "../../../../Checkpoint/Views/Vue/Interfaces/Che
 import CheckpointTimelineItem from "../../../../Checkpoint/Views/Vue/components/CheckpointTimelineItem.vue";
 import TFieldTarefas from "../../../../../Projetos/Views/Vue/components/TFieldTarefas.vue";
 import {LoaderStore} from "../../../../../../../resources/js/GlobalStore/LoaderStore";
+import {PermissionStore} from "../../../../../../../resources/js/GlobalStore/PermissionStore";
+import {PermissionEnum as CheckpointPermissionEnum} from "../../../../Checkpoint/Views/Vue/Enums/PermissionEnum";
 
 const props = defineProps({
     alocacaoId: {
@@ -140,7 +142,7 @@ const findCheckpoints = async () => {
             </v-toolbar>
             <v-card-text>
                 <v-row class="h-screen">
-                    <v-col cols="6" md="6" sm="12" class="h-screen overflow-auto">
+                    <v-col v-if="PermissionStore.hasPermission(CheckpointPermissionEnum.VER_CHECKPOINT) " cols="6" md="6" sm="12" class="h-screen overflow-auto">
                         <h3>Checkpoints</h3>
                         <v-timeline side="end" v-if="checkpoints !== null" truncate-line="end">
                             <CheckpointTimelineItem v-for="checkpoint in checkpoints" :key="checkpoint.id" :checkpoint="checkpoint" />

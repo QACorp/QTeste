@@ -140,4 +140,10 @@ class CheckpointBusiness extends BusinessAbstract implements CheckpointBusinessC
         }
         return $this->checkpointRepository->listarCheckpointPorAlocacao($idEquipe, $idAlocacao);
     }
+
+    public function listarCheckpointsPorUsuario(int $idEquipe, int $idUsuario): DataCollection
+    {
+        $this->can(PermissionEnum::VER_CHECKPOINT->value, 'api');
+        return $this->checkpointRepository->listarCheckpointPorUsuario($idEquipe, $idUsuario);
+    }
 }

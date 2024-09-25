@@ -11,6 +11,7 @@ services:
         restart: always
         environment:
             - CONTAINER_ROLE=app
+            - TZ=America/Sao_Paulo
         entrypoint:
             - ./docker/entrypoint.sh
         env_file:
@@ -35,6 +36,7 @@ services:
         environment:
             - CONTAINER_ROLE=scheduler
             - USERID=${USERID:-1001}
+            - TZ=America/Sao_Paulo
         networks:
             - traefik-public
     qteste_queue:
@@ -50,6 +52,7 @@ services:
         environment:
             - CONTAINER_ROLE=queue
             - USERID=${USERID:-1001}
+            - TZ=America/Sao_Paulo
         networks:
             - traefik-public
 networks:

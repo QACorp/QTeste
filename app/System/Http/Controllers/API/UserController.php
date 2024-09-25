@@ -16,4 +16,8 @@ class UserController extends Controller
     public function getUserByEquipe(Request $request, int $idEquipe){
         return response()->json($this->userBusiness->buscarUsuariosPorEquipe($idEquipe, 'api'));
     }
+
+    public function getPermissions(Request $request){
+        return response()->json($this->userBusiness->getPermissionsPorUsuarioLogado()->only('name'));
+    }
 }
