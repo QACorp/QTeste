@@ -2,6 +2,7 @@ FROM dunglas/frankenphp:1-php8.3.11-bookworm
 
 # Be sure to replace "your-domain-name.example.com" by your domain name
 ENV SERVER_NAME=:80
+ENV TZ=America/Sao_Paulo
 # If you want to disable HTTPS, use this value instead:
 #ENV SERVER_NAME=:80
 ARG BUILD_APP_ENV

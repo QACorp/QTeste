@@ -14,6 +14,7 @@ import TFieldTarefas from "../../../../../Projetos/Views/Vue/components/TFieldTa
 import {LoaderStore} from "@/GlobalStore/LoaderStore";
 
 const $toast = useToast();
+const emit = defineEmits(['close']);
 const props = defineProps({
   usuario: {
     type: Object as UsuarioInterface,
@@ -52,7 +53,6 @@ watch(dialog, async () => {
   }
 });
 const updateAlocacao = () => {
-    console.log(checkpoint.value.alocacao);
   if(checkpoint.value.alocacao) {
     checkpoint.value.alocacao_id = checkpoint.value.alocacao.id;
     checkpoint.value.projeto_id = checkpoint.value.alocacao.projeto_id;
@@ -67,13 +67,6 @@ const updateAlocacao = () => {
 
 }
 
-watchEffect(async  () => {
-  if(dialog.value){
-    //await findAlocacao(checkpoint.value.data);
-
-  }
-
-})
 
 const findAlocacao = async (data: string) => {
   if(!data) return;
@@ -96,6 +89,7 @@ const saveCheckpoint = async () => {
           duration: 5000
         });
         dialog.value = false;
+
       })
       .catch(error => {
         $toast.error(error.response.data.message, {
@@ -103,14 +97,16 @@ const saveCheckpoint = async () => {
         });
       })
     LoaderStore.showLoader = false;
+    emit('close');
 }
 </script>
 
 <template>
 
   <v-btn
-      class="p-2"
+      class="p-2 mx-1"
       size="sm"
+      color="success"
       variant="tonal"
       @click="dialog = true"
   >
@@ -128,7 +124,7 @@ const saveCheckpoint = async () => {
         <v-btn
             title="Adicionar checkpoint"
             icon="mdi-close"
-            @click="dialog = false"
+            @click="() => {dialog = false; emit('close');}"
         ></v-btn>
       </v-toolbar>
       <v-card-text>

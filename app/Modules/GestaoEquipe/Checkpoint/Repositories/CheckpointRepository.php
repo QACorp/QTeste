@@ -50,11 +50,23 @@ class CheckpointRepository implements CheckpointRepositoryContract
         return $checkpoint ? CheckpointDTO::from($checkpoint) : null;
     }
 
-    public function listarCheckpointPorAlocacao(int $idEquipe, $idAlocacao): DataCollection
+    public function listarCheckpointPorAlocacao(int $idEquipe, int $idAlocacao): DataCollection
     {
         $checkpoint = Checkpoint::select('checkpoints.*')
             ->where('equipe_id', $idEquipe)
             ->where('alocacao_id', $idAlocacao)
+            ->orderBy('data', 'desc')
+            ->orderBy('id', 'desc')
+            ->with('projeto','user', 'criador', 'projeto.aplicacao', 'alocacao', 'tarefa')
+            ->get();
+        return CheckpointDTO::collection($checkpoint);
+    }
+
+    public function listarCheckpointPorUsuario(int $idEquipe, int $idUsuario): DataCollection
+    {
+        $checkpoint = Checkpoint::select('checkpoints.*')
+            ->where('equipe_id', $idEquipe)
+            ->where('user_id', $idUsuario)
             ->orderBy('data', 'desc')
             ->orderBy('id', 'desc')
             ->with('projeto','user', 'criador', 'projeto.aplicacao', 'alocacao', 'tarefa')
