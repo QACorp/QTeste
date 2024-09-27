@@ -104,7 +104,7 @@ const saveCheckpoint = async () => {
 <template>
 
   <v-btn
-      class="p-2 mx-1"
+      class="p-2 mx-2"
       size="sm"
       variant="tonal"
       @click="dialog = true"
