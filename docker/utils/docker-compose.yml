@@ -18,6 +18,8 @@ services:
       image: qteste_app:2.0
       restart: unless-stopped
       working_dir: /app
+      environment:
+          - USERID=${USERID:-1001}
       env_file:
           - ../../.env
       volumes:

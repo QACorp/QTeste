@@ -20,7 +20,6 @@ abstract class ServiceProviderAbstract extends ServiceProvider
     public static string $view_namespace;
     public static string $module_path;
     private string $moduleDir;
-    protected MenuUtils $menuUtils;
     public function __construct($app)
     {
         $this->moduleDir = dirname(static::$module_path,2);

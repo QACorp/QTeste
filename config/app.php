@@ -201,6 +201,7 @@ return [
         App\Modules\GestaoEquipe\Providers\GestaoEquipeServiceProvider::class,
         App\Modules\GestaoEquipe\Alocacao\Providers\AlocacaoServiceProvider::class,
         App\Modules\GestaoEquipe\Checkpoint\Providers\CheckpointServiceProvider::class,
+        App\Modules\GestaoEquipe\Observacao\Providers\ObservacaoServiceProvider::class
 
 
     ],
