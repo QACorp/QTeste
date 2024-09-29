@@ -44,7 +44,7 @@ class Observacao extends Model
     {
         if(Auth::user()){
             return parent::newQuery()
-                ->join('users as criador', 'criador.id', '=', 'checkpoints.criador_user_id')
+                ->join('users as criador', 'criador.id', '=', 'observacoes.criador_user_id')
                 ->where('criador.empresa_id', Auth::user()->empresa_id);
 
         }

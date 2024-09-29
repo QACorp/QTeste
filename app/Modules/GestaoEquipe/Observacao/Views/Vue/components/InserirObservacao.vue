@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {onMounted, ref, watch, watchEffect} from "vue";
-import CheckpointInterface from "../Interfaces/Checkpoint.interface";
 import {axiosApi} from "../../../../../../../resources/js/app";
 import {getIdEquipe} from "../../../../../../../resources/js/APIUtils/BaseAPI";
 import moment from "moment";
@@ -8,7 +7,6 @@ import {AlocacaoInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Aloca
 import {ProjetoInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Projeto.interface";
 import {useToast} from "vue-toast-notification";
 import {UsuarioInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Usuario.interface";
-import CheckpointTimelineItem from "./CheckpointTimelineItem.vue";
 import Editor from "@tinymce/tinymce-vue";
 import TFieldTarefas from "../../../../../Projetos/Views/Vue/components/TFieldTarefas.vue";
 import {LoaderStore} from "@/GlobalStore/LoaderStore";

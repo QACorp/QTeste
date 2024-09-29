@@ -34,14 +34,12 @@ const loadCheckpoints = async () => {
     LoaderStore.showLoader = false;
 }
 watchEffect(async () => {
-    await loadCheckpoints();
-
-});
-watch(dialog, async () => {
     if(dialog.value){
         await loadCheckpoints();
     }
+
 });
+
 </script>
 
 <template>

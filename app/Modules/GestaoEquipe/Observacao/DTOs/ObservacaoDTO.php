@@ -12,12 +12,12 @@ use Spatie\LaravelData\Attributes\Validation\Required;
 
 class ObservacaoDTO extends DTO
 {
+    public ?int $id;
     #[Required]
     public ?int $user_id;
-    #[Required]
     public ?int $criador_user_id;
     #[Required]
-    public string $descricao;
+    public string $observacao;
     #[Required]
     public Carbon $data;
 

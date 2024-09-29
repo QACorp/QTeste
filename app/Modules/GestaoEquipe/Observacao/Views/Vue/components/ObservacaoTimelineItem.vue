@@ -1,11 +1,11 @@
 <script setup lang="ts">
 
 import moment from "moment/moment";
-import CheckpointInterface from "../Interfaces/Checkpoint.interface";
+import ObservacaoInterface from "../Interfaces/Observacao.interface";
 
 const props = defineProps({
-    checkpoint: {
-        type: Object as CheckpointInterface,
+    observacao: {
+        type: Object as ObservacaoInterface,
         required: true
     }
 });
@@ -13,11 +13,11 @@ const props = defineProps({
 
 <template>
     <v-timeline-item
-        dot-color="primary"
+        dot-color="orange"
         size="small"
     >
         <template v-slot:opposite>
-            <span class="font-weight-bold">{{ moment(checkpoint.data).format('DD/MM/YYYY') }}</span>
+            <span class="font-weight-bold">{{ moment(observacao.data).format('DD/MM/YYYY') }}</span>
         </template>
         <v-alert
             variant="tonal"
@@ -25,20 +25,13 @@ const props = defineProps({
         >
             <v-row class="mb-0">
                 <v-col cols="12" class="mb-0 pb-0" >
-                    <span v-if="checkpoint.criador != null" class="font-italic text-xs text-black"> Por {{ checkpoint.criador.name }}</span>
+                    <span v-if="observacao.criador != null" class="font-italic text-xs text-black"> Por {{ observacao.criador.name }}</span>
                     <v-skeleton-loader v-else width="100" height="10"></v-skeleton-loader>
-                </v-col>
-
-                <v-col cols="2" class="mt-0" v-if="checkpoint.tarefa">
-                    <span class="font-italic text-xs text-black" :title="checkpoint.tarefa.titulo">  {{ checkpoint.tarefa.tarefa }}</span>
-                </v-col>
-                <v-col cols="10" class="mt-0" v-if="checkpoint.projeto">
-                    <span class="font-italic text-xs text-black" title="Projeto"> {{ checkpoint.projeto.nome }}</span>
                 </v-col>
             </v-row>
             <v-row class="p-0 mt-0">
                 <v-col cols="12">
-                    <div v-html="checkpoint.descricao">
+                    <div v-html="observacao.observacao">
 
                     </div>
                 </v-col>

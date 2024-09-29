@@ -9,6 +9,7 @@ import {LoaderStore} from "../../../../../../../resources/js/GlobalStore/LoaderS
 import {PermissionStore} from "../../../../../../../resources/js/GlobalStore/PermissionStore";
 import {PermissionEnum as CheckpointPermissionEnum} from "../Enums/PermissionEnum";
 import VerCheckpoints from "./VerCheckpoints.vue";
+import VerObservacoes from "../../../../Observacao/Views/Vue/components/VerObservacoes.vue";
 const props = defineProps({
     canInsert: {
         type: Boolean,
@@ -67,7 +68,7 @@ const loadItems = async (options: any) => {
                         <v-col cols="12">
                             <ver-checkpoints class="m" :usuario="item" v-if="PermissionStore.hasPermission(CheckpointPermissionEnum.VER_CHECKPOINT)"/>
                             <inserir-checkpoint v-if="PermissionStore.hasPermission(CheckpointPermissionEnum.CRIAR_CHECKPOINT) " :usuario="item"/>
-
+                            <ver-observacoes :usuario="item"/>
                         </v-col>
                     </v-row>
                 </td>
@@ -79,7 +80,7 @@ const loadItems = async (options: any) => {
 
 <style scoped>
 .col-nome{
-    width: 85%;
+    width: 80%;
 }
 .col-acoes{
     text-align: center;

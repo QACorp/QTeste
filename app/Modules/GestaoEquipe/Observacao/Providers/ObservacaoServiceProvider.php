@@ -13,6 +13,10 @@ use App\Modules\GestaoEquipe\Checkpoint\Contracts\Respositories\UserRepositoryCo
 use App\Modules\GestaoEquipe\Checkpoint\Repositories\CheckpointRepository;
 use App\Modules\GestaoEquipe\Checkpoint\Repositories\ProjetoRepository;
 use App\Modules\GestaoEquipe\Checkpoint\Repositories\UserRepository;
+use App\Modules\GestaoEquipe\Observacao\Business\ObservacaoBusiness;
+use App\Modules\GestaoEquipe\Observacao\Contracts\Business\ObservacaoBusinessContract;
+use App\Modules\GestaoEquipe\Observacao\Contracts\Respositories\ObservacaoRepositoryContract;
+use App\Modules\GestaoEquipe\Observacao\Repositories\ObservacaoRepository;
 use App\Modules\Projetos\Providers\ProjetosServiceProvider;
 
 use App\System\Impl\ServiceProviderAbstract;
@@ -24,7 +28,8 @@ class ObservacaoServiceProvider extends ServiceProviderAbstract
     public static string $prefix = 'observacao';
     public static string $view_namespace = 'observacao';
     public $bindings = [
-
+        ObservacaoBusinessContract::class => ObservacaoBusiness::class,
+        ObservacaoRepositoryContract::class => ObservacaoRepository::class
     ];
     /**
      * Register services.
