@@ -19,7 +19,7 @@ class ObservacaoDTO extends DTO
     #[Required]
     public string $observacao;
     #[Required]
-    public Carbon $data;
+    public ?Carbon $data;
 
     public ?UserDTO $user;
     public ?UserDTO $criador;

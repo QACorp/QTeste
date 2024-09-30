@@ -48,7 +48,18 @@ class ObservacaoBusiness extends BusinessAbstract implements ObservacaoBusinessC
 
     public function atualizar(int $id, ObservacaoDTO $observacaoDTO, int $idEquipe): ObservacaoDTO
     {
-        // TODO: Implement atualizar() method.
+        $this->can(PermissionEnum::ALTERAR_OBSERVACAO->value);
+        $observacao = $this->observacaoRepository->buscarPorId($id, $idEquipe);
+
+        if(!$observacao){
+            throw new NotFoundException('Observação não encontrada');
+        }
+        if(!$this->hasEquipe($idEquipe, $observacao->user_id, $observacao->criador_user_id)){
+            throw new NotFoundException('Observação não encontrada');
+        }
+        return $this->observacaoRepository->atualizar($id, $observacaoDTO, $idEquipe);
+
+
     }
 
     public function deletar(int $id, int $idEquipe): bool

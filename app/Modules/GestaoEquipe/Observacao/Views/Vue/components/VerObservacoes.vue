@@ -80,10 +80,10 @@ watchEffect(async () => {
     </v-btn>
     <v-dialog
         data-bs-focus="false"
+        persistent
         v-model="dialog"
         min-width="50%"
         min-height="80%"
-        persistent
         scroll-strategy="none"
     >
         <v-card >
@@ -103,6 +103,7 @@ watchEffect(async () => {
                                 :key="observacao.id"
                                 :observacao="observacao"
                                 @delete="loadObservacoes"
+                                @alterar="loadObservacoes"
                             />
                             <v-timeline-item
                                 dot-color="success"
@@ -143,6 +144,7 @@ watchEffect(async () => {
                                     <label for="observacao">Observação</label>
                                     <Editor
                                         required
+                                        :key="dialog"
                                         licenseKey="gpl"
                                         v-model="observacao.observacao"
                                     />

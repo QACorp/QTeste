@@ -10,7 +10,7 @@ interface ObservacaoRepositoryContract
 {
     public function listaPorIdUsuario(int $idUsuario, int $idEquipe, int $idUsuarioCriador): DataCollection;
     public function salvar(ObservacaoDTO $observacaoDTO, int $idEquipe): ObservacaoDTO;
-    public function atualizar(int $id, ObservacaoDTO $observacaoDTO, int $idEquipe): ObservacaoDTO;
+    public function atualizar(int $id, ObservacaoDTO $observacaoDTO, int $idEquipe): ?ObservacaoDTO;
     public function deletar(int $id, int $idEquipe): bool;
     public function buscarPorId(int $idObservacao, int $idEquipe): ?ObservacaoDTO;
 }

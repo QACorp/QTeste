@@ -35,7 +35,7 @@ const deleteObservacao = () => {
 </script>
 
 <template>
-    <v-btn class="p-2" size="sm" variant="tonal" color="danger" @click="dialog = true" title="Excluir observação">
+    <v-btn class="p-2 mx-1" size="sm" variant="tonal" color="danger" @click="dialog = true" title="Excluir observação">
         <v-icon size="sm">mdi-delete</v-icon>
     </v-btn>
     <v-dialog
@@ -47,7 +47,7 @@ const deleteObservacao = () => {
             class="overflow-hidden"
             prepend-icon="mdi-check-circle"
             text="Tem certeza que deseja excluir esta observação?"
-            title="Excluir alocação"
+            title="Excluir observacao"
         >
             <template v-slot:actions>
                 <v-row class="p-0">

@@ -8,7 +8,7 @@
 
 @section('content_header')
     <div class="row">
-        <h1 class="m-0 text-dark col-md-8">Checkpoints</h1>
+        <h1 class="m-0 text-dark col-md-8">Equipe</h1>
 
     </div>
 @stop
@@ -19,13 +19,7 @@
         <div class="row">
             <div class="card">
                 <div class="card-body">
-                    @can(PermissionEnum::VER_CHECKPOINT->value)
-                        <lista-usuarios :can-insert="{{ Auth::guard('web')->user()->can(PermissionEnum::CRIAR_CHECKPOINT->value) == true ? 'true' : 'false' }}">
-                    @else
-                        <div class="alert alert-danger" role="alert">
-                            Você não tem permissão para acessar essa página.
-                        </div>
-                    @endcan
+                    <lista-usuarios />
                 </div>
             </div>
         </div>

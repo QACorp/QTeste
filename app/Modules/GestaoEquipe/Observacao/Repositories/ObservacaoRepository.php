@@ -37,14 +37,22 @@ class ObservacaoRepository implements ObservacaoRepositoryContract
         return ObservacaoDTO::from($observacaoModel);
     }
 
-    public function atualizar(int $id, ObservacaoDTO $observacaoDTO, int $idEquipe): ObservacaoDTO
+    public function atualizar(int $id, ObservacaoDTO $observacaoDTO, int $idEquipe): ?ObservacaoDTO
     {
-        // TODO: Implement atualizar() method.
+        $observacao = Observacao::select('observacoes.*')
+                        ->join('users_equipes', 'users_equipes.user_id', '=', 'observacoes.user_id')
+                        ->where('equipe_id', $idEquipe)
+                        ->where('observacoes.id', $id)
+                        ->first();
+        if(!$observacao){
+            return null;
+        }
+        $observacao->update($observacaoDTO->only('observacao')->toArray());
+        return ObservacaoDTO::from($observacao);
     }
 
     public function deletar(int $id, int $idEquipe): bool
     {
-
         $observacao = Observacao::select('observacoes.*')
                         ->join('users_equipes', 'users_equipes.user_id', '=', 'observacoes.user_id')
                         ->where('equipe_id', $idEquipe)

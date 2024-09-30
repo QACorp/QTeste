@@ -8,6 +8,8 @@ import {helperStore} from "../../../../Alocacao/Views/Vue/HelperStore";
 import {LoaderStore} from "../../../../../../../resources/js/GlobalStore/LoaderStore";
 import {PermissionStore} from "../../../../../../../resources/js/GlobalStore/PermissionStore";
 import {PermissionEnum as CheckpointPermissionEnum} from "../Enums/PermissionEnum";
+import {PermissionEnum as ObservacaoPermissionEnum} from "../../../../Observacao/Views/Vue/Enums/PermissionEnum";
+
 import VerCheckpoints from "./VerCheckpoints.vue";
 import VerObservacoes from "../../../../Observacao/Views/Vue/components/VerObservacoes.vue";
 const props = defineProps({
@@ -68,7 +70,7 @@ const loadItems = async (options: any) => {
                         <v-col cols="12">
                             <ver-checkpoints class="m" :usuario="item" v-if="PermissionStore.hasPermission(CheckpointPermissionEnum.VER_CHECKPOINT)"/>
                             <inserir-checkpoint v-if="PermissionStore.hasPermission(CheckpointPermissionEnum.CRIAR_CHECKPOINT) " :usuario="item"/>
-                            <ver-observacoes :usuario="item"/>
+                            <ver-observacoes v-if="PermissionStore.hasPermission(ObservacaoPermissionEnum.LISTAR_OBSERVACAO)" :usuario="item"/>
                         </v-col>
                     </v-row>
                 </td>

@@ -69,5 +69,23 @@ class ObservacaoController extends Controller
             return response()->json(['message' => $e->getMessage()], 403);
         }
     }
+    public function alterar(Request $request, int $idObservacao){
+        if (!$request->get('idEquipe')){
+            return response()->json(['message' => 'Equipe não informada'], 400);
+        }
+        if(!$request->get('observacao')){
+            return response()->json(['message' => 'Observação não informada'], 400);
+        }
+        $observacaoDTO = ObservacaoDTO::from($request->only('observacao'));
+        try {
+            return $this->observacaoBusiness->atualizar(
+                $idObservacao,
+                $observacaoDTO,
+                $request->get('idEquipe')
+            );
+        } catch (UnauthorizedException $e) {
+            return response()->json(['message' => $e->getMessage()], 403);
+        }
+    }
 
 }
