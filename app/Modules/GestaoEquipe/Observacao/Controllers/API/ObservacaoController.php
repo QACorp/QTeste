@@ -55,7 +55,19 @@ class ObservacaoController extends Controller
         } catch (UnauthorizedException $e) {
             return response()->json(['message' => $e->getMessage()], 403);
         }
-
+    }
+    public function remover(Request $request, int $idObservacao){
+        if (!$request->get('idEquipe')){
+            return response()->json(['message' => 'Equipe não informada'], 400);
+        }
+        try {
+            return $this->observacaoBusiness->deletar(
+                $idObservacao,
+                $request->get('idEquipe')
+            );
+        } catch (UnauthorizedException $e) {
+            return response()->json(['message' => $e->getMessage()], 403);
+        }
     }
 
 }

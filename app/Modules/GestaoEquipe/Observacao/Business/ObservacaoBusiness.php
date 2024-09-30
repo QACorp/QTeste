@@ -53,6 +53,14 @@ class ObservacaoBusiness extends BusinessAbstract implements ObservacaoBusinessC
 
     public function deletar(int $id, int $idEquipe): bool
     {
-        // TODO: Implement deletar() method.
+        $this->can(PermissionEnum::REMOVER_OBSERVACAO->value);
+        $observacao = $this->observacaoRepository->buscarPorId($id, $idEquipe);
+        if(!$observacao){
+            throw new NotFoundException('Observação não encontrada');
+        }
+        if(!$this->hasEquipe($idEquipe, $observacao->user_id, $observacao->criador_user_id)){
+            throw new NotFoundException('Observação não encontrada');
+        }
+        return $this->observacaoRepository->deletar($id, $idEquipe);
     }
 }

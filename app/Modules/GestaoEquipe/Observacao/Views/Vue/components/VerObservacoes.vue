@@ -12,6 +12,7 @@ import {PermissionEnum} from "../Enums/PermissionEnum";
 import ObservacaoTimelineItem from "./ObservacaoTimelineItem.vue";
 import Editor from "@tinymce/tinymce-vue";
 import moment from "moment";
+import {helperStore} from "../../../../Alocacao/Views/Vue/HelperStore";
 const props = defineProps({
     usuario: {
         type: Object as UsuarioInterface,
@@ -52,6 +53,12 @@ const saveObservacao = async () => {
         });
     LoaderStore.showLoader = false;
 }
+watch(helperStore.refreshObservacao,()=>{
+    if(helperStore.refreshObservacao){
+        loadObservacoes();
+        helperStore.refreshObservacao = false;
+    }
+});
 watchEffect(async () => {
     if(dialog.value){
         await loadObservacoes();
@@ -91,7 +98,12 @@ watchEffect(async () => {
                 <v-row>
                     <v-col v-if="PermissionStore.hasPermission(PermissionEnum.LISTAR_OBSERVACAO)" :cols="PermissionStore.hasPermission(PermissionEnum.INSERIR_OBSERVACAO) ? 6 : 12">
                         <v-timeline side="end" v-if="checkpoints !== null" truncate-line="end">
-                            <ObservacaoTimelineItem v-for="observacao in observacoes" :key="observacao.id"  :observacao="observacao"/>
+                            <ObservacaoTimelineItem
+                                v-for="observacao in observacoes"
+                                :key="observacao.id"
+                                :observacao="observacao"
+                                @delete="loadObservacoes"
+                            />
                             <v-timeline-item
                                 dot-color="success"
                                 size="small"
@@ -125,11 +137,7 @@ watchEffect(async () => {
                                         required
                                     ></v-text-field>
                                 </v-col>
-
-
                             </v-row>
-
-
                             <v-row dense>
                                 <v-col cols="12" sm="12" md="12">
                                     <label for="observacao">Observação</label>

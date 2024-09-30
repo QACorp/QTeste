@@ -2,6 +2,8 @@
 
 import moment from "moment/moment";
 import ObservacaoInterface from "../Interfaces/Observacao.interface";
+import ExcluirObservacao from "./ExcluirObservacao.vue";
+import {watchEffect} from "vue";
 
 const props = defineProps({
     observacao: {
@@ -9,6 +11,7 @@ const props = defineProps({
         required: true
     }
 });
+const emit = defineEmits(['delete']);
 </script>
 
 <template>
@@ -34,6 +37,11 @@ const props = defineProps({
                     <div v-html="observacao.observacao">
 
                     </div>
+                </v-col>
+            </v-row>
+            <v-row class="p-0 mt-0">
+                <v-col cols="12">
+                    <ExcluirObservacao @close="emit('delete')" :observacao-id="observacao.id"/>
                 </v-col>
             </v-row>
         </v-alert>
