@@ -36,7 +36,7 @@ const headers = [
     { title: 'Ações', key: 'id', align: 'center', sortable: false },
 ];
 const listUsuario = ref<UsuarioInterface[]>();
-
+const url = `${import.meta.env.VITE_APP_URL}/gestao-equipe/`;
 const loadItems = async (options: any) => {
     loading.value = true;
     LoaderStore.showLoader = true;
@@ -71,6 +71,15 @@ const loadItems = async (options: any) => {
                             <ver-checkpoints class="m" :usuario="item" v-if="PermissionStore.hasPermission(CheckpointPermissionEnum.VER_CHECKPOINT)"/>
                             <inserir-checkpoint v-if="PermissionStore.hasPermission(CheckpointPermissionEnum.CRIAR_CHECKPOINT) " :usuario="item"/>
                             <ver-observacoes v-if="PermissionStore.hasPermission(ObservacaoPermissionEnum.LISTAR_OBSERVACAO)" :usuario="item"/>
+                            <v-btn
+                                :href="`${url}${item.id}/`"
+                                class="mx-2 p-2"
+                                size="sm"
+                                variant="tonal"
+                                color="purple"
+                            >
+                                <v-icon size="sm">mdi-account-circle</v-icon>
+                            </v-btn>
                         </v-col>
                     </v-row>
                 </td>
@@ -82,7 +91,7 @@ const loadItems = async (options: any) => {
 
 <style scoped>
 .col-nome{
-    width: 80%;
+    width: 75%;
 }
 .col-acoes{
     text-align: center;

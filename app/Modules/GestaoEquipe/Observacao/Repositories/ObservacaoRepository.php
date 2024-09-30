@@ -5,6 +5,7 @@ namespace App\Modules\GestaoEquipe\Observacao\Repositories;
 use App\Modules\GestaoEquipe\Checkpoint\Contracts\Respositories\CheckpointRepositoryContract;
 use App\Modules\GestaoEquipe\Checkpoint\DTOs\CheckpointDTO;
 use App\Modules\GestaoEquipe\Checkpoint\Models\Checkpoint;
+use App\Modules\GestaoEquipe\DTOs\CheckpointObservacaoDTO;
 use App\Modules\GestaoEquipe\Observacao\Contracts\Respositories\ObservacaoRepositoryContract;
 use App\Modules\GestaoEquipe\Observacao\DTOs\ObservacaoDTO;
 use App\Modules\GestaoEquipe\Observacao\Models\Observacao;
@@ -72,5 +73,20 @@ class ObservacaoRepository implements ObservacaoRepositoryContract
                         ->where('equipe_id', $idEquipe)
                         ->first();
         return $observacao ? ObservacaoDTO::from($observacao) : null;
+    }
+
+    public function buscarObservacaoComCheckpoint(int $idUsuario, int $idEquipe): DataCollection
+    {
+        $observacoesCheckpoints = Checkpoint::selectRaw('checkpoints.id, checkpoints.user_id, checkpoints.criador_user_id, descricao, data, \'Checkpoint\' as tipo, tarefa_id, projeto_id')
+            ->where('checkpoints.user_id', $idUsuario)
+            ->where('equipe_id', $idEquipe);
+        $listaObservacao = $observacoesCheckpoints->union(
+            Observacao::selectRaw('observacoes.id, observacoes.user_id, observacoes.criador_user_id, observacao as descricao, data,\'Observacao\' as tipo, null as tarefa_id, null as projeto_id')
+            ->join('users_equipes', 'users_equipes.user_id', '=', 'observacoes.user_id')
+            ->where('observacoes.user_id', $idUsuario)
+            ->where('equipe_id', $idEquipe))
+            ->with(['user', 'criador', 'projeto', 'tarefa'])
+            ->get();
+        return CheckpointObservacaoDTO::collection($listaObservacao);
     }
 }
