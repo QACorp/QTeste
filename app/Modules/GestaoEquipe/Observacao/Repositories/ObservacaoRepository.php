@@ -86,6 +86,8 @@ class ObservacaoRepository implements ObservacaoRepositoryContract
             ->where('observacoes.user_id', $idUsuario)
             ->where('equipe_id', $idEquipe))
             ->with(['user', 'criador', 'projeto', 'tarefa'])
+            ->orderBy('data', 'desc')
+            ->orderBy('id', 'desc')
             ->get();
         return CheckpointObservacaoDTO::collection($listaObservacao);
     }

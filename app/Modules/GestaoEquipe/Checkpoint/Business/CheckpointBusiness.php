@@ -50,7 +50,7 @@ class CheckpointBusiness extends BusinessAbstract implements CheckpointBusinessC
         try {
             $this->startTransaction();
             $checkpointDTO = $this->checkpointRepository->create($checkpointDTO, $idEquipe);
-            $checkpointDTO->user = $this->userBusiness->buscarPorId($checkpointDTO->user_id);
+            $checkpointDTO->user = $this->userBusiness->buscarPorId($checkpointDTO->user_id, $idEquipe);
             if($checkpointDTO->projeto_id){
                 $this->createOberservacao($checkpointDTO);
             }

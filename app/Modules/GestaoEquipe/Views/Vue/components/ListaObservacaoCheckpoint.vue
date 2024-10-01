@@ -37,18 +37,21 @@ onMounted(async () => {
 <template>
     <v-card >
         <v-toolbar title="Histórico">
-            <v-btn
-                title="Fechar"
-                icon="mdi-close"
-                @click="dialog = false"
-            ></v-btn>
+<!--            <v-btn-->
+<!--                title="Fechar"-->
+<!--                icon="mdi-close"-->
+<!--                @click="dialog = false"-->
+<!--            ></v-btn>-->
         </v-toolbar>
-        <v-card-text>
+        <v-card-text
+            class="overflow-y-auto"
+            style="height: 75vh;"
+        >
             <v-row>
                 <v-col v-if="
                         PermissionStore.hasPermission(PermissionEnum.LISTAR_OBSERVACAO) ||
                         PermissionStore.hasPermission(PermissionEnumCheckpoint.VER_CHECKPOINT)"
-                       :cols="6">
+                       :cols="12">
                     <v-timeline side="end" v-if="observacoesCheckpoints !== null" truncate-line="end">
                         <ObservacaoCheckpointTimelineItem
                             v-for="observacaoCheckpoint in observacoesCheckpoints"

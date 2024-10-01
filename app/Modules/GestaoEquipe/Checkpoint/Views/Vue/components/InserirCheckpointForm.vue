@@ -26,24 +26,25 @@ const emit = defineEmits(['close']);
 const checkpoint = ref<CheckpointInterface>({} as CheckpointInterface);
 const projetos = ref<ProjetoInterface>([]);
 const alocacoes = ref<AlocacaoInterface>([]);
+const usuario = ref<UsuarioInterface>(props.usuario)
 
 
 onMounted( async () => {
 
-        LoaderStore.showLoader = true;
-        checkpoint.value = {} as CheckpointInterface;
-        checkpoint.value.data = moment().format('YYYY-MM-DD');
-        checkpoint.value.user_id = props.usuario.id;
-        checkpoint.value.compareceu = false;
-        axiosApi.get(`checkpoint/projetos?idEquipe=${getIdEquipe()}`)
-            .then(response => {
-                projetos.value = response.data;
-            })
-            .catch(error => {
-                console.log(error)
-            });
-        await findAlocacao(checkpoint.value.data);
-        LoaderStore.showLoader = false;
+    LoaderStore.showLoader = true;
+    checkpoint.value = {} as CheckpointInterface;
+    checkpoint.value.data = moment().format('YYYY-MM-DD');
+    checkpoint.value.user_id = usuario.value.id;
+    checkpoint.value.compareceu = false;
+    await axiosApi.get(`checkpoint/projetos?idEquipe=${getIdEquipe()}`)
+        .then(response => {
+            projetos.value = response.data;
+        })
+        .catch(error => {
+            console.log(error)
+        });
+    await findAlocacao(checkpoint.value.data);
+    LoaderStore.showLoader = false;
 
 
 });
@@ -67,7 +68,7 @@ const findAlocacao = async (data: string) => {
     if(!data) return;
     LoaderStore.showLoader = true;
     checkpoint.value.alocacao = null;
-    await axiosApi.get(`checkpoint/alocacao/usuario/${props.usuario.id}/data/${data}?idEquipe=${getIdEquipe()}`)
+    await axiosApi.get(`checkpoint/alocacao/usuario/${usuario.value.id}/data/${data}?idEquipe=${getIdEquipe()}`)
         .then(response => {
             alocacoes.value = response.data;
         })

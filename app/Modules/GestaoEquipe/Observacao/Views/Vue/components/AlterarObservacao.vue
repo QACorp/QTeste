@@ -16,6 +16,7 @@ const props = defineProps({
 const emit = defineEmits(['close']);
 const dialog = ref<boolean>(false);
 const observacao = ref<ObservacaoInterface>(props.observacao);
+observacao.value.observacao = props.observacao.descricao ?? props.observacao.observacao;
 const alterarObservacao = () => {
     LoaderStore.showLoader = true;
     axiosApi.patch(`/observacao/${props.observacao.id}?idEquipe=${getIdEquipe()}`, observacao.value)

@@ -10,9 +10,9 @@ import {PermissionStore} from "../../../../../../../resources/js/GlobalStore/Per
 import ObservacaoInterface from "../Interfaces/Observacao.interface";
 import {PermissionEnum} from "../Enums/PermissionEnum";
 import ObservacaoTimelineItem from "./ObservacaoTimelineItem.vue";
-import Editor from "@tinymce/tinymce-vue";
-import moment from "moment";
 import {helperStore} from "../../../../Alocacao/Views/Vue/HelperStore";
+import InserirCheckpointForm from "../../../../Checkpoint/Views/Vue/components/InserirCheckpointForm.vue";
+import InserirObservacaoForm from "./InserirObservacaoForm.vue";
 const props = defineProps({
     usuario: {
         type: Object as UsuarioInterface,
@@ -23,9 +23,6 @@ const props = defineProps({
 const $toast = useToast();
 const dialog = ref(false);
 const observacoes = ref<ObservacaoInterface[]>([]);
-const observacao = ref<ObservacaoInterface>({} as ObservacaoInterface);
-observacao.value.user_id = props.usuario.id
-observacao.value.data = new moment().format('YYYY-MM-DD');
 const loadObservacoes = async () => {
     LoaderStore.showLoader = true;
     await axiosApi.get(`observacao/${props.usuario.id}?idEquipe=${getIdEquipe()}`)
@@ -37,22 +34,7 @@ const loadObservacoes = async () => {
         });
     LoaderStore.showLoader = false;
 }
-const saveObservacao = async () => {
-    LoaderStore.showLoader = true;
-    await axiosApi.post(`observacao/${props.usuario.id}?idEquipe=${getIdEquipe()}`, observacao.value)
-        .then(async response => {
-            $toast.success('Observacao inserida com sucesso!');
-            await loadObservacoes();
-            observacao.value = {} as ObservacaoInterface;
-            observacao.value.user_id = props.usuario.id;
-            observacao.value.data = new moment().format('YYYY-MM-DD');
 
-        })
-        .catch(error => {
-            $toast.error(error.response.data.message);
-        });
-    LoaderStore.showLoader = false;
-}
 watch(helperStore.refreshObservacao,()=>{
     if(helperStore.refreshObservacao){
         loadObservacoes();
@@ -124,40 +106,7 @@ watchEffect(async () => {
                         :cols="PermissionStore.hasPermission(PermissionEnum.LISTAR_OBSERVACAO) ? 6 : 12"
                         v-if="PermissionStore.hasPermission(PermissionEnum.INSERIR_OBSERVACAO)"
                     >
-                        <v-form validate-on="blur" @submit.prevent="saveObservacao">
-                            <v-row dense>
-                                <v-col cols="6" sm="12" md="6">
-                                    <v-text-field
-                                        v-model="observacao.data"
-                                        label="Data"
-                                        type="date"
-                                        size="large"
-                                        :rules="[
-                                              value => !observacao.data ? 'Informe a data' : true
-                                          ]"
-                                        required
-                                    ></v-text-field>
-                                </v-col>
-                            </v-row>
-                            <v-row dense>
-                                <v-col cols="12" sm="12" md="12">
-                                    <label for="observacao">Observação</label>
-                                    <Editor
-                                        required
-                                        :key="dialog"
-                                        licenseKey="gpl"
-                                        v-model="observacao.observacao"
-                                    />
-
-                                </v-col>
-                            </v-row>
-                            <v-row dense>
-                                <v-col cols="12" sm="12" md="12">
-                                    <v-spacer></v-spacer>
-                                    <v-btn :disabled="!observacao.data || !observacao.observacao" type="submit" color="primary" variant="flat">Salvar</v-btn>
-                                </v-col>
-                            </v-row>
-                        </v-form>
+                        <InserirObservacaoForm @close="loadObservacoes" :usuario="props.usuario" />
                     </v-col>
                 </v-row>
             </v-card-text>
