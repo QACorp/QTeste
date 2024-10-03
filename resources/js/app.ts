@@ -26,7 +26,7 @@ export const axiosApi = axios.create({
 axiosApi.interceptors.response.use(function (response) {
     return response;
 }, function (error) {
-    LoaderStore.showLoader = false;
+    LoaderStore.setHideLoader();
     return Promise.reject(error);
 });
 if(document.querySelector("meta[name='api-token']")?.getAttribute('content')){

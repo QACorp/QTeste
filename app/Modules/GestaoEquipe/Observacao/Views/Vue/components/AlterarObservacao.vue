@@ -18,19 +18,19 @@ const dialog = ref<boolean>(false);
 const observacao = ref<ObservacaoInterface>(props.observacao);
 observacao.value.observacao = props.observacao.descricao ?? props.observacao.observacao;
 const alterarObservacao = () => {
-    LoaderStore.showLoader = true;
+    LoaderStore.setShowLoader();
     axiosApi.patch(`/observacao/${props.observacao.id}?idEquipe=${getIdEquipe()}`, observacao.value)
         .then(response => {
             dialog.value = false;
             $toast.success('Observacao alterada com sucesso!',{
                 duration: 5000
             });
-            LoaderStore.showLoader = false;
+            LoaderStore.setHideLoader();
             helperStore.refreshObservacao = true;
             emit('close');
         })
         .catch(error => {
-            LoaderStore.showLoader = false;
+            LoaderStore.setHideLoader();
             $toast.error(error.response.data.message);
         })
 }

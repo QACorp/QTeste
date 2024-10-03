@@ -24,12 +24,12 @@ const props = defineProps({
 watch(dialog, async () => {
 
     if(dialog.value){
-        LoaderStore.showLoader = true;
+        LoaderStore.setShowLoader();
         axiosApi.get(`checkpoint/ultimo/${props.usuario.id}?idEquipe=${getIdEquipe()}`)
             .then(response => {
                 lastCheckPoint.value = response.data;
             });
-        LoaderStore.showLoader = false;
+        LoaderStore.setHideLoader();
 
     }
 });

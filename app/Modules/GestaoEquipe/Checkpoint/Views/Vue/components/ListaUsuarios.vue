@@ -19,9 +19,7 @@ const props = defineProps({
         default: false
     }
 });
-onBeforeMount(() => {
-    helperStore.insertCheckpoint = props.canInsert;
-})
+
 const itemsPerPage = ref(10);
 const search = ref('');
 const loading = ref<boolean>(true);
@@ -39,14 +37,14 @@ const listUsuario = ref<UsuarioInterface[]>();
 const url = `${import.meta.env.VITE_APP_URL}/gestao-equipe/`;
 const loadItems = async (options: any) => {
     loading.value = true;
-    LoaderStore.showLoader = true;
+    LoaderStore.setShowLoader();
     await axiosApi.get(`checkpoint/usuarios?idEquipe=${getIdEquipe()}&page=${options.page}&limit=${options.itemsPerPage}&search=${options.search}`)
         .then(response => {
             listUsuario.value = response.data.data;
             loading.value = false;
             totalItems.value = response.data.meta.total;
         });
-    LoaderStore.showLoader = false;
+    LoaderStore.setHideLoader();
 };
 </script>
 

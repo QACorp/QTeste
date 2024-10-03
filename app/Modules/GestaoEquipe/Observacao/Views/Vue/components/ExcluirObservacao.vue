@@ -15,20 +15,20 @@ const props = defineProps({
 const emit = defineEmits(['close']);
 const dialog = ref<boolean>(false);
 const deleteObservacao = () => {
-    LoaderStore.showLoader = true;
+    LoaderStore.setShowLoader();
     axiosApi.delete(`/observacao/${props.observacaoId}?idEquipe=${getIdEquipe()}`)
         .then(response => {
             dialog.value = false;
             $toast.success('Observacao removida com sucesso!',{
                 duration: 5000
             });
-            LoaderStore.showLoader = false;
+            LoaderStore.setHideLoader();
             helperStore.refreshObservacao = true;
             emit('close');
         })
         .catch(error => {
             dialog.value = false;
-            LoaderStore.showLoader = false;
+            LoaderStore.setHideLoader();
             $toast.error(error.response.data.message);
         })
 }

@@ -23,7 +23,7 @@ const observacao = ref<ObservacaoInterface>({} as ObservacaoInterface);
 observacao.value.user_id = props.usuario.id
 observacao.value.data = new moment().format('YYYY-MM-DD');
 const saveObservacao = async () => {
-  LoaderStore.showLoader = true;
+  LoaderStore.setShowLoader();
   await axiosApi.post(`observacao/${props.usuario.id}?idEquipe=${getIdEquipe()}`, observacao.value)
       .then(async response => {
         $toast.success('Observacao inserida com sucesso!');
@@ -36,7 +36,7 @@ const saveObservacao = async () => {
       .catch(error => {
         $toast.error(error.response.data.message);
       });
-  LoaderStore.showLoader = false;
+  LoaderStore.setHideLoader();
 }
 </script>
 

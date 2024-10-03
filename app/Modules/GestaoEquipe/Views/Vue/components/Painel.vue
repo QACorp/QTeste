@@ -47,9 +47,9 @@ const refreshKey = () => {
         </v-col>
         <v-col cols="12" md="6" lg="6" >
             <v-row>
-                <v-col cols="12">
-                    <v-card>
-                        <v-card-text>
+                <v-col cols="12" >
+                    <v-card >
+                        <v-card-text class="pb-0">
                             <v-switch
                                 inset
                                 :label="`Inserir ${opcao}`"
@@ -57,7 +57,7 @@ const refreshKey = () => {
                                 label-checked="Observação"
                                 label-unchecked="Checkpoint"
                                 false-value="checkpoint"
-                                true-value="observacao"
+                                true-value="observação"
                             ></v-switch>
                         </v-card-text>
                     </v-card>

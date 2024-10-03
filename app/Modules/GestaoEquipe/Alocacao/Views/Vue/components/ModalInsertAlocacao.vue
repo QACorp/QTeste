@@ -26,11 +26,11 @@ const findUsers = () => {
     alocacao.value.user = null;
     alocacao.value.user_id = null;
     usuarios.value = null;
-    LoaderStore.showLoader = true;
+    LoaderStore.setShowLoader();
     axiosApi.get(`alocacao/usuarios-disponiveis/${alocacao.value.inicio}/${alocacao.value.termino}/?idEquipe=${getIdEquipe()}`)
         .then(response => {
             usuarios.value = response.data;
-            LoaderStore.showLoader = false;
+            LoaderStore.setHideLoader();
         })
         .catch(error => {
             console.log(error)
@@ -46,10 +46,10 @@ const saveAlocacao = async (submitEventPromise: SubmitEventPromise) => {
     const {valid, errors} = await submitEventPromise;
     if (!valid) return;
     alocacao.value.equipe_id = parseInt(getIdEquipe());
-    LoaderStore.showLoader = true;
+    LoaderStore.setShowLoader();
     axiosApi.post(`alocacao`, alocacao.value)
         .then(response => {
-            LoaderStore.showLoader = false;
+            LoaderStore.setHideLoader();
             $toast.success('Alocação inserida com sucesso!', {
                 duration: 5000
             });
@@ -66,11 +66,11 @@ const saveAlocacao = async (submitEventPromise: SubmitEventPromise) => {
 }
 
 const findProjetos = () => {
-    LoaderStore.showLoader = true;
+    LoaderStore.setShowLoader();
     axiosApi.get(`alocacao/projetos-disponiveis/${alocacao.value.inicio}/${alocacao.value.termino}/?idEquipe=${getIdEquipe()}`)
         .then(response => {
             projetos.value = response.data;
-            LoaderStore.showLoader = false;
+            LoaderStore.setHideLoader();
         })
         .catch(error => {
             console.log(error)

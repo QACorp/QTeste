@@ -41,19 +41,19 @@ retrabalho.value.data = retrabalho.value.data ? retrabalho.value.data : moment()
 
 const $toast = useToast();
 const findCriticidades = async () => {
-    LoaderStore.showLoader = true;
+    LoaderStore.setShowLoader();
     axiosApi.get(`/retrabalhos/criticidade`).then((res) => {
         listaCriticidades.value = res.data.map((item) => {
             return {name: item, value: item}
         });
     });
-    LoaderStore.showLoader = false;
+    LoaderStore.setHideLoader();
 }
 
 
 
 const populaTiposRetrabalho = async () => {
-    LoaderStore.showLoader = true;
+    LoaderStore.setShowLoader();
     await axios.get(import.meta.env.VITE_APP_URL+'/retrabalhos/consultas/tipos').then((res) => {
         listaTiposRetrabalho.value = res.data;
         if (retrabalho.value.tipo_retrabalho_id) {
@@ -61,10 +61,10 @@ const populaTiposRetrabalho = async () => {
                 listaTiposRetrabalho.value.find((item: TipoRetrabalhoInterface) => item.id == retrabalho.value.tipo_retrabalho_id);
         }
     });
-    LoaderStore.showLoader = false;
+    LoaderStore.setHideLoader();
 }
 const populaUsuarios = async () => {
-    LoaderStore.showLoader = true;
+    LoaderStore.setShowLoader();
     await axios.get(import.meta.env.VITE_APP_URL+'/retrabalhos/consultas/usuarios').then((res) => {
         listaUsuarios.value = res.data;
         if (retrabalho.value.usuario_id) {
@@ -72,11 +72,11 @@ const populaUsuarios = async () => {
                 listaUsuarios.value.find((item: UsuarioInterface) => item.id == retrabalho.value.usuario_id);
         }
     });
-    LoaderStore.showLoader = false;
+    LoaderStore.setHideLoader();
 }
 
 const populaAplicacoes = async () => {
-    LoaderStore.showLoader = true;
+    LoaderStore.setShowLoader();
     await axios.get(import.meta.env.VITE_APP_URL+'/projetos/consultas/aplicacoes').then((res) => {
         listaAplicacoes.value = res.data;
         if (retrabalho.value.aplicacao_id) {
@@ -84,11 +84,11 @@ const populaAplicacoes = async () => {
                 listaAplicacoes.value.find((item: AplicacaoInterface) => item.id == retrabalho.value.aplicacao_id);
         }
     });
-    LoaderStore.showLoader = false;
+    LoaderStore.setHideLoader();
 }
 
 const populaProjetos = async (idAplicacao:number) => {
-    LoaderStore.showLoader = true;
+    LoaderStore.setShowLoader();
     await axios.get(import.meta.env.VITE_APP_URL+`/projetos/consultas/aplicacoes/${idAplicacao}/projetos`).then((res) => {
         listaProjetos.value = res.data;
         if (retrabalho.value.projeto_id) {
@@ -96,7 +96,7 @@ const populaProjetos = async (idAplicacao:number) => {
                 listaProjetos.value.find((item: ProjetoInterface) => item.id == retrabalho.value.projeto_id);
         }
     });
-    LoaderStore.showLoader = false;
+    LoaderStore.setHideLoader();
 }
 
 const populaCasosTeste = async (term:string) => {
@@ -125,7 +125,7 @@ const populaCasosTeste = async (term:string) => {
     });
 }
 const populaCasosTestePorId = async (idCasoTeste:number) => {
-    LoaderStore.showLoader = true;
+    LoaderStore.setShowLoader();
     await axios.get(import.meta.env.VITE_APP_URL+`/projetos/consultas/casos-testes/${idCasoTeste}`).then((res) => {
         listaCasosTeste.value = [res.data];
         listaCasosTeste.value = listaCasosTeste.value.map((item: any) => {
@@ -148,10 +148,10 @@ const populaCasosTestePorId = async (idCasoTeste:number) => {
             retrabalho.value.caso_teste = casoTeste.value
         }
     });
-    LoaderStore.showLoader = false;
+    LoaderStore.setHideLoader();
 }
 const findRetrabalho = async () => {
-    LoaderStore.showLoader = true;
+    LoaderStore.setShowLoader();
     await axiosApi.get(`/retrabalhos/${props.idRetrabalho}`)
         .then((res) => {
             retrabalho.value = res.data;
@@ -162,7 +162,7 @@ const findRetrabalho = async () => {
             }
         });
 
-    LoaderStore.showLoader = false;
+    LoaderStore.setHideLoader();
 }
 onMounted( async () => {
     await populaTiposRetrabalho();
@@ -195,7 +195,7 @@ const saveRetrabalho = async (submitEventPromise: SubmitEventPromise) => {
     retrabalho.value.cenario_caso_teste = retrabalho.value.caso_teste.cenario_caso_teste;
     retrabalho.value.teste_caso_teste = retrabalho.value.caso_teste.teste_caso_teste;
     retrabalho.value.resultado_esperado_caso_teste = retrabalho.value.caso_teste.resultado_esperado_caso_teste;
-    LoaderStore.showLoader = true;
+    LoaderStore.setShowLoader();
     if(!retrabalho.value.id) {
         await axiosApi.post(`/retrabalhos/?idEquipe=${getIdEquipe()}`, retrabalho.value)
             .then((res) => {
@@ -215,7 +215,7 @@ const saveRetrabalho = async (submitEventPromise: SubmitEventPromise) => {
                 $toast.error(error.response.data.message);
             })
     }
-    LoaderStore.showLoader = false;
+    LoaderStore.setHideLoader();
 
 
 }

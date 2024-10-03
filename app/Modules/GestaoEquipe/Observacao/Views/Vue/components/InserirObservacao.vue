@@ -29,7 +29,7 @@ const alocacoes = ref<AlocacaoInterface>([]);
 watch(dialog, async () => {
 
   if(dialog.value){
-    LoaderStore.showLoader = true;
+    LoaderStore.setShowLoader();
     checkpoint.value = {} as CheckpointInterface;
     checkpoint.value.data = moment().format('YYYY-MM-DD');
     checkpoint.value.user_id = props.usuario.id;
@@ -46,7 +46,7 @@ watch(dialog, async () => {
           console.log(error)
         });
     await findAlocacao(checkpoint.value.data);
-    LoaderStore.showLoader = false;
+    LoaderStore.setHideLoader();
 
   }
 });
@@ -68,7 +68,7 @@ const updateAlocacao = () => {
 
 const findAlocacao = async (data: string) => {
   if(!data) return;
-  LoaderStore.showLoader = true;
+  LoaderStore.setShowLoader();
   checkpoint.value.alocacao = null;
   await axiosApi.get(`checkpoint/alocacao/usuario/${props.usuario.id}/data/${data}?idEquipe=${getIdEquipe()}`)
       .then(response => {
@@ -77,10 +77,10 @@ const findAlocacao = async (data: string) => {
       .catch(error => {
         console.log(error)
       })
-  LoaderStore.showLoader = false;
+  LoaderStore.setHideLoader();
 }
 const saveCheckpoint = async () => {
-  LoaderStore.showLoader = true;
+  LoaderStore.setShowLoader();
   await axiosApi.post(`checkpoint/?idEquipe=${getIdEquipe()}`, checkpoint.value)
       .then(response => {
         $toast.success('Checkpoint inserido com sucesso!', {
@@ -94,7 +94,7 @@ const saveCheckpoint = async () => {
           duration: 5000
         });
       })
-    LoaderStore.showLoader = false;
+    LoaderStore.setHideLoader();
     emit('close');
 }
 </script>

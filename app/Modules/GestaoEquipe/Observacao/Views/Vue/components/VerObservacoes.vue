@@ -24,7 +24,7 @@ const $toast = useToast();
 const dialog = ref(false);
 const observacoes = ref<ObservacaoInterface[]>([]);
 const loadObservacoes = async () => {
-    LoaderStore.showLoader = true;
+    LoaderStore.setShowLoader();
     await axiosApi.get(`observacao/${props.usuario.id}?idEquipe=${getIdEquipe()}`)
         .then(response => {
             observacoes.value = response.data;
@@ -32,7 +32,7 @@ const loadObservacoes = async () => {
         .catch(error => {
             $toast.error(error.response.data.message);
         });
-    LoaderStore.showLoader = false;
+    LoaderStore.setHideLoader();
 }
 
 watch(helperStore.refreshObservacao,()=>{

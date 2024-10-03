@@ -19,7 +19,7 @@ const props = defineProps({
 const $toast = useToast();
 const observacoesCheckpoints = ref<CheckpointObservacaoInterface[]>([]);
 const loadObservacoesCheckpoints = async () => {
-    LoaderStore.showLoader = true;
+    LoaderStore.setShowLoader();
     await axiosApi.get(`gestao-equipe/${props.idUsuario}/registros?idEquipe=${getIdEquipe()}`)
         .then(response => {
             observacoesCheckpoints.value = response.data;
@@ -27,7 +27,7 @@ const loadObservacoesCheckpoints = async () => {
         .catch(error => {
             $toast.error(error.response.data.message);
         });
-    LoaderStore.showLoader = false;
+    LoaderStore.setHideLoader();
 }
 onMounted(async () => {
     await loadObservacoesCheckpoints()
