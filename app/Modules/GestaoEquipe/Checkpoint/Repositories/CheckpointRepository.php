@@ -5,7 +5,9 @@ namespace App\Modules\GestaoEquipe\Checkpoint\Repositories;
 use App\Modules\GestaoEquipe\Checkpoint\Contracts\Respositories\CheckpointRepositoryContract;
 use App\Modules\GestaoEquipe\Checkpoint\DTOs\CheckpointDTO;
 use App\Modules\GestaoEquipe\Checkpoint\Models\Checkpoint;
-use Illuminate\Support\Collection;
+use App\Modules\GestaoEquipe\Helpers\QueryDataHelper;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Spatie\LaravelData\DataCollection;
 
 class CheckpointRepository implements CheckpointRepositoryContract
@@ -61,16 +63,26 @@ class CheckpointRepository implements CheckpointRepositoryContract
             ->get();
         return CheckpointDTO::collection($checkpoint);
     }
-
-    public function listarCheckpointPorUsuario(int $idEquipe, int $idUsuario): DataCollection
+    private function getCheckpointPorUsuarioBuilder(int $idEquipe, int $idUsuario): Builder
     {
-        $checkpoint = Checkpoint::select('checkpoints.*')
+        return Checkpoint::select('checkpoints.*')
             ->where('equipe_id', $idEquipe)
             ->where('user_id', $idUsuario)
             ->orderBy('data', 'desc')
             ->orderBy('id', 'desc')
-            ->with('projeto','user', 'criador', 'projeto.aplicacao', 'alocacao', 'tarefa')
-            ->get();
+            ->with('projeto','user', 'criador', 'projeto.aplicacao', 'alocacao', 'tarefa');
+    }
+    public function listarCheckpointPorUsuario(int $idEquipe, int $idUsuario): DataCollection
+    {
+        $checkpoint = $this->getCheckpointPorUsuarioBuilder($idEquipe, $idUsuario)->get();
+        return CheckpointDTO::collection($checkpoint);
+    }
+
+    public function listarCheckpointPorUsuarioEData(int $idEquipe, int $idUsuario, ?Carbon $inicio, ?Carbon $termino): DataCollection
+    {
+        $builder = $this->getCheckpointPorUsuarioBuilder($idEquipe, $idUsuario);
+        QueryDataHelper::addFilterInicioTermino($builder, $inicio, $termino);
+        $checkpoint = $builder->get();
         return CheckpointDTO::collection($checkpoint);
     }
 }

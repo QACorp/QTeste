@@ -10,7 +10,9 @@ use App\Modules\GestaoEquipe\Observacao\DTOs\ObservacaoDTO;
 use App\Modules\GestaoEquipe\Observacao\Enums\PermissionEnum;
 use App\System\Contracts\Business\EquipeBusinessContract;
 use App\System\Exceptions\NotFoundException;
+use App\System\Exceptions\UnauthorizedException;
 use App\System\Impl\BusinessAbstract;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Spatie\LaravelData\DataCollection;
@@ -81,7 +83,7 @@ class ObservacaoBusiness extends BusinessAbstract implements ObservacaoBusinessC
         return $this->observacaoRepository->deletar($id, $idEquipe);
     }
 
-    public function buscarObservacaoComCheckpoint(int $idUsuario, int $idEquipe): DataCollection
+    public function buscarObservacaoComCheckpoint(int $idUsuario, int $idEquipe, ?Carbon $inicio = null, ?Carbon $termino = null): DataCollection
     {
         if(!$this->equipeBusiness->hasEquipe($idEquipe, Auth::user()->getAuthIdentifier())){
             throw new NotFoundException('Equipe não encontrada');
@@ -89,23 +91,23 @@ class ObservacaoBusiness extends BusinessAbstract implements ObservacaoBusinessC
         if($this->canDo(PermissionEnum::LISTAR_OBSERVACAO->value) &&
             $this->canDo(CheckpointPermissionEnum::VER_CHECKPOINT->value))
         {
-            return $this->observacaoRepository->buscarObservacaoComCheckpoint($idUsuario, $idEquipe);
+            return $this->observacaoRepository->buscarObservacaoComCheckpoint($idUsuario, $idEquipe, $inicio, $termino);
         }
         if($this->canDo(PermissionEnum::LISTAR_OBSERVACAO->value)){
             return CheckpointObservacaoDTO::collection(
                 $this->gerarCheckpointObservacaoPorObservacao(
-                    $this->observacaoRepository->listaPorIdUsuario($idUsuario, $idEquipe, Auth::user()->getAuthIdentifier())
+                    $this->observacaoRepository->listaPorIdEData($idUsuario, $idEquipe, Auth::user()->getAuthIdentifier(), $inicio, $termino)
                 )
 
             );
         }
         if($this->canDo(CheckpointPermissionEnum::VER_CHECKPOINT->value)){
             return CheckpointObservacaoDTO::collection(
-                $this->gerarCheckpointObservacaoPorCheckpoint($this->checkpointBusiness->listarCheckpointsPorUsuario($idEquipe, $idUsuario))
+                $this->gerarCheckpointObservacaoPorCheckpoint($this->checkpointBusiness->listarCheckpointPorUsuarioEData($idEquipe, $idUsuario, $inicio, $termino))
             );
         }
+        throw new UnauthorizedException('Sem permissão para visualizar observações / Checkpoint');
 
-        return CheckpointObservacaoDTO::collection(Collection::empty());
     }
     private function gerarCheckpointObservacaoPorObservacao(DataCollection $collection): DataCollection
     {

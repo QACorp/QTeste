@@ -17,10 +17,11 @@ use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnauthorizedException;
 use App\System\Impl\BusinessAbstract;
 use App\System\Traits\TransactionDatabase;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Spatie\LaravelData\DataCollection;
 use Spatie\LaravelData\PaginatedDataCollection;
-use Illuminate\Support\Carbon;
+
 class CheckpointBusiness extends BusinessAbstract implements CheckpointBusinessContract
 {
     use TransactionDatabase;
@@ -145,5 +146,11 @@ class CheckpointBusiness extends BusinessAbstract implements CheckpointBusinessC
     {
         $this->can(PermissionEnum::VER_CHECKPOINT->value, 'api');
         return $this->checkpointRepository->listarCheckpointPorUsuario($idEquipe, $idUsuario);
+    }
+
+    public function listarCheckpointPorUsuarioEData(int $idEquipe, int $idUsuario, ?Carbon $inicio, ?Carbon $termino): DataCollection
+    {
+        $this->can(PermissionEnum::VER_CHECKPOINT->value, 'api');
+        return $this->checkpointRepository->listarCheckpointPorUsuarioEData($idEquipe, $idUsuario, $inicio, $termino);
     }
 }
