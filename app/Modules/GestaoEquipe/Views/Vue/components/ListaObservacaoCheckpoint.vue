@@ -9,6 +9,7 @@ import CheckpointObservacaoInterface from "../Interfaces/CheckpointObservacao.in
 import ObservacaoCheckpointTimelineItem from "./ObservacaoCheckpointTimelineItem.vue";
 import {PermissionEnum as PermissionEnumCheckpoint} from "../../../Checkpoint/Views/Vue/Enums/PermissionEnum";
 import {onMounted, ref} from "vue";
+import moment from "moment";
 import {useToast} from "vue-toast-notification";
 const props = defineProps({
     idUsuario: {
@@ -18,9 +19,19 @@ const props = defineProps({
 });
 const $toast = useToast();
 const observacoesCheckpoints = ref<CheckpointObservacaoInterface[]>([]);
+const inicio = ref<string>(moment().startOf('month').format('YYYY-MM-DD'));
+const termino = ref<string>(moment().endOf('month').format('YYYY-MM-DD'));
+
 const loadObservacoesCheckpoints = async () => {
     LoaderStore.setShowLoader();
-    await axiosApi.get(`gestao-equipe/${props.idUsuario}/registros?idEquipe=${getIdEquipe()}`)
+    let url = `gestao-equipe/${props.idUsuario}/registros?idEquipe=${getIdEquipe()}`;
+    if(inicio.value){
+        url += `&inicio=${inicio.value}`;
+    }
+    if(termino.value){
+        url += `&termino=${termino.value}`;
+    }
+    await axiosApi.get(url)
         .then(response => {
             observacoesCheckpoints.value = response.data;
         })
@@ -36,17 +47,38 @@ onMounted(async () => {
 
 <template>
     <v-card >
-        <v-toolbar title="Histórico">
-<!--            <v-btn-->
-<!--                title="Fechar"-->
-<!--                icon="mdi-close"-->
-<!--                @click="dialog = false"-->
-<!--            ></v-btn>-->
-        </v-toolbar>
+
         <v-card-text
             class="overflow-y-auto"
             style="height: 75vh;"
         >
+            <v-row class="p-1">
+                <v-col cols="12" md="5">
+                    <v-text-field
+                        type="date"
+                        clearable
+                        on-click:clear="termino = null"
+                        v-model="inicio"
+                        label="Início"></v-text-field>
+                </v-col>
+                <v-col cols="12" md="5">
+                    <v-text-field
+                        type="date"
+                        clearable
+                        on-click:clear="termino = null"
+                        v-model="termino"
+                        label="Término"></v-text-field>
+                </v-col>
+                <v-col cols="12" md="2">
+                    <v-btn
+                        @click="loadObservacoesCheckpoints()"
+                        density="default"
+                        variant="tonal"
+                        color="primary"
+                        icon="mdi-find-replace"
+                    ></v-btn>
+                </v-col>
+            </v-row>
             <v-row>
                 <v-col v-if="
                         PermissionStore.hasPermission(PermissionEnum.LISTAR_OBSERVACAO) ||
