@@ -26,10 +26,24 @@ const emit = defineEmits(['delete', 'alterar']);
             variant="tonal"
             :value="true"
         >
+
             <v-row class="mb-0">
                 <v-col cols="12" class="mb-0 pb-0" >
-                    <span v-if="observacaoCheckpoint.criador != null" class="font-italic text-xs text-black"> Por {{ observacaoCheckpoint.criador.name }}</span>
+                    <span v-if="observacaoCheckpoint.criador !== null" class="font-italic text-xs text-black"> Por {{ observacaoCheckpoint.criador.name }}</span>
                     <v-skeleton-loader v-else width="100" height="10"></v-skeleton-loader>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col cols="4" class="mt-0 py-0" v-if="observacaoCheckpoint.tarefa">
+                    <span class="font-italic text-xs text-black"  :title="observacaoCheckpoint.tarefa.titulo">  {{ observacaoCheckpoint.tarefa.tarefa }}</span>
+                </v-col>
+                <v-col cols="8" class="mt-0 py-0" v-if="observacaoCheckpoint.tarefa">
+                    <span class="font-italic text-xs text-black"  :title="observacaoCheckpoint.tarefa.titulo">  {{ observacaoCheckpoint.tarefa.titulo }}</span>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col cols="12" class="mt-0 pt-0" v-if="observacaoCheckpoint.projeto">
+                    <span class="font-italic text-xs text-black" title="Projeto"> {{ observacaoCheckpoint.projeto.nome }}</span>
                 </v-col>
             </v-row>
             <v-row class="p-0 mt-0">

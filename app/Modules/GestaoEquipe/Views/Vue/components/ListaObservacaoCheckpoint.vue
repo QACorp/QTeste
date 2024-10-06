@@ -8,7 +8,7 @@ import {getIdEquipe} from "../../../../../../resources/js/APIUtils/BaseAPI";
 import CheckpointObservacaoInterface from "../Interfaces/CheckpointObservacao.interface";
 import ObservacaoCheckpointTimelineItem from "./ObservacaoCheckpointTimelineItem.vue";
 import {PermissionEnum as PermissionEnumCheckpoint} from "../../../Checkpoint/Views/Vue/Enums/PermissionEnum";
-import {onMounted, ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 import moment from "moment";
 import {useToast} from "vue-toast-notification";
 const props = defineProps({
@@ -21,6 +21,7 @@ const $toast = useToast();
 const observacoesCheckpoints = ref<CheckpointObservacaoInterface[]>([]);
 const inicio = ref<string>(moment().startOf('month').format('YYYY-MM-DD'));
 const termino = ref<string>(moment().endOf('month').format('YYYY-MM-DD'));
+const filtroTarefa = ref<string>('');
 
 const loadObservacoesCheckpoints = async () => {
     LoaderStore.setShowLoader();
