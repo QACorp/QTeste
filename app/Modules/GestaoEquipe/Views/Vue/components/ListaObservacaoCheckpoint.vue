@@ -21,10 +21,10 @@ const $toast = useToast();
 const observacoesCheckpoints = ref<CheckpointObservacaoInterface[]>([]);
 const inicio = ref<string>(moment().startOf('month').format('YYYY-MM-DD'));
 const termino = ref<string>(moment().endOf('month').format('YYYY-MM-DD'));
-const filtroTarefa = ref<string>('');
+
 
 const loadObservacoesCheckpoints = async () => {
-    LoaderStore.setShowLoader();
+    //LoaderStore.setShowLoader();
     let url = `gestao-equipe/${props.idUsuario}/registros?idEquipe=${getIdEquipe()}`;
     if(inicio.value){
         url += `&inicio=${inicio.value}`;
@@ -39,7 +39,7 @@ const loadObservacoesCheckpoints = async () => {
         .catch(error => {
             $toast.error(error.response.data.message);
         });
-    LoaderStore.setHideLoader();
+    //LoaderStore.setHideLoader();
 }
 onMounted(async () => {
     await loadObservacoesCheckpoints()

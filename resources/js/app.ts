@@ -12,21 +12,58 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import '@mdi/font/css/materialdesignicons.css'
 import axios from "axios";
+
 import {LoaderStore} from "@/GlobalStore/LoaderStore";
 // import {PermissionStore} from "@/GlobalStore/PermissionStore";
 
 //axios.defaults.headers.common['Authorization'] = 'Bearer ' + document.querySelector("meta[name='api-token']").getAttribute('content');
-export const axiosApi = axios.create({
+const AxiosApiConfig = {
     headers: {
         'Authorization': 'Bearer ' + document.querySelector("meta[name='api-token']")?.getAttribute('content')
     },
     baseURL: import.meta.env.VITE_API_URL
+}
+export const axiosApi = axios.create(AxiosApiConfig);
+axiosApi.interceptors.request.use(function (config) {
+    LoaderStore.setShowLoader();
+    return config;
 });
-
 axiosApi.interceptors.response.use(function (response) {
+    LoaderStore.setHideLoader();
     return response;
 }, function (error) {
     LoaderStore.setHideLoader();
+    return Promise.reject(error);
+});
+const axiosApiWithoutLoader = axios.create(AxiosApiConfig);
+axiosApiWithoutLoader.interceptors.request.use(function (config) {
+    return config;
+});
+axiosApiWithoutLoader.interceptors.response.use(function (response) {
+    return response;
+}, function (error) {
+    return Promise.reject(error);
+});
+
+export const axiosWithoutLoader = axios.create();
+axiosWithoutLoader.interceptors.request.use(function (config) {
+    return config;
+});
+
+axios.interceptors.request.use(function (config) {
+    LoaderStore.setShowLoader();
+    return config;
+});
+axios.interceptors.response.use(function (response) {
+    LoaderStore.setHideLoader();
+    return response;
+}, function (error) {
+    LoaderStore.setHideLoader();
+    return Promise.reject(error);
+});
+axiosWithoutLoader.interceptors.response.use(function (response) {
+    return response;
+}, function (error) {
     return Promise.reject(error);
 });
 if(document.querySelector("meta[name='api-token']")?.getAttribute('content')){
@@ -39,8 +76,6 @@ if(document.querySelector("meta[name='api-token']")?.getAttribute('content')){
             console.log(error);
         });
 }
-
-
 const vuetify = createVuetify({
     components,
     directives,

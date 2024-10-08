@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {onMounted, ref, watchEffect} from "vue";
 import {TipoRetrabalhoInterface} from "../Interfaces/TipoRetrabalho.interface";
-import axios from "axios";
 import {RetrabalhoInterface} from "../Interfaces/Retrabalho.interface";
 import {AplicacaoInterface} from "../Interfaces/Aplicacao.interface";
 import {ProjetoInterface} from "../Interfaces/Projeto.interface";
@@ -12,10 +11,11 @@ import {CasoTesteInterface} from "../Interfaces/CasoTeste.interface";
 import {TipoRetrabalhoEnum} from "../Enums/TipoRetrabalho.enum";
 import {LoaderStore} from "../../../../../../resources/js/GlobalStore/LoaderStore";
 import TFieldTarefas from "../../../../Projetos/Views/Vue/components/TFieldTarefas.vue";
-import {axiosApi} from "../../../../../../resources/js/app";
+import {axiosApi, axiosWithoutLoader} from "../../../../../../resources/js/app";
 import {getIdEquipe} from "../../../../../../resources/js/APIUtils/BaseAPI";
 import {useToast} from "vue-toast-notification";
 import {SubmitEventPromise} from "vuetify";
+
 
 const props = defineProps({
     idRetrabalho: {
@@ -41,19 +41,19 @@ retrabalho.value.data = retrabalho.value.data ? retrabalho.value.data : moment()
 
 const $toast = useToast();
 const findCriticidades = async () => {
-    LoaderStore.setShowLoader();
+   // LoaderStore.setShowLoader();
     axiosApi.get(`/retrabalhos/criticidade`).then((res) => {
         listaCriticidades.value = res.data.map((item) => {
             return {name: item, value: item}
         });
     });
-    LoaderStore.setHideLoader();
+    //LoaderStore.setHideLoader();
 }
 
 
 
 const populaTiposRetrabalho = async () => {
-    LoaderStore.setShowLoader();
+  //  LoaderStore.setShowLoader();
     await axios.get(import.meta.env.VITE_APP_URL+'/retrabalhos/consultas/tipos').then((res) => {
         listaTiposRetrabalho.value = res.data;
         if (retrabalho.value.tipo_retrabalho_id) {
@@ -61,10 +61,10 @@ const populaTiposRetrabalho = async () => {
                 listaTiposRetrabalho.value.find((item: TipoRetrabalhoInterface) => item.id == retrabalho.value.tipo_retrabalho_id);
         }
     });
-    LoaderStore.setHideLoader();
+   // LoaderStore.setHideLoader();
 }
 const populaUsuarios = async () => {
-    LoaderStore.setShowLoader();
+  //  LoaderStore.setShowLoader();
     await axios.get(import.meta.env.VITE_APP_URL+'/retrabalhos/consultas/usuarios').then((res) => {
         listaUsuarios.value = res.data;
         if (retrabalho.value.usuario_id) {
@@ -72,11 +72,11 @@ const populaUsuarios = async () => {
                 listaUsuarios.value.find((item: UsuarioInterface) => item.id == retrabalho.value.usuario_id);
         }
     });
-    LoaderStore.setHideLoader();
+  //  LoaderStore.setHideLoader();
 }
 
 const populaAplicacoes = async () => {
-    LoaderStore.setShowLoader();
+ //   LoaderStore.setShowLoader();
     await axios.get(import.meta.env.VITE_APP_URL+'/projetos/consultas/aplicacoes').then((res) => {
         listaAplicacoes.value = res.data;
         if (retrabalho.value.aplicacao_id) {
@@ -84,11 +84,11 @@ const populaAplicacoes = async () => {
                 listaAplicacoes.value.find((item: AplicacaoInterface) => item.id == retrabalho.value.aplicacao_id);
         }
     });
-    LoaderStore.setHideLoader();
+ //   LoaderStore.setHideLoader();
 }
 
 const populaProjetos = async (idAplicacao:number) => {
-    LoaderStore.setShowLoader();
+ //   LoaderStore.setShowLoader();
     await axios.get(import.meta.env.VITE_APP_URL+`/projetos/consultas/aplicacoes/${idAplicacao}/projetos`).then((res) => {
         listaProjetos.value = res.data;
         if (retrabalho.value.projeto_id) {
@@ -96,14 +96,14 @@ const populaProjetos = async (idAplicacao:number) => {
                 listaProjetos.value.find((item: ProjetoInterface) => item.id == retrabalho.value.projeto_id);
         }
     });
-    LoaderStore.setHideLoader();
+//    LoaderStore.setHideLoader();
 }
 
 const populaCasosTeste = async (term:string) => {
     if(!term || term.length < 3) return;
 
     noDataText.value = 'Buscando...'
-    await axios.get(import.meta.env.VITE_APP_URL+`/projetos/consultas/casos-testes?term=${term}`).then((res) => {
+    await axiosWithoutLoader.get(import.meta.env.VITE_APP_URL+`/projetos/consultas/casos-testes?term=${term}`).then((res) => {
         listaCasosTeste.value = res.data;
         listaCasosTeste.value = listaCasosTeste.value.map((item: any) => {
             return {
@@ -125,7 +125,7 @@ const populaCasosTeste = async (term:string) => {
     });
 }
 const populaCasosTestePorId = async (idCasoTeste:number) => {
-    LoaderStore.setShowLoader();
+ //   LoaderStore.setShowLoader();
     await axios.get(import.meta.env.VITE_APP_URL+`/projetos/consultas/casos-testes/${idCasoTeste}`).then((res) => {
         listaCasosTeste.value = [res.data];
         listaCasosTeste.value = listaCasosTeste.value.map((item: any) => {
@@ -148,10 +148,10 @@ const populaCasosTestePorId = async (idCasoTeste:number) => {
             retrabalho.value.caso_teste = casoTeste.value
         }
     });
-    LoaderStore.setHideLoader();
+  //  LoaderStore.setHideLoader();
 }
 const findRetrabalho = async () => {
-    LoaderStore.setShowLoader();
+   // LoaderStore.setShowLoader();
     await axiosApi.get(`/retrabalhos/${props.idRetrabalho}`)
         .then((res) => {
             retrabalho.value = res.data;
@@ -162,7 +162,7 @@ const findRetrabalho = async () => {
             }
         });
 
-    LoaderStore.setHideLoader();
+  //  LoaderStore.setHideLoader();
 }
 onMounted( async () => {
     await populaTiposRetrabalho();
@@ -195,7 +195,7 @@ const saveRetrabalho = async (submitEventPromise: SubmitEventPromise) => {
     retrabalho.value.cenario_caso_teste = retrabalho.value.caso_teste.cenario_caso_teste;
     retrabalho.value.teste_caso_teste = retrabalho.value.caso_teste.teste_caso_teste;
     retrabalho.value.resultado_esperado_caso_teste = retrabalho.value.caso_teste.resultado_esperado_caso_teste;
-    LoaderStore.setShowLoader();
+   // LoaderStore.setShowLoader();
     if(!retrabalho.value.id) {
         await axiosApi.post(`/retrabalhos/?idEquipe=${getIdEquipe()}`, retrabalho.value)
             .then((res) => {
@@ -215,9 +215,7 @@ const saveRetrabalho = async (submitEventPromise: SubmitEventPromise) => {
                 $toast.error(error.response.data.message);
             })
     }
-    LoaderStore.setHideLoader();
-
-
+  //  LoaderStore.setHideLoader();
 }
 
 </script>

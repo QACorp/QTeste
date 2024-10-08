@@ -37,10 +37,10 @@ const checkpoints = ref<CheckpointInterface[]>(null)
 const $toast = useToast();
 watch(dialog, async (newValue) => {
     if(dialog){
-        LoaderStore.setShowLoader();
+        //LoaderStore.setShowLoader();
         await axiosApi.get(`alocacao/${props.alocacaoId}?idEquipe=${getIdEquipe()}`)
             .then(async response => {
-                LoaderStore.setHideLoader();
+                //LoaderStore.setHideLoader();
                 alocacao.value = response.data;
                 if(
                     alocacao.value.natureza === NaturezaEnum.PROJETO &&

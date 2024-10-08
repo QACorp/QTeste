@@ -37,14 +37,14 @@ const listUsuario = ref<UsuarioInterface[]>();
 const url = `${import.meta.env.VITE_APP_URL}/gestao-equipe/`;
 const loadItems = async (options: any) => {
     loading.value = true;
-    LoaderStore.setShowLoader();
+    //LoaderStore.setShowLoader();
     await axiosApi.get(`checkpoint/usuarios?idEquipe=${getIdEquipe()}&page=${options.page}&limit=${options.itemsPerPage}&search=${options.search}`)
         .then(response => {
             listUsuario.value = response.data.data;
             loading.value = false;
             totalItems.value = response.data.meta.total;
         });
-    LoaderStore.setHideLoader();
+    //LoaderStore.setHideLoader();
 };
 </script>
 
