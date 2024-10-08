@@ -61,7 +61,7 @@ const getUrlProjeto = () => {
 
                                [<span @click="copy()" class="cursor-pointer">
                                      <v-tooltip
-                                         v-if="alocacao.projeto_id !== null"
+                                         v-if="alocacao.tarefa_id !== null"
                                          activator="parent"
                                          location="bottom"
                                      >

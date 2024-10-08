@@ -3,7 +3,7 @@
 namespace App\Modules\GestaoEquipe\Checkpoint\Contracts\Business;
 
 use App\Modules\GestaoEquipe\Checkpoint\DTOs\CheckpointDTO;
-use Illuminate\Support\Carbon;
+use Carbon\Carbon;
 use Spatie\LaravelData\DataCollection;
 use Spatie\LaravelData\PaginatedDataCollection;
 
@@ -20,4 +20,6 @@ interface CheckpointBusinessContract
     public function listarAlocacoesPorData(int $idEquipe, int $idUsuario, Carbon $data): DataCollection;
     public function listarCheckpointPorAlocacao(int $idEquipe, $idAlocacao): DataCollection;
     public function listarCheckpointsPorUsuario(int $idEquipe, int $idUsuario): DataCollection;
+    public function listarCheckpointPorUsuarioEData(int $idEquipe, int $idUsuario, ?Carbon $inicio, ?Carbon $termino): DataCollection;
+
 }

@@ -23,7 +23,7 @@ const $toast = useToast();
 const dialog = ref(false);
 const checkpoints = ref<CheckpointInterface[]>([]);
 const loadCheckpoints = async () => {
-    LoaderStore.showLoader = true;
+    //LoaderStore.setShowLoader();
     await axiosApi.get(`checkpoint/usuario/${props.usuario.id}?idEquipe=${getIdEquipe()}`)
         .then(response => {
             checkpoints.value = response.data;
@@ -31,17 +31,15 @@ const loadCheckpoints = async () => {
         .catch(error => {
             $toast.error(error.response.data.message);
         });
-    LoaderStore.showLoader = false;
+    //LoaderStore.setHideLoader();
 }
 watchEffect(async () => {
-    await loadCheckpoints();
-
-});
-watch(dialog, async () => {
     if(dialog.value){
         await loadCheckpoints();
     }
+
 });
+
 </script>
 
 <template>

@@ -3,6 +3,7 @@
 
 use App\Modules\GestaoEquipe\Alocacao\Enums\PermissionEnum as PermissionEnumAlocacao;
 use App\Modules\GestaoEquipe\Checkpoint\Enums\PermissionEnum as PermissionEnumCheckpoint;
+use App\Modules\GestaoEquipe\Observacao\Enums\PermissionEnum as PermissionEnumObservacao;
 
 return [
     'menu' => [
@@ -23,8 +24,8 @@ return [
                 'text' => 'Equipe',
                 'route'  => 'gestao-equipe.checkpoint.index',
                 'icon'  => 'fas fa-users',
-                'active' => ['checkpoint/*'],
-                'can'   => [PermissionEnumCheckpoint::VER_CHECKPOINT->value],
+                'active' => ['checkpoint/*', 'gestao-equipe/*'],
+                'can'   => [PermissionEnumCheckpoint::VER_CHECKPOINT->value, PermissionEnumObservacao::LISTAR_OBSERVACAO->value],
             ]
         ]
     ]
