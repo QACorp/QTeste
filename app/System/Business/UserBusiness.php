@@ -55,8 +55,11 @@ class UserBusiness extends BusinessAbstract implements UserBusinessContract
     {
         return $this->canDo(PermissionEnum::LISTAR_USUARIO->value, $guard) || $this->isMe($userId);
     }
-    public function buscarPorId(int $userId): ?UserDTO
+    public function buscarPorId(int $userId, int $idEquipe): ?UserDTO
     {
+        if(!$this->equipeBusiness->hasEquipe($idEquipe, $userId)){
+            throw new NotFoundException('Equipe não enontracda');
+        }
         if(!$this->canFindUser($userId, $this->getGuard())){
             throw new UnauthorizedException(403, 'Você não tem permissão para visualizar este usuário.');
         }

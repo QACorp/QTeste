@@ -3,6 +3,7 @@
 namespace App\Modules\GestaoEquipe\Checkpoint\Contracts\Respositories;
 
 use App\Modules\GestaoEquipe\Checkpoint\DTOs\CheckpointDTO;
+use Carbon\Carbon;
 use Spatie\LaravelData\DataCollection;
 
 interface CheckpointRepositoryContract
@@ -15,4 +16,5 @@ interface CheckpointRepositoryContract
     public function getLastCheckpoint(int $idEquipe, int $idUsuario): ?CheckpointDTO;
     public function listarCheckpointPorAlocacao(int $idEquipe, int $idAlocacao): DataCollection;
     public function listarCheckpointPorUsuario(int $idEquipe, int $idUsuario): DataCollection;
+    public function listarCheckpointPorUsuarioEData(int $idEquipe, int $idUsuario, ?Carbon $inicio, ?Carbon $termino): DataCollection;
 }

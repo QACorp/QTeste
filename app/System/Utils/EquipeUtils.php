@@ -10,6 +10,7 @@ use const http\Client\Curl\AUTH_ANY;
 
 class EquipeUtils
 {
+
     public static function equipeUsuarioLogado(string $guard = 'web'):?int
     {
         $equipeUsuarioLogado = self::getEquipeUsuarioLogado($guard);
