@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import {LoaderStore} from "@/GlobalStore/LoaderStore";
-import {watchEffect, ref} from "vue";
-const dialog = ref<Number>(0);
-watchEffect(() => {
-    dialog.value = LoaderStore.showLoader;
-});
+
 </script>
 
 <template>
