@@ -23,20 +23,25 @@ const props = defineProps({
             variant="tonal"
             :value="true"
         >
-            <v-row class="mb-0">
+            <v-row class="mb-0 py-0" v-if="checkpoint.criador != null">
                 <v-col cols="12" class="mb-0 pb-0" >
-                    <span v-if="checkpoint.criador != null" class="font-italic text-xs text-black"> Por {{ checkpoint.criador.name }}</span>
-                    <v-skeleton-loader v-else width="100" height="10"></v-skeleton-loader>
+                    <span class="font-italic text-xs text-black"> Por {{ checkpoint.criador.name }}</span>
                 </v-col>
-
-                <v-col cols="2" class="mt-0" v-if="checkpoint.tarefa">
+            </v-row>
+            <v-row v-if="checkpoint.tarefa">
+                <v-col cols="4" class="mt-0 py-0">
                     <span class="font-italic text-xs text-black" :title="checkpoint.tarefa.titulo">  {{ checkpoint.tarefa.tarefa }}</span>
                 </v-col>
-                <v-col cols="10" class="mt-0" v-if="checkpoint.projeto">
+                <v-col cols="8" class="mt-0 py-0">
+                    <span class="font-italic text-xs text-black">  {{ checkpoint.tarefa.titulo }}</span>
+                </v-col>
+            </v-row>
+            <v-row v-if="checkpoint.projeto">
+                <v-col cols="12" class="mt-0 py-0" >
                     <span class="font-italic text-xs text-black" title="Projeto"> {{ checkpoint.projeto.nome }}</span>
                 </v-col>
             </v-row>
-            <v-row class="p-0 mt-0">
+            <v-row class="p-0">
                 <v-col cols="12">
                     <div v-html="checkpoint.descricao">
 
