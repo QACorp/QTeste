@@ -53,7 +53,7 @@ const updateAlocacao = () => {
         checkpoint.value.alocacao_id = checkpoint.value.alocacao.id;
         checkpoint.value.projeto_id = checkpoint.value.alocacao.projeto_id;
         checkpoint.value.tarefa = checkpoint.value.alocacao.tarefa;
-        checkpoint.value.tarefa_id = checkpoint.value.tarefa.id;
+        checkpoint.value.tarefa_id = checkpoint.value.tarefa?.id;
         checkpoint.value.projeto = projetos.value.find(projeto => projeto.id == checkpoint.value.alocacao.projeto_id);
     }else {
         checkpoint.value.alocacao_id = null;
