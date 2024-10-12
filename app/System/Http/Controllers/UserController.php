@@ -10,6 +10,7 @@ use App\System\Exceptions\UnauthorizedException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Traits\Authverification;
 use App\System\Traits\EquipeTools;
+use App\System\Utils\EquipeUtils;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Http\Request;
@@ -44,7 +45,7 @@ class UserController extends Controller
     }
     public function editar(Request $request, int $idUsuario)
     {
-        $user = $this->userBusiness->buscarPorId($idUsuario);
+        $user = $this->userBusiness->buscarPorId($idUsuario, EquipeUtils::equipeUsuarioLogado());
         $user->equipes->each(function($item, $key) use(&$idsEquipe){
             $idsEquipe[] = $item->id;
         });
@@ -62,7 +63,7 @@ class UserController extends Controller
 
             ]);
             $userDTO->equipes = $this->convertArrayEquipeInDTO($request->only('equipes'));
-            $this->userBusiness->alterar($userDTO);
+            $this->userBusiness->alterar($userDTO, EquipeUtils::equipeUsuarioLogado());
             return redirect(route('users.index'))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Usuário alterado com sucesso']]);
         }catch (NotFoundException $exception){
@@ -76,7 +77,7 @@ class UserController extends Controller
     }
     public function editarSenha(Request $request, int $idUsuario)
     {
-        $user = $this->userBusiness->buscarPorId($idUsuario);
+        $user = $this->userBusiness->buscarPorId($idUsuario, EquipeUtils::equipeUsuarioLogado());
         return view('users.alterar-senha',compact('user'));
     }
 
@@ -88,7 +89,7 @@ class UserController extends Controller
                 'id' => $idUsuario
             ]);
 
-            $this->userBusiness->alterarSenha($userDTO);
+            $this->userBusiness->alterarSenha($userDTO, EquipeUtils::equipeUsuarioLogado());
 
             return redirect(route('users.index'))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Usuário alterado com sucesso']]);
@@ -116,7 +117,7 @@ class UserController extends Controller
                 'id' => Auth::user()->getAuthIdentifier()
             ]);
 
-            $this->userBusiness->alterarSenha($userDTO);
+            $this->userBusiness->alterarSenha($userDTO, EquipeUtils::equipeUsuarioLogado());
 
             return redirect(route('users.alterar-senha-usuario-logado'))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Usuário alterado com sucesso']]);

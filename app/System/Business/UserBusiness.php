@@ -66,10 +66,10 @@ class UserBusiness extends BusinessAbstract implements UserBusinessContract
         return $this->userRepository->buscarPorId($userId);
     }
 
-    public function alterar(UserDTO $userDTO, UserPutRequest $userPutRequest = new UserPutRequest()): UserDTO
+    public function alterar(UserDTO $userDTO, int $idEquipe, UserPutRequest $userPutRequest = new UserPutRequest()): UserDTO
     {
         $this->can(PermissionEnum::ALTERAR_USUARIO->value);
-        if($this->buscarPorId($userDTO->id) == null){
+        if($this->buscarPorId($userDTO->id, $idEquipe) == null){
             throw new NotFoundException();
         }
 
@@ -96,13 +96,13 @@ class UserBusiness extends BusinessAbstract implements UserBusinessContract
     {
         return $this->canDo(PermissionEnum::ALTERAR_SENHA_USUARIO->value) || $this->isMe($userDTO->id);
     }
-    public function alterarSenha(UserDTO $userDTO, PasswordPutRequest $passwordPutRequest = new PasswordPutRequest()): UserDTO
+    public function alterarSenha(UserDTO $userDTO, int $idEquipe, PasswordPutRequest $passwordPutRequest = new PasswordPutRequest()): UserDTO
     {
         if(!$this->canAlterarSenha($userDTO)){
             throw new UnauthorizedException(403, 'Você não tem permissão para alterar a senha deste usuário.');
         }
 
-        $user = $this->buscarPorId($userDTO->id);
+        $user = $this->buscarPorId($userDTO->id, $idEquipe);
 
         if($user == null){
             throw new NotFoundException();
