@@ -17,8 +17,7 @@ trait Authverification
 
     private function loginApi(Request $request):?string
     {
-        $credentials = $request->only('email', 'password');
-        return auth('api')->attempt([...$request->only('email', 'password'), 'active' => true]);
+        return auth('api')->attempt([...$request->only('email', 'password'), 'active' => true], $request->boolean('remember'));
 
     }
     protected function getToken($token): \stdClass

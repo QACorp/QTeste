@@ -1,13 +1,12 @@
 <script setup lang="ts">
 
 import {PermissionStore} from "../../../../../../resources/js/GlobalStore/PermissionStore";
-import {PermissionEnum} from "../../../Observacao/Views/Vue/Enums/PermissionEnum";
-import {LoaderStore} from "../../../../../../resources/js/GlobalStore/LoaderStore";
+import {PermissionEnum} from "../../../Submodules/Observacao/Views/Vue/Enums/PermissionEnum";
 import {axiosApi} from "../../../../../../resources/js/app";
 import {getIdEquipe} from "../../../../../../resources/js/APIUtils/BaseAPI";
 import CheckpointObservacaoInterface from "../Interfaces/CheckpointObservacao.interface";
 import ObservacaoCheckpointTimelineItem from "./ObservacaoCheckpointTimelineItem.vue";
-import {PermissionEnum as PermissionEnumCheckpoint} from "../../../Checkpoint/Views/Vue/Enums/PermissionEnum";
+import {PermissionEnum as PermissionEnumCheckpoint} from "../../../Submodules/Checkpoint/Views/Vue/Enums/PermissionEnum";
 import {onMounted, ref, watch} from "vue";
 import moment from "moment";
 import {useToast} from "vue-toast-notification";

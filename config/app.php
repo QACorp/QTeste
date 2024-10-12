@@ -199,9 +199,9 @@ return [
         App\Modules\Projetos\Providers\ProjetosServiceProvider::class,
         App\Modules\Retrabalhos\Providers\RetrabalhosServiceProvider::class,
         App\Modules\GestaoEquipe\Providers\GestaoEquipeServiceProvider::class,
-        App\Modules\GestaoEquipe\Alocacao\Providers\AlocacaoServiceProvider::class,
-        App\Modules\GestaoEquipe\Checkpoint\Providers\CheckpointServiceProvider::class,
-        App\Modules\GestaoEquipe\Observacao\Providers\ObservacaoServiceProvider::class
+        App\Modules\GestaoEquipe\Submodules\Alocacao\Providers\AlocacaoServiceProvider::class,
+        App\Modules\GestaoEquipe\Submodules\Checkpoint\Providers\CheckpointServiceProvider::class,
+        App\Modules\GestaoEquipe\Submodules\Observacao\Providers\ObservacaoServiceProvider::class
 
 
     ],

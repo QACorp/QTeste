@@ -1,6 +1,6 @@
-import {ProjetoInterface} from "../../../Alocacao/Views/Vue/Interfaces/Projeto.interface";
-import {UsuarioInterface} from "../../../Alocacao/Views/Vue/Interfaces/Usuario.interface";
-import {TarefaInterface} from "../../../Alocacao/Views/Vue/Interfaces/Tarefa.interface";
+import {ProjetoInterface} from "../../../Submodules/Alocacao/Views/Vue/Interfaces/Projeto.interface";
+import {UsuarioInterface} from "../../../Submodules/Alocacao/Views/Vue/Interfaces/Usuario.interface";
+import {TarefaInterface} from "../../../Submodules/Alocacao/Views/Vue/Interfaces/Tarefa.interface";
 
 export default interface CheckpointObservacaoInterface {
     id: number,

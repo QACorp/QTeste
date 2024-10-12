@@ -2,9 +2,9 @@
 
 namespace App\Modules\GestaoEquipe\Controllers\API;
 
-use App\Modules\GestaoEquipe\Alocacao\Contracts\Business\AlocacaoBusinessContract;
-use App\Modules\GestaoEquipe\Checkpoint\Contracts\Business\CheckpointBusinessContract;
-use App\Modules\GestaoEquipe\Observacao\Contracts\Business\ObservacaoBusinessContract;
+use App\Modules\GestaoEquipe\Submodules\Checkpoint\Contracts\Business\CheckpointBusinessContract;
+use App\Modules\GestaoEquipe\Submodules\Alocacao\Contracts\Business\AlocacaoBusinessContract;
+use App\Modules\GestaoEquipe\Submodules\Observacao\Contracts\Business\ObservacaoBusinessContract;
 use App\System\Exceptions\UnauthorizedException;
 use App\System\Http\Controllers\Controller;
 use Carbon\Carbon;

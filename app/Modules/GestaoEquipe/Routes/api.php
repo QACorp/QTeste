@@ -1,6 +1,6 @@
 <?php
 
-use App\Modules\GestaoEquipe\Alocacao\Controllers\Api\AlocacaoController;
+use App\Modules\GestaoEquipe\Submodules\Alocacao\Controllers\Api\AlocacaoController;
 use App\Modules\GestaoEquipe\Controllers\API\GestaoEquipeController;
 use Illuminate\Support\Facades\Route;
 
