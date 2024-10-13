@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import {UsuarioInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Usuario.interface";
 import {ref, watch, watchEffect} from "vue";
-
-import {axiosApi} from "../../../../../../../../resources/js/app";
 import {getIdEquipe} from "../../../../../../../../resources/js/APIUtils/BaseAPI";
-import {LoaderStore} from "../../../../../../../../resources/js/GlobalStore/LoaderStore";
 import {useToast} from "vue-toast-notification";
 import {PermissionStore} from "../../../../../../../../resources/js/GlobalStore/PermissionStore";
 import ObservacaoInterface from "../Interfaces/Observacao.interface";
@@ -12,6 +9,7 @@ import {PermissionEnum} from "../Enums/PermissionEnum";
 import ObservacaoTimelineItem from "./ObservacaoTimelineItem.vue";
 import {helperStore} from "../../../../Alocacao/Views/Vue/HelperStore";
 import InserirObservacaoForm from "./InserirObservacaoForm.vue";
+import {axiosApi} from "../../../../../../../../resources/js/APIUtils/AxiosBase";
 const props = defineProps({
     usuario: {
         type: Object as UsuarioInterface,
@@ -23,7 +21,6 @@ const $toast = useToast();
 const dialog = ref(false);
 const observacoes = ref<ObservacaoInterface[]>([]);
 const loadObservacoes = async () => {
-    LoaderStore.setShowLoader();
     await axiosApi.get(`observacao/${props.usuario.id}?idEquipe=${getIdEquipe()}`)
         .then(response => {
             observacoes.value = response.data;
@@ -31,7 +28,6 @@ const loadObservacoes = async () => {
         .catch(error => {
             $toast.error(error.response.data.message);
         });
-    LoaderStore.setHideLoader();
 }
 
 watch(helperStore.refreshObservacao,()=>{

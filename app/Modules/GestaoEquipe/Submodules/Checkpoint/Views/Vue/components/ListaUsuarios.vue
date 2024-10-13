@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {onBeforeMount, onMounted, ref} from "vue";
 import {UsuarioInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Usuario.interface";
-import {axiosApi} from "../../../../../../../../resources/js/app";
 import {getIdEquipe} from "../../../../../../../../resources/js/APIUtils/BaseAPI";
 import InserirCheckpoint from "./InserirCheckpoint.vue";
 import {PermissionStore} from "../../../../../../../../resources/js/GlobalStore/PermissionStore";
@@ -10,6 +9,7 @@ import {PermissionEnum as ObservacaoPermissionEnum} from "../../../../Observacao
 
 import VerCheckpoints from "./VerCheckpoints.vue";
 import VerObservacoes from "../../../../Observacao/Views/Vue/components/VerObservacoes.vue";
+import {axiosApi} from "../../../../../../../../resources/js/APIUtils/AxiosBase";
 const props = defineProps({
     canInsert: {
         type: Boolean,

@@ -3,10 +3,10 @@ import ListaObservacaoCheckpoint from "./ListaObservacaoCheckpoint.vue";
 import InserirCheckpointForm from "../../../Submodules/Checkpoint/Views/Vue/components/InserirCheckpointForm.vue";
 import InserirObservacaoForm from "../../../Submodules/Observacao/Views/Vue/components/InserirObservacaoForm.vue";
 import {onMounted, ref} from "vue";
-import {axiosApi} from "../../../../../../resources/js/app";
 import {getIdEquipe} from "../../../../../../resources/js/APIUtils/BaseAPI";
 import {UsuarioInterface} from "../../../Submodules/Alocacao/Views/Vue/Interfaces/Usuario.interface";
 import moment from "moment";
+import {axiosApi} from "../../../../../../resources/js/APIUtils/AxiosBase";
 
 const opcao = ref<string>('checkpoint');
 const props = defineProps({

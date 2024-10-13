@@ -5,7 +5,7 @@ import {AlocacaoInterface} from "../Interfaces/Alocacao.interface";
 import CardAlocacao from "./CardAlocacao.vue";
 import {helperStore} from "../HelperStore";
 import {getIdEquipe} from "../../../../../../../../resources/js/APIUtils/BaseAPI";
-import {axiosApi} from "../../../../../../../../resources/js/app";
+import {axiosApi} from "../../../../../../../../resources/js/APIUtils/AxiosBase";
 
 const alocacoes = ref<AlocacaoInterface[]>(null);
 

@@ -2,8 +2,8 @@
 import {helperStore} from "../HelperStore";
 import {useToast} from "vue-toast-notification";
 import {ref} from "vue";
-import {axiosApi} from "../../../../../../../../resources/js/app";
 import {getIdEquipe} from "../../../../../../../../resources/js/APIUtils/BaseAPI";
+import {axiosApi} from "../../../../../../../../resources/js/APIUtils/AxiosBase";
 const $toast = useToast();
 const props = defineProps({
     alocacaoId: {

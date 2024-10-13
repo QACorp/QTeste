@@ -4,11 +4,11 @@ import {defineProps, onBeforeMount, onMounted, ref, watch, watchEffect} from "vu
 import {AlocacaoInterface} from "../Interfaces/Alocacao.interface";
 import CardAlocacao from "./CardAlocacao.vue";
 import {helperStore} from "../HelperStore";
-import {axiosApi} from "../../../../../../../../resources/js/app";
 import {getIdEquipe} from "../../../../../../../../resources/js/APIUtils/BaseAPI";
 import {ProjetoInterface} from "../Interfaces/Projeto.interface";
 import {UsuarioInterface} from "../Interfaces/Usuario.interface";
 import {AplicacaoInterface} from "../../../../../../Retrabalhos/Views/Vue/Interfaces/Aplicacao.interface";
+import {axiosApi} from "../../../../../../../../resources/js/APIUtils/AxiosBase";
 
 const props = defineProps({
     editAlocacao: {

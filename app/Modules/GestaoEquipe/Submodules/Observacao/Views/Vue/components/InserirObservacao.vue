@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import {onMounted, ref, watch, watchEffect} from "vue";
-import {axiosApi} from "../../../../../../../../resources/js/app";
+import {ref, watch} from "vue";
 import {getIdEquipe} from "../../../../../../../../resources/js/APIUtils/BaseAPI";
 import moment from "moment";
 import {AlocacaoInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Alocacao.interface";
@@ -10,6 +9,7 @@ import {UsuarioInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Usuari
 import Editor from "@tinymce/tinymce-vue";
 import TFieldTarefas from "../../../../../../Projetos/Views/Vue/components/TFieldTarefas.vue";
 import {LoaderStore} from "@/GlobalStore/LoaderStore";
+import {axiosApi} from "../../../../../../../../resources/js/APIUtils/AxiosBase";
 
 const $toast = useToast();
 const emit = defineEmits(['close']);

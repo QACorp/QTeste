@@ -6,9 +6,8 @@ import {useToast} from "vue-toast-notification";
 import {ref} from "vue";
 import ObservacaoInterface from "../Interfaces/Observacao.interface";
 import moment from "moment/moment";
-import {LoaderStore} from "../../../../../../../../resources/js/GlobalStore/LoaderStore";
-import {axiosApi} from "../../../../../../../../resources/js/app";
 import {getIdEquipe} from "../../../../../../../../resources/js/APIUtils/BaseAPI";
+import {axiosApi} from "../../../../../../../../resources/js/APIUtils/AxiosBase";
 
 const props = defineProps({
   usuario: {
@@ -23,7 +22,6 @@ const observacao = ref<ObservacaoInterface>({} as ObservacaoInterface);
 observacao.value.user_id = props.usuario.id
 observacao.value.data = new moment().format('YYYY-MM-DD');
 const saveObservacao = async () => {
-  LoaderStore.setShowLoader();
   await axiosApi.post(`observacao/${props.usuario.id}?idEquipe=${getIdEquipe()}`, observacao.value)
       .then(async response => {
         $toast.success('Observacao inserida com sucesso!');
@@ -36,7 +34,6 @@ const saveObservacao = async () => {
       .catch(error => {
         $toast.error(error.response.data.message);
       });
-  LoaderStore.setHideLoader();
 }
 </script>
 

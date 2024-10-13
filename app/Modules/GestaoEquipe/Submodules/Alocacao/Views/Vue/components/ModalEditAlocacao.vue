@@ -9,7 +9,6 @@ import 'vue-toast-notification/dist/theme-sugar.css';
 import {helperStore} from "../HelperStore";
 import moment from "moment";
 import {getIdEquipe} from "../../../../../../../../resources/js/APIUtils/BaseAPI";
-import {axiosApi} from "../../../../../../../../resources/js/app";
 import {UsuarioInterface} from "../../../../../../Retrabalhos/Views/Vue/Interfaces/Usuario.interface";
 import CheckpointInterface from "../../../../Checkpoint/Views/Vue/Interfaces/Checkpoint.interface";
 import CheckpointTimelineItem from "../../../../Checkpoint/Views/Vue/components/CheckpointTimelineItem.vue";
@@ -17,6 +16,7 @@ import TFieldTarefas from "../../../../../../Projetos/Views/Vue/components/TFiel
 import {LoaderStore} from "../../../../../../../../resources/js/GlobalStore/LoaderStore";
 import {PermissionStore} from "../../../../../../../../resources/js/GlobalStore/PermissionStore";
 import {PermissionEnum as CheckpointPermissionEnum} from "../../../../Checkpoint/Views/Vue/Enums/PermissionEnum";
+import {axiosApi} from "../../../../../../../../resources/js/APIUtils/AxiosBase";
 
 const props = defineProps({
     alocacaoId: {

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import {useToast} from "vue-toast-notification";
 import {ref} from "vue";
-import {axiosApi} from "../../../../../../../../resources/js/app";
 import {getIdEquipe} from "../../../../../../../../resources/js/APIUtils/BaseAPI";
 import {LoaderStore} from "../../../../../../../../resources/js/GlobalStore/LoaderStore";
 import {helperStore} from "../../../../Alocacao/Views/Vue/HelperStore";
+import {axiosApi} from "../../../../../../../../resources/js/APIUtils/AxiosBase";
 const $toast = useToast();
 const props = defineProps({
     observacaoId: {

@@ -2,7 +2,6 @@
 
 import {PermissionStore} from "../../../../../../resources/js/GlobalStore/PermissionStore";
 import {PermissionEnum} from "../../../Submodules/Observacao/Views/Vue/Enums/PermissionEnum";
-import {axiosApi} from "../../../../../../resources/js/app";
 import {getIdEquipe} from "../../../../../../resources/js/APIUtils/BaseAPI";
 import CheckpointObservacaoInterface from "../Interfaces/CheckpointObservacao.interface";
 import ObservacaoCheckpointTimelineItem from "./ObservacaoCheckpointTimelineItem.vue";
@@ -10,6 +9,7 @@ import {PermissionEnum as PermissionEnumCheckpoint} from "../../../Submodules/Ch
 import {onMounted, ref, watch} from "vue";
 import moment from "moment";
 import {useToast} from "vue-toast-notification";
+import {axiosApi} from "../../../../../../resources/js/APIUtils/AxiosBase";
 const props = defineProps({
     idUsuario: {
         type: Number,

@@ -3,7 +3,6 @@
 import moment from "moment/moment";
 import TFieldTarefas from "../../../../../../Projetos/Views/Vue/components/TFieldTarefas.vue";
 import Editor from "@tinymce/tinymce-vue";
-import {axiosApi} from "../../../../../../../../resources/js/app";
 import {getIdEquipe} from "../../../../../../../../resources/js/APIUtils/BaseAPI";
 import {onMounted, ref} from "vue";
 import CheckpointInterface from "../Interfaces/Checkpoint.interface";
@@ -11,6 +10,7 @@ import {ProjetoInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Projet
 import {AlocacaoInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Alocacao.interface";
 import {UsuarioInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Usuario.interface";
 import {useToast} from "vue-toast-notification";
+import {axiosApi} from "../../../../../../../../resources/js/APIUtils/AxiosBase";
 
 const props = defineProps({
     usuario: {

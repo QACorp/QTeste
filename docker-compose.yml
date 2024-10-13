@@ -1,4 +1,4 @@
-version: '3.5'
+version: '3.9'
 services:
     qteste_app:
         image: qteste_app:2.0
@@ -27,6 +27,8 @@ services:
         image: qteste_app:2.0
         container_name: ${APP_NAME}_scheduler
         restart: unless-stopped
+        healthcheck:
+            test: [ "NONE" ]
         entrypoint:
             - ./docker/entrypoint.sh
         env_file:
@@ -45,6 +47,8 @@ services:
         restart: unless-stopped
         entrypoint:
             - ./docker/entrypoint.sh
+        healthcheck:
+            test: [ "NONE" ]
         env_file:
             - .env
         depends_on:

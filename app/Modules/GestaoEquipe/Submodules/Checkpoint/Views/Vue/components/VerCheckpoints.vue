@@ -3,12 +3,12 @@ import {UsuarioInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Usuari
 import {ref, watchEffect} from "vue";
 import CheckpointInterface from "../Interfaces/Checkpoint.interface";
 import CheckpointTimelineItem from "./CheckpointTimelineItem.vue";
-import {axiosApi} from "../../../../../../../../resources/js/app";
 import {getIdEquipe} from "../../../../../../../../resources/js/APIUtils/BaseAPI";
 import {useToast} from "vue-toast-notification";
 import InserirCheckpoint from "./InserirCheckpoint.vue";
 import {PermissionStore} from "../../../../../../../../resources/js/GlobalStore/PermissionStore";
 import {PermissionEnum} from "../Enums/PermissionEnum";
+import {axiosApi} from "../../../../../../../../resources/js/APIUtils/AxiosBase";
 const props = defineProps({
     usuario: {
         type: Object as UsuarioInterface,

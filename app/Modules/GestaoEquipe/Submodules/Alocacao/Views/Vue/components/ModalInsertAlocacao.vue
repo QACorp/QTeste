@@ -10,9 +10,9 @@ import {helperStore} from "../HelperStore";
 import moment from "moment";
 import {SubmitEventPromise} from "vuetify";
 import {UsuarioInterface} from "../../../../../../Retrabalhos/Views/Vue/Interfaces/Usuario.interface";
-import {axiosApi} from "../../../../../../../../resources/js/app";
 import {getIdEquipe} from "../../../../../../../../resources/js/APIUtils/BaseAPI";
 import TFieldTarefas from "../../../../../../Projetos/Views/Vue/components/TFieldTarefas.vue";
+import {axiosApi} from "../../../../../../../../resources/js/APIUtils/AxiosBase";
 
 
 const dialog = ref<boolean>(false);

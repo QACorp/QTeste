@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import {ref, watch} from "vue";
 import CheckpointInterface from "../Interfaces/Checkpoint.interface";
-import {axiosApi} from "../../../../../../../../resources/js/app";
 import {getIdEquipe} from "../../../../../../../../resources/js/APIUtils/BaseAPI";
 import {useToast} from "vue-toast-notification";
 import {UsuarioInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Usuario.interface";
 import CheckpointTimelineItem from "./CheckpointTimelineItem.vue";
 import InserirCheckpointForm from "./InserirCheckpointForm.vue";
+import {axiosApi} from "../../../../../../../../resources/js/APIUtils/AxiosBase";
 
 const $toast = useToast();
 const emit = defineEmits(['close']);
