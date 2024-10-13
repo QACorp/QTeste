@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import CheckpointInterface from "../Interfaces/Checkpoint.interface";
 import {getIdEquipe} from "../../../../../../../../resources/js/APIUtils/BaseAPI";
 import {useToast} from "vue-toast-notification";
@@ -7,32 +7,45 @@ import {UsuarioInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Usuari
 import CheckpointTimelineItem from "./CheckpointTimelineItem.vue";
 import InserirCheckpointForm from "./InserirCheckpointForm.vue";
 import {axiosApi} from "../../../../../../../../resources/js/APIUtils/AxiosBase";
+import moment from "moment";
 
 const $toast = useToast();
 const emit = defineEmits(['close']);
 const dialog = ref(false);
-const lastCheckPoint = ref<CheckpointInterface>({} as CheckpointInterface);
-
+const lastCheckPoints = ref<CheckpointInterface[]>([]);
+const checkpoint = ref<CheckpointInterface>({} as CheckpointInterface);
+const idAlocacao = ref<number>(null);
 const props = defineProps({
-  usuario: {
-    type: Object as UsuarioInterface,
-    required: true
-  },
-
-});
-watch(dialog, async () => {
-
-    if(dialog.value){
-        //LoaderStore.setShowLoader();
-        axiosApi.get(`checkpoint/ultimo/${props.usuario.id}?idEquipe=${getIdEquipe()}`)
-            .then(response => {
-                lastCheckPoint.value = response.data;
-            });
-        //LoaderStore.setHideLoader();
-
+    usuario: {
+        type: Object as UsuarioInterface,
+        required: true
+    },
+    idAlocacao: {
+        type: Number,
+        required: false,
+        default: null
     }
+
 });
 
+watch(dialog, () => {
+    checkpoint.value = {} as CheckpointInterface;
+    checkpoint.value.data = moment().format('YYYY-MM-DD');
+    checkpoint.value.user_id = props.usuario.id;
+    checkpoint.value.compareceu = false;
+    checkpoint.value.alocacao_id = props.idAlocacao;
+})
+
+const loadCheckpoints = async () => {
+    if(checkpoint.value.alocacao_id != null) {
+        axiosApi.get(`checkpoint/alocacao/${checkpoint.value.alocacao_id}?idEquipe=${getIdEquipe()}`)
+            .then(response => {
+                lastCheckPoints.value = response.data;
+            });
+    }else {
+        lastCheckPoints.value = [];
+    }
+}
 const close = () => {
     dialog.value = false;
 }
@@ -69,11 +82,10 @@ const close = () => {
         <v-row>
           <v-col cols="6">
             <v-card>
-              <v-card-title>Último checkpoint</v-card-title>
+              <v-card-title>Checkpoints anteriores</v-card-title>
               <v-card-text>
-                <v-timeline side="end" v-if="lastCheckPoint.descricao">
-                  <CheckpointTimelineItem :checkpoint="lastCheckPoint" />
-
+                <v-timeline side="end">
+                  <checkpoint-timeline-item v-for="checkpoint in lastCheckPoints" :key="checkpoint.id" :checkpoint="checkpoint"  />
                 </v-timeline>
               </v-card-text>
 
@@ -85,7 +97,7 @@ const close = () => {
                       <span class="text-gray-dark font-weight-bold">Colaborador: </span><span class="text-gray-dark">{{ usuario.name }}</span>
                   </v-col>
               </v-row>
-            <InserirCheckpointForm :usuario="usuario" @close="close"/>
+            <InserirCheckpointForm @select-alocacao="loadCheckpoints" v-model="checkpoint" :usuario="usuario" @close="close"/>
           </v-col>
         </v-row>
       </v-card-text>

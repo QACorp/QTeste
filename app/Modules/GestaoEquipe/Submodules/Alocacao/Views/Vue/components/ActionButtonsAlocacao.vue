@@ -27,7 +27,7 @@ const props = defineProps({
                 :alocacao-id="props.alocacao.id"
             />
             <finish-alocacao v-if="PermissionStore.hasPermission(PermissionEnum.CONCLUIR_ALOCACAO)" :alocacao-id="props.alocacao.id"/>
-            <inserir-checkpoint v-if="PermissionStore.hasPermission(CheckpointPermissionEnum.CRIAR_CHECKPOINT) || !props.alocacao.concluida" :usuario="props.alocacao.user"/>
+            <inserir-checkpoint v-if="PermissionStore.hasPermission(CheckpointPermissionEnum.CRIAR_CHECKPOINT) || !props.alocacao.concluida" :id-alocacao="props.alocacao.id" :usuario="props.alocacao.user"/>
         </v-col>
     </v-row>
 </template>

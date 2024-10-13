@@ -7,6 +7,8 @@ import {getIdEquipe} from "../../../../../../resources/js/APIUtils/BaseAPI";
 import {UsuarioInterface} from "../../../Submodules/Alocacao/Views/Vue/Interfaces/Usuario.interface";
 import moment from "moment";
 import {axiosApi} from "../../../../../../resources/js/APIUtils/AxiosBase";
+import CheckpointTimelineItem from "../../../Submodules/Checkpoint/Views/Vue/components/CheckpointTimelineItem.vue";
+import CheckpointInterface from "../../../Submodules/Checkpoint/Views/Vue/Interfaces/Checkpoint.interface";
 
 const opcao = ref<string>('checkpoint');
 const props = defineProps({
@@ -17,7 +19,10 @@ const props = defineProps({
 });
 const usuario = ref<UsuarioInterface>({} as UsuarioInterface);
 const keyLista = ref<string>(moment().format('YYYYMMDDHHMMSS'));
+const checkpoint = ref<CheckpointInterface>({} as CheckpointInterface);
 onMounted(async () => {
+    checkpoint.value.data = moment().format('YYYY-MM-DD');
+    checkpoint.value.user_id = props.idUsuario;
     await axiosApi.get(`user/${props.idUsuario}?idEquipe=${getIdEquipe()}`)
         .then(response => {
             usuario.value = response.data;
@@ -70,7 +75,7 @@ const refreshKey = () => {
                             Inserir checkpoint
                         </v-card-title>
                         <v-card-text>
-                            <InserirCheckpointForm @close="refreshKey"  :usuario="usuario" />
+                            <InserirCheckpointForm v-model="checkpoint" @close="refreshKey"  :usuario="usuario" />
                         </v-card-text>
                     </v-card>
                     <v-card v-else>

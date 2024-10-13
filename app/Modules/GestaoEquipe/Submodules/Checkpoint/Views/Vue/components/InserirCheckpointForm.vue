@@ -4,7 +4,7 @@ import moment from "moment/moment";
 import TFieldTarefas from "../../../../../../Projetos/Views/Vue/components/TFieldTarefas.vue";
 import Editor from "@tinymce/tinymce-vue";
 import {getIdEquipe} from "../../../../../../../../resources/js/APIUtils/BaseAPI";
-import {onMounted, ref} from "vue";
+import {onMounted, onUpdated, ref} from "vue";
 import CheckpointInterface from "../Interfaces/Checkpoint.interface";
 import {ProjetoInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Projeto.interface";
 import {AlocacaoInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Alocacao.interface";
@@ -20,21 +20,24 @@ const props = defineProps({
 
 });
 const $toast = useToast();
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close','selectAlocacao']);
 
-const checkpoint = ref<CheckpointInterface>({} as CheckpointInterface);
+const checkpoint = defineModel({
+    type: {} as CheckpointInterface
+});
 const projetos = ref<ProjetoInterface>([]);
 const alocacoes = ref<AlocacaoInterface>([]);
 const usuario = ref<UsuarioInterface>(props.usuario)
 
-
+onUpdated(async () => {
+    if(checkpoint.value.data != null) {
+        await findAlocacao(checkpoint.value.data);
+        checkpoint.value.alocacao = alocacoes.value.find(alocacao => alocacao.id == checkpoint.value.alocacao_id);
+        updateAlocacao();
+    }
+})
 onMounted( async () => {
 
-    //LoaderStore.setShowLoader();
-    checkpoint.value = {} as CheckpointInterface;
-    checkpoint.value.data = moment().format('YYYY-MM-DD');
-    checkpoint.value.user_id = usuario.value.id;
-    checkpoint.value.compareceu = false;
     await axiosApi.get(`checkpoint/projetos?idEquipe=${getIdEquipe()}`)
         .then(response => {
             projetos.value = response.data;
@@ -42,10 +45,6 @@ onMounted( async () => {
         .catch(error => {
             console.log(error)
         });
-    await findAlocacao(checkpoint.value.data);
-    //LoaderStore.setHideLoader();
-
-
 });
 const updateAlocacao = () => {
     if(checkpoint.value.alocacao) {
@@ -54,12 +53,14 @@ const updateAlocacao = () => {
         checkpoint.value.tarefa = checkpoint.value.alocacao.tarefa;
         checkpoint.value.tarefa_id = checkpoint.value.tarefa?.id;
         checkpoint.value.projeto = projetos.value.find(projeto => projeto.id == checkpoint.value.alocacao.projeto_id);
+        emit("selectAlocacao");
     }else {
         checkpoint.value.alocacao_id = null;
         checkpoint.value.projeto_id = null;
         checkpoint.value.tarefa = null;
         checkpoint.value.projeto = null;
         checkpoint.value.tarefa_id = null;
+        emit("selectAlocacao");
     }
 
 }
@@ -67,7 +68,6 @@ const updateAlocacao = () => {
 
 const findAlocacao = async (data: string) => {
     if(!data) return;
-    //LoaderStore.setShowLoader();
     checkpoint.value.alocacao = null;
     await axiosApi.get(`checkpoint/alocacao/usuario/${usuario.value.id}/data/${data}?idEquipe=${getIdEquipe()}`)
         .then(response => {
