@@ -58,6 +58,7 @@ app.use(vuetify);
 //  app.component('SprintSelect', ExampleComponent);
 import Preloader from "@/components/Preloader.vue";
 import {PermissionStore} from "@/GlobalStore/PermissionStore";
+import {axiosApi} from "@/APIUtils/AxiosBase";
 app.component('Preloader', Preloader);
 
 /**
