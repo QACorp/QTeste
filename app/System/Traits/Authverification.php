@@ -17,7 +17,9 @@ trait Authverification
 
     private function loginApi(Request $request):?string
     {
-        return auth('api')->attempt([...$request->only('email', 'password'), 'active' => true], $request->boolean('remember'));
+        $remember = $request->has('remember') ? $request->boolean('remember') : false;
+//        dd(auth('api')->attempt([...$request->only('email', 'password'), 'active' => true], $remember), $remember);
+        return auth('api')->setTTL($remember ? 525600 : config('jwt.ttl'))->attempt([...$request->only('email', 'password'), 'active' => true]);
 
     }
     protected function getToken($token): \stdClass
