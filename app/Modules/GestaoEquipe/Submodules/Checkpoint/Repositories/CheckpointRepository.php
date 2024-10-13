@@ -2,6 +2,7 @@
 
 namespace App\Modules\GestaoEquipe\Submodules\Checkpoint\Repositories;
 
+use App\Modules\GestaoEquipe\Submodules\Alocacao\Models\Alocacao;
 use App\Modules\GestaoEquipe\Submodules\Checkpoint\Contracts\Respositories\CheckpointRepositoryContract;
 use App\Modules\GestaoEquipe\Submodules\Checkpoint\DTOs\CheckpointDTO;
 use App\Modules\GestaoEquipe\Submodules\Checkpoint\Models\Checkpoint;
@@ -55,8 +56,16 @@ class CheckpointRepository implements CheckpointRepositoryContract
     public function listarCheckpointPorAlocacao(int $idEquipe, int $idAlocacao): DataCollection
     {
         $checkpoint = Checkpoint::select('checkpoints.*')
-            ->where('equipe_id', $idEquipe)
-            ->where('alocacao_id', $idAlocacao)
+            ->where('checkpoints.equipe_id', $idEquipe)
+            ->where(function($query) use($idAlocacao){
+                $query->where('checkpoints.alocacao_id', $idAlocacao);
+                if($idProjeto = Alocacao::find($idAlocacao)->projeto_id){
+                    $query->orWhere('checkpoints.projeto_id', $idProjeto);
+                }
+                if($idTarefa = Alocacao::find($idAlocacao)->tarefa_id){
+                    $query->orWhere('checkpoints.tarefa_id', $idTarefa);
+                }
+            })
             ->orderBy('data', 'desc')
             ->orderBy('id', 'desc')
             ->with('projeto','user', 'criador', 'projeto.aplicacao', 'alocacao', 'tarefa')

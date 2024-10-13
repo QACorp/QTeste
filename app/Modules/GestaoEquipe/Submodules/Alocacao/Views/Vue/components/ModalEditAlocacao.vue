@@ -60,7 +60,6 @@ watch(dialog, async (newValue) => {
 });
 
 const findUsers = async () => {
-    LoaderStore.setShowLoader();
     axiosApi.get(`alocacao/usuarios-disponiveis/${alocacao.value.inicio}/${alocacao.value.termino}/?idEquipe=${getIdEquipe()}`)
         .then(response => {
             usuarios.value = response.data;
@@ -70,11 +69,9 @@ const findUsers = async () => {
         .catch(error => {
             console.log(error)
         })
-    LoaderStore.setHideLoader();
 }
 
 const saveAlocacao = async () => {
-    LoaderStore.setShowLoader();
     await axiosApi.put(`alocacao/${props.alocacaoId}`, alocacao.value)
         .then(response => {
             $toast.success('Alocação alterada com sucesso!',{
@@ -88,11 +85,9 @@ const saveAlocacao = async () => {
 
             $toast.error(error.response.data.message);
         })
-    LoaderStore.setHideLoader();
 }
 
 const findProjetos = async () => {
-    LoaderStore.setShowLoader();
     await axiosApi.get(`alocacao/projetos-disponiveis/${alocacao.value.inicio}/${alocacao.value.termino}/?idEquipe=${getIdEquipe()}`)
         .then(response => {
             projetos.value = response.data;
@@ -100,17 +95,13 @@ const findProjetos = async () => {
         .catch(error => {
             $toast.error(error.response.data.message);
         });
-    LoaderStore.setHideLoader();
 }
 const findCheckpoints = async () => {
-    //LoaderStore.setShowLoader();
     await axiosApi.get(`checkpoint/alocacao/${props.alocacaoId}?idEquipe=${getIdEquipe()}`)
         .then(response => {
             checkpoints.value = response.data;
-            //LoaderStore.setHideLoader();
         })
         .catch(error => {
-            //LoaderStore.setHideLoader();
             $toast.error(error.response.data.message);
         })
 }

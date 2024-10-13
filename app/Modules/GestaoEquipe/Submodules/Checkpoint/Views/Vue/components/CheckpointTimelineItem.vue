@@ -24,8 +24,11 @@ const props = defineProps({
             :value="true"
         >
             <v-row class="mb-0 py-0" v-if="checkpoint.criador != null">
-                <v-col cols="12" class="mb-0 pb-0" >
+                <v-col cols="6" class="mb-0 pb-0" >
                     <span class="font-italic text-xs text-black"> Por {{ checkpoint.criador.name }}</span>
+                </v-col>
+                <v-col cols="6" class="mb-0 pb-0" >
+                    <span class="font-italic text-xs text-black"> Para {{ checkpoint.user.name }}</span>
                 </v-col>
             </v-row>
             <v-row v-if="checkpoint.tarefa">
