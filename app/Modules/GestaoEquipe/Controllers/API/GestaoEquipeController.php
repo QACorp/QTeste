@@ -2,9 +2,11 @@
 
 namespace App\Modules\GestaoEquipe\Controllers\API;
 
+use App\Modules\GestaoEquipe\Contracts\Business\RelatoriosBusinessContract;
 use App\Modules\GestaoEquipe\Submodules\Checkpoint\Contracts\Business\CheckpointBusinessContract;
 use App\Modules\GestaoEquipe\Submodules\Alocacao\Contracts\Business\AlocacaoBusinessContract;
 use App\Modules\GestaoEquipe\Submodules\Observacao\Contracts\Business\ObservacaoBusinessContract;
+
 use App\System\Exceptions\UnauthorizedException;
 use App\System\Http\Controllers\Controller;
 use Carbon\Carbon;
@@ -15,7 +17,8 @@ class GestaoEquipeController extends Controller
     public function __construct(
         private readonly AlocacaoBusinessContract $alocacaoBusiness,
         private readonly ObservacaoBusinessContract $observacaoBusiness,
-        private readonly CheckpointBusinessContract $checkpointBusiness
+        private readonly CheckpointBusinessContract $checkpointBusiness,
+        private readonly RelatoriosBusinessContract $relatoriosBusiness
     )
     {
     }
@@ -38,5 +41,25 @@ class GestaoEquipeController extends Controller
         }catch (UnauthorizedException $e){
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
+    }
+    public function buscarRelatorio(Request $request, $idUsuario)
+    {
+        if (!$request->get('idEquipe')){
+            return response()->json(['message' => 'Equipe não informada'], 400);
+        }
+        $inicio = null;
+        $termino = null;
+        if($request->get('inicio')){
+            $inicio = Carbon::createFromFormat('Y-m-d', $request->get('inicio'));
+        }
+        if($request->get('termino')){
+            $termino = Carbon::createFromFormat('Y-m-d', $request->get('termino'));
+        }
+        return $this->relatoriosBusiness->buscarRetrabalhosUsuario(
+            $idUsuario,
+            $request->get('idEquipe'),
+            $inicio,
+            $termino
+        );
     }
 }

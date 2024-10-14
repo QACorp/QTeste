@@ -15,21 +15,27 @@ const props = defineProps({
         type: Number,
         required: true
     },
+    inicio: {
+        type: String,
+        default: moment().startOf('month').format('YYYY-MM-DD')
+    },
+    termino: {
+        type: String,
+        default: moment().endOf('month').format('YYYY-MM-DD')
+    }
 });
 const $toast = useToast();
 const observacoesCheckpoints = ref<CheckpointObservacaoInterface[]>([]);
-const inicio = ref<string>(moment().startOf('month').format('YYYY-MM-DD'));
-const termino = ref<string>(moment().endOf('month').format('YYYY-MM-DD'));
 
 
 const loadObservacoesCheckpoints = async () => {
     //LoaderStore.setShowLoader();
     let url = `gestao-equipe/${props.idUsuario}/registros?idEquipe=${getIdEquipe()}`;
-    if(inicio.value){
-        url += `&inicio=${inicio.value}`;
+    if(props.inicio){
+        url += `&inicio=${props.inicio}`;
     }
-    if(termino.value){
-        url += `&termino=${termino.value}`;
+    if(props.termino){
+        url += `&termino=${props.termino}`;
     }
     await axiosApi.get(url)
         .then(response => {
@@ -52,33 +58,7 @@ onMounted(async () => {
             class="overflow-y-auto"
             style="height: 75vh;"
         >
-            <v-row class="p-1">
-                <v-col cols="12" md="5">
-                    <v-text-field
-                        type="date"
-                        clearable
-                        on-click:clear="termino = null"
-                        v-model="inicio"
-                        label="Início"></v-text-field>
-                </v-col>
-                <v-col cols="12" md="5">
-                    <v-text-field
-                        type="date"
-                        clearable
-                        on-click:clear="termino = null"
-                        v-model="termino"
-                        label="Término"></v-text-field>
-                </v-col>
-                <v-col cols="12" md="2">
-                    <v-btn
-                        @click="loadObservacoesCheckpoints()"
-                        density="default"
-                        variant="tonal"
-                        color="primary"
-                        icon="mdi-find-replace"
-                    ></v-btn>
-                </v-col>
-            </v-row>
+
             <v-row>
                 <v-col v-if="
                         PermissionStore.hasPermission(PermissionEnum.LISTAR_OBSERVACAO) ||

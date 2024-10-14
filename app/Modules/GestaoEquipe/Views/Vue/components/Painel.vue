@@ -20,6 +20,8 @@ const props = defineProps({
 const usuario = ref<UsuarioInterface>({} as UsuarioInterface);
 const keyLista = ref<string>(moment().format('YYYYMMDDHHMMSS'));
 const checkpoint = ref<CheckpointInterface>({} as CheckpointInterface);
+const inicio = ref<string>(moment().startOf('month').format('YYYY-MM-DD'));
+const termino = ref<string>(moment().endOf('month').format('YYYY-MM-DD'));
 onMounted(async () => {
     checkpoint.value.data = moment().format('YYYY-MM-DD');
     checkpoint.value.user_id = props.idUsuario;
@@ -37,6 +39,41 @@ const refreshKey = () => {
 </script>
 
 <template>
+    <v-row class="p-1">
+        <v-col cols="12">
+            <v-card>
+                <v-card-text>
+                    <v-row>
+                        <v-col cols="12" md="5">
+                            <v-text-field
+                                type="date"
+                                clearable
+                                on-click:clear="termino = null"
+                                v-model="inicio"
+                                label="Início"></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <v-text-field
+                                type="date"
+                                clearable
+                                on-click:clear="termino = null"
+                                v-model="termino"
+                                label="Término"></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="1">
+                    <v-btn
+                        @click="refreshKey()"
+                        density="default"
+                        variant="tonal"
+                        color="primary"
+                        icon="mdi-find-replace"
+                    ></v-btn>
+                </v-col>
+                    </v-row>
+                </v-card-text>
+            </v-card>
+        </v-col>
+    </v-row>
     <v-row v-if="usuario.id">
         <v-col cols="12" md="6" lg="6">
             <v-card>
@@ -44,7 +81,7 @@ const refreshKey = () => {
                     Observações/Checkpoint
                 </v-card-title>
                 <v-card-text>
-                    <ListaObservacaoCheckpoint :key="keyLista" :id-usuario="usuario.id" />
+                    <ListaObservacaoCheckpoint :inicio="inicio" :termino="termino" :key="keyLista" :id-usuario="usuario.id" />
                 </v-card-text>
             </v-card>
 
