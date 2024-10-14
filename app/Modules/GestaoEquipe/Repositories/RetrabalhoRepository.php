@@ -10,18 +10,15 @@ use Illuminate\Support\Facades\DB;
 
 class RetrabalhoRepository extends RetrabalhoRepositoryBase implements RetrabalhoRepositoryContract
 {
-    public function getConditionData(?Carbon $inicio, ?Carbon $termino):string
+    public function getCondicaoData(?Carbon $inicio, ?Carbon $termino):string
     {
-        if($inicio && $termino)
-        {
+        if($inicio && $termino){
             return " AND data between :inicio AND :termino";
         }
-        if ($inicio)
-        {
+        if ($inicio){
             return " AND data >= :inicio";
         }
-        if ($termino)
-        {
+        if ($termino){
             return " AND data <= :termino";
         }
         return '';
@@ -39,17 +36,17 @@ class RetrabalhoRepository extends RetrabalhoRepositoryBase implements Retrabalh
                     (SELECT
                          COUNT(*) FROM projetos.retrabalhos
                      WHERE usuario_id = :idUsuario
-                       ".$this->getConditionData($inicio, $termino).") AS total_retrabalhos,
+                       ".$this->getCondicaoData($inicio, $termino).") AS total_retrabalhos,
                     (SELECT
                         COUNT(DISTINCT checkpoints.tarefa_id)
                      FROM gestao_equipes.checkpoints
                      WHERE user_id = :idUsuario
-                        ".$this->getConditionData($inicio, $termino).") AS total_tarefas,
+                        ".$this->getCondicaoData($inicio, $termino).") AS total_tarefas,
                     (SELECT
                         COUNT(DISTINCT checkpoints.projeto_id)
                      FROM gestao_equipes.checkpoints
                      WHERE user_id = :idUsuario
-                        ".$this->getConditionData($inicio, $termino).") AS total_projetos";
+                        ".$this->getCondicaoData($inicio, $termino).") AS total_projetos";
         $resultado = DB::select($query, $bidings);
         return RelatorioRetrabalhosDTO::from($resultado[0]);
     }

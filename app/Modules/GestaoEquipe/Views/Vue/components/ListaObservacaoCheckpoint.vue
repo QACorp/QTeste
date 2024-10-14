@@ -6,7 +6,7 @@ import {getIdEquipe} from "../../../../../../resources/js/APIUtils/BaseAPI";
 import CheckpointObservacaoInterface from "../Interfaces/CheckpointObservacao.interface";
 import ObservacaoCheckpointTimelineItem from "./ObservacaoCheckpointTimelineItem.vue";
 import {PermissionEnum as PermissionEnumCheckpoint} from "../../../Submodules/Checkpoint/Views/Vue/Enums/PermissionEnum";
-import {onMounted, ref, watch} from "vue";
+import {onMounted, ref} from "vue";
 import moment from "moment";
 import {useToast} from "vue-toast-notification";
 import {axiosApi} from "../../../../../../resources/js/APIUtils/AxiosBase";
