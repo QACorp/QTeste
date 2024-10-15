@@ -12,6 +12,8 @@ import CheckpointInterface from "../../../Submodules/Checkpoint/Views/Vue/Interf
 import RetrabalhosTarefasProjetosCards from "./RetrabalhosTarefasProjetosCards.vue";
 import {PermissionStore} from "../../../../../../resources/js/GlobalStore/PermissionStore";
 import {PermissionEnum as PermissionEnumRetrabalho} from "../../../../Retrabalhos/Views/Vue/Enums/PermissionEnum";
+import ModalInserirObservacao from "./ModalInserirObservacao.vue";
+import ModalInserirCheckpoint from "./ModalInserirCheckpoint.vue";
 
 const opcao = ref<string>('checkpoint');
 const props = defineProps({
@@ -85,7 +87,7 @@ const refreshKey = () => {
         </v-col>
     </v-row>
     <v-row v-if="usuario.id">
-        <v-col cols="12" md="6" lg="6">
+        <v-col cols="12" md="7" lg="7">
             <v-card>
                 <v-card-title>
                     Observações/Checkpoint
@@ -96,41 +98,13 @@ const refreshKey = () => {
             </v-card>
 
         </v-col>
-        <v-col cols="12" md="6" lg="6" >
+        <v-col cols="12" md="5" lg="5" >
             <v-row>
                 <v-col cols="12" >
                     <v-card >
-                        <v-card-text class="pb-0">
-                            <v-switch
-                                inset
-                                :label="`Inserir ${opcao}`"
-                                v-model="opcao"
-                                label-checked="Observação"
-                                label-unchecked="Checkpoint"
-                                false-value="checkpoint"
-                                true-value="observação"
-                            ></v-switch>
-                        </v-card-text>
-                    </v-card>
-                </v-col>
-
-            </v-row>
-            <v-row>
-                <v-col cols="12">
-                    <v-card v-if="opcao === 'checkpoint'">
-                        <v-card-title>
-                            Inserir checkpoint
-                        </v-card-title>
-                        <v-card-text>
-                            <InserirCheckpointForm v-model="checkpoint" @close="refreshKey"  :usuario="usuario" />
-                        </v-card-text>
-                    </v-card>
-                    <v-card v-else>
-                        <v-card-title>
-                            Inserir observação
-                        </v-card-title>
-                        <v-card-text>
-                            <InserirObservacaoForm @close="refreshKey" :usuario="usuario" />
+                        <v-card-text class="space-btn">
+                            <modal-inserir-observacao :usuario="usuario" @close="refreshKey" />
+                            <modal-inserir-checkpoint v-model="checkpoint" :usuario="usuario" @close="refreshKey" />
                         </v-card-text>
                     </v-card>
                 </v-col>
@@ -141,5 +115,8 @@ const refreshKey = () => {
 </template>
 
 <style scoped>
-
+.space-btn {
+    display: flex;
+    justify-content: space-between;
+}
 </style>

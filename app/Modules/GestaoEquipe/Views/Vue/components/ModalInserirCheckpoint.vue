@@ -1,0 +1,43 @@
+<script setup lang="ts">
+
+import InserirObservacaoForm from "../../../Submodules/Observacao/Views/Vue/components/InserirObservacaoForm.vue";
+import {ref} from "vue";
+import {UsuarioInterface} from "../../../Submodules/Alocacao/Views/Vue/Interfaces/Usuario.interface";
+import InserirCheckpointForm from "../../../Submodules/Checkpoint/Views/Vue/components/InserirCheckpointForm.vue";
+const props = defineProps({
+    usuario: {
+        type: Object as UsuarioInterface,
+        required: true
+    }
+});
+const checkpoint = defineModel();
+const emits = defineEmits(['close']);
+const dialog = ref<boolean>(false);
+</script>
+
+<template>
+    <v-btn @click="dialog = true" color="primary">Inserir checkpoint</v-btn>
+    <v-dialog
+        v-model="dialog"
+
+        persistent
+        @close="emit('close')"
+    >
+        <v-card>
+            <v-toolbar title="Inserir Checkpoint">
+                <v-btn
+                    icon="mdi-close"
+                    @click="dialog = false"
+                ></v-btn>
+            </v-toolbar>
+            <v-card-text>
+                <InserirCheckpointForm v-model="checkpoint" @close="() => { emits('close'); dialog = false; }"  :usuario="props.usuario" />
+            </v-card-text>
+
+        </v-card>
+    </v-dialog>
+</template>
+
+<style scoped>
+
+</style>
