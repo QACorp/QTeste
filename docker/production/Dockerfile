@@ -59,7 +59,7 @@ RUN php artisan optimize
 COPY ./docker/supervisor/conf.d /etc/supervisor/conf.d
 RUN if [ "${CONTAINER_ROLE}" = "scheduler" ]; then service supervisor stop && service supervisor start  && supervisorctl reread && supervisorctl update && service supervisor restart horizon; fi
 
-
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 CMD curl --fail http://localhost:80 || exit 1
 #ARG USER=www-data
 #
 #RUN \

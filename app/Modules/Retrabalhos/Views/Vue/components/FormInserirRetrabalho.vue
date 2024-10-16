@@ -9,12 +9,12 @@ import moment from "moment";
 import FormInserirCasoTeste from "./FormInserirCasoTeste.vue";
 import {CasoTesteInterface} from "../Interfaces/CasoTeste.interface";
 import {TipoRetrabalhoEnum} from "../Enums/TipoRetrabalho.enum";
-import {LoaderStore} from "../../../../../../resources/js/GlobalStore/LoaderStore";
 import TFieldTarefas from "../../../../Projetos/Views/Vue/components/TFieldTarefas.vue";
-import {axiosApi, axiosWithoutLoader} from "../../../../../../resources/js/app";
 import {getIdEquipe} from "../../../../../../resources/js/APIUtils/BaseAPI";
 import {useToast} from "vue-toast-notification";
 import {SubmitEventPromise} from "vuetify";
+import {axiosApi, axiosWithoutLoader} from "../../../../../../resources/js/APIUtils/AxiosBase";
+import axios from "axios";
 
 
 const props = defineProps({

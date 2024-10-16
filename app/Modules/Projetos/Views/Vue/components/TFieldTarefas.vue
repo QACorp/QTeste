@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {axiosApi} from "../../../../../../resources/js/app";
 import {ref} from "vue";
 import {useToast} from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-sugar.css';
+import {axiosApi} from "../../../../../../resources/js/APIUtils/AxiosBase";
 
 const props = defineProps({
     tarefa:{

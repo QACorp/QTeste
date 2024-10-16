@@ -1,4 +1,4 @@
-version: '3.5'
+version: '3.9'
 services:
   qteste_app:
         image: ${REGISTRY_URL}/qteste_app:2.0
@@ -33,6 +33,8 @@ services:
         depends_on:
             - qteste_app
         entrypoint: ["/app/docker/entrypoint.sh"]
+        healthcheck:
+          test: [ "NONE" ]
         environment:
             - CONTAINER_ROLE=scheduler
             - USERID=${USERID:-1001}
@@ -46,6 +48,8 @@ services:
         depends_on:
             - qteste_app
         entrypoint: ["/app/docker/entrypoint.sh"]
+        healthcheck:
+          test: [ "NONE" ]
         environment:
             - CONTAINER_ROLE=queue
             - USERID=${USERID:-1001}

@@ -1,2 +1,5 @@
 .env
 .env.example
+docker-compose-swarm.yml
+docker-compose-prd.yml
+docker-compose.yml

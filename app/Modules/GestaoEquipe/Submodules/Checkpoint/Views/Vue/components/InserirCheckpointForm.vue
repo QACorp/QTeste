@@ -1,0 +1,193 @@
+<script setup lang="ts">
+
+import moment from "moment/moment";
+import TFieldTarefas from "../../../../../../Projetos/Views/Vue/components/TFieldTarefas.vue";
+import Editor from "@tinymce/tinymce-vue";
+import {getIdEquipe} from "../../../../../../../../resources/js/APIUtils/BaseAPI";
+import {onMounted, onUpdated, ref} from "vue";
+import CheckpointInterface from "../Interfaces/Checkpoint.interface";
+import {ProjetoInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Projeto.interface";
+import {AlocacaoInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Alocacao.interface";
+import {UsuarioInterface} from "../../../../Alocacao/Views/Vue/Interfaces/Usuario.interface";
+import {useToast} from "vue-toast-notification";
+import {axiosApi} from "../../../../../../../../resources/js/APIUtils/AxiosBase";
+
+const props = defineProps({
+    usuario: {
+        type: Object as UsuarioInterface,
+        required: true
+    },
+
+});
+const $toast = useToast();
+const emit = defineEmits(['close','selectAlocacao']);
+
+const checkpoint = defineModel({
+    type: {} as CheckpointInterface
+});
+const projetos = ref<ProjetoInterface>([]);
+const alocacoes = ref<AlocacaoInterface>([]);
+const usuario = ref<UsuarioInterface>(props.usuario)
+
+onUpdated(async () => {
+    if(checkpoint.value.data != null) {
+        await findAlocacao(checkpoint.value.data);
+        checkpoint.value.alocacao = alocacoes.value.find(alocacao => alocacao.id == checkpoint.value.alocacao_id);
+        updateAlocacao();
+    }
+})
+onMounted( async () => {
+
+    await axiosApi.get(`checkpoint/projetos?idEquipe=${getIdEquipe()}`)
+        .then(response => {
+            projetos.value = response.data;
+        })
+        .catch(error => {
+            console.log(error)
+        });
+});
+const updateAlocacao = () => {
+    if(checkpoint.value.alocacao) {
+        checkpoint.value.alocacao_id = checkpoint.value.alocacao.id;
+        checkpoint.value.projeto_id = checkpoint.value.alocacao.projeto_id;
+        checkpoint.value.tarefa = checkpoint.value.alocacao.tarefa;
+        checkpoint.value.tarefa_id = checkpoint.value.tarefa?.id;
+        checkpoint.value.projeto = projetos.value.find(projeto => projeto.id == checkpoint.value.alocacao.projeto_id);
+        emit("selectAlocacao");
+    }else {
+        checkpoint.value.alocacao_id = null;
+        checkpoint.value.projeto_id = null;
+        checkpoint.value.tarefa = null;
+        checkpoint.value.projeto = null;
+        checkpoint.value.tarefa_id = null;
+        emit("selectAlocacao");
+    }
+
+}
+
+
+const findAlocacao = async (data: string) => {
+    if(!data) return;
+    checkpoint.value.alocacao = null;
+    await axiosApi.get(`checkpoint/alocacao/usuario/${usuario.value.id}/data/${data}?idEquipe=${getIdEquipe()}`)
+        .then(response => {
+            alocacoes.value = response.data;
+        })
+        .catch(error => {
+            console.log(error)
+        })
+
+    //LoaderStore.setHideLoader();
+}
+const saveCheckpoint = async () => {
+    //LoaderStore.setShowLoader();
+    console.log(checkpoint.value);
+    await axiosApi.post(`checkpoint/?idEquipe=${getIdEquipe()}`, checkpoint.value)
+        .then(response => {
+            $toast.success('Checkpoint inserido com sucesso!', {
+                duration: 5000
+            });
+
+        })
+        .catch(error => {
+            $toast.error(error.response.data.message, {
+                duration: 5000
+            });
+        })
+    //LoaderStore.setHideLoader();
+    emit('close');
+}
+</script>
+
+<template>
+    <v-form validate-on="blur" @submit.prevent="saveCheckpoint">
+        <v-row dense>
+            <v-col cols="6" sm="12" md="6">
+                <v-text-field
+                    v-model="checkpoint.data"
+                    label="Data"
+                    @blur="findAlocacao(checkpoint.data)"
+                    type="date"
+                    size="large"
+                    :rules="[
+                          value => !checkpoint.data ? 'Informe a data' : true
+                      ]"
+                    required
+                ></v-text-field>
+            </v-col>
+            <v-col cols="6" sm="12" md="6">
+                <v-select
+                    v-model="checkpoint.alocacao"
+                    @update:modelValue="updateAlocacao()"
+                    :items="alocacoes"
+                    no-data-text="Nenhuma alocação encontrada para esta data"
+                    return-object
+                    clearable
+                    item-value="id"
+                    label="Alocação"
+                >
+                    <template v-slot:item="{ props, item }">
+                        <v-list-item v-bind="props" :title="`${moment(item.raw.inicio).format('DD/MM/YYYY')} - ${moment(item.raw.termino).format('DD/MM/YYYY')}`"></v-list-item>
+                    </template>
+                    <template v-slot:selection="{ props, item }">
+                        <span class="">{{ moment(item.raw.inicio).format('DD/MM/YYYY') }} - {{ moment(item.raw.termino).format('DD/MM/YYYY')  }}</span>
+                    </template>
+
+                </v-select>
+            </v-col>
+
+        </v-row>
+        <v-row dense>
+            <v-col cols="10" sm="12" md="10">
+                <v-select
+                    v-model="checkpoint.projeto"
+                    @update:modelValue="checkpoint.projeto_id = checkpoint.projeto.id"
+                    :items="projetos"
+                    item-title="nome"
+                    no-data-text="Nenhum projeto encontrado"
+                    return-object
+                    clearable
+                    item-value="id"
+                    label="Projeto"
+                    required
+                ></v-select>
+            </v-col>
+            <v-col cols="2" sm="12" md="2">
+                <TFieldTarefas v-model="checkpoint.tarefa_id" :key="checkpoint.tarefa?.tarefa" :tarefa="checkpoint.tarefa?.tarefa"/>
+            </v-col>
+        </v-row>
+        <v-row dense>
+            <v-col cols="4" sm="12" md="4">
+                <v-switch
+                    label="Compareceu"
+                    v-model="checkpoint.compareceu"
+                    :false-value="false"
+                    :true-value="true"
+                    color="primary"
+                    inset
+                ></v-switch>
+            </v-col>
+        </v-row>
+        <v-row dense>
+            <v-col cols="12" sm="12" md="12">
+                <label for="descricao">Descrição</label>
+                <Editor
+                    required
+                    licenseKey="gpl"
+                    v-model="checkpoint.descricao"
+                />
+
+            </v-col>
+        </v-row>
+        <v-row dense>
+            <v-col cols="12" sm="12" md="12">
+                <v-spacer></v-spacer>
+                <v-btn type="submit" color="primary" variant="flat">Salvar</v-btn>
+            </v-col>
+        </v-row>
+    </v-form>
+</template>
+
+<style scoped>
+
+</style>
