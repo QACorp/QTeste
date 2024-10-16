@@ -2,8 +2,8 @@
 
 import moment from "moment/moment";
 import CheckpointObservacaoInterface from "../Interfaces/CheckpointObservacao.interface";
-import ExcluirObservacao from "../../../Observacao/Views/Vue/components/ExcluirObservacao.vue";
-import AlterarObservacao from "../../../Observacao/Views/Vue/components/AlterarObservacao.vue";
+import ExcluirObservacao from "../../../Submodules/Observacao/Views/Vue/components/ExcluirObservacao.vue";
+import AlterarObservacao from "../../../Submodules/Observacao/Views/Vue/components/AlterarObservacao.vue";
 
 const props = defineProps({
     observacaoCheckpoint: {

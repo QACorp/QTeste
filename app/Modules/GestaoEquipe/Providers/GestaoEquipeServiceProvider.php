@@ -3,6 +3,10 @@
 namespace App\Modules\GestaoEquipe\Providers;
 
 
+use App\Modules\GestaoEquipe\Business\RelatoriosBusiness;
+use App\Modules\GestaoEquipe\Contracts\Business\RelatoriosBusinessContract;
+use App\Modules\GestaoEquipe\Contracts\Repository\RetrabalhoRepositoryContract;
+use App\Modules\GestaoEquipe\Repositories\RetrabalhoRepository;
 use App\Modules\Projetos\Providers\ProjetosServiceProvider;
 
 use App\System\Impl\ServiceProviderAbstract;
@@ -14,6 +18,8 @@ class GestaoEquipeServiceProvider extends ServiceProviderAbstract
     public static string $prefix = 'gestao-equipe';
     public static string $view_namespace = 'gestao-equipe';
     public $bindings = [
+        RelatoriosBusinessContract::class => RelatoriosBusiness::class,
+        RetrabalhoRepositoryContract::class => RetrabalhoRepository::class
     ];
     /**
      * Register services.

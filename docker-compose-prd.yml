@@ -1,4 +1,4 @@
-version: '3.5'
+version: '3.9'
 services:
     qteste_app:
       image: qteste_app:2.0
@@ -44,6 +44,8 @@ services:
         - ./docker/entrypoint.sh
       env_file:
         - .env
+      healthcheck:
+        test: [ "NONE" ]
       depends_on:
         - qteste_app
       environment:
@@ -60,6 +62,8 @@ services:
         - ./docker/entrypoint.sh
       env_file:
         - .env
+      healthcheck:
+        test: [ "NONE" ]
       depends_on:
         - qteste_app
       environment:

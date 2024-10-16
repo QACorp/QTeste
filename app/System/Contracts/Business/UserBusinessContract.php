@@ -15,8 +15,8 @@ interface UserBusinessContract
 {
     public function buscarTodos():DataCollection;
     public function buscarPorId(int $userId, int $idEquipe): ?UserDTO;
-    public function alterar(UserDTO $userDTO, UserPutRequest $userPutRequest = new UserPutRequest()): UserDTO;
-    public function alterarSenha(UserDTO $userDTO, PasswordPutRequest $passwordPutRequest = new PasswordPutRequest()): UserDTO;
+    public function alterar(UserDTO $userDTO, int $idEquipe, UserPutRequest $userPutRequest = new UserPutRequest()): UserDTO;
+    public function alterarSenha(UserDTO $userDTO, int $idEquipe, PasswordPutRequest $passwordPutRequest = new PasswordPutRequest()): UserDTO;
     public function salvar(UserDTO $userDTO, UserPostRequest $userPostRequest = new UserPostRequest()): UserDTO;
     public function alterarEquipeSelecionada(int $idUsuario, int $idEquipe):bool;
     public function importarArquivoParaUser(?UploadedFile $uploadedFile, array $equipes,UploadPostRequest $uploadPostRequest = new UploadPostRequest()): void;

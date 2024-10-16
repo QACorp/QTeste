@@ -1,5 +1,5 @@
 @php
-    use App\Modules\GestaoEquipe\Alocacao\Enums\PermissionEnum;
+    use App\Modules\GestaoEquipe\Submodules\Alocacao\Enums\PermissionEnum;
     use App\Modules\GestaoEquipe\Checkpoint\Enums\PermissionEnum as CheckpointPermissionEnum;
 @endphp
 @extends('adminlte::page')
@@ -14,5 +14,5 @@
 @stop
 
 @section('content')
-    <painel :id-usuario="{{ $usuario->id }}" />
+    <painel :id-usuario="{{ $usuario->id }}"/>
 @stop

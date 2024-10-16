@@ -23,7 +23,7 @@ class AuthApiController extends Controller
      */
     public function login(Request $request)
     {
-        $credentials = request(['email', 'password']);
+//        $credentials = request(['email', 'password']);
 
         if (! $token = $this->loginApi($request)){
             return response()->json(['error' => 'Unauthorized'], 401);

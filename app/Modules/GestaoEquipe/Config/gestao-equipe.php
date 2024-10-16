@@ -1,9 +1,9 @@
 <?php
 
 
-use App\Modules\GestaoEquipe\Alocacao\Enums\PermissionEnum as PermissionEnumAlocacao;
-use App\Modules\GestaoEquipe\Checkpoint\Enums\PermissionEnum as PermissionEnumCheckpoint;
-use App\Modules\GestaoEquipe\Observacao\Enums\PermissionEnum as PermissionEnumObservacao;
+use App\Modules\GestaoEquipe\Submodules\Checkpoint\Enums\PermissionEnum as PermissionEnumCheckpoint;
+use App\Modules\GestaoEquipe\Submodules\Alocacao\Enums\PermissionEnum as PermissionEnumAlocacao;
+use App\Modules\GestaoEquipe\Submodules\Observacao\Enums\PermissionEnum as PermissionEnumObservacao;
 
 return [
     'menu' => [
