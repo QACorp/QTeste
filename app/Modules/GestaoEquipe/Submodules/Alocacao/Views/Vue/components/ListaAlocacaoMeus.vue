@@ -46,15 +46,25 @@ watchEffect(() => {
             <v-skeleton-loader type="card"></v-skeleton-loader>
         </v-col>
 
-        <v-col v-if="alocacoes" v-for="alocacao in alocacoes"
-               :key="alocacao.id"
-               cols="12"
-               sm="3"
-               md="3"
-               lg="3"
-
+    </v-row>
+    <v-row v-if="!alocacoes">
+        <v-col md="3" >
+            <v-skeleton-loader type="card"></v-skeleton-loader>
+        </v-col>
+        <v-col md="3">
+            <v-skeleton-loader type="card"></v-skeleton-loader>
+        </v-col>
+    </v-row>
+    <v-row v-if="alocacoes"
+           v-for="alocacao in alocacoes"
+           :key="alocacao.id">
+        <v-col
+            cols="12"
+            sm="12"
+            md="12"
+            lg="12"
         >
-           <CardAlocacao :alocacao="alocacao as AlocacaoInterface" />
+            <CardAlocacao :alocacao="alocacao as AlocacaoInterface" />
         </v-col>
     </v-row>
 </template>
