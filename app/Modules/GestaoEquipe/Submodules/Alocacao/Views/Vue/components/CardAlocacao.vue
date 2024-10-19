@@ -47,7 +47,7 @@ const getUrlProjeto = () => {
                         {{ alocacao.user.name }}
                     </span>
                     <v-chip class="mr-3" title="Equipe">{{ alocacao.equipe.nome }}</v-chip>
-                    <v-chip class="mr-3" title="Natureza" color="purple">
+                    <v-chip class="mr-3" title="Natureza" :color="isAusencia(alocacao) ? 'primary' : 'purple'">
                         <a class="text-decoration-none" target="_blank" v-if="alocacao.natureza === NaturezaEnum.PROJETO" :href="getUrlProjeto()">{{ alocacao.natureza }}<v-icon size="sm">mdi-open-in-new</v-icon></a>
                         <span v-else>{{ alocacao.natureza }}</span>
                     </v-chip>
@@ -60,12 +60,10 @@ const getUrlProjeto = () => {
                 <v-col cols="12" md="3" v-if="alocacao.tarefa">
                     <span class="font-weight-bold">Tarefa: </span>
                     <span :class="[alocacao.projeto_id || alocacao.natureza === NaturezaEnum.MELHORIA ? 'cursor-pointer': '']">
-
                         <UseClipboard
                             v-slot="{ copy, copied }"
                             :source="alocacao.tarefa.tarefa"
                             v-if="alocacao.tarefa !== null">
-
                             <span @click="copy()" class="cursor-pointer">
                                  <v-tooltip
                                      v-if="alocacao.tarefa_id !== null"
@@ -77,8 +75,7 @@ const getUrlProjeto = () => {
                                 <span v-if="!copied">{{ alocacao.tarefa.tarefa }} </span>
                                 <span v-else>Copiado!</span>
                                 <v-icon size="sm">mdi-content-copy</v-icon>
-                        </span>
-
+                            </span>
                         </UseClipboard>
                         <v-tooltip
                             v-if="alocacao.projeto_id !== null"
@@ -100,7 +97,7 @@ const getUrlProjeto = () => {
                     </UseClipboard>
                 </v-col>
             </v-row>
-            <v-row>
+            <v-row class="mt-0 pt-0">
                 <v-col cols="12" md="12">
                     <v-tooltip
                         activator="parent"

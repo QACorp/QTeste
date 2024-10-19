@@ -25,8 +25,12 @@ class AlocacaoController extends Controller
         if(!$request->get('idEquipe')){
             return response()->json(['message' => 'Equipe não informada'], 422);
         }
+        if(!$request->get('data')){
+            return response()->json(['message' => 'Data não informada'], 422);
+        }
+        $data = Carbon::createFromFormat('Y-m-d', $request->get('data'));
         try {
-            return $this->alocacaoBusiness->marcarAlocacaoComoConcluida($idAlocacao, $request->get('idEquipe'));
+            return $this->alocacaoBusiness->marcarAlocacaoComoConcluida($idAlocacao, $request->get('idEquipe'), $data);
         }catch (UnauthorizedException|NotFoundException|ConflictException $e){
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }

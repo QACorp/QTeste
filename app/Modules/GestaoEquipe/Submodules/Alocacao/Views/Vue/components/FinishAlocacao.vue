@@ -4,6 +4,7 @@ import {useToast} from "vue-toast-notification";
 import {ref} from "vue";
 import {getIdEquipe} from "../../../../../../../../resources/js/APIUtils/BaseAPI";
 import {axiosApi} from "../../../../../../../../resources/js/APIUtils/AxiosBase";
+import moment from "moment";
 const $toast = useToast();
 const props = defineProps({
     alocacaoId: {
@@ -12,8 +13,9 @@ const props = defineProps({
     }
 })
 const dialog = ref<boolean>(false);
+const conclusao = ref<string>(moment().format('YYYY-MM-DD'));
 const finishAlocacao = () => {
-    axiosApi.patch(`/alocacao/${props.alocacaoId}/concluir?idEquipe=${getIdEquipe()}`)
+    axiosApi.patch(`/alocacao/${props.alocacaoId}/concluir?idEquipe=${getIdEquipe()}`,{data: conclusao.value})
         .then(response => {
             dialog.value = false;
             helperStore.refreshAlocacao = true;
@@ -43,6 +45,17 @@ const finishAlocacao = () => {
             text="Tem certeza que deseja concluir esta alocação?"
             title="Concluir alocação"
         >
+            <v-card-text>
+                <v-row class="p-0">
+                    <v-col cols="12">
+                        <v-text-field
+                            label="Data de conclusão"
+                            type="date"
+                            v-model="conclusao" clearable
+                        ></v-text-field>
+                    </v-col>
+                </v-row>
+            </v-card-text>
             <template v-slot:actions>
                 <v-row class="p-0">
                     <v-col cols="12">

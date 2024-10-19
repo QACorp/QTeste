@@ -121,7 +121,7 @@ class AlocacaoBusiness extends BusinessAbstract implements AlocacaoBusinessContr
         return $this->projetoRepository->buscarProjetosVigentes($equipeId, $dataInicio, $dataFim);
     }
 
-    public function marcarAlocacaoComoConcluida(int $idAlocacao, int $idEquipe): AlocacaoDTO
+    public function marcarAlocacaoComoConcluida(int $idAlocacao, int $idEquipe, Carbon $data): AlocacaoDTO
     {
         $this->can(PermissionEnum::CONCLUIR_ALOCACAO->value, 'api');
         $alocacao = $this->alocacaoRepository->consultarAlocacao($idAlocacao, $idEquipe);
@@ -135,7 +135,7 @@ class AlocacaoBusiness extends BusinessAbstract implements AlocacaoBusinessContr
         if(!$this->isEquipeCriadora($alocacao->equipe_id)){
             throw new UnauthorizedException(401, 'Sem permissão para concluir alocação');
         }
-        $alocacao->concluida = Carbon::now();
+        $alocacao->concluida = $data;
         return $this->alocacaoRepository->alterarAlocacao($idAlocacao, $alocacao);
     }
 
