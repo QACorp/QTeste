@@ -177,6 +177,7 @@ class AlocacaoBusiness extends BusinessAbstract implements AlocacaoBusinessContr
         if(!$alocacao){
             throw new NotFoundException('Alocação não encontrada');
         }
+
         if($alocacao->concluida){
             throw new ConflictException('Alocação já concluída', 409);
         }
@@ -191,6 +192,15 @@ class AlocacaoBusiness extends BusinessAbstract implements AlocacaoBusinessContr
         }
         if($alocacao->termino->isAfter($alocacaoDTO->prorrogacao)){
             throw new ConflictException('Data de prorrogação deve ser posterior a data de término', 409);
+        }
+        if($this->alocacaoRepository->hasAlocacaoInDate(
+            $alocacao->user_id,
+            $alocacao->equipe_id,
+            $alocacao->inicio,
+            $alocacaoDTO->prorrogacao,
+            $alocacao->id))
+        {
+            throw new ConflictException( 'Já existe uma alocação nesse período para este usuário',409);
         }
         $alocacao->prorrogacao = $alocacaoDTO->prorrogacao;
         $alocacao->motivo_prorrogacao = $alocacaoDTO->motivo_prorrogacao;
