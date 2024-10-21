@@ -8,6 +8,7 @@ import InserirCheckpoint from "../../../../Checkpoint/Views/Vue/components/Inser
 import {PermissionStore} from "../../../../../../../../resources/js/GlobalStore/PermissionStore";
 import {PermissionEnum} from "../Enums/PermissionEnum";
 import {PermissionEnum as CheckpointPermissionEnum} from "../../../../Checkpoint/Views/Vue/Enums/PermissionEnum";
+import CancelaAlocacao from "./CancelaAlocacao.vue";
 const props = defineProps({
     alocacao: {
         type: Object as () => AlocacaoInterface,
@@ -26,6 +27,7 @@ const props = defineProps({
                             PermissionStore.hasPermission(PermissionEnum.CRIAR_ALOCACAO)"
                 :alocacao-id="props.alocacao.id"
             />
+            <cancela-alocacao  v-if="PermissionStore.hasPermission(PermissionEnum.CANCELAR_ALOCACAO)" :alocacao-id="props.alocacao.id"/>
             <finish-alocacao v-if="PermissionStore.hasPermission(PermissionEnum.CONCLUIR_ALOCACAO)" :alocacao-id="props.alocacao.id"/>
             <inserir-checkpoint v-if="PermissionStore.hasPermission(CheckpointPermissionEnum.CRIAR_CHECKPOINT) || !props.alocacao.concluida" :id-alocacao="props.alocacao.id" :usuario="props.alocacao.user"/>
         </v-col>
