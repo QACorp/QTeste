@@ -43,8 +43,10 @@ class AlocacaoRepository extends BaseRepository implements AlocacaoRepositoryCon
     public function consultarAlocacao(int $id, int $idEquipe): ?AlocacaoDTO
     {
         $alocacao = Alocacao::where('equipe_id', $idEquipe)
+            ->addSelect('alocacoes.*')
+            ->addSelect(DB::raw('COALESCE(alocacoes.prorrogacao, alocacoes.termino) as termino'))
             ->where('id', $id)
-            ->with(['projeto', 'user', 'user.empresa','equipe', 'projeto.aplicacao', 'tarefa'])
+            ->with(['projeto', 'user', 'user.empresa','equipe', 'projeto.aplicacao', 'tarefa', 'cancelamento'])
             ->first();
         if($alocacao) {
             return AlocacaoDTO::from($alocacao);
@@ -54,6 +56,7 @@ class AlocacaoRepository extends BaseRepository implements AlocacaoRepositoryCon
     private function getQUeryBuilderSelectAlocacao(int $idEquipe): Builder
     {
         return Alocacao::select('alocacoes.*')
+            ->addSelect(DB::raw('COALESCE(alocacoes.prorrogacao, alocacoes.termino) as termino'))
             ->where('equipe_id', $idEquipe)
             ->where('concluida', null)
             ->whereRaw('NOT EXISTS(SELECT 1 FROM gestao_equipes.alocacao_cancelamentos WHERE alocacao_id = alocacoes.id)')

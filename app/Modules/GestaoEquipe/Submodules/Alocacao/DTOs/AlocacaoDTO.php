@@ -29,6 +29,9 @@ class AlocacaoDTO extends DTO
     public ?Carbon $concluida;
     public ?int $tarefa_id;
     public ?TarefaDTO $tarefa;
+
+    public ?Carbon $prorrogacao;
+    public ?string $motivo_prorrogacao;
     #[Required]
     public ?NaturezaEnum $natureza;
     public ?string $observacao;

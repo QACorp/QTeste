@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Alocacao extends Model
 {
@@ -32,7 +33,9 @@ class Alocacao extends Model
         'concluida',
         'tarefa_id',
         'natureza',
-        'observacao'
+        'observacao',
+        'prorrogacao',
+        'motivo_prorrogacao'
     ];
 
     protected $enums = [
@@ -42,6 +45,7 @@ class Alocacao extends Model
         'inicio' => 'date',
         'termino' => 'date',
         'concluida' => 'date',
+        'prorrogacao' => 'date'
     ];
     public function projeto(): BelongsTo
     {

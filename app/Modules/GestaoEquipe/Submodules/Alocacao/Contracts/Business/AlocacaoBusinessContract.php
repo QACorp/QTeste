@@ -21,6 +21,7 @@ interface AlocacaoBusinessContract
     public function marcarAlocacaoComoConcluida(int $idAlocacao, int $idEquipe, Carbon $data): AlocacaoDTO;
     public function listarMinhasAlocacoes(int $idEquipe, int $idUsuario): DataCollection;
     public function cancelarAlocacao(int $idAlocacao, int $idEquipe, string $motivo): AlocacaoDTO;
+    public function prorrogarAlocacao(AlocacaoDTO $alocacaoDTO): AlocacaoDTO;
 
 
 }

@@ -13,4 +13,5 @@ Route::group(['prefix' => ''],function () {
     Route::get('/{idAlocacao}', [AlocacaoController::class, 'consultarAlocacao']);
     Route::patch('/{idAlocacao}/concluir', [AlocacaoController::class, 'marcarAlocacaoComoConcluida']);
     Route::patch('/{idAlocacao}/cancelar', [AlocacaoController::class, 'cancelarAlocacao']);
+    Route::patch('/{idAlocacao}/prorrogar', [AlocacaoController::class, 'prorrogarAlocacao']);
 });

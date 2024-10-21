@@ -169,4 +169,31 @@ class AlocacaoBusiness extends BusinessAbstract implements AlocacaoBusinessContr
         ]);
         return $this->alocacaoRepository->cancelarAlocacao($alocacaoCancelamento);
     }
+
+    public function prorrogarAlocacao(AlocacaoDTO $alocacaoDTO): AlocacaoDTO
+    {
+        $this->can(PermissionEnum::PRORROGAR_ALOCACAO->value);
+        $alocacao = $this->alocacaoRepository->consultarAlocacao($alocacaoDTO->id, $alocacaoDTO->equipe_id);
+        if(!$alocacao){
+            throw new NotFoundException('Alocação não encontrada');
+        }
+        if($alocacao->concluida){
+            throw new ConflictException('Alocação já concluída', 409);
+        }
+        if(!$this->isEquipeCriadora($alocacao->equipe_id)){
+            throw new UnauthorizedException(401, 'Sem permissão para prorrogar alocação');
+        }
+        if ($alocacao->cancelamento){
+            throw new ConflictException('Alocação cancelada', 409);
+        }
+        if($alocacao->prorrogacao){
+            throw new ConflictException('Alocação já prorrogada', 409);
+        }
+        if($alocacao->termino->isAfter($alocacaoDTO->prorrogacao)){
+            throw new ConflictException('Data de prorrogação deve ser posterior a data de término', 409);
+        }
+        $alocacao->prorrogacao = $alocacaoDTO->prorrogacao;
+        $alocacao->motivo_prorrogacao = $alocacaoDTO->motivo_prorrogacao;
+        return $this->alocacaoRepository->alterarAlocacao($alocacao->id, $alocacao);
+    }
 }

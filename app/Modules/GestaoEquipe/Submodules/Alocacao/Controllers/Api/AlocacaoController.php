@@ -125,4 +125,26 @@ class AlocacaoController extends Controller
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
     }
+    public function prorrogarAlocacao(Request $request, int $idAlocacao){
+        try {
+            if (!$idEquipe = $request->get('idEquipe')) {
+                return response()->json(['message' => 'Equipe não informada'], 422);
+            }
+            if(!$data = $request->get('data')){
+                return response()->json(['message' => 'Data não informada'], 422);
+            }
+            if(!$motivo = $request->get('motivo')){
+                return response()->json(['message' => 'Motivo não informado'], 422);
+            }
+            $alocacaoDTO = AlocacaoDTO::from([
+                'id' => $idAlocacao,
+                'equipe_id' => $idEquipe,
+                'prorrogacao' => Carbon::createFromFormat('Y-m-d', $data),
+                'motivo_prorrogacao' => $motivo
+            ]);
+            return $this->alocacaoBusiness->prorrogarAlocacao($alocacaoDTO);
+        }catch (UnauthorizedException|NotFoundException|ConflictException $e){
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
+    }
 }
