@@ -12,6 +12,8 @@ export interface AlocacaoInterface{
     tarefa_id: number,
     natureza: string,
     observacao: string,
+    prorrogacao: string,
+    motivo_prorrogacao: string,
     tarefa: TarefaInterface,
     "user": {
         id: number,

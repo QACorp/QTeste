@@ -9,6 +9,7 @@ import {PermissionStore} from "../../../../../../../../resources/js/GlobalStore/
 import {PermissionEnum} from "../Enums/PermissionEnum";
 import {PermissionEnum as CheckpointPermissionEnum} from "../../../../Checkpoint/Views/Vue/Enums/PermissionEnum";
 import CancelaAlocacao from "./CancelaAlocacao.vue";
+import ProrrogaAlocacao from "./ProrrogaAlocacao.vue";
 const props = defineProps({
     alocacao: {
         type: Object as () => AlocacaoInterface,
@@ -27,9 +28,9 @@ const props = defineProps({
                             PermissionStore.hasPermission(PermissionEnum.CRIAR_ALOCACAO)"
                 :alocacao-id="props.alocacao.id"
             />
-            <cancela-alocacao  v-if="PermissionStore.hasPermission(PermissionEnum.CANCELAR_ALOCACAO)" :alocacao-id="props.alocacao.id"/>
             <finish-alocacao v-if="PermissionStore.hasPermission(PermissionEnum.CONCLUIR_ALOCACAO)" :alocacao-id="props.alocacao.id"/>
             <inserir-checkpoint v-if="PermissionStore.hasPermission(CheckpointPermissionEnum.CRIAR_CHECKPOINT) || !props.alocacao.concluida" :id-alocacao="props.alocacao.id" :usuario="props.alocacao.user"/>
+            <prorroga-alocacao v-if="PermissionStore.hasPermission(PermissionEnum.PRORROGAR_ALOCACAO) && !props.alocacao.prorrogacao" :alocacao-id="props.alocacao.id"/>
             <cancela-alocacao  v-if="PermissionStore.hasPermission(PermissionEnum.CANCELAR_ALOCACAO)" :alocacao-id="props.alocacao.id"/>
         </v-col>
     </v-row>

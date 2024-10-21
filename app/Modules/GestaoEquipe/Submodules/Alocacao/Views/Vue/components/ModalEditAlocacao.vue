@@ -177,7 +177,7 @@ const findCheckpoints = async () => {
                                         v-model="alocacao.termino"
                                         label="Término"
                                         size="large"
-                                        :disabled="!props.canEdit"
+                                        :disabled="!props.canEdit || alocacao.prorrogacao"
                                         :rules="[
                                     value => alocacao.inicio && moment(alocacao.inicio).isAfter(alocacao.termino) ? 'A data de término deve ser maior que a data de início' : true,
                                     value => !alocacao.termino ? 'Selecione a data de término' : true

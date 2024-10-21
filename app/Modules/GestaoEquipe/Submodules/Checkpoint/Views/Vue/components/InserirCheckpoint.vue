@@ -55,8 +55,9 @@ const close = () => {
 <template>
 
   <v-btn
-      class="p-2 mx-2"
+      class="p-2"
       size="sm"
+      title="Ver checkpoints"
       variant="tonal"
       @click="dialog = true"
   >

@@ -69,7 +69,7 @@ const loadItems = async (options: any) => {
                             <ver-observacoes v-if="PermissionStore.hasPermission(ObservacaoPermissionEnum.LISTAR_OBSERVACAO)" :usuario="item"/>
                             <v-btn
                                 :href="`${url}${item.id}/`"
-                                class="mx-2 p-2"
+                                class="ml-1 p-2"
                                 size="sm"
                                 variant="tonal"
                                 color="purple"

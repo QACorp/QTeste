@@ -44,7 +44,7 @@ class AlocacaoRepository extends BaseRepository implements AlocacaoRepositoryCon
     {
         $alocacao = Alocacao::where('equipe_id', $idEquipe)
             ->addSelect('alocacoes.*')
-            ->addSelect(DB::raw('COALESCE(alocacoes.prorrogacao, alocacoes.termino) as termino'))
+            //->addSelect(DB::raw('COALESCE(alocacoes.prorrogacao, alocacoes.termino) as termino'))
             ->where('id', $id)
             ->with(['projeto', 'user', 'user.empresa','equipe', 'projeto.aplicacao', 'tarefa', 'cancelamento'])
             ->first();

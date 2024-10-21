@@ -46,7 +46,8 @@ watchEffect(async () => {
 
 <template>
     <v-btn
-        class="p-2 mx-1"
+        class="p-2 ml-1"
+        title="Ver observações"
         size="sm"
         variant="tonal"
         color="primary"
