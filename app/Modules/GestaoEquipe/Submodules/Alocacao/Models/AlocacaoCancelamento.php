@@ -12,65 +12,40 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
-class Alocacao extends Model
+class AlocacaoCancelamento extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $table = 'gestao_equipes.alocacoes';
+    protected $table = 'gestao_equipes.alocacao_cancelamentos';
     protected $fillable = [
-        'projeto_id',
+        'alocacao_id',
         'user_id',
-        'empresa_id',
-        'equipe_id',
-        'inicio',
-        'termino',
-        'concluida',
-        'tarefa_id',
-        'natureza',
-        'observacao'
+        'motivo',
     ];
 
     protected $enums = [
         'natureza' => NaturezaEnum::class
     ];
     protected $casts = [
-        'inicio' => 'date',
-        'termino' => 'date',
-        'concluida' => 'date',
+
     ];
-    public function projeto(): BelongsTo
+    public function alocacao(): BelongsTo
     {
-        return $this->belongsTo(Projeto::class);
-    }
-    public function tarefa(): BelongsTo
-    {
-        return $this->belongsTo(Tarefa::class);
+        return $this->belongsTo(Alocacao::class);
     }
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
-    public function empresa(): BelongsTo
-    {
-        return $this->belongsTo(Empresa::class);
-    }
-    public function equipe(): BelongsTo
-    {
-        return $this->belongsTo(Equipe::class);
-    }
-    public function cancelamento(): HasOne
-    {
-        return $this->hasOne(AlocacaoCancelamento::class);
-    }
+
     public function newQuery(): Builder
     {
         if(Auth::user()) {
             return parent::newQuery()
+                ->addSelect('alocacao_cancelamentos.*')
+                ->join('gestao_equipes.alocacoes', 'alocacoes.id', '=', 'alocacao_cancelamentos.alocacao_id')
                 ->where('alocacoes.empresa_id', Auth::user()->empresa_id);
         }
         return parent::newQuery();

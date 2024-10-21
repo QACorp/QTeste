@@ -12,4 +12,5 @@ Route::group(['prefix' => ''],function () {
     Route::put('/{idAlocacao}', [AlocacaoController::class, 'alterarAlocacao']);
     Route::get('/{idAlocacao}', [AlocacaoController::class, 'consultarAlocacao']);
     Route::patch('/{idAlocacao}/concluir', [AlocacaoController::class, 'marcarAlocacaoComoConcluida']);
+    Route::patch('/{idAlocacao}/cancelar', [AlocacaoController::class, 'cancelarAlocacao']);
 });

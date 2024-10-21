@@ -3,6 +3,7 @@
 namespace App\Modules\GestaoEquipe\Submodules\Alocacao\DTOs;
 
 use App\Modules\GestaoEquipe\Submodules\Alocacao\Enums\NaturezaEnum;
+use App\Modules\GestaoEquipe\Submodules\Alocacao\Models\User;
 use App\Modules\Projetos\DTOs\ProjetoDTO;
 use App\Modules\Projetos\DTOs\TarefaDTO;
 use App\System\DTOs\EquipeDTO;
@@ -14,29 +15,14 @@ use Spatie\LaravelData\Attributes\Validation\Required;
 use Spatie\LaravelData\Contracts\DataCollectable;
 use Spatie\LaravelData\Support\Validation\References\FieldReference;
 
-class AlocacaoDTO extends DTO
+class AlocacaoCancelamentoDTO extends DTO
 {
     public ?int $id;
-    public ?int $projeto_id;
-    #[Required]
-    public ?int $user_id;
-    public ?int $empresa_id;
-    public ?int $equipe_id;
-    #[Required, BeforeOrEqual( 'termino')]
-    public ?Carbon $inicio;
-    #[Required]
-    public ?Carbon $termino;
-    public ?Carbon $concluida;
-    public ?int $tarefa_id;
-    public ?TarefaDTO $tarefa;
-    #[Required]
-    public ?NaturezaEnum $natureza;
-    public ?string $observacao;
+    public int $alocacao_id;
+    public int $user_id;
+    public string $motivo;
     public ?UserDTO $user;
-    public ?EquipeDTO $equipe;
-    public ?ProjetoDTO $projeto;
-    public ?AlocacaoCancelamentoDTO $cancelamento;
-
+    public ?AlocacaoDTO $alocacao;
     public static function messages(...$args): array
     {
         return [

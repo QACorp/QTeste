@@ -111,4 +111,18 @@ class AlocacaoController extends Controller
             return response()->json(['message' => $e->getMessage()], $e->getStatusCode());
         }
     }
+
+    public function cancelarAlocacao(Request $request, int $idAlocacao){
+        try {
+            if (!$idEquipe = $request->get('idEquipe')) {
+                return response()->json(['message' => 'Equipe não informada'], 422);
+            }
+            if(!$motivo = $request->get('motivo')){
+                return response()->json(['message' => 'Motivo não informado'], 422);
+            }
+            return $this->alocacaoBusiness->cancelarAlocacao($idAlocacao, $idEquipe, $motivo);
+        }catch (UnauthorizedException|NotFoundException|ConflictException $e){
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
+    }
 }

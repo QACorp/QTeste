@@ -5,6 +5,7 @@ namespace App\Modules\GestaoEquipe\Submodules\Alocacao\Business;
 use App\Modules\GestaoEquipe\Submodules\Alocacao\Contracts\Business\AlocacaoBusinessContract;
 use App\Modules\GestaoEquipe\Submodules\Alocacao\Contracts\Repositories\AlocacaoRepositoryContract;
 use App\Modules\GestaoEquipe\Submodules\Alocacao\Contracts\Repositories\ProjetoRepositoryContract;
+use App\Modules\GestaoEquipe\Submodules\Alocacao\DTOs\AlocacaoCancelamentoDTO;
 use App\Modules\GestaoEquipe\Submodules\Alocacao\DTOs\AlocacaoDTO;
 use App\Modules\GestaoEquipe\Submodules\Alocacao\DTOs\FiltroConsultaAlocacaoDTO;
 use App\Modules\GestaoEquipe\Submodules\Alocacao\Enums\NaturezaEnum;
@@ -146,5 +147,26 @@ class AlocacaoBusiness extends BusinessAbstract implements AlocacaoBusinessContr
             throw new NotFoundException();
         }
         return $this->alocacaoRepository->listarAlocacoesPorUsuario($idEquipe, $idUsuario);
+    }
+
+    public function cancelarAlocacao(int $idAlocacao, int $idEquipe, string $motivo): AlocacaoDTO
+    {
+        $this->can(PermissionEnum::CANCELAR_ALOCACAO->value);
+        $alocacao = $this->alocacaoRepository->consultarAlocacao($idAlocacao, $idEquipe);
+        if(!$alocacao){
+            throw new NotFoundException('Alocação não encontrada');
+        }
+        if($alocacao->concluida){
+            throw new ConflictException('Alocação já concluída', 409);
+        }
+        if(!$this->isEquipeCriadora($alocacao->equipe_id)){
+            throw new UnauthorizedException(401, 'Sem permissão para cancelar alocação');
+        }
+        $alocacaoCancelamento = AlocacaoCancelamentoDTO::from([
+            'alocacao_id' => $alocacao->id,
+            'user_id' => Auth::user()->getAuthIdentifier(),
+            'motivo' => $motivo
+        ]);
+        return $this->alocacaoRepository->cancelarAlocacao($alocacaoCancelamento);
     }
 }

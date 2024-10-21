@@ -3,9 +3,11 @@
 namespace App\Modules\GestaoEquipe\Submodules\Alocacao\Repositories;
 
 use App\Modules\GestaoEquipe\Submodules\Alocacao\Contracts\Repositories\AlocacaoRepositoryContract;
+use App\Modules\GestaoEquipe\Submodules\Alocacao\DTOs\AlocacaoCancelamentoDTO;
 use App\Modules\GestaoEquipe\Submodules\Alocacao\DTOs\AlocacaoDTO;
 use App\Modules\GestaoEquipe\Submodules\Alocacao\DTOs\FiltroConsultaAlocacaoDTO;
 use App\Modules\GestaoEquipe\Submodules\Alocacao\Models\Alocacao;
+use App\Modules\GestaoEquipe\Submodules\Alocacao\Models\AlocacaoCancelamento;
 use App\Modules\GestaoEquipe\Submodules\Alocacao\Models\User;
 use App\System\DTOs\UserDTO;
 use App\System\Impl\BaseRepository;
@@ -54,7 +56,8 @@ class AlocacaoRepository extends BaseRepository implements AlocacaoRepositoryCon
         return Alocacao::select('alocacoes.*')
             ->where('equipe_id', $idEquipe)
             ->where('concluida', null)
-            ->with(['projeto', 'user', 'user.empresa','equipe', 'projeto.aplicacao','tarefa'])
+            ->whereRaw('NOT EXISTS(SELECT 1 FROM gestao_equipes.alocacao_cancelamentos WHERE alocacao_id = alocacoes.id)')
+            ->with(['projeto', 'user', 'user.empresa','equipe', 'projeto.aplicacao','tarefa', 'cancelamento'])
             ->orderBy('inicio', 'ASC');
     }
 
@@ -71,9 +74,6 @@ class AlocacaoRepository extends BaseRepository implements AlocacaoRepositoryCon
         }
         if($filtro && $filtro->idAplicacao){
             $alocacoes->where('projetos.aplicacao_id', $filtro->idAplicacao);
-//            $alocacoes->whereHas('projeto', function ($query) use ($filtro){
-//                $query->where('aplicacao_id', $filtro->idAplicacao);
-//            });
         }
         if($filtro && $filtro->dataInicio){
             $alocacoes->where('alocacoes.inicio', '>=', $filtro->dataInicio);
@@ -141,5 +141,14 @@ class AlocacaoRepository extends BaseRepository implements AlocacaoRepositoryCon
             ->where('user_id', $idUsuario)
             ->get();
         return AlocacaoDTO::collection($alocacoes);
+    }
+
+    public function cancelarAlocacao(AlocacaoCancelamentoDTO $alocacaoCancelamento): AlocacaoDTO
+    {
+        $alocacaoCancelamentoModel = new AlocacaoCancelamento($alocacaoCancelamento->toArray());
+        $alocacaoCancelamentoModel->save();
+        $alocacao = Alocacao::where('id', $alocacaoCancelamento->alocacao_id)->with('cancelamento')->first();
+        return AlocacaoDTO::from($alocacao);
+
     }
 }

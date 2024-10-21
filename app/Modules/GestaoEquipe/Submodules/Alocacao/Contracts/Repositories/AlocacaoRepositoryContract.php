@@ -2,6 +2,7 @@
 
 namespace App\Modules\GestaoEquipe\Submodules\Alocacao\Contracts\Repositories;
 
+use App\Modules\GestaoEquipe\Submodules\Alocacao\DTOs\AlocacaoCancelamentoDTO;
 use App\Modules\GestaoEquipe\Submodules\Alocacao\DTOs\AlocacaoDTO;
 use App\Modules\GestaoEquipe\Submodules\Alocacao\DTOs\FiltroConsultaAlocacaoDTO;
 use Illuminate\Support\Carbon;
@@ -18,4 +19,5 @@ interface AlocacaoRepositoryContract
     public function hasAlocacaoInDate(int $userId, int $equipeId, string $inicio, string $termino, int $alocacaoId = null): bool;
     public function usuariosDisponiveis(int $idEquipe, Carbon $inicio, Carbon $termino): DataCollection;
     public function listarAlocacoesPorData(int $idEquipe, int $idUsuario, Carbon $data): DataCollection;
+    public function cancelarAlocacao(AlocacaoCancelamentoDTO $alocacaoCancelamento): AlocacaoDTO;
 }
